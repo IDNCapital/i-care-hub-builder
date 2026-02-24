@@ -19,73 +19,23 @@ import medicalOffice from "@/assets/medical-office.jpg";
 import healthcareProfessional from "@/assets/healthcare-professional.jpg";
 
 const services = [
-  {
-    icon: Building2,
-    title: "Rénovation & Modernisation",
-    description: "Transformation de bâtiments existants en espaces de santé modernes et fonctionnels.",
-  },
-  {
-    icon: Users,
-    title: "Conception Centrée Usagers",
-    description: "Des espaces pensés pour le confort des praticiens et le bien-être des patients.",
-  },
-  {
-    icon: Home,
-    title: "Mise à Disposition de Cabinets",
-    description: "Locaux clés en main, prêts à exercer, dans des emplacements stratégiques.",
-  },
-  {
-    icon: Sparkles,
-    title: "Gestion Intégrée Long Terme",
-    description: "Maintenance, services et accompagnement pour vous concentrer sur votre métier.",
-  },
+  { icon: Building2, title: "Rénovation & Modernisation", description: "Transformation de bâtiments existants en espaces de santé modernes et fonctionnels." },
+  { icon: Users, title: "Conception Centrée Usagers", description: "Des espaces pensés pour le confort des praticiens et le bien-être des patients." },
+  { icon: Home, title: "Mise à Disposition de Cabinets", description: "Locaux clés en main, prêts à exercer, dans des emplacements stratégiques." },
+  { icon: Sparkles, title: "Gestion Intégrée Long Terme", description: "Maintenance, services et accompagnement pour vous concentrer sur votre métier." },
 ];
 
 const benefits = [
-  {
-    icon: Building2,
-    title: "Cabinets Modernes & Ergonomiques",
-    description: "Espaces pensés pour votre pratique quotidienne.",
-  },
-  {
-    icon: Accessibility,
-    title: "Accessibilité PMR",
-    description: "Conformité totale aux normes d'accessibilité.",
-  },
-  {
-    icon: MapPin,
-    title: "Emplacements Stratégiques",
-    description: "Au cœur des quartiers, proches des habitants.",
-  },
-  {
-    icon: BadgeEuro,
-    title: "Encadrement des Loyers",
-    description: "Tarifs maîtrisés pour une installation sereine.",
-  },
+  { icon: Building2, title: "Cabinets Modernes & Ergonomiques", description: "Espaces pensés pour votre pratique quotidienne." },
+  { icon: Accessibility, title: "Accessibilité PMR", description: "Conformité totale aux normes d'accessibilité." },
+  { icon: MapPin, title: "Emplacements Stratégiques", description: "Au cœur des quartiers, proches des habitants." },
+  { icon: BadgeEuro, title: "Encadrement des Loyers", description: "Tarifs maîtrisés pour une installation sereine." },
 ];
 
 const projects = [
-  {
-    name: "Floirac",
-    location: "Gironde",
-    status: "En cours",
-    progress: 65,
-    description: "Centre de santé pluridisciplinaire de 800m²",
-  },
-  {
-    name: "Bordeaux Bastide",
-    location: "Gironde",
-    status: "Livré",
-    progress: 100,
-    description: "Réhabilitation d'un immeuble historique",
-  },
-  {
-    name: "Toulouse Saint-Cyprien",
-    location: "Haute-Garonne",
-    status: "Études",
-    progress: 25,
-    description: "Pôle paramédical de proximité",
-  },
+  { name: "Floirac", location: "Gironde", status: "En cours", progress: 65, description: "Centre de santé pluridisciplinaire de 800m²" },
+  { name: "Bordeaux Bastide", location: "Gironde", status: "Livré", progress: 100, description: "Réhabilitation d'un immeuble historique" },
+  { name: "Toulouse Saint-Cyprien", location: "Haute-Garonne", status: "Études", progress: 25, description: "Pôle paramédical de proximité" },
 ];
 
 const impacts = [
@@ -105,48 +55,34 @@ export default function Index() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20">
         <div className="absolute inset-0">
-          <img
-            src={heroBuilding}
-            alt="Façade d'un centre de santé I-CA.RE rénové à Bordeaux"
-            className="w-full h-full object-cover"
-            loading="eager"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/40" />
+          <img src={heroBuilding} alt="Façade d'un centre de santé I-CA.RE rénové à Bordeaux" className="w-full h-full object-cover" loading="eager" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/30" />
         </div>
 
         <div className="container relative z-10 py-20">
           <div className="max-w-3xl">
-            <div className="flex flex-wrap gap-3 mb-6 opacity-0 animate-fade-up">
-              {["Impact local", "Excellence technique", "Confort des praticiens", "Réhabilitation responsable"].map(
-                (tag) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 bg-primary/20 text-foreground text-sm font-medium rounded-full"
-                  >
-                    {tag}
-                  </span>
-                )
-              )}
-            </div>
-
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6 opacity-0 animate-fade-up stagger-1">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-foreground leading-tight mb-6 opacity-0 animate-fade-up">
               Nous rénovons et transformons des lieux de santé
             </h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8 opacity-0 animate-fade-up stagger-2">
+            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-4 opacity-0 animate-fade-up stagger-1">
               Pour offrir aux professionnels un cadre de travail exemplaire et aux habitants un accès facilité à des soins de qualité.
+            </p>
+
+            <p className="text-base text-muted-foreground/70 font-heading italic mb-10 opacity-0 animate-fade-up stagger-2">
+              Des lieux de soin, pensés comme des lieux de vie
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-up stagger-3">
               <Button variant="hero" asChild>
                 <Link to="/professionnels">
-                  Professionnels de santé — Rejoindre I-CA.RE
+                  Professionnels de santé
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button variant="hero-outline" asChild>
                 <Link to="/notre-approche">
-                  Collectivités & Investisseurs — Collaborer
+                  Découvrir notre approche
                 </Link>
               </Button>
             </div>
@@ -166,16 +102,12 @@ export default function Index() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
-              <div
-                key={service.title}
-                className="card-premium opacity-0 animate-fade-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mb-5">
-                  <service.icon className="w-7 h-7 text-foreground" />
+              <div key={service.title} className="card-premium opacity-0 animate-fade-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-5">
+                  <service.icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                <p className="text-muted-foreground">{service.description}</p>
+                <h3 className="text-lg font-heading font-semibold mb-3">{service.title}</h3>
+                <p className="text-muted-foreground text-sm">{service.description}</p>
               </div>
             ))}
           </div>
@@ -187,25 +119,20 @@ export default function Index() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="section-title mb-6">
-                Pourquoi les professionnels choisissent I-CA.RE
-              </h2>
+              <h2 className="section-title mb-6">Pourquoi les professionnels choisissent I-CA.RE</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Des espaces conçus avec et pour les professionnels de santé.
-                Chaque détail est pensé pour faciliter votre quotidien.
+                Des espaces conçus avec et pour les professionnels de santé. Chaque détail est pensé pour faciliter votre quotidien.
               </p>
 
               <div className="grid sm:grid-cols-2 gap-6">
                 {benefits.map((benefit) => (
                   <div key={benefit.title} className="flex gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
-                      <benefit.icon className="w-6 h-6 text-foreground" />
+                    <div className="w-11 h-11 rounded-lg bg-primary/15 flex items-center justify-center flex-shrink-0">
+                      <benefit.icon className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">{benefit.title}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {benefit.description}
-                      </p>
+                      <h4 className="font-semibold font-heading mb-1 text-sm">{benefit.title}</h4>
+                      <p className="text-sm text-muted-foreground">{benefit.description}</p>
                     </div>
                   </div>
                 ))}
@@ -220,20 +147,15 @@ export default function Index() {
             </div>
 
             <div className="relative">
-              <img
-                src={medicalOffice}
-                alt="Intérieur lumineux d'un cabinet médical I-CA.RE avec mobilier ergonomique"
-                className="rounded-3xl shadow-elevated w-full"
-                loading="lazy"
-              />
-              <div className="absolute -bottom-6 -left-6 bg-background rounded-2xl p-6 shadow-card">
+              <img src={medicalOffice} alt="Intérieur lumineux d'un cabinet médical I-CA.RE avec mobilier ergonomique" className="rounded-xl shadow-card w-full" loading="lazy" />
+              <div className="absolute -bottom-6 -left-6 bg-card rounded-xl p-5 shadow-card">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
-                    <Heart className="w-6 h-6 text-primary-foreground" />
+                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                    <Heart className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="font-semibold">+50 praticiens</p>
-                    <p className="text-sm text-muted-foreground">nous font confiance</p>
+                    <p className="font-semibold text-sm">+50 praticiens</p>
+                    <p className="text-xs text-muted-foreground">nous font confiance</p>
                   </div>
                 </div>
               </div>
@@ -243,47 +165,37 @@ export default function Index() {
       </section>
 
       {/* Featured Projects */}
-      <section className="section-padding bg-foreground text-background">
+      <section className="section-padding bg-foreground">
         <div className="container">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
             <div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-semibold mb-4 text-background">
                 Nos projets en cours
               </h2>
-              <p className="text-background/70 text-lg max-w-xl">
+              <p className="text-background/60 text-lg max-w-xl">
                 Des transformations concrètes au service des territoires et de la santé de proximité.
               </p>
             </div>
-            <Button
-              variant="outline"
-              className="mt-6 md:mt-0 border-background/30 text-background hover:bg-background hover:text-foreground"
-              asChild
-            >
+            <Button variant="outline" className="mt-6 md:mt-0 border-background/20 text-background hover:bg-background hover:text-foreground" asChild>
               <Link to="/projets">Voir tous les projets</Link>
             </Button>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {projects.map((project) => (
-              <div
-                key={project.name}
-                className="bg-background/10 backdrop-blur rounded-2xl p-6 hover:bg-background/15 transition-colors"
-              >
+              <div key={project.name} className="bg-background/8 backdrop-blur rounded-xl p-6 hover:bg-background/12 transition-colors duration-500">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm font-medium px-3 py-1 rounded-full bg-primary/20 text-primary">
+                  <span className="text-xs font-bold uppercase tracking-[0.1em] px-3 py-1 rounded-full bg-primary/20 text-primary">
                     {project.status}
                   </span>
-                  <span className="text-sm text-background/60">{project.location}</span>
+                  <span className="text-xs text-background/50">{project.location}</span>
                 </div>
-                <h3 className="text-2xl font-semibold mb-2">{project.name}</h3>
-                <p className="text-background/70 mb-6">{project.description}</p>
-                <div className="progress-bar bg-background/20">
-                  <div
-                    className="progress-bar-fill bg-primary"
-                    style={{ width: `${project.progress}%` }}
-                  />
+                <h3 className="text-xl font-heading font-semibold mb-2 text-background">{project.name}</h3>
+                <p className="text-background/60 text-sm mb-6">{project.description}</p>
+                <div className="progress-bar bg-background/15">
+                  <div className="progress-bar-fill bg-primary" style={{ width: `${project.progress}%` }} />
                 </div>
-                <p className="text-sm text-background/50 mt-2">{project.progress}% avancement</p>
+                <p className="text-xs text-background/40 mt-2">{project.progress}% avancement</p>
               </div>
             ))}
           </div>
@@ -291,16 +203,11 @@ export default function Index() {
       </section>
 
       {/* Societal Impact */}
-      <section className="section-padding">
+      <section className="section-padding bg-secondary">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
-              <img
-                src={healthcareProfessional}
-                alt="Professionnelle de santé accueillant un patient dans un cabinet I-CA.RE"
-                className="rounded-3xl shadow-elevated w-full"
-                loading="lazy"
-              />
+              <img src={healthcareProfessional} alt="Professionnelle de santé accueillant un patient dans un cabinet I-CA.RE" className="rounded-xl shadow-card w-full" loading="lazy" />
             </div>
 
             <div className="order-1 lg:order-2">
@@ -312,23 +219,17 @@ export default function Index() {
               <div className="grid grid-cols-3 gap-6 mb-8">
                 {impacts.map((impact) => (
                   <div key={impact.label} className="text-center">
-                    <p className="text-3xl md:text-4xl font-bold text-primary mb-2">
-                      {impact.value}
-                    </p>
-                    <p className="text-sm text-muted-foreground">{impact.label}</p>
+                    <p className="text-2xl md:text-3xl font-heading font-bold text-primary mb-2">{impact.value}</p>
+                    <p className="text-xs text-muted-foreground">{impact.label}</p>
                   </div>
                 ))}
               </div>
 
-              <div className="space-y-4">
-                {[
-                  "Lutte contre les déserts médicaux",
-                  "Revalorisation du patrimoine bâti",
-                  "Développement territorial durable",
-                ].map((item) => (
+              <div className="space-y-3">
+                {["Lutte contre les déserts médicaux", "Revalorisation du patrimoine bâti", "Développement territorial durable"].map((item) => (
                   <div key={item} className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span className="font-medium">{item}</span>
+                    <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                    <span className="text-sm font-medium">{item}</span>
                   </div>
                 ))}
               </div>
@@ -348,10 +249,10 @@ export default function Index() {
       <section className="section-padding">
         <div className="container">
           <div className="cta-section text-center">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4">
+            <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4">
               Prêt à rejoindre un cabinet I-CA.RE ?
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+            <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
               Exercez dans des locaux modernes, au cœur des quartiers, avec un accompagnement dédié.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

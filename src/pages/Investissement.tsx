@@ -133,15 +133,15 @@ export default function Investissement() {
             className="w-full h-full object-cover"
             loading="eager"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/75 to-foreground/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/75 to-foreground/30" />
         </div>
 
         <div className="container relative z-10 py-20">
           <div className="max-w-2xl">
-            <span className="inline-block px-4 py-1.5 border border-background/30 text-background/80 text-sm font-medium rounded-full mb-6 opacity-0 animate-fade-up">
+            <span className="inline-block px-4 py-1.5 border border-background/20 text-background/70 text-xs font-bold uppercase tracking-[0.1em] rounded-full mb-6 opacity-0 animate-fade-up">
               Investissement immobilier de santé
             </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-background leading-tight mb-6 opacity-0 animate-fade-up stagger-1">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-background leading-tight mb-6 opacity-0 animate-fade-up stagger-1">
               Investir dans l'immobilier de santé nouvelle génération
             </h1>
             <p className="text-xl md:text-2xl text-background/70 leading-relaxed mb-10 opacity-0 animate-fade-up stagger-2">
@@ -174,7 +174,7 @@ export default function Investissement() {
       </section>
 
       {/* Key Metrics Bar */}
-      <section className="py-8 bg-secondary border-b border-border">
+      <section className="py-8 bg-card border-b border-border">
         <div className="container">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -184,7 +184,7 @@ export default function Investissement() {
               { value: "1 850 m²", label: "de surfaces gérées" },
             ].map((metric) => (
               <div key={metric.label} className="text-center">
-                <p className="text-2xl md:text-3xl font-bold text-foreground">
+                <p className="text-2xl md:text-3xl font-heading font-bold text-foreground">
                   {metric.value}
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
@@ -215,10 +215,10 @@ export default function Investissement() {
             {healthcaseDrivers.map((driver, index) => (
               <div
                 key={driver.title}
-                className="bg-secondary rounded-2xl p-8 border border-border"
+                className="bg-card rounded-xl p-8 border border-border"
               >
                 <div className="flex items-start gap-4">
-                  <span className="text-4xl font-bold text-primary/30">
+                  <span className="text-4xl font-heading font-bold text-primary/30">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <div>
@@ -237,10 +237,10 @@ export default function Investissement() {
       </section>
 
       {/* Notre modèle */}
-      <section className="section-padding bg-foreground text-background">
+      <section className="section-padding bg-foreground">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-semibold mb-6 text-background">
               Notre modèle opérationnel
             </h2>
             <p className="text-background/70 text-lg">
@@ -254,12 +254,12 @@ export default function Investissement() {
               {modelSteps.map((step) => (
                 <div
                   key={step.number}
-                  className="relative bg-background/8 border border-background/15 rounded-2xl p-8"
+                  className="relative bg-background/8 border border-background/15 rounded-xl p-8"
                 >
-                  <span className="text-5xl font-bold text-primary/40 absolute top-6 right-8">
+                  <span className="text-5xl font-heading font-bold text-primary/40 absolute top-6 right-8">
                     {step.number}
                   </span>
-                  <h3 className="text-2xl font-semibold mb-4">{step.title}</h3>
+                  <h3 className="text-2xl font-heading font-semibold mb-4 text-background">{step.title}</h3>
                   <p className="text-background/70 leading-relaxed">
                     {step.description}
                   </p>
@@ -286,10 +286,10 @@ export default function Investissement() {
             {investorProfiles.map((profile) => (
               <div
                 key={profile.title}
-                className="bg-background border border-border rounded-2xl p-8 hover:shadow-card transition-shadow duration-300"
+                className="bg-card border border-border rounded-xl p-8 hover:shadow-card transition-shadow duration-500"
               >
-                <div className="w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center mb-6">
-                  <profile.icon className="w-7 h-7 text-foreground" />
+                <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-6">
+                  <profile.icon className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{profile.title}</h3>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
@@ -310,7 +310,7 @@ export default function Investissement() {
       </section>
 
       {/* Profil type d'opération */}
-      <section className="section-padding bg-secondary">
+      <section className="section-padding bg-card">
         <div className="container">
           <div className="max-w-3xl mx-auto">
             <h2 className="section-title mb-6 text-center">
@@ -321,7 +321,7 @@ export default function Investissement() {
               caractéristiques de chaque projet.
             </p>
 
-            <div className="bg-background rounded-2xl border border-border overflow-hidden">
+            <div className="bg-background rounded-xl border border-border overflow-hidden">
               {operationProfile.map((item, index) => (
                 <div
                   key={item.label}
@@ -351,7 +351,7 @@ export default function Investissement() {
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-semibold mb-4">
+            <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4">
               Échangeons sur vos objectifs
             </h2>
             <p className="text-lg text-muted-foreground mb-10 leading-relaxed">

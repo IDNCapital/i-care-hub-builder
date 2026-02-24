@@ -25,20 +25,25 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link to="/" className="text-2xl font-bold">
-              I-CA.RE
+            <Link to="/" className="inline-block">
+              <span className="text-2xl font-heading font-bold tracking-tight">
+                <span className="text-primary">I-</span>
+                <span className="text-background">CA</span>
+                <span className="text-primary">.</span>
+                <span className="text-background">RE</span>
+              </span>
             </Link>
-            <p className="mt-4 text-background/70 text-sm leading-relaxed">
-              Rendre la santé accessible, moderne et proche de chacun.
+            <p className="mt-2 text-background/60 text-sm font-heading italic">
+              Des lieux de soin, pensés comme des lieux de vie
             </p>
-            <p className="mt-6 text-background/50 text-xs">
+            <p className="mt-6 text-background/40 text-xs">
               © {new Date().getFullYear()} I-CA.RE. Tous droits réservés.
             </p>
           </div>
 
           {/* Navigation */}
           <div>
-            <h3 className="font-semibold text-sm uppercase tracking-wider mb-4">
+            <h3 className="font-sans font-bold text-xs uppercase tracking-[0.1em] text-background/50 mb-4">
               Navigation
             </h3>
             <ul className="space-y-3">
@@ -46,7 +51,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-background/70 hover:text-background transition-colors text-sm"
+                    className="text-background/70 hover:text-background transition-colors duration-300 text-sm"
                   >
                     {link.name}
                   </Link>
@@ -57,7 +62,7 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="font-semibold text-sm uppercase tracking-wider mb-4">
+            <h3 className="font-sans font-bold text-xs uppercase tracking-[0.1em] text-background/50 mb-4">
               Entreprise
             </h3>
             <ul className="space-y-3">
@@ -65,7 +70,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-background/70 hover:text-background transition-colors text-sm"
+                    className="text-background/70 hover:text-background transition-colors duration-300 text-sm"
                   >
                     {link.name}
                   </Link>
@@ -76,26 +81,28 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-sm uppercase tracking-wider mb-4">
+            <h3 className="font-sans font-bold text-xs uppercase tracking-[0.1em] text-background/50 mb-4">
               Contact
             </h3>
             <div className="space-y-3 text-sm text-background/70">
               <p>Bordeaux, France</p>
               <a
                 href="mailto:contact@i-care.fr"
-                className="block hover:text-background transition-colors"
+                className="block hover:text-background transition-colors duration-300"
               >
                 contact@i-care.fr
               </a>
             </div>
             <div className="mt-6">
-              <h4 className="font-medium text-sm mb-2">Légal</h4>
+              <h4 className="font-sans font-bold text-xs uppercase tracking-[0.1em] text-background/40 mb-2">
+                Légal
+              </h4>
               <ul className="space-y-2">
                 {footerLinks.legal.map((link) => (
                   <li key={link.name}>
                     <Link
                       to={link.href}
-                      className="text-background/50 hover:text-background/70 transition-colors text-xs"
+                      className="text-background/40 hover:text-background/70 transition-colors duration-300 text-xs"
                     >
                       {link.name}
                     </Link>
