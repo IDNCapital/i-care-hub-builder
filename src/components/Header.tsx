@@ -4,13 +4,12 @@ import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const navigation = [
-  { name: "Notre Vision", href: "/vision" },
-  { name: "Professionnels de Santé", href: "/professionnels" },
-  { name: "Nos Projets", href: "/projets" },
-  { name: "Collectivités", href: "/collectivites" },
-  { name: "Investisseurs", href: "/investisseurs" },
-  { name: "Notre Méthode", href: "/methode" },
-  { name: "À Propos", href: "/a-propos" },
+  { name: "Accueil", href: "/" },
+  { name: "Projets", href: "/projets" },
+  { name: "Professionnels de santé", href: "/professionnels" },
+  { name: "Investissement", href: "/investissement" },
+  { name: "Notre approche", href: "/notre-approche" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export function Header() {
@@ -60,9 +59,6 @@ export function Header() {
           </div>
 
           <div className="hidden lg:flex items-center space-x-3">
-            <Button variant="ghost" asChild>
-              <Link to="/contact">Contact</Link>
-            </Button>
             <Button asChild>
               <Link to="/professionnels#candidature">Rejoindre I-CA.RE</Link>
             </Button>
@@ -96,11 +92,6 @@ export function Header() {
                 </Link>
               ))}
               <div className="pt-4 flex flex-col space-y-2">
-                <Button variant="outline" asChild>
-                  <Link to="/contact" onClick={() => setIsOpen(false)}>
-                    Contact
-                  </Link>
-                </Button>
                 <Button asChild>
                   <Link to="/professionnels#candidature" onClick={() => setIsOpen(false)}>
                     Rejoindre I-CA.RE

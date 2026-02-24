@@ -2,15 +2,13 @@ import { Link } from "react-router-dom";
 
 const footerLinks = {
   navigation: [
-    { name: "Notre Vision", href: "/vision" },
-    { name: "Professionnels de Santé", href: "/professionnels" },
-    { name: "Nos Projets", href: "/projets" },
-    { name: "Collectivités", href: "/collectivites" },
-    { name: "Investisseurs", href: "/investisseurs" },
+    { name: "Accueil", href: "/" },
+    { name: "Projets", href: "/projets" },
+    { name: "Professionnels de santé", href: "/professionnels" },
+    { name: "Investissement", href: "/investissement" },
   ],
   company: [
-    { name: "Notre Méthode", href: "/methode" },
-    { name: "À Propos", href: "/a-propos" },
+    { name: "Notre approche", href: "/notre-approche" },
     { name: "Contact", href: "/contact" },
   ],
   legal: [

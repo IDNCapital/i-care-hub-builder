@@ -2,16 +2,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
-import Vision from "./pages/Vision";
 import Professionnels from "./pages/Professionnels";
 import Projets from "./pages/Projets";
-import Collectivites from "./pages/Collectivites";
-import Investisseurs from "./pages/Investisseurs";
-import Methode from "./pages/Methode";
-import APropos from "./pages/APropos";
+import Investissement from "./pages/Investissement";
+import NotreApproche from "./pages/NotreApproche";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
@@ -37,14 +34,17 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/vision" element={<Vision />} />
-            <Route path="/professionnels" element={<Professionnels />} />
             <Route path="/projets" element={<Projets />} />
-            <Route path="/collectivites" element={<Collectivites />} />
-            <Route path="/investisseurs" element={<Investisseurs />} />
-            <Route path="/methode" element={<Methode />} />
-            <Route path="/a-propos" element={<APropos />} />
+            <Route path="/professionnels" element={<Professionnels />} />
+            <Route path="/investissement" element={<Investissement />} />
+            <Route path="/notre-approche" element={<NotreApproche />} />
             <Route path="/contact" element={<Contact />} />
+            {/* Redirects for old URLs */}
+            <Route path="/vision" element={<Navigate to="/notre-approche" replace />} />
+            <Route path="/a-propos" element={<Navigate to="/notre-approche" replace />} />
+            <Route path="/collectivites" element={<Navigate to="/notre-approche#collectivites" replace />} />
+            <Route path="/investisseurs" element={<Navigate to="/investissement" replace />} />
+            <Route path="/methode" element={<Navigate to="/notre-approche" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
