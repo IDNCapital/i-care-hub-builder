@@ -3,22 +3,66 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
-  ArrowRight,
-  TrendingUp,
-  Shield,
-  Users2,
-  Building2,
-  CheckCircle2,
   FileText,
   Phone,
-  BarChart3,
+  CheckCircle2,
   Landmark,
   Briefcase,
   UserCheck,
 } from "lucide-react";
 import heroBuilding from "@/assets/hero-building.jpg";
 
-const healthcaseDrivers = [
+const financialModel = [
+  { label: "Surface type", value: "180 m² (RDC)" },
+  { label: "Acquisition", value: "500 000 €" },
+  { label: "Travaux + ingénierie", value: "200 000 €" },
+  { label: "Investissement total", value: "700 000 €" },
+  { label: "Dette bancaire (60 %)", value: "420 000 €" },
+  { label: "Apport investisseur (40 %)", value: "280 000 €" },
+];
+
+const revenueModel = [
+  { label: "Loyer moyen par cabinet", value: "700 € / mois" },
+  { label: "Nombre de cabinets", value: "9" },
+  { label: "Loyers bruts annuels", value: "75 600 €" },
+  { label: "Net après vacance et charges", value: "~70 000 € / an" },
+  { label: "Cash-flow net après dette", value: "~40 000 € / an" },
+];
+
+const exitScenario = [
+  { label: "Horizon de sortie cible", value: "4 ans" },
+  { label: "Valeur de sortie estimée", value: "800 000 – 900 000 €" },
+  { label: "TRI investisseur net cible", value: "15 – 18 %" },
+];
+
+const waterfallSteps = [
+  {
+    number: "01",
+    title: "Remboursement intégral du capital",
+    description:
+      "L'investisseur récupère 100 % de son apport initial avant toute distribution de plus-value.",
+  },
+  {
+    number: "02",
+    title: "Rendement préférentiel (hurdle 6 %)",
+    description:
+      "L'investisseur perçoit un rendement prioritaire de 6 % annualisé sur son capital investi, avant tout partage avec le sponsor.",
+  },
+  {
+    number: "03",
+    title: "Partage 80 / 20 jusqu'à 15 % de TRI",
+    description:
+      "Au-delà du hurdle, les profits sont répartis à 80 % pour l'investisseur et 20 % pour le sponsor, jusqu'à atteindre un TRI de 15 %.",
+  },
+  {
+    number: "04",
+    title: "Super promote au-delà de 15 %",
+    description:
+      "Au-delà de 15 % de TRI, les profits excédentaires sont partagés 50 / 50 entre l'investisseur et le sponsor.",
+  },
+];
+
+const healthcareDrivers = [
   {
     title: "Démographie structurelle",
     description:
@@ -41,39 +85,12 @@ const healthcaseDrivers = [
   },
 ];
 
-const modelSteps = [
-  {
-    number: "01",
-    title: "Acquisition",
-    description:
-      "Identification et sécurisation d'actifs immobiliers à fort potentiel dans des zones en tension médicale. Audit technique, juridique et réglementaire approfondi.",
-  },
-  {
-    number: "02",
-    title: "Transformation",
-    description:
-      "Réhabilitation architecturale avec nos partenaires spécialisés. Conception d'espaces conformes aux normes sanitaires, ergonomiques et accessibles.",
-  },
-  {
-    number: "03",
-    title: "Mise en exploitation",
-    description:
-      "Commercialisation ciblée auprès des professionnels de santé. Constitution d'une offre pluridisciplinaire équilibrée adaptée au bassin de population.",
-  },
-  {
-    number: "04",
-    title: "Stabilisation",
-    description:
-      "Gestion locative et technique sur le long terme. Maintenance préventive, animation du collectif de praticiens et optimisation continue de la valeur d'usage.",
-  },
-];
-
 const investorProfiles = [
   {
     icon: Landmark,
     title: "Family offices",
     description:
-      "Recherche de diversification patrimoniale dans un actif tangible à impact sociétal mesurable. Horizon long terme, revenus récurrents.",
+      "Diversification patrimoniale dans un actif tangible à impact sociétal mesurable. Horizon moyen terme, revenus récurrents.",
     features: [
       "Actif tangible et résilient",
       "Revenus locatifs stables",
@@ -86,7 +103,7 @@ const investorProfiles = [
     description:
       "Accès à une classe d'actifs habituellement réservée aux institutionnels. Ticket d'entrée adapté et accompagnement dédié.",
     features: [
-      "Ticket accessible dès 500K€",
+      "Ticket à partir de 280 K€",
       "Reporting transparent",
       "Accompagnement personnalisé",
     ],
@@ -104,14 +121,26 @@ const investorProfiles = [
   },
 ];
 
-const operationProfile = [
-  { label: "Ticket d'investissement", value: "500K€ – 3M€" },
-  { label: "Rendement locatif cible", value: "6 – 8 % brut" },
-  { label: "Durée moyenne des baux", value: "6 – 9 ans" },
-  { label: "Horizon de détention", value: "7 – 10 ans" },
-  { label: "Taille des actifs", value: "400 – 2 000 m²" },
-  { label: "Géographie", value: "Nouvelle-Aquitaine, Occitanie" },
-];
+function DataTable({ title, rows }: { title: string; rows: { label: string; value: string }[] }) {
+  return (
+    <div>
+      <h3 className="text-lg font-heading font-semibold mb-4">{title}</h3>
+      <div className="bg-background rounded-xl border border-border overflow-hidden">
+        {rows.map((item, index) => (
+          <div
+            key={item.label}
+            className={`flex justify-between items-center px-6 py-4 ${
+              index < rows.length - 1 ? "border-b border-border" : ""
+            }`}
+          >
+            <span className="text-muted-foreground text-sm">{item.label}</span>
+            <span className="font-semibold text-foreground">{item.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Investissement() {
   return (
@@ -120,7 +149,7 @@ export default function Investissement() {
         <title>Investissement immobilier de santé — I-CA.RE</title>
         <meta
           name="description"
-          content="Investissez dans l'immobilier de santé nouvelle génération : actifs résilients, rendement locatif 6-8 %, vacance inférieure à 3 %. Découvrez le modèle I-CA.RE."
+          content="Investissez dans l'immobilier de santé de proximité : TRI cible 15-18 %, structure de waterfall alignée, dette senior 60 %. Découvrez le modèle I-CA.RE."
         />
       </Helmet>
 
@@ -129,7 +158,7 @@ export default function Investissement() {
         <div className="absolute inset-0">
           <img
             src={heroBuilding}
-            alt="Immeuble de santé I-CA.RE en cours de rénovation à Bordeaux"
+            alt="Immeuble de santé I-CA.RE en cours de rénovation"
             className="w-full h-full object-cover"
             loading="eager"
           />
@@ -142,10 +171,10 @@ export default function Investissement() {
               Investissement immobilier de santé
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-background leading-tight mb-6 opacity-0 animate-fade-up stagger-1">
-              Investir dans l'immobilier de santé nouvelle génération
+              Un modèle d'investissement clair, aligné et discipliné
             </h1>
             <p className="text-xl md:text-2xl text-background/70 leading-relaxed mb-10 opacity-0 animate-fade-up stagger-2">
-              Des actifs sécurisés, durables et à forte valeur d'usage.
+              Immobilier de santé de proximité. TRI cible 15–18 %. Structure waterfall avec hurdle 6 %.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-up stagger-3">
               <Button
@@ -155,7 +184,7 @@ export default function Investissement() {
               >
                 <Link to="/contact">
                   <FileText className="mr-2 h-5 w-5" />
-                  Télécharger la note d'investissement
+                  Recevoir la note d'investissement
                 </Link>
               </Button>
               <Button
@@ -178,10 +207,10 @@ export default function Investissement() {
         <div className="container">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { value: "<3%", label: "vacance locative" },
-              { value: "6–9 ans", label: "durée moyenne des baux" },
-              { value: "3", label: "opérations en portefeuille" },
-              { value: "1 850 m²", label: "de surfaces gérées" },
+              { value: "280 K€", label: "ticket investisseur" },
+              { value: "15–18 %", label: "TRI net cible" },
+              { value: "6 %", label: "hurdle préférentiel" },
+              { value: "4 ans", label: "horizon de sortie" },
             ].map((metric) => (
               <div key={metric.label} className="text-center">
                 <p className="text-2xl md:text-3xl font-heading font-bold text-foreground">
@@ -212,7 +241,7 @@ export default function Investissement() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            {healthcaseDrivers.map((driver, index) => (
+            {healthcareDrivers.map((driver, index) => (
               <div
                 key={driver.title}
                 className="bg-card rounded-xl p-8 border border-border"
@@ -236,22 +265,45 @@ export default function Investissement() {
         </div>
       </section>
 
-      {/* Notre modèle */}
+      {/* Modèle financier */}
+      <section className="section-padding bg-card">
+        <div className="container">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="section-title mb-6 text-center">
+              Modèle financier type
+            </h2>
+            <p className="text-muted-foreground text-center mb-12">
+              Opération type : 180 m² en rez-de-chaussée, 9 cabinets, financement mixte dette/equity.
+            </p>
+
+            <div className="space-y-8">
+              <DataTable title="Structure d'investissement" rows={financialModel} />
+              <DataTable title="Revenus locatifs" rows={revenueModel} />
+              <DataTable title="Scénario de sortie" rows={exitScenario} />
+            </div>
+
+            <p className="text-xs text-muted-foreground mt-6 text-center">
+              Données indicatives basées sur une opération type. Les performances passées ne préjugent pas des performances futures. Chaque opération fait l'objet d'un mémorandum dédié.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Waterfall */}
       <section className="section-padding bg-foreground">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-semibold mb-6 text-background">
-              Notre modèle opérationnel
+              Structure de distribution (waterfall)
             </h2>
             <p className="text-background/70 text-lg">
-              Une chaîne de valeur intégrée, de l'acquisition à la gestion long
-              terme.
+              Un mécanisme d'alignement des intérêts entre investisseur et sponsor, avec priorité au remboursement du capital.
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8">
-              {modelSteps.map((step) => (
+              {waterfallSteps.map((step) => (
                 <div
                   key={step.number}
                   className="relative bg-background/8 border border-background/15 rounded-xl p-8"
@@ -259,7 +311,9 @@ export default function Investissement() {
                   <span className="text-5xl font-heading font-bold text-primary/40 absolute top-6 right-8">
                     {step.number}
                   </span>
-                  <h3 className="text-2xl font-heading font-semibold mb-4 text-background">{step.title}</h3>
+                  <h3 className="text-xl font-heading font-semibold mb-4 text-background pr-16">
+                    {step.title}
+                  </h3>
                   <p className="text-background/70 leading-relaxed">
                     {step.description}
                   </p>
@@ -309,60 +363,22 @@ export default function Investissement() {
         </div>
       </section>
 
-      {/* Profil type d'opération */}
-      <section className="section-padding bg-card">
-        <div className="container">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="section-title mb-6 text-center">
-              Profil type d'une opération
-            </h2>
-            <p className="text-muted-foreground text-center mb-12">
-              Paramètres indicatifs, susceptibles de varier selon les
-              caractéristiques de chaque projet.
-            </p>
-
-            <div className="bg-background rounded-xl border border-border overflow-hidden">
-              {operationProfile.map((item, index) => (
-                <div
-                  key={item.label}
-                  className={`flex justify-between items-center px-8 py-5 ${
-                    index < operationProfile.length - 1
-                      ? "border-b border-border"
-                      : ""
-                  }`}
-                >
-                  <span className="text-muted-foreground">{item.label}</span>
-                  <span className="font-semibold text-foreground">
-                    {item.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-xs text-muted-foreground mt-4 text-center">
-              Les performances passées ne préjugent pas des performances futures.
-              Ces données sont fournies à titre indicatif.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
-      <section className="section-padding">
+      <section className="section-padding bg-card">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4">
               Échangeons sur vos objectifs
             </h2>
             <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
-              Recevez notre note d'investissement détaillée ou planifiez un
+              Recevez notre mémorandum d'investissement détaillé ou planifiez un
               entretien confidentiel avec notre équipe.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>
                 <Link to="/contact">
                   <FileText className="mr-2 h-5 w-5" />
-                  Télécharger la note d'investissement
+                  Recevoir le mémorandum
                 </Link>
               </Button>
               <Button variant="hero-outline" asChild>
