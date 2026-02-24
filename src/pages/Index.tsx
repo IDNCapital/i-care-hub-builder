@@ -19,23 +19,23 @@ import medicalOffice from "@/assets/medical-office.jpg";
 import healthcareProfessional from "@/assets/healthcare-professional.jpg";
 
 const services = [
-  { icon: Building2, title: "Rénovation & Modernisation", description: "Transformation de bâtiments existants en espaces de santé modernes et fonctionnels." },
-  { icon: Users, title: "Conception Centrée Usagers", description: "Des espaces pensés pour le confort des praticiens et le bien-être des patients." },
-  { icon: Home, title: "Mise à Disposition de Cabinets", description: "Locaux clés en main, prêts à exercer, dans des emplacements stratégiques." },
-  { icon: Sparkles, title: "Gestion Intégrée Long Terme", description: "Maintenance, services et accompagnement pour vous concentrer sur votre métier." },
+  { icon: Building2, title: "Acquisition & Requalification", description: "Nous identifions des rez-de-chaussée urbains sous-valorisés — commerces vacants, locaux obsolètes — et les transformons en espaces de santé performants." },
+  { icon: Users, title: "Conception Centrée Usagers", description: "Chaque espace est conçu pour la confidentialité, la performance acoustique et le confort des praticiens comme des patients." },
+  { icon: Home, title: "Cabinets Clés en Main", description: "7 à 10 cabinets par actif, prêts à exercer, dans des emplacements de proximité au cœur des quartiers." },
+  { icon: Sparkles, title: "Stabilisation & Gestion", description: "Remplissage locatif en 24 à 36 mois, gestion intégrée long terme, puis cession après 4 ans." },
 ];
 
 const benefits = [
-  { icon: Building2, title: "Cabinets Modernes & Ergonomiques", description: "Espaces pensés pour votre pratique quotidienne." },
+  { icon: Building2, title: "150–200 m² optimisés", description: "Surfaces de rez-de-chaussée pensées pour la santé et le bien-être." },
   { icon: Accessibility, title: "Accessibilité PMR", description: "Conformité totale aux normes d'accessibilité." },
-  { icon: MapPin, title: "Emplacements Stratégiques", description: "Au cœur des quartiers, proches des habitants." },
-  { icon: BadgeEuro, title: "Encadrement des Loyers", description: "Tarifs maîtrisés pour une installation sereine." },
+  { icon: MapPin, title: "Emplacements de Proximité", description: "Au cœur des quartiers, proches des habitants." },
+  { icon: BadgeEuro, title: "Loyers Maîtrisés", description: "Tarifs encadrés pour une installation sereine." },
 ];
 
 const projects = [
-  { name: "Floirac", location: "Gironde", status: "En cours", progress: 65, description: "Centre de santé pluridisciplinaire de 800m²" },
-  { name: "Bordeaux Bastide", location: "Gironde", status: "Livré", progress: 100, description: "Réhabilitation d'un immeuble historique" },
-  { name: "Toulouse Saint-Cyprien", location: "Haute-Garonne", status: "Études", progress: 25, description: "Pôle paramédical de proximité" },
+  { name: "Floirac", location: "Gironde", status: "En cours", progress: 65, description: "Requalification d'un local commercial en pôle santé de 180 m²" },
+  { name: "Bordeaux Bastide", location: "Gironde", status: "Livré", progress: 100, description: "Transformation d'un rez-de-chaussée en 9 cabinets de santé" },
+  { name: "Toulouse Saint-Cyprien", location: "Haute-Garonne", status: "Études", progress: 25, description: "Conversion d'un local vacant en espace paramédical de proximité" },
 ];
 
 const impacts = [
@@ -49,24 +49,24 @@ export default function Index() {
     <Layout>
       <Helmet>
         <title>I-CA.RE — Rénovation de lieux de santé | Cabinets médicaux clé en main</title>
-        <meta name="description" content="I-CA.RE rénove et modernise des lieux de santé : cabinets médicaux clé en main, conformes et lumineux à Bordeaux et Toulouse. Rejoignez un lieu de soin pensé pour durer." />
+        <meta name="description" content="I-CA.RE transforme des rez-de-chaussée urbains en espaces de santé et de bien-être : 150–200 m², 7 à 10 cabinets, confidentialité et confort acoustique. Bordeaux et Toulouse." />
       </Helmet>
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20">
         <div className="absolute inset-0">
-          <img src={heroBuilding} alt="Façade d'un centre de santé I-CA.RE rénové à Bordeaux" className="w-full h-full object-cover" loading="eager" />
+          <img src={heroBuilding} alt="Façade d'un espace de santé I-CA.RE rénové en rez-de-chaussée" className="w-full h-full object-cover" loading="eager" />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/30" />
         </div>
 
         <div className="container relative z-10 py-20">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-foreground leading-tight mb-6 opacity-0 animate-fade-up">
-              Nous rénovons et transformons des lieux de santé
+              Nous transformons des rez-de-chaussée urbains en espaces de santé et de bien-être
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-4 opacity-0 animate-fade-up stagger-1">
-              Pour offrir aux professionnels un cadre de travail exemplaire et aux habitants un accès facilité à des soins de qualité.
+              150 à 200 m² conçus pour la confidentialité, la performance acoustique et le confort. 7 à 10 cabinets par actif, au cœur des quartiers.
             </p>
 
             <p className="text-base text-muted-foreground/70 font-heading italic mb-10 opacity-0 animate-fade-up stagger-2">
@@ -96,7 +96,7 @@ export default function Index() {
           <div className="text-center mb-16">
             <h2 className="section-title">Ce que nous faisons</h2>
             <p className="section-subtitle mx-auto">
-              Une approche globale pour créer des lieux de santé modernes, accessibles et durables.
+              Nous acquérons des locaux sous-valorisés, les requalifions en espaces de santé, les stabilisons en 24 à 36 mois, puis les cédons après 4 ans.
             </p>
           </div>
 
@@ -121,7 +121,7 @@ export default function Index() {
             <div>
               <h2 className="section-title mb-6">Pourquoi les professionnels choisissent I-CA.RE</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Des espaces conçus avec et pour les professionnels de santé. Chaque détail est pensé pour faciliter votre quotidien.
+                Des espaces de 150 à 200 m² pensés avec et pour les praticiens. Chaque détail — acoustique, confidentialité, ergonomie — est conçu pour faciliter votre exercice quotidien.
               </p>
 
               <div className="grid sm:grid-cols-2 gap-6">
@@ -154,8 +154,8 @@ export default function Index() {
                     <Heart className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="font-semibold text-sm">+50 praticiens</p>
-                    <p className="text-xs text-muted-foreground">nous font confiance</p>
+                    <p className="font-semibold text-sm">7–10 cabinets</p>
+                    <p className="text-xs text-muted-foreground">par actif transformé</p>
                   </div>
                 </div>
               </div>
@@ -170,10 +170,10 @@ export default function Index() {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
             <div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-semibold mb-4 text-background">
-                Nos projets en cours
+                Nos opérations
               </h2>
               <p className="text-background/60 text-lg max-w-xl">
-                Des transformations concrètes au service des territoires et de la santé de proximité.
+                Des transformations granulaires, locales et maîtrisées — au service de la santé de proximité.
               </p>
             </div>
             <Button variant="outline" className="mt-6 md:mt-0 border-background/20 text-background hover:bg-background hover:text-foreground" asChild>
@@ -211,9 +211,9 @@ export default function Index() {
             </div>
 
             <div className="order-1 lg:order-2">
-              <h2 className="section-title mb-6">Notre impact sociétal</h2>
+              <h2 className="section-title mb-6">Notre impact local</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Face à la désertification médicale, nous agissons concrètement. Chaque projet I-CA.RE contribue à rapprocher les soins des habitants.
+                Face à la désertification médicale, nous agissons à l'échelle du quartier. Chaque opération I-CA.RE requalifie un local vacant et rapproche les soins des habitants.
               </p>
 
               <div className="grid grid-cols-3 gap-6 mb-8">
@@ -226,7 +226,7 @@ export default function Index() {
               </div>
 
               <div className="space-y-3">
-                {["Lutte contre les déserts médicaux", "Revalorisation du patrimoine bâti", "Développement territorial durable"].map((item) => (
+                {["Requalification de locaux vacants en espaces de santé", "Revalorisation du patrimoine bâti de proximité", "Développement territorial durable et entrepreneurial"].map((item) => (
                   <div key={item} className="flex items-center gap-3">
                     <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
                     <span className="text-sm font-medium">{item}</span>
@@ -250,10 +250,10 @@ export default function Index() {
         <div className="container">
           <div className="cta-section text-center">
             <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4">
-              Prêt à rejoindre un cabinet I-CA.RE ?
+              Prêt à exercer dans un espace I-CA.RE ?
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              Exercez dans des locaux modernes, au cœur des quartiers, avec un accompagnement dédié.
+              Intégrez un cabinet clé en main, au cœur d'un quartier, dans un espace conçu pour votre pratique.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>
