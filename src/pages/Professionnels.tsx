@@ -177,15 +177,15 @@ export default function Professionnels() {
             className="w-full h-full object-cover"
             loading="eager"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/30" />
         </div>
 
         <div className="container relative z-10 py-20">
           <div className="max-w-2xl">
-            <span className="inline-block px-4 py-1.5 bg-primary/20 text-foreground text-sm font-medium rounded-full mb-6 opacity-0 animate-fade-up">
+            <span className="inline-block px-4 py-1.5 bg-primary/15 text-primary text-xs font-bold uppercase tracking-[0.1em] rounded-full mb-6 opacity-0 animate-fade-up">
               Pour les professionnels de santé
             </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 opacity-0 animate-fade-up stagger-1">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6 opacity-0 animate-fade-up stagger-1">
               Installez votre activité dans un lieu de soin pensé pour durer
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-10 opacity-0 animate-fade-up stagger-2">
@@ -208,27 +208,27 @@ export default function Professionnels() {
       </section>
 
       {/* Social Proof Bar */}
-      <section className="py-6 bg-foreground text-background">
+      <section className="py-6 bg-foreground">
         <div className="container">
           <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-center">
             <div>
-              <span className="text-3xl font-bold text-primary">+50</span>
-              <p className="text-sm text-background/70">praticiens installés</p>
+              <span className="text-2xl font-heading font-bold text-primary">+50</span>
+              <p className="text-xs text-background/60">praticiens installés</p>
             </div>
-            <div className="w-px h-10 bg-background/20 hidden sm:block" />
+            <div className="w-px h-8 bg-background/15 hidden sm:block" />
             <div>
-              <span className="text-3xl font-bold text-primary">3</span>
-              <p className="text-sm text-background/70">centres opérationnels</p>
+              <span className="text-2xl font-heading font-bold text-primary">3</span>
+              <p className="text-xs text-background/60">centres opérationnels</p>
             </div>
-            <div className="w-px h-10 bg-background/20 hidden sm:block" />
+            <div className="w-px h-8 bg-background/15 hidden sm:block" />
             <div>
-              <span className="text-3xl font-bold text-primary">98%</span>
-              <p className="text-sm text-background/70">taux de satisfaction</p>
+              <span className="text-2xl font-heading font-bold text-primary">98%</span>
+              <p className="text-xs text-background/60">taux de satisfaction</p>
             </div>
-            <div className="w-px h-10 bg-background/20 hidden sm:block" />
+            <div className="w-px h-8 bg-background/15 hidden sm:block" />
             <div>
-              <span className="text-3xl font-bold text-primary">48h</span>
-              <p className="text-sm text-background/70">délai de réponse</p>
+              <span className="text-2xl font-heading font-bold text-primary">48h</span>
+              <p className="text-xs text-background/60">délai de réponse</p>
             </div>
           </div>
         </div>
@@ -252,10 +252,10 @@ export default function Professionnels() {
                 key={pillar.title}
                 className="card-premium group hover:shadow-elevated transition-all duration-300"
               >
-                <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary/30 transition-colors">
-                  <pillar.icon className="w-8 h-8 text-foreground" />
+                <div className="w-14 h-14 rounded-xl bg-primary/15 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                  <pillar.icon className="w-7 h-7 text-primary" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">{pillar.title}</h3>
+                <h3 className="text-xl font-heading font-semibold mb-4">{pillar.title}</h3>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
                   {pillar.description}
                 </p>
@@ -274,7 +274,7 @@ export default function Professionnels() {
       </section>
 
       {/* Process Timeline */}
-      <section className="section-padding bg-secondary">
+      <section className="section-padding bg-muted/50">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="section-title">
@@ -292,7 +292,7 @@ export default function Professionnels() {
 
               {processSteps.map((step) => (
                 <div key={step.number} className="relative text-center">
-                  <div className="w-[104px] h-[104px] rounded-full bg-background border-4 border-primary flex flex-col items-center justify-center mx-auto mb-6 relative z-10">
+                  <div className="w-24 h-24 rounded-full bg-card border-2 border-primary flex flex-col items-center justify-center mx-auto mb-6 relative z-10">
                     <step.icon className="w-8 h-8 text-primary mb-1" />
                     <span className="text-xs font-bold text-primary">
                       {step.number}
@@ -323,15 +323,12 @@ export default function Professionnels() {
             {testimonials.map((testimonial) => (
               <div
                 key={testimonial.name}
-                className="bg-secondary rounded-3xl p-8 relative"
+                className="bg-card rounded-xl p-8 relative shadow-card"
               >
-                <Quote className="w-10 h-10 text-primary/30 absolute top-6 right-6" />
+                <Quote className="w-8 h-8 text-accent/50 absolute top-6 right-6" />
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 fill-primary text-primary"
-                    />
+                    <Star key={i} className="w-3.5 h-3.5 fill-accent text-accent" />
                   ))}
                 </div>
                 <blockquote className="text-foreground leading-relaxed mb-6">
@@ -350,11 +347,11 @@ export default function Professionnels() {
       </section>
 
       {/* Segmented Form */}
-      <section id="candidature" className="section-padding bg-foreground text-background">
+      <section id="candidature" className="section-padding bg-foreground">
         <div className="container">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-semibold mb-4">
+              <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4 text-background">
                 Trouvez votre futur cabinet
               </h2>
               <p className="text-background/70 text-lg">
@@ -375,7 +372,7 @@ export default function Professionnels() {
                   onChange={(e) =>
                     setFormData({ ...formData, profession: e.target.value })
                   }
-                  className="w-full h-12 px-4 rounded-xl border border-background/20 bg-background/10 text-background text-base"
+                  className="w-full h-12 px-4 rounded-lg border border-background/20 bg-background/10 text-background text-sm"
                   required
                 >
                   <option value="">Sélectionnez votre profession</option>
@@ -408,7 +405,7 @@ export default function Professionnels() {
                     setFormData({ ...formData, ville: e.target.value })
                   }
                   placeholder="Ex : Bordeaux, Toulouse, Floirac…"
-                  className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40"
+                  className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg"
                   required
                   maxLength={100}
                 />
@@ -429,7 +426,7 @@ export default function Professionnels() {
                         dateInstallation: e.target.value,
                       })
                     }
-                    className="w-full h-12 px-4 rounded-xl border border-background/20 bg-background/10 text-background text-base"
+                    className="w-full h-12 px-4 rounded-lg border border-background/20 bg-background/10 text-background text-sm"
                   >
                     <option value="">Sélectionnez</option>
                     <option value="immediat">Dès que possible</option>
@@ -451,7 +448,7 @@ export default function Professionnels() {
                     onChange={(e) =>
                       setFormData({ ...formData, surface: e.target.value })
                     }
-                    className="w-full h-12 px-4 rounded-xl border border-background/20 bg-background/10 text-background text-base"
+                    className="w-full h-12 px-4 rounded-lg border border-background/20 bg-background/10 text-background text-sm"
                   >
                     <option value="">Sélectionnez</option>
                     <option value="15-20">15 – 20 m²</option>
@@ -476,7 +473,7 @@ export default function Professionnels() {
                   }
                   placeholder="Précisez vos besoins : équipements, contraintes, questions…"
                   rows={4}
-                  className="bg-background/10 border-background/20 text-background placeholder:text-background/40"
+                  className="bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg"
                   maxLength={1000}
                 />
               </div>
@@ -510,7 +507,7 @@ export default function Professionnels() {
               <Button
                 type="submit"
                 variant="hero"
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-14 text-base"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-14 text-sm"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Envoi en cours…" : "Envoyer ma demande"}
@@ -530,7 +527,7 @@ export default function Professionnels() {
       <section className="section-padding">
         <div className="container">
           <div className="cta-section text-center">
-            <h2 className="text-3xl md:text-4xl font-semibold mb-4">
+            <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4">
               Prêt à exercer dans un cadre d'exception ?
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">

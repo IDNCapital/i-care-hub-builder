@@ -12,6 +12,19 @@ const navigation = [
   { name: "Contact", href: "/contact" },
 ];
 
+function Logo() {
+  return (
+    <div className="flex flex-col items-start">
+      <span className="text-2xl font-heading font-bold tracking-tight leading-none">
+        <span className="text-primary">I-</span>
+        <span className="text-foreground">CA</span>
+        <span className="text-primary">.</span>
+        <span className="text-foreground">RE</span>
+      </span>
+    </div>
+  );
+}
+
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,7 +40,7 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
           ? "bg-background/95 backdrop-blur-md shadow-soft"
           : "bg-transparent"
@@ -35,10 +48,8 @@ export function Header() {
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-foreground tracking-tight">
-              I-CA.RE
-            </span>
+          <Link to="/" className="flex items-center">
+            <Logo />
           </Link>
 
           {/* Desktop Navigation */}
@@ -47,10 +58,10 @@ export function Header() {
               <Link
                 key={item.name}
                 to={item.href}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${
                   location.pathname === item.href
-                    ? "text-foreground bg-secondary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                    ? "text-foreground bg-muted"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 }`}
               >
                 {item.name}
@@ -66,7 +77,7 @@ export function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="lg:hidden p-2 rounded-lg hover:bg-secondary"
+            className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -83,8 +94,8 @@ export function Header() {
                   to={item.href}
                   className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                     location.pathname === item.href
-                      ? "text-foreground bg-secondary"
-                      : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                      ? "text-foreground bg-muted"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                   }`}
                   onClick={() => setIsOpen(false)}
                 >

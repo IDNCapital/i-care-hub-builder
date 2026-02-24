@@ -5,26 +5,26 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-bold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 uppercase tracking-[0.07em] font-sans",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:-translate-y-0.5",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border-2 border-foreground/20 bg-transparent text-foreground hover:bg-foreground hover:text-background",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-secondary hover:text-foreground",
+        default: "bg-primary text-primary-foreground rounded-lg hover:bg-primary/90",
+        destructive: "bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90",
+        outline: "border border-foreground bg-transparent text-foreground rounded-lg hover:bg-foreground/5",
+        secondary: "bg-secondary text-secondary-foreground rounded-lg hover:bg-muted",
+        ghost: "hover:bg-muted hover:text-foreground rounded-lg",
         link: "text-foreground underline-offset-4 hover:underline",
-        hero: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-xl hover:-translate-y-1 text-base px-8 py-6 rounded-2xl font-semibold",
-        "hero-outline": "border-2 border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background text-base px-8 py-6 rounded-2xl font-semibold",
-        accent: "bg-foreground text-background hover:bg-foreground/90 hover:shadow-lg hover:-translate-y-0.5",
-        soft: "bg-beige text-foreground hover:bg-beige/80",
+        hero: "bg-primary text-primary-foreground hover:bg-primary/90 text-sm px-8 py-4 rounded-lg",
+        "hero-outline": "border border-foreground bg-transparent text-foreground hover:bg-foreground/5 text-sm px-8 py-4 rounded-lg",
+        accent: "bg-foreground text-background rounded-lg hover:bg-foreground/90",
+        soft: "bg-muted text-foreground rounded-lg hover:bg-muted/80",
       },
       size: {
-        default: "h-11 px-6 py-2",
-        sm: "h-9 rounded-lg px-4",
-        lg: "h-14 rounded-2xl px-10 text-base",
-        xl: "h-16 rounded-2xl px-12 text-lg",
+        default: "h-11 px-6 py-3.5",
+        sm: "h-9 rounded-lg px-4 text-xs",
+        lg: "h-14 rounded-lg px-10 text-sm",
+        xl: "h-16 rounded-lg px-12 text-base",
         icon: "h-10 w-10",
       },
     },
