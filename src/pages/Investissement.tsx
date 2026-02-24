@@ -265,6 +265,62 @@ export default function Investissement() {
         </div>
       </section>
 
+      {/* Analyse de profondeur de marché */}
+      <section className="section-padding bg-card">
+        <div className="container">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="section-title mb-6 text-center">
+              Analyse de profondeur de marché
+            </h2>
+            <p className="text-muted-foreground text-center mb-12">
+              La demande de locaux de santé et de bien-être repose sur des données démographiques vérifiables et une dynamique de marché structurelle.
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-10">
+              <div className="bg-background rounded-xl border border-border p-6">
+                <p className="text-3xl font-heading font-bold text-foreground mb-1">77 000</p>
+                <p className="text-sm text-muted-foreground mb-4">psychologues en exercice en France</p>
+                <div className="space-y-3 border-t border-border pt-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Occitanie</span>
+                    <span className="font-semibold text-foreground">117,6 / 100 000 hab.</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Nouvelle-Aquitaine</span>
+                    <span className="font-semibold text-foreground">108,6 / 100 000 hab.</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-4">Source : DREES 2024</p>
+              </div>
+
+              <div className="bg-background rounded-xl border border-border p-6">
+                <p className="text-3xl font-heading font-bold text-foreground mb-1">53 Md€</p>
+                <p className="text-sm text-muted-foreground mb-4">marché français du bien-être</p>
+                <div className="border-t border-border pt-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Croissance annuelle</span>
+                    <span className="font-semibold text-foreground">+7 % / an</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-4">Marché en expansion structurelle, alimentant la demande de locaux adaptés.</p>
+              </div>
+            </div>
+
+            <div className="bg-background rounded-xl border border-border p-8 text-center">
+              <p className="text-lg text-muted-foreground mb-4">
+                Un actif I-CA.RE nécessite <span className="font-semibold text-foreground">7 à 10 praticiens</span> pour atteindre son remplissage cible.
+              </p>
+              <p className="text-lg text-muted-foreground mb-6">
+                Sur un bassin de 100 000 habitants, la profondeur de marché représente <span className="text-2xl font-heading font-bold text-primary">20 à 30×</span> nos besoins.
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Ratio calculé sur la base des densités régionales de psychologues et praticiens du bien-être. Chaque opération fait l'objet d'une étude de marché locale dédiée.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Modèle financier */}
       <section className="section-padding bg-card">
         <div className="container">
