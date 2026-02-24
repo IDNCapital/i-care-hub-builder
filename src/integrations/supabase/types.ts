@@ -81,9 +81,12 @@ export type Database = {
           id: string
           image_gallery: string[] | null
           key_features: string[] | null
+          key_features_en: string[] | null
           long_description: string | null
+          long_description_en: string | null
           name: string
           short_description: string
+          short_description_en: string | null
           show_address: boolean
           slug: string
           status: Database["public"]["Enums"]["project_status"]
@@ -101,9 +104,12 @@ export type Database = {
           id?: string
           image_gallery?: string[] | null
           key_features?: string[] | null
+          key_features_en?: string[] | null
           long_description?: string | null
+          long_description_en?: string | null
           name: string
           short_description: string
+          short_description_en?: string | null
           show_address?: boolean
           slug: string
           status?: Database["public"]["Enums"]["project_status"]
@@ -121,9 +127,12 @@ export type Database = {
           id?: string
           image_gallery?: string[] | null
           key_features?: string[] | null
+          key_features_en?: string[] | null
           long_description?: string | null
+          long_description_en?: string | null
           name?: string
           short_description?: string
+          short_description_en?: string | null
           show_address?: boolean
           slug?: string
           status?: Database["public"]["Enums"]["project_status"]

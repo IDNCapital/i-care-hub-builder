@@ -1,0 +1,170 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "professionals": "Health Professionals",
+    "investment": "Investment",
+    "approach": "Our Approach",
+    "contact": "Contact",
+    "joinCta": "Join I-CA.RE"
+  },
+  "lang": {
+    "fr": "FR",
+    "en": "EN"
+  },
+  "routes": {
+    "home": "",
+    "projects": "projects",
+    "projectDetail": "projects",
+    "professionals": "health-professionals",
+    "investment": "investment",
+    "investmentInterest": "investment/interest",
+    "investmentMemo": "investment/memo",
+    "approach": "our-approach",
+    "contact": "contact",
+    "legal": "legal",
+    "privacy": "privacy",
+    "cookies": "cookies"
+  },
+  "home": {
+    "heroTitle": "We transform urban ground floors into healthcare and well-being spaces",
+    "heroSubtitle": "150 to 200 sqm designed for confidentiality, acoustic performance and comfort. 7 to 10 offices per asset, in the heart of neighbourhoods.",
+    "baseline": "Des lieux de soin, pensés comme des lieux de vie",
+    "ctaProfessionals": "Health Professionals",
+    "ctaApproach": "Discover Our Approach",
+    "whatWeDo": "What We Do",
+    "whatWeDoSubtitle": "We acquire undervalued retail spaces, requalify them into healthcare facilities, stabilise them within 24 to 36 months, then sell after 4 years.",
+    "whyChoose": "Why Practitioners Choose I-CA.RE",
+    "whyChooseDesc": "150 to 200 sqm spaces designed with and for practitioners. Every detail — acoustics, confidentiality, ergonomics — is crafted to support your daily practice.",
+    "allBenefits": "Discover All Benefits",
+    "officesPerAsset": "offices per transformed asset",
+    "ourOperations": "Our Operations",
+    "ourOperationsDesc": "Granular, local and controlled transformations — serving community healthcare.",
+    "viewAllProjects": "View All Projects",
+    "localImpact": "Our Local Impact",
+    "localImpactDesc": "Facing medical desertification, we act at neighbourhood level. Each I-CA.RE operation requalifies a vacant space and brings care closer to residents.",
+    "readyToJoin": "Ready to practise in an I-CA.RE space?",
+    "readyToJoinDesc": "Join a turnkey office, in the heart of a neighbourhood, in a space designed for your practice.",
+    "applyNow": "Submit My Application",
+    "contactUs": "Contact Us",
+    "discover": "Discover"
+  },
+  "investment": {
+    "heroTag": "Healthcare Real Estate Investment",
+    "heroTitle": "Invest in Community Healthcare",
+    "heroSubtitle": "Tangible real estate assets with strong use value, driven by structural demand.",
+    "ctaMemo": "Request the Investment Memo",
+    "ctaCall": "Schedule a Confidential Call",
+    "concept": "The I-CA.RE Concept",
+    "conceptP1": "I-CA.RE acquires undervalued urban ground floors (150 to 200 sqm) and transforms them into next-generation healthcare and well-being spaces.",
+    "conceptP2": "Each asset hosts 7 to 10 independent offices (12–18 sqm), designed for confidentiality, acoustic performance and comfort. The granular multi-tenant structure structurally reduces vacancy risk.",
+    "surfacePerAsset": "per asset (ground floor)",
+    "officesPerOp": "offices per operation",
+    "perOffice": "per office",
+    "stabilisation": "stabilisation period",
+    "executionModel": "Execution Model",
+    "executionModelDesc": "An integrated value chain, from acquisition to exit.",
+    "forInvestors": "For Investors",
+    "forInvestorsP1": "I-CA.RE structures healthcare real estate operations with an entrepreneurial sponsor-led model. The investor contributes 100% of equity; I-CA.RE contributes 100% of the industry: development, engineering, construction, leasing, asset management and exit strategy.",
+    "forInvestorsP2": "Our investment memo details the financial model, distribution structure (waterfall), governance and roadmap.",
+    "accessNote": "Confidential access after submitting a short form. No commitment required.",
+    "partners": "Are You a Partner?",
+    "partnersDesc": "Banks, estate agents, landlords: we are looking for partners aligned with our model.",
+    "exchangeTitle": "Let's Discuss Your Objectives",
+    "exchangeDesc": "Receive our detailed investment memo or schedule a confidential meeting with our team.",
+    "confidential": "Confidentiality guaranteed. No commitment."
+  },
+  "interestForm": {
+    "back": "Back to Investment Page",
+    "title": "Express Your Interest",
+    "subtitle": "Complete this short form to access our investment memo and detailed information on the I-CA.RE model.",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "phoneHint": "(recommended)",
+    "profile": "Profile",
+    "selectProfile": "Select your profile",
+    "ticket": "Anticipated Ticket",
+    "selectTicket": "Select an amount",
+    "area": "City / Area of Interest",
+    "areaHint": "(optional)",
+    "areaPlaceholder": "e.g. Bordeaux, Toulouse, Bayonne…",
+    "message": "Message",
+    "messageHint": "(optional)",
+    "messagePlaceholder": "Tell us about your project or questions…",
+    "consent": "I agree to be contacted by I-CA.RE and for my data to be processed in accordance with the",
+    "privacyLink": "Privacy Policy",
+    "rgpdNotice": "Purpose: follow-up and delivery of the investment memo. Your data is retained for 3 years from last contact. You have the right to access, rectify and delete your data by writing to contact@i-ca.re.",
+    "submit": "Access the Investment Memo",
+    "submitting": "Submitting…",
+    "errorConsent": "Please accept the privacy policy.",
+    "errorRequired": "Please fill in all required fields.",
+    "errorEmail": "Please enter a valid email address.",
+    "errorGeneric": "An error occurred. Please try again or contact us directly.",
+    "successNew": "Your request has been registered. Welcome to the investor area.",
+    "successExisting": "You have already expressed your interest. Access to the memo granted.",
+    "profileOptions": {
+      "family_office": "Family Office",
+      "investisseur_prive": "Private Investor",
+      "cgp": "Wealth Manager / IFA",
+      "banque": "Bank / Credit Institution",
+      "autre": "Other"
+    },
+    "ticketOptions": {
+      "<100k": "Under €100,000",
+      "100-250k": "€100,000 – €250,000",
+      "250-500k": "€250,000 – €500,000",
+      "500k-1M": "€500,000 – €1,000,000",
+      ">1M": "Over €1,000,000"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "A question, a project, an application? Get in touch."
+  },
+  "footer": {
+    "baseline": "Des lieux de soin, pensés comme des lieux de vie",
+    "navigation": "Navigation",
+    "legal": "Legal Notice",
+    "privacy": "Privacy",
+    "cookies": "Cookies",
+    "rights": "All rights reserved."
+  },
+  "cookies": {
+    "message": "This site uses cookies to improve your experience.",
+    "accept": "Accept",
+    "reject": "Reject",
+    "more": "Learn More"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "This page does not exist or has been moved.",
+    "back": "Back to Home"
+  },
+  "common": {
+    "discover": "Discover",
+    "learnMore": "Learn More",
+    "allProjects": "All Projects"
+  },
+  "services": {
+    "acquisition": "Acquisition & Requalification",
+    "acquisitionDesc": "We identify undervalued urban ground floors — vacant shops, obsolete premises — and transform them into high-performing healthcare spaces.",
+    "design": "User-Centred Design",
+    "designDesc": "Each space is designed for confidentiality, acoustic performance and comfort for practitioners and patients alike.",
+    "turnkey": "Turnkey Offices",
+    "turnkeyDesc": "7 to 10 offices per asset, ready to practise, in neighbourhood locations at the heart of communities.",
+    "management": "Stabilisation & Management",
+    "managementDesc": "Leasing within 24 to 36 months, integrated long-term management, then sale after 4 years."
+  },
+  "impacts": {
+    "deserts": "of French people affected by medical deserts",
+    "noDoctor": "people without a GP in France",
+    "retirement": "of GPs retiring by 2030"
+  },
+  "impactActions": {
+    "requalification": "Requalification of vacant spaces into healthcare facilities",
+    "heritage": "Revitalisation of local built heritage",
+    "territorial": "Sustainable and entrepreneurial territorial development"
+  }
+}

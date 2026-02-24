@@ -2,15 +2,8 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
-
-const navigation = [
-  { name: "Accueil", href: "/" },
-  { name: "Projets", href: "/projets" },
-  { name: "Professionnels de santé", href: "/professionnels" },
-  { name: "Investissement", href: "/investissement" },
-  { name: "Notre approche", href: "/notre-approche" },
-  { name: "Contact", href: "/contact" },
-];
+import { useTranslation } from "react-i18next";
+import { getEquivalentPath, localePath } from "@/lib/routes";
 
 function Logo() {
   return (
@@ -29,6 +22,21 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { t, i18n } = useTranslation();
+
+  const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
+  const otherLang = lang === "fr" ? "en" : "fr";
+
+  const navigation = [
+    { name: t("nav.home"), href: localePath(lang, "home") },
+    { name: t("nav.projects"), href: localePath(lang, "projects") },
+    { name: t("nav.professionals"), href: localePath(lang, "professionals") },
+    { name: t("nav.investment"), href: localePath(lang, "investment") },
+    { name: t("nav.approach"), href: localePath(lang, "approach") },
+    { name: t("nav.contact"), href: localePath(lang, "contact") },
+  ];
+
+  const switchPath = getEquivalentPath(location.pathname, otherLang);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +45,13 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const isActive = (href: string) => {
+    if (href === localePath(lang, "home")) {
+      return location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
+    }
+    return location.pathname.startsWith(href);
+  };
 
   return (
     <header
@@ -48,7 +63,7 @@ export function Header() {
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center">
+          <Link to={localePath(lang, "home")} className="flex items-center">
             <Logo />
           </Link>
 
@@ -59,7 +74,7 @@ export function Header() {
                 key={item.name}
                 to={item.href}
                 className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${
-                  location.pathname === item.href
+                  isActive(item.href)
                     ? "text-foreground bg-muted"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 }`}
@@ -70,8 +85,21 @@ export function Header() {
           </div>
 
           <div className="hidden lg:flex items-center space-x-3">
+            {/* Language Switch */}
+            <Link
+              to={switchPath}
+              onClick={() => i18n.changeLanguage(otherLang)}
+              className="px-3 py-1.5 text-xs font-bold uppercase tracking-[0.05em] text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <span className={lang === "fr" ? "text-foreground" : "text-muted-foreground"}>FR</span>
+              <span className="mx-1 text-border">|</span>
+              <span className={lang === "en" ? "text-foreground" : "text-muted-foreground"}>EN</span>
+            </Link>
+
             <Button asChild>
-              <Link to="/professionnels#candidature">Rejoindre I-CA.RE</Link>
+              <Link to={`${localePath(lang, "professionals")}#candidature`}>
+                {t("nav.joinCta")}
+              </Link>
             </Button>
           </div>
 
@@ -93,7 +121,7 @@ export function Header() {
                   key={item.name}
                   to={item.href}
                   className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
-                    location.pathname === item.href
+                    isActive(item.href)
                       ? "text-foreground bg-muted"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                   }`}
@@ -102,10 +130,26 @@ export function Header() {
                   {item.name}
                 </Link>
               ))}
+
+              {/* Mobile Language Switch */}
+              <Link
+                to={switchPath}
+                onClick={() => {
+                  i18n.changeLanguage(otherLang);
+                  setIsOpen(false);
+                }}
+                className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                {lang === "fr" ? "🇬🇧 English" : "🇫🇷 Français"}
+              </Link>
+
               <div className="pt-4 flex flex-col space-y-2">
                 <Button asChild>
-                  <Link to="/professionnels#candidature" onClick={() => setIsOpen(false)}>
-                    Rejoindre I-CA.RE
+                  <Link
+                    to={`${localePath(lang, "professionals")}#candidature`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {t("nav.joinCta")}
                   </Link>
                 </Button>
               </div>
