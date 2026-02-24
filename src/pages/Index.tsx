@@ -138,7 +138,7 @@ export default function Index() {
                 </Link>
               </Button>
               <Button variant="hero-outline" asChild>
-                <Link to="/collectivites">
+                <Link to="/notre-approche">
                   Collectivités & Investisseurs — Collaborer
                 </Link>
               </Button>
@@ -325,8 +325,8 @@ export default function Index() {
               </div>
 
               <Button className="mt-8" asChild>
-                <Link to="/vision">
-                  Découvrir notre vision
+                <Link to="/notre-approche">
+                  Découvrir notre approche
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

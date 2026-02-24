@@ -36,26 +36,10 @@ const advantages = [
 ];
 
 const process = [
-  {
-    step: "01",
-    title: "Sourcing & Analyse",
-    description: "Identification d'opportunités à fort potentiel dans des zones en tension médicale. Due diligence approfondie.",
-  },
-  {
-    step: "02",
-    title: "Structuration",
-    description: "Montage juridique et financier adapté. Possibilité d'investissement en direct ou via des véhicules dédiés.",
-  },
-  {
-    step: "03",
-    title: "Réalisation",
-    description: "Pilotage des travaux de réhabilitation avec des partenaires de confiance. Suivi qualité et délais.",
-  },
-  {
-    step: "04",
-    title: "Exploitation",
-    description: "Commercialisation auprès des professionnels de santé. Gestion locative et technique sur le long terme.",
-  },
+  { step: "01", title: "Sourcing & Analyse", description: "Identification d'opportunités à fort potentiel dans des zones en tension médicale. Due diligence approfondie." },
+  { step: "02", title: "Structuration", description: "Montage juridique et financier adapté. Possibilité d'investissement en direct ou via des véhicules dédiés." },
+  { step: "03", title: "Réalisation", description: "Pilotage des travaux de réhabilitation avec des partenaires de confiance. Suivi qualité et délais." },
+  { step: "04", title: "Exploitation", description: "Commercialisation auprès des professionnels de santé. Gestion locative et technique sur le long terme." },
 ];
 
 const keyFigures = [
@@ -65,11 +49,11 @@ const keyFigures = [
   { value: "<3%", label: "taux de vacance historique" },
 ];
 
-export default function Investisseurs() {
+export default function Investissement() {
   return (
     <Layout>
       <Helmet>
-        <title>Investisseurs — I-CA.RE</title>
+        <title>Investissement — I-CA.RE</title>
         <meta name="description" content="Investissez dans l'immobilier de santé avec I-CA.RE. Un secteur résilient, des rendements stables, un impact sociétal concret." />
       </Helmet>
 
@@ -78,7 +62,7 @@ export default function Investisseurs() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <span className="text-primary font-medium mb-4 block">Pour les investisseurs</span>
+              <span className="text-primary font-medium mb-4 block">Investissement</span>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 opacity-0 animate-fade-up">
                 Investissez dans l'immobilier de santé
               </h1>
@@ -93,11 +77,7 @@ export default function Investisseurs() {
               </Button>
             </div>
             <div>
-              <img
-                src={heroBuilding}
-                alt="Immeuble de santé I-CA.RE"
-                className="rounded-3xl shadow-elevated w-full"
-              />
+              <img src={heroBuilding} alt="Immeuble de santé I-CA.RE" className="rounded-3xl shadow-elevated w-full" />
             </div>
           </div>
         </div>
