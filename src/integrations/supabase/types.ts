@@ -14,6 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
+      investor_leads: {
+        Row: {
+          area_interest: string | null
+          consent: boolean
+          consent_at: string | null
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_contacted_at: string | null
+          last_name: string
+          message: string | null
+          notes_internal: string | null
+          phone: string | null
+          profile_type: string
+          source_page: string
+          status: Database["public"]["Enums"]["investor_lead_status"]
+          ticket_range: string
+        }
+        Insert: {
+          area_interest?: string | null
+          consent?: boolean
+          consent_at?: string | null
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_contacted_at?: string | null
+          last_name: string
+          message?: string | null
+          notes_internal?: string | null
+          phone?: string | null
+          profile_type: string
+          source_page?: string
+          status?: Database["public"]["Enums"]["investor_lead_status"]
+          ticket_range: string
+        }
+        Update: {
+          area_interest?: string | null
+          consent?: boolean
+          consent_at?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_contacted_at?: string | null
+          last_name?: string
+          message?: string | null
+          notes_internal?: string | null
+          phone?: string | null
+          profile_type?: string
+          source_page?: string
+          status?: Database["public"]["Enums"]["investor_lead_status"]
+          ticket_range?: string
+        }
+        Relationships: []
+      }
       projets: {
         Row: {
           address: string | null
@@ -85,6 +142,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      investor_lead_status: "new" | "contacted" | "qualified" | "not_interested"
       project_status: "en_exploitation" | "en_travaux" | "a_venir"
       project_typology:
         | "cabinet_medical"
@@ -219,6 +277,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      investor_lead_status: ["new", "contacted", "qualified", "not_interested"],
       project_status: ["en_exploitation", "en_travaux", "a_venir"],
       project_typology: [
         "cabinet_medical",
