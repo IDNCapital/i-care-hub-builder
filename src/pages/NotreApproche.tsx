@@ -120,8 +120,8 @@ export default function NotreApproche() {
   return (
     <Layout>
       <Helmet>
-        <title>Notre Approche — I-CA.RE</title>
-        <meta name="description" content="Découvrez la vision, la méthode et l'engagement sociétal d'I-CA.RE : rendre la santé accessible, moderne et proche de chacun." />
+        <title>Notre Approche — Vision et méthode I-CA.RE</title>
+        <meta name="description" content="Vision, méthode en 6 étapes et engagement sociétal d'I-CA.RE : rénovation de lieux de santé, lutte contre les déserts médicaux en Nouvelle-Aquitaine et Occitanie." />
       </Helmet>
 
       {/* Hero */}
@@ -149,7 +149,7 @@ export default function NotreApproche() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <img src={healthcareProfessional} alt="Équipe I-CA.RE" className="rounded-3xl shadow-elevated w-full" />
+              <img src={healthcareProfessional} alt="Fondateur d'I-CA.RE présentant la vision de l'entreprise" className="rounded-3xl shadow-elevated w-full" loading="lazy" />
             </div>
             <div>
               <div className="flex items-center gap-4 mb-6">
@@ -247,7 +247,7 @@ export default function NotreApproche() {
               </p>
             </div>
             <div>
-              <img src={renovationBeforeAfter} alt="Avant/après rénovation I-CA.RE" className="rounded-3xl shadow-elevated w-full" />
+              <img src={renovationBeforeAfter} alt="Transformation avant-après d'un local en centre de santé par I-CA.RE" className="rounded-3xl shadow-elevated w-full" loading="lazy" />
             </div>
           </div>
 
@@ -350,7 +350,7 @@ export default function NotreApproche() {
               </Button>
             </div>
             <div>
-              <img src={neighborhood} alt="Quartier avec services de santé" className="rounded-3xl shadow-elevated w-full" />
+              <img src={neighborhood} alt="Quartier résidentiel bénéficiant d'un centre de santé I-CA.RE" className="rounded-3xl shadow-elevated w-full" loading="lazy" />
             </div>
           </div>
 

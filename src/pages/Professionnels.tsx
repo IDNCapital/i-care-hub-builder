@@ -171,8 +171,9 @@ export default function Professionnels() {
         <div className="absolute inset-0">
           <img
             src={medicalOffice}
-            alt="Cabinet médical moderne I-CA.RE"
+            alt="Cabinet médical lumineux et moderne aménagé par I-CA.RE"
             className="w-full h-full object-cover"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/40" />
         </div>

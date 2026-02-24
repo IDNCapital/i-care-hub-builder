@@ -72,8 +72,9 @@ export default function ProjetDetail() {
       <section className="relative h-[60vh] min-h-[400px]">
         <img
           src={project.hero_image_url || heroBuilding}
-          alt={project.name}
+          alt={`Vue principale du projet ${project.name} — centre de santé à ${project.city}`}
           className="w-full h-full object-cover"
+          loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 pb-12">
@@ -167,8 +168,9 @@ export default function ProjetDetail() {
                       <img
                         key={i}
                         src={url}
-                        alt={`${project.name} - vue ${i + 1}`}
+                        alt={`${project.name} — vue intérieure ${i + 1} du centre de santé`}
                         className="rounded-2xl w-full h-48 object-cover"
+                        loading="lazy"
                       />
                     ))}
                   </div>

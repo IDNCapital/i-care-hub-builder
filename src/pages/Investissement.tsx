@@ -117,10 +117,10 @@ export default function Investissement() {
   return (
     <Layout>
       <Helmet>
-        <title>Investissement — I-CA.RE</title>
+        <title>Investissement immobilier de santé — I-CA.RE</title>
         <meta
           name="description"
-          content="Investir dans l'immobilier de santé nouvelle génération. Des actifs sécurisés, durables et à forte valeur d'usage. Découvrez le modèle I-CA.RE."
+          content="Investissez dans l'immobilier de santé nouvelle génération : actifs résilients, rendement locatif 6-8 %, vacance inférieure à 3 %. Découvrez le modèle I-CA.RE."
         />
       </Helmet>
 
@@ -129,8 +129,9 @@ export default function Investissement() {
         <div className="absolute inset-0">
           <img
             src={heroBuilding}
-            alt="Immeuble de santé I-CA.RE"
+            alt="Immeuble de santé I-CA.RE en cours de rénovation à Bordeaux"
             className="w-full h-full object-cover"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/75 to-foreground/40" />
         </div>

@@ -1,6 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
   Building2,
   Heart,
@@ -96,13 +97,19 @@ const impacts = [
 export default function Index() {
   return (
     <Layout>
+      <Helmet>
+        <title>I-CA.RE — Rénovation de lieux de santé | Cabinets médicaux clé en main</title>
+        <meta name="description" content="I-CA.RE rénove et modernise des lieux de santé : cabinets médicaux clé en main, conformes et lumineux à Bordeaux et Toulouse. Rejoignez un lieu de soin pensé pour durer." />
+      </Helmet>
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20">
         <div className="absolute inset-0">
           <img
             src={heroBuilding}
-            alt="Centre de santé I-CA.RE"
+            alt="Façade d'un centre de santé I-CA.RE rénové à Bordeaux"
             className="w-full h-full object-cover"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/40" />
         </div>
@@ -215,8 +222,9 @@ export default function Index() {
             <div className="relative">
               <img
                 src={medicalOffice}
-                alt="Cabinet médical moderne I-CA.RE"
+                alt="Intérieur lumineux d'un cabinet médical I-CA.RE avec mobilier ergonomique"
                 className="rounded-3xl shadow-elevated w-full"
+                loading="lazy"
               />
               <div className="absolute -bottom-6 -left-6 bg-background rounded-2xl p-6 shadow-card">
                 <div className="flex items-center gap-3">
@@ -289,8 +297,9 @@ export default function Index() {
             <div className="order-2 lg:order-1">
               <img
                 src={healthcareProfessional}
-                alt="Professionnel de santé dans un cabinet I-CA.RE"
+                alt="Professionnelle de santé accueillant un patient dans un cabinet I-CA.RE"
                 className="rounded-3xl shadow-elevated w-full"
+                loading="lazy"
               />
             </div>
 
