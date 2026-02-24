@@ -1,0 +1,170 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "projects": "Projets",
+    "professionals": "Professionnels de santé",
+    "investment": "Investissement",
+    "approach": "Notre approche",
+    "contact": "Contact",
+    "joinCta": "Rejoindre I-CA.RE"
+  },
+  "lang": {
+    "fr": "FR",
+    "en": "EN"
+  },
+  "routes": {
+    "home": "",
+    "projects": "projets",
+    "projectDetail": "projets",
+    "professionals": "professionnels",
+    "investment": "investissement",
+    "investmentInterest": "investissement/interet",
+    "investmentMemo": "investissement/memo",
+    "approach": "notre-approche",
+    "contact": "contact",
+    "legal": "mentions-legales",
+    "privacy": "confidentialite",
+    "cookies": "cookies"
+  },
+  "home": {
+    "heroTitle": "Nous transformons des rez-de-chaussée urbains en espaces de santé et de bien-être",
+    "heroSubtitle": "150 à 200 m² conçus pour la confidentialité, la performance acoustique et le confort. 7 à 10 cabinets par actif, au cœur des quartiers.",
+    "baseline": "Des lieux de soin, pensés comme des lieux de vie",
+    "ctaProfessionals": "Professionnels de santé",
+    "ctaApproach": "Découvrir notre approche",
+    "whatWeDo": "Ce que nous faisons",
+    "whatWeDoSubtitle": "Nous acquérons des locaux sous-valorisés, les requalifions en espaces de santé, les stabilisons en 24 à 36 mois, puis les cédons après 4 ans.",
+    "whyChoose": "Pourquoi les professionnels choisissent I-CA.RE",
+    "whyChooseDesc": "Des espaces de 150 à 200 m² pensés avec et pour les praticiens. Chaque détail — acoustique, confidentialité, ergonomie — est conçu pour faciliter votre exercice quotidien.",
+    "allBenefits": "Découvrir tous les avantages",
+    "officesPerAsset": "cabinets par actif transformé",
+    "ourOperations": "Nos opérations",
+    "ourOperationsDesc": "Des transformations granulaires, locales et maîtrisées — au service de la santé de proximité.",
+    "viewAllProjects": "Voir tous les projets",
+    "localImpact": "Notre impact local",
+    "localImpactDesc": "Face à la désertification médicale, nous agissons à l'échelle du quartier. Chaque opération I-CA.RE requalifie un local vacant et rapproche les soins des habitants.",
+    "readyToJoin": "Prêt à exercer dans un espace I-CA.RE ?",
+    "readyToJoinDesc": "Intégrez un cabinet clé en main, au cœur d'un quartier, dans un espace conçu pour votre pratique.",
+    "applyNow": "Déposer ma candidature",
+    "contactUs": "Nous contacter",
+    "discover": "Découvrir"
+  },
+  "investment": {
+    "heroTag": "Investissement immobilier de santé",
+    "heroTitle": "Investir dans la santé de proximité",
+    "heroSubtitle": "Des actifs immobiliers tangibles, à forte valeur d'usage, portés par une demande structurelle.",
+    "ctaMemo": "Recevoir la note d'investissement",
+    "ctaCall": "Planifier un échange confidentiel",
+    "concept": "Le concept I-CA.RE",
+    "conceptP1": "I-CA.RE acquiert des rez-de-chaussée urbains sous-valorisés (150 à 200 m²) et les transforme en espaces de santé et de bien-être nouvelle génération.",
+    "conceptP2": "Chaque actif accueille 7 à 10 cabinets indépendants (12–18 m²), conçus pour la confidentialité, la performance acoustique et le confort. La structure multi-locataires granulaire réduit structurellement le risque de vacance.",
+    "surfacePerAsset": "surface par actif (RDC)",
+    "officesPerOp": "cabinets par opération",
+    "perOffice": "par cabinet",
+    "stabilisation": "de stabilisation",
+    "executionModel": "Modèle d'exécution",
+    "executionModelDesc": "Une chaîne de valeur intégrée, de l'acquisition à la cession.",
+    "forInvestors": "Pour les investisseurs",
+    "forInvestorsP1": "I-CA.RE structure des opérations immobilières de santé avec un modèle entrepreneurial sponsor-led. L'investisseur apporte 100 % de l'equity, I-CA.RE apporte 100 % de l'industrie : développement, ingénierie, construction, commercialisation, asset management et stratégie de sortie.",
+    "forInvestorsP2": "Notre note d'investissement détaille le modèle financier, la structure de distribution (waterfall), la gouvernance et la feuille de route.",
+    "accessNote": "Accès confidentiel après dépôt d'un formulaire court. Aucun engagement.",
+    "partners": "Vous êtes un partenaire ?",
+    "partnersDesc": "Banques, agents immobiliers, bailleurs : nous recherchons des partenaires alignés avec notre modèle.",
+    "exchangeTitle": "Échangeons sur vos objectifs",
+    "exchangeDesc": "Recevez notre note d'investissement détaillée ou planifiez un entretien confidentiel avec notre équipe.",
+    "confidential": "Confidentialité garantie. Aucun engagement."
+  },
+  "interestForm": {
+    "back": "Retour à la page Investissement",
+    "title": "Manifester mon intérêt",
+    "subtitle": "Remplissez ce formulaire court pour accéder à notre note d'investissement et aux informations détaillées du modèle I-CA.RE.",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "phoneHint": "(recommandé)",
+    "profile": "Profil",
+    "selectProfile": "Sélectionnez votre profil",
+    "ticket": "Ticket envisagé",
+    "selectTicket": "Sélectionnez un montant",
+    "area": "Ville / zone d'intérêt",
+    "areaHint": "(optionnel)",
+    "areaPlaceholder": "Ex : Bordeaux, Toulouse, Bayonne…",
+    "message": "Message",
+    "messageHint": "(optionnel)",
+    "messagePlaceholder": "Précisez votre projet ou vos questions…",
+    "consent": "J'accepte d'être recontacté par I-CA.RE et que mes données soient traitées conformément à la",
+    "privacyLink": "Politique de confidentialité",
+    "rgpdNotice": "Finalité : recontact et envoi de la note d'investissement. Vos données sont conservées pendant 3 ans à compter de votre dernier contact. Vous disposez d'un droit d'accès, de rectification et de suppression en écrivant à contact@i-ca.re.",
+    "submit": "Accéder à la note d'investissement",
+    "submitting": "Envoi en cours…",
+    "errorConsent": "Veuillez accepter la politique de confidentialité.",
+    "errorRequired": "Veuillez remplir tous les champs obligatoires.",
+    "errorEmail": "Veuillez saisir une adresse email valide.",
+    "errorGeneric": "Une erreur est survenue. Veuillez réessayer ou nous contacter directement.",
+    "successNew": "Votre demande a été enregistrée. Bienvenue dans l'espace investisseurs.",
+    "successExisting": "Vous avez déjà manifesté votre intérêt. Accès au mémorandum accordé.",
+    "profileOptions": {
+      "family_office": "Family office",
+      "investisseur_prive": "Investisseur privé",
+      "cgp": "CGP / Conseiller en gestion de patrimoine",
+      "banque": "Banque / Établissement de crédit",
+      "autre": "Autre"
+    },
+    "ticketOptions": {
+      "<100k": "Moins de 100 000 €",
+      "100-250k": "100 000 – 250 000 €",
+      "250-500k": "250 000 – 500 000 €",
+      "500k-1M": "500 000 – 1 000 000 €",
+      ">1M": "Plus de 1 000 000 €"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Une question, un projet, une candidature ? Contactez-nous."
+  },
+  "footer": {
+    "baseline": "Des lieux de soin, pensés comme des lieux de vie",
+    "navigation": "Navigation",
+    "legal": "Mentions légales",
+    "privacy": "Confidentialité",
+    "cookies": "Cookies",
+    "rights": "Tous droits réservés."
+  },
+  "cookies": {
+    "message": "Ce site utilise des cookies pour améliorer votre expérience.",
+    "accept": "Accepter",
+    "reject": "Refuser",
+    "more": "En savoir plus"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "Cette page n'existe pas ou a été déplacée.",
+    "back": "Retour à l'accueil"
+  },
+  "common": {
+    "discover": "Découvrir",
+    "learnMore": "En savoir plus",
+    "allProjects": "Tous les projets"
+  },
+  "services": {
+    "acquisition": "Acquisition & Requalification",
+    "acquisitionDesc": "Nous identifions des rez-de-chaussée urbains sous-valorisés — commerces vacants, locaux obsolètes — et les transformons en espaces de santé performants.",
+    "design": "Conception Centrée Usagers",
+    "designDesc": "Chaque espace est conçu pour la confidentialité, la performance acoustique et le confort des praticiens comme des patients.",
+    "turnkey": "Cabinets Clés en Main",
+    "turnkeyDesc": "7 à 10 cabinets par actif, prêts à exercer, dans des emplacements de proximité au cœur des quartiers.",
+    "management": "Stabilisation & Gestion",
+    "managementDesc": "Remplissage locatif en 24 à 36 mois, gestion intégrée long terme, puis cession après 4 ans."
+  },
+  "impacts": {
+    "deserts": "des Français concernés par les déserts médicaux",
+    "noDoctor": "de personnes sans médecin traitant en France",
+    "retirement": "de départs en retraite de médecins d'ici 2030"
+  },
+  "impactActions": {
+    "requalification": "Requalification de locaux vacants en espaces de santé",
+    "heritage": "Revalorisation du patrimoine bâti de proximité",
+    "territorial": "Développement territorial durable et entrepreneurial"
+  }
+}

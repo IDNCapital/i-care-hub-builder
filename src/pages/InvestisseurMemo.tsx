@@ -2,6 +2,8 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
+import { localePath } from "@/lib/routes";
 import {
   FileText,
   Phone,
@@ -181,9 +183,11 @@ function DataTable({ title, rows }: { title: string; rows: { label: string; valu
 
 export default function InvestisseurMemo() {
   const hasAccess = useInvestorAccess();
+  const { i18n } = useTranslation();
+  const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
   if (!hasAccess) {
-    return <Navigate to="/investissement/interet" replace />;
+    return <Navigate to={localePath(lang, "investmentInterest")} replace />;
   }
 
   return (
