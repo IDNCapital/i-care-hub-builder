@@ -2,55 +2,48 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowRight, MapPin, CheckCircle2 } from "lucide-react";
-import renovationBeforeAfter from "@/assets/renovation-before-after.jpg";
+import { ArrowRight, MapPin, Building2, Filter } from "lucide-react";
+import { useState, useMemo } from "react";
+import { useProjects, STATUS_LABELS, TYPOLOGY_LABELS } from "@/hooks/useProjects";
 import heroBuilding from "@/assets/hero-building.jpg";
 
-const projects = [
-  {
-    name: "Floirac",
-    location: "Gironde",
-    status: "En cours",
-    progress: 65,
-    surface: "800 m²",
-    professions: ["Médecin généraliste", "Infirmier", "Kiné", "Psychologue"],
-    description: "Centre de santé pluridisciplinaire au cœur d'un quartier en pleine revitalisation. Réhabilitation d'un ancien bâtiment commercial en pôle de santé moderne.",
-    features: ["8 cabinets", "Salle d'attente commune", "Accès PMR", "Parking 15 places"],
-    delivery: "T3 2025",
-    image: heroBuilding,
-  },
-  {
-    name: "Bordeaux Bastide",
-    location: "Gironde",
-    status: "Livré",
-    progress: 100,
-    surface: "450 m²",
-    professions: ["Psychologue", "Orthophoniste", "Diététicien"],
-    description: "Réhabilitation d'un immeuble historique du quartier de la Bastide. Conservation du patrimoine architectural avec mise aux normes modernes.",
-    features: ["5 cabinets", "Espaces communs", "Fibre optique", "Transport à proximité"],
-    delivery: "Disponible",
-    image: renovationBeforeAfter,
-  },
-  {
-    name: "Toulouse Saint-Cyprien",
-    location: "Haute-Garonne",
-    status: "Études",
-    progress: 25,
-    surface: "600 m²",
-    professions: ["Toutes professions"],
-    description: "Pôle paramédical de proximité dans un quartier populaire de Toulouse. Projet en phase d'études, ouvert à toutes les professions de santé.",
-    features: ["6 cabinets prévus", "Terrasse commune", "Parking souterrain"],
-    delivery: "2026",
-    image: heroBuilding,
-  },
-];
-
 export default function Projets() {
+  const { data: projects, isLoading } = useProjects();
+  const [filterCity, setFilterCity] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [filterTypology, setFilterTypology] = useState("");
+
+  const cities = useMemo(() => {
+    if (!projects) return [];
+    return [...new Set(projects.map((p) => p.city))].sort();
+  }, [projects]);
+
+  const filtered = useMemo(() => {
+    if (!projects) return [];
+    return projects.filter((p) => {
+      if (filterCity && p.city !== filterCity) return false;
+      if (filterStatus && p.status !== filterStatus) return false;
+      if (filterTypology && p.typology !== filterTypology) return false;
+      return true;
+    });
+  }, [projects, filterCity, filterStatus, filterTypology]);
+
+  const statusColor = (status: string) => {
+    switch (status) {
+      case "en_exploitation":
+        return "bg-green-500/20 text-green-800";
+      case "en_travaux":
+        return "bg-primary/20 text-foreground";
+      default:
+        return "bg-muted text-muted-foreground";
+    }
+  };
+
   return (
     <Layout>
       <Helmet>
         <title>Nos Projets — I-CA.RE</title>
-        <meta name="description" content="Découvrez les projets de réhabilitation de centres de santé I-CA.RE à Bordeaux, Toulouse et dans toute la Nouvelle-Aquitaine." />
+        <meta name="description" content="Découvrez les projets immobiliers de santé I-CA.RE : centres médicaux, pôles pluridisciplinaires et espaces de coworking santé à Bordeaux, Toulouse et en Nouvelle-Aquitaine." />
       </Helmet>
 
       {/* Hero */}
@@ -61,102 +54,139 @@ export default function Projets() {
               Nos Projets
             </h1>
             <p className="text-xl text-muted-foreground opacity-0 animate-fade-up stagger-1">
-              Des transformations concrètes au service des territoires et de la santé de proximité.
+              Des lieux de santé d'exception, conçus pour les professionnels et les territoires.
             </p>
+            <Button variant="hero" asChild className="mt-8 opacity-0 animate-fade-up stagger-2">
+              <Link to="/contact">
+                Demander une disponibilité
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Projects List */}
+      {/* Filters */}
+      <section className="py-8 border-b border-border">
+        <div className="container">
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Filter className="w-4 h-4" />
+              <span className="text-sm font-medium">Filtrer :</span>
+            </div>
+
+            <select
+              value={filterCity}
+              onChange={(e) => setFilterCity(e.target.value)}
+              className="h-10 px-3 rounded-xl border border-border bg-background text-sm"
+            >
+              <option value="">Toutes les villes</option>
+              {cities.map((city) => (
+                <option key={city} value={city}>{city}</option>
+              ))}
+            </select>
+
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="h-10 px-3 rounded-xl border border-border bg-background text-sm"
+            >
+              <option value="">Tous les statuts</option>
+              {Object.entries(STATUS_LABELS).map(([key, label]) => (
+                <option key={key} value={key}>{label}</option>
+              ))}
+            </select>
+
+            <select
+              value={filterTypology}
+              onChange={(e) => setFilterTypology(e.target.value)}
+              className="h-10 px-3 rounded-xl border border-border bg-background text-sm"
+            >
+              <option value="">Toutes les typologies</option>
+              {Object.entries(TYPOLOGY_LABELS).map(([key, label]) => (
+                <option key={key} value={key}>{label}</option>
+              ))}
+            </select>
+
+            {(filterCity || filterStatus || filterTypology) && (
+              <button
+                onClick={() => { setFilterCity(""); setFilterStatus(""); setFilterTypology(""); }}
+                className="text-sm text-primary hover:underline"
+              >
+                Réinitialiser
+              </button>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Grid */}
       <section className="section-padding">
         <div className="container">
-          <div className="space-y-24">
-            {projects.map((project, index) => (
-              <div key={project.name} className={`grid lg:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? "lg:flex-row-reverse" : ""}`}>
-                <div className={index % 2 === 1 ? "lg:order-2" : ""}>
-                  <div className="relative">
+          {isLoading ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-secondary rounded-3xl h-[480px] animate-pulse" />
+              ))}
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="text-center py-16">
+              <Building2 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <p className="text-lg text-muted-foreground">Aucun projet ne correspond à vos critères.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filtered.map((project) => (
+                <Link
+                  key={project.id}
+                  to={`/projets/${project.slug}`}
+                  className="group bg-background rounded-3xl overflow-hidden shadow-card hover:shadow-elevated transition-all duration-300 hover:-translate-y-1"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
                     <img
-                      src={project.image}
-                      alt={`Projet ${project.name}`}
-                      className="rounded-3xl shadow-elevated w-full"
+                      src={project.hero_image_url || heroBuilding}
+                      alt={project.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4">
-                      <span className={`text-sm font-medium px-4 py-2 rounded-full ${
-                        project.status === "Livré" 
-                          ? "bg-green-500 text-background" 
-                          : project.status === "En cours"
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-foreground text-background"
-                      }`}>
-                        {project.status}
+                      <span className={`text-sm font-medium px-3 py-1.5 rounded-full ${statusColor(project.status)}`}>
+                        {STATUS_LABELS[project.status]}
+                      </span>
+                    </div>
+                    <div className="absolute top-4 right-4">
+                      <span className="text-xs font-medium px-3 py-1.5 rounded-full bg-background/90 text-foreground">
+                        {TYPOLOGY_LABELS[project.typology]}
                       </span>
                     </div>
                   </div>
-                </div>
 
-                <div className={index % 2 === 1 ? "lg:order-1" : ""}>
-                  <div className="flex items-center gap-2 text-muted-foreground mb-4">
-                    <MapPin className="w-4 h-4" />
-                    <span>{project.location}</span>
-                  </div>
-                  
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">{project.name}</h2>
-                  <p className="text-lg text-muted-foreground mb-6">{project.description}</p>
-
-                  <div className="grid sm:grid-cols-2 gap-4 mb-6">
-                    <div className="bg-secondary rounded-xl p-4">
-                      <p className="text-sm text-muted-foreground">Surface</p>
-                      <p className="font-semibold">{project.surface}</p>
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                      <MapPin className="w-4 h-4" />
+                      <span className="text-sm">{project.city}</span>
                     </div>
-                    <div className="bg-secondary rounded-xl p-4">
-                      <p className="text-sm text-muted-foreground">Livraison</p>
-                      <p className="font-semibold">{project.delivery}</p>
-                    </div>
-                  </div>
+                    <h2 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                      {project.name}
+                    </h2>
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                      {project.short_description}
+                    </p>
 
-                  <div className="mb-6">
-                    <p className="text-sm text-muted-foreground mb-2">Professions recherchées :</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.professions.map((prof) => (
-                        <span key={prof} className="px-3 py-1 bg-primary/20 text-foreground text-sm rounded-full">
-                          {prof}
-                        </span>
-                      ))}
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex gap-4">
+                        <span className="text-muted-foreground">{project.surface_m2} m²</span>
+                        <span className="text-muted-foreground">{project.units_count} unités</span>
+                      </div>
+                      <span className="text-primary font-medium flex items-center gap-1">
+                        Découvrir
+                        <ArrowRight className="w-4 h-4" />
+                      </span>
                     </div>
                   </div>
-
-                  <div className="mb-6">
-                    <p className="text-sm text-muted-foreground mb-3">Caractéristiques :</p>
-                    <div className="grid sm:grid-cols-2 gap-2">
-                      {project.features.map((feature) => (
-                        <div key={feature} className="flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-primary" />
-                          <span className="text-sm">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mb-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-muted-foreground">Avancement</span>
-                      <span className="text-sm font-medium">{project.progress}%</span>
-                    </div>
-                    <div className="progress-bar">
-                      <div className="progress-bar-fill" style={{ width: `${project.progress}%` }} />
-                    </div>
-                  </div>
-
-                  <Button asChild>
-                    <Link to="/professionnels#candidature">
-                      Candidater pour ce projet
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
