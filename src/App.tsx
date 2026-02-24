@@ -9,6 +9,8 @@ import Professionnels from "./pages/Professionnels";
 import Projets from "./pages/Projets";
 import ProjetDetail from "./pages/ProjetDetail";
 import Investissement from "./pages/Investissement";
+import InvestisseurInteret from "./pages/InvestisseurInteret";
+import InvestisseurMemo from "./pages/InvestisseurMemo";
 import NotreApproche from "./pages/NotreApproche";
 import Contact from "./pages/Contact";
 import MentionsLegales from "./pages/MentionsLegales";
@@ -50,6 +52,8 @@ const App = () => (
               <Route path="/projets/:slug" element={<ProjetDetail />} />
               <Route path="/professionnels" element={<Professionnels />} />
               <Route path="/investissement" element={<Investissement />} />
+              <Route path="/investissement/interet" element={<InvestisseurInteret />} />
+              <Route path="/investissement/memo" element={<InvestisseurMemo />} />
               <Route path="/notre-approche" element={<NotreApproche />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/mentions-legales" element={<MentionsLegales />} />
