@@ -90,18 +90,18 @@ const investorProfiles = [
     icon: Landmark,
     title: "Family offices",
     description:
-      "Diversification patrimoniale dans un actif tangible à impact sociétal mesurable. Horizon moyen terme, revenus récurrents.",
+      "Diversification patrimoniale dans un actif tangible à impact sociétal mesurable. L'investisseur apporte 100 % de l'equity ; I-CA.RE apporte l'industrie.",
     features: [
-      "Actif tangible et résilient",
+      "100 % de l'equity investisseur",
       "Revenus locatifs stables",
-      "Valorisation patrimoniale",
+      "Gouvernance sponsor-led transparente",
     ],
   },
   {
     icon: Briefcase,
     title: "Investisseurs privés",
     description:
-      "Accès à une classe d'actifs habituellement réservée aux institutionnels. Ticket d'entrée adapté et accompagnement dédié.",
+      "Accès à une classe d'actifs habituellement réservée aux institutionnels. Ticket d'entrée adapté, reporting dédié, structure entrepreneuriale.",
     features: [
       "Ticket à partir de 280 K€",
       "Reporting transparent",
@@ -112,11 +112,44 @@ const investorProfiles = [
     icon: UserCheck,
     title: "Partenaires stratégiques",
     description:
-      "Co-développement de programmes immobiliers de santé. Synergies opérationnelles avec les acteurs de la construction, de l'architecture ou de la gestion d'actifs.",
+      "Co-développement d'opérations immobilières de santé. Synergies opérationnelles avec les acteurs de la construction, de l'architecture ou de la gestion d'actifs.",
     features: [
       "Co-investissement ou club deal",
-      "Mandat de gestion possible",
       "Pipeline de projets qualifiés",
+      "Structure entrepreneuriale, pas institutionnelle",
+    ],
+  },
+];
+
+const governanceRoles = [
+  {
+    role: "Investisseur",
+    contribution: "100 % de l'equity (40 % du total)",
+    details: [
+      "Apport en capital sur chaque opération",
+      "Rendement préférentiel (hurdle 6 %)",
+      "Priorité au remboursement intégral du capital",
+      "Reporting régulier et droit de regard",
+    ],
+  },
+  {
+    role: "I-CA.RE (sponsor)",
+    contribution: "100 % de l'industrie",
+    details: [
+      "Développement et sourcing des actifs",
+      "Ingénierie, conception, pilotage des travaux",
+      "Commercialisation et mise en location",
+      "Asset management et stratégie de sortie",
+    ],
+  },
+  {
+    role: "Dette bancaire",
+    contribution: "≈ 60 % LTV au niveau projet",
+    details: [
+      "Financement senior au niveau de chaque opération",
+      "Pas de recours sur l'investisseur",
+      "Garantie hypothécaire sur l'actif",
+      "Amortissement sur la durée de détention",
     ],
   },
 ];
@@ -345,6 +378,43 @@ export default function Investissement() {
         </div>
       </section>
 
+      {/* Gouvernance & rôles */}
+      <section className="section-padding">
+        <div className="container">
+          <div className="max-w-3xl mx-auto mb-16">
+            <h2 className="section-title mb-6 text-center">
+              Gouvernance et répartition des rôles
+            </h2>
+            <p className="text-muted-foreground text-center mb-4">
+              Une structure entrepreneuriale claire : l'investisseur apporte le capital, I-CA.RE apporte l'industrie. Le sponsor conserve la majorité en gouvernance pour garantir la discipline d'exécution.
+            </p>
+            <p className="text-xs text-muted-foreground text-center">
+              Il ne s'agit pas d'un fonds institutionnel, mais d'opérations entrepreneuriales structurées projet par projet.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {governanceRoles.map((item) => (
+              <div
+                key={item.role}
+                className="bg-card border border-border rounded-xl p-8"
+              >
+                <h3 className="text-xl font-heading font-semibold mb-2">{item.role}</h3>
+                <p className="text-sm font-semibold text-primary mb-5">{item.contribution}</p>
+                <ul className="space-y-3">
+                  {item.details.map((detail) => (
+                    <li key={detail} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Waterfall */}
       <section className="section-padding bg-foreground">
         <div className="container">
@@ -353,7 +423,7 @@ export default function Investissement() {
               Structure de distribution (waterfall)
             </h2>
             <p className="text-background/70 text-lg">
-              Un mécanisme d'alignement des intérêts entre investisseur et sponsor, avec priorité au remboursement du capital.
+              Un mécanisme d'alignement des intérêts entre investisseur et sponsor, avec priorité absolue au remboursement du capital investi.
             </p>
           </div>
 
