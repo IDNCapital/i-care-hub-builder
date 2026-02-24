@@ -145,8 +145,9 @@ export default function Projets() {
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <img
                       src={project.hero_image_url || heroBuilding}
-                      alt={project.name}
+                      alt={`Vue extérieure du projet ${project.name} à ${project.city}`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
                     />
                     <div className="absolute top-4 left-4">
                       <span className={`text-sm font-medium px-3 py-1.5 rounded-full ${statusColor(project.status)}`}>

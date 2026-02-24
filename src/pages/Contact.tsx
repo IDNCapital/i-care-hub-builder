@@ -67,8 +67,8 @@ export default function Contact() {
   return (
     <Layout>
       <Helmet>
-        <title>Contact — I-CA.RE</title>
-        <meta name="description" content="Contactez I-CA.RE pour rejoindre un cabinet, collaborer sur un projet territorial ou découvrir nos opportunités d'investissement." />
+        <title>Contactez-nous — I-CA.RE</title>
+        <meta name="description" content="Contactez I-CA.RE : rejoignez un cabinet médical, proposez un projet territorial ou explorez nos opportunités d'investissement immobilier de santé." />
       </Helmet>
 
       {/* Hero */}
