@@ -11,7 +11,11 @@ import ProjetDetail from "./pages/ProjetDetail";
 import Investissement from "./pages/Investissement";
 import NotreApproche from "./pages/NotreApproche";
 import Contact from "./pages/Contact";
+import MentionsLegales from "./pages/MentionsLegales";
+import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
+import PolitiqueCookies from "./pages/PolitiqueCookies";
 import NotFound from "./pages/NotFound";
+import { CookieBanner } from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +45,9 @@ const App = () => (
             <Route path="/investissement" element={<Investissement />} />
             <Route path="/notre-approche" element={<NotreApproche />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/mentions-legales" element={<MentionsLegales />} />
+            <Route path="/confidentialite" element={<PolitiqueConfidentialite />} />
+            <Route path="/cookies" element={<PolitiqueCookies />} />
             {/* Redirects for old URLs */}
             <Route path="/vision" element={<Navigate to="/notre-approche" replace />} />
             <Route path="/a-propos" element={<Navigate to="/notre-approche" replace />} />
@@ -49,6 +56,7 @@ const App = () => (
             <Route path="/methode" element={<Navigate to="/notre-approche" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <CookieBanner />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
