@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Analytics } from "@/lib/analytics";
 import {
   ArrowRight,
   MapPin,
@@ -53,6 +54,7 @@ export default function Contact() {
       toast.error("Veuillez sélectionner un type de contact");
       return;
     }
+    Analytics.formSubmission("contact_" + selectedType, "/contact");
     toast.success("Votre message a été envoyé avec succès !");
     setFormData({
       nom: "",

@@ -16,8 +16,14 @@ import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import PolitiqueCookies from "./pages/PolitiqueCookies";
 import NotFound from "./pages/NotFound";
 import { CookieBanner } from "./components/CookieBanner";
+import { useAnalytics } from "./hooks/useAnalytics";
 
 const queryClient = new QueryClient();
+
+function AnalyticsProvider({ children }: { children: React.ReactNode }) {
+  useAnalytics();
+  return <>{children}</>;
+}
 
 const App = () => (
   <HelmetProvider>
@@ -37,26 +43,28 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/projets" element={<Projets />} />
-            <Route path="/projets/:slug" element={<ProjetDetail />} />
-            <Route path="/professionnels" element={<Professionnels />} />
-            <Route path="/investissement" element={<Investissement />} />
-            <Route path="/notre-approche" element={<NotreApproche />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/mentions-legales" element={<MentionsLegales />} />
-            <Route path="/confidentialite" element={<PolitiqueConfidentialite />} />
-            <Route path="/cookies" element={<PolitiqueCookies />} />
-            {/* Redirects for old URLs */}
-            <Route path="/vision" element={<Navigate to="/notre-approche" replace />} />
-            <Route path="/a-propos" element={<Navigate to="/notre-approche" replace />} />
-            <Route path="/collectivites" element={<Navigate to="/notre-approche#collectivites" replace />} />
-            <Route path="/investisseurs" element={<Navigate to="/investissement" replace />} />
-            <Route path="/methode" element={<Navigate to="/notre-approche" replace />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <CookieBanner />
+          <AnalyticsProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/projets" element={<Projets />} />
+              <Route path="/projets/:slug" element={<ProjetDetail />} />
+              <Route path="/professionnels" element={<Professionnels />} />
+              <Route path="/investissement" element={<Investissement />} />
+              <Route path="/notre-approche" element={<NotreApproche />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/mentions-legales" element={<MentionsLegales />} />
+              <Route path="/confidentialite" element={<PolitiqueConfidentialite />} />
+              <Route path="/cookies" element={<PolitiqueCookies />} />
+              {/* Redirects for old URLs */}
+              <Route path="/vision" element={<Navigate to="/notre-approche" replace />} />
+              <Route path="/a-propos" element={<Navigate to="/notre-approche" replace />} />
+              <Route path="/collectivites" element={<Navigate to="/notre-approche#collectivites" replace />} />
+              <Route path="/investisseurs" element={<Navigate to="/investissement" replace />} />
+              <Route path="/methode" element={<Navigate to="/notre-approche" replace />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <CookieBanner />
+          </AnalyticsProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

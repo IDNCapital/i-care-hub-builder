@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Analytics } from "@/lib/analytics";
 import {
   ArrowRight,
   Shield,
@@ -139,6 +140,7 @@ export default function Professionnels() {
       return;
     }
     setIsSubmitting(true);
+    Analytics.formSubmission("candidature_professionnel", "/professionnels");
     // Simulate submission
     setTimeout(() => {
       toast.success(
