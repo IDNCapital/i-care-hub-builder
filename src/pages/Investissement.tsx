@@ -450,6 +450,78 @@ export default function Investissement() {
         </div>
       </section>
 
+      {/* Feuille de route */}
+      <section className="section-padding bg-card">
+        <div className="container">
+          <div className="max-w-3xl mx-auto mb-16">
+            <h2 className="section-title mb-6 text-center">
+              Feuille de route 2026–2028
+            </h2>
+            <p className="text-muted-foreground text-center">
+              Un plan de développement progressif, ancré dans les métropoles du Grand Sud-Ouest.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
+            <div className="bg-background rounded-xl border border-border p-8">
+              <span className="text-xs font-bold uppercase tracking-[0.1em] px-3 py-1 rounded-full bg-primary/15 text-primary inline-block mb-4">Phase 1</span>
+              <h3 className="text-2xl font-heading font-bold mb-2">2026</h3>
+              <p className="text-sm font-semibold text-foreground mb-4">Consolidation</p>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                4 à 5 opérations concentrées sur Bordeaux Métropole. Validation du modèle opérationnel à l'échelle.
+              </p>
+              <div className="border-t border-border pt-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Bordeaux Métropole</span>
+                  <span className="font-semibold">4–5 ops</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-background rounded-xl border border-border p-8">
+              <span className="text-xs font-bold uppercase tracking-[0.1em] px-3 py-1 rounded-full bg-primary/15 text-primary inline-block mb-4">Phase 2</span>
+              <h3 className="text-2xl font-heading font-bold mb-2">2027</h3>
+              <p className="text-sm font-semibold text-foreground mb-4">Scaling</p>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                10 à 12 opérations réparties sur trois métropoles du Grand Sud-Ouest.
+              </p>
+              <div className="border-t border-border pt-4 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Bordeaux</span>
+                  <span className="font-semibold">4–5 ops</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Toulouse</span>
+                  <span className="font-semibold">3–4 ops</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Bayonne / BAB</span>
+                  <span className="font-semibold">2–3 ops</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-background rounded-xl border border-border p-8">
+              <span className="text-xs font-bold uppercase tracking-[0.1em] px-3 py-1 rounded-full bg-primary/15 text-primary inline-block mb-4">Phase 3</span>
+              <h3 className="text-2xl font-heading font-bold mb-2">2028</h3>
+              <p className="text-sm font-semibold text-foreground mb-4">Sortie portefeuille</p>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                Cession du portefeuille stabilisé. Ouverture sélective de nouvelles géographies.
+              </p>
+              <div className="border-t border-border pt-4">
+                <p className="text-xs text-muted-foreground">Pistes d'expansion :</p>
+                <p className="text-sm mt-1">La Rochelle, Nantes, Rennes</p>
+                <p className="text-xs text-muted-foreground mt-2">Formats élargis possibles (modèle clinique privée)</p>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-xs text-muted-foreground mt-8 text-center max-w-2xl mx-auto">
+            Plan indicatif. I-CA.RE ne revendique pas de déploiement national. La croissance reste contrôlée, entrepreneuriale et concentrée sur des marchés maîtrisés.
+          </p>
+        </div>
+      </section>
+
       {/* Profil investisseur */}
       <section className="section-padding">
         <div className="container">
