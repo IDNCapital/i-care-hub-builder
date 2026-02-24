@@ -2,6 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 import {
   ArrowRight,
   ArrowLeft,
@@ -13,11 +14,18 @@ import {
   Phone,
 } from "lucide-react";
 import { useProject, STATUS_LABELS, TYPOLOGY_LABELS } from "@/hooks/useProjects";
+import { Analytics } from "@/lib/analytics";
 import heroBuilding from "@/assets/hero-building.jpg";
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: project, isLoading } = useProject(slug || "");
+
+  useEffect(() => {
+    if (project) {
+      Analytics.projectView(project.name, project.slug, project.city);
+    }
+  }, [project]);
 
   if (isLoading) {
     return (
