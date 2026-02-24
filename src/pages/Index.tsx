@@ -33,9 +33,9 @@ const benefits = [
 ];
 
 const projects = [
-  { name: "Floirac", location: "Gironde", status: "En cours", progress: 65, description: "Requalification d'un local commercial en pôle santé de 180 m²" },
-  { name: "Bordeaux Bastide", location: "Gironde", status: "Livré", progress: 100, description: "Transformation d'un rez-de-chaussée en 9 cabinets de santé" },
-  { name: "Toulouse Saint-Cyprien", location: "Haute-Garonne", status: "Études", progress: 25, description: "Conversion d'un local vacant en espace paramédical de proximité" },
+  { name: "Floirac", location: "Gironde", status: "En cours", progress: 65, description: "Requalification d'un RDC de 180 m² en 9 cabinets de santé (12–18 m²)" },
+  { name: "Bordeaux Bastide", location: "Gironde", status: "Livré", progress: 100, description: "Transformation d'un local vacant en 8 cabinets, loyers 600–800 €/mois" },
+  { name: "Toulouse Saint-Cyprien", location: "Haute-Garonne", status: "Études", progress: 25, description: "Conversion d'un commerce obsolète en espace paramédical de 150 m²" },
 ];
 
 const impacts = [

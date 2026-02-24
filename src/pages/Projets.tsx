@@ -43,7 +43,7 @@ export default function Projets() {
     <Layout>
       <Helmet>
         <title>Nos Projets — I-CA.RE</title>
-        <meta name="description" content="Découvrez les projets immobiliers de santé I-CA.RE : centres médicaux, pôles pluridisciplinaires et espaces de coworking santé à Bordeaux, Toulouse et en Nouvelle-Aquitaine." />
+        <meta name="description" content="Découvrez les opérations immobilières de santé I-CA.RE : cabinets de 12 à 18 m², loyers de 600 à 800 €/mois, 5 cabinets pour 100 m². Bordeaux, Toulouse, Nouvelle-Aquitaine." />
       </Helmet>
 
       {/* Hero */}
@@ -54,7 +54,7 @@ export default function Projets() {
               Nos Projets
             </h1>
             <p className="text-xl text-muted-foreground opacity-0 animate-fade-up stagger-1">
-              Des lieux de santé d'exception, conçus pour les professionnels et les territoires.
+              Des espaces de santé granulaires : 5 cabinets pour 100 m², loyers de 600 à 800 €/mois, vacance maîtrisée par la structure multi-locataires.
             </p>
             <Button variant="hero" asChild className="mt-8 opacity-0 animate-fade-up stagger-2">
               <Link to="/contact">

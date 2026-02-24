@@ -80,7 +80,7 @@ export default function ProjetDetail() {
       <section className="relative h-[60vh] min-h-[400px]">
         <img
           src={project.hero_image_url || heroBuilding}
-          alt={`Vue principale du projet ${project.name} — centre de santé à ${project.city}`}
+          alt={`Vue principale du projet ${project.name} — espace de santé à ${project.city}`}
           className="w-full h-full object-cover"
           loading="eager"
         />
@@ -132,7 +132,7 @@ export default function ProjetDetail() {
       {/* Key Data */}
       <section className="section-padding">
         <div className="container">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 mb-16">
             <div className="bg-secondary rounded-2xl p-6 text-center">
               <Ruler className="w-8 h-8 text-primary mx-auto mb-3" />
               <p className="text-3xl font-bold">{project.surface_m2}</p>
@@ -141,12 +141,17 @@ export default function ProjetDetail() {
             <div className="bg-secondary rounded-2xl p-6 text-center">
               <Building2 className="w-8 h-8 text-primary mx-auto mb-3" />
               <p className="text-3xl font-bold">{project.units_count}</p>
-              <p className="text-sm text-muted-foreground">unités / cabinets</p>
+              <p className="text-sm text-muted-foreground">cabinets (12–18 m²)</p>
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
               <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
               <p className="text-3xl font-bold">{project.delivery_date || "—"}</p>
               <p className="text-sm text-muted-foreground">livraison</p>
+            </div>
+            <div className="bg-secondary rounded-2xl p-6 text-center">
+              <Ruler className="w-8 h-8 text-primary mx-auto mb-3" />
+              <p className="text-lg font-bold">600–800 €</p>
+              <p className="text-sm text-muted-foreground">loyer / cabinet / mois</p>
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
               <Phone className="w-8 h-8 text-primary mx-auto mb-3" />
@@ -176,7 +181,7 @@ export default function ProjetDetail() {
                       <img
                         key={i}
                         src={url}
-                        alt={`${project.name} — vue intérieure ${i + 1} du centre de santé`}
+                        alt={`${project.name} — vue intérieure ${i + 1} de l'espace de santé`}
                         className="rounded-2xl w-full h-48 object-cover"
                         loading="lazy"
                       />
