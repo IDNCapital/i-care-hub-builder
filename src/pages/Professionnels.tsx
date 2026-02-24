@@ -40,11 +40,11 @@ const pillars = [
     icon: Building2,
     title: "Confort architectural",
     description:
-      "Lumière naturelle, isolation acoustique, matériaux nobles et ergonomie pensée pour votre pratique quotidienne. Un lieu où il fait bon exercer.",
+      "Cabinets de 12 à 18 m², lumière naturelle, isolation acoustique renforcée et matériaux nobles. Chaque espace est conçu pour la confidentialité et le confort de votre pratique.",
     features: [
+      "Cabinets de 12 à 18 m²",
       "Isolation acoustique renforcée",
       "Lumière naturelle optimisée",
-      "Matériaux premium durables",
     ],
   },
   {
