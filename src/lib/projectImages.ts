@@ -25,6 +25,16 @@ import chartronsPlan from "@/assets/chartrons/plan.webp";
 // Portrait
 import portraitJazmin from "@/assets/portrait-jazmin.webp";
 
+// ─── Generated hero images ──────────────────────────────
+import heroHomeFacade1 from "@/assets/hero/hero-home-facade-1.webp";
+import heroHomeAttente1 from "@/assets/hero/hero-home-attente-1.webp";
+import heroHomeCabinet1 from "@/assets/hero/hero-home-cabinet-1.webp";
+import heroHomeFacade2 from "@/assets/hero/hero-home-facade-2.webp";
+import heroHomeAttente2 from "@/assets/hero/hero-home-attente-2.webp";
+import heroHomeCabinet2 from "@/assets/hero/hero-home-cabinet-2.webp";
+import heroPraticiens from "@/assets/hero/hero-praticiens.webp";
+import heroInvestissement from "@/assets/hero/hero-investissement.webp";
+
 // ─── Types ───────────────────────────────────────────────
 
 export interface ProjectImages {
@@ -62,9 +72,9 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
 // ─── Page-level default heroes ───────────────────────────
 
 const PAGE_HEROES: Record<PageContext, string> = {
-  home: peyBerlandAttente,
-  professionnels: peyBerlandCab1,
-  investissement: nansoutyFacade,
+  home: heroHomeFacade1,
+  professionnels: heroPraticiens,
+  investissement: heroInvestissement,
   approche: nansoutyAttente,
 };
 
@@ -91,15 +101,14 @@ export interface HeroSlide {
   altEn: string;
 }
 
-/** Full set for desktop (7 slides, alternating facade ↔ interior) */
+/** Full set for desktop (6 slides, alternating facade ↔ interior) */
 export const HOME_HERO_SLIDES: HeroSlide[] = [
-  { src: peyBerlandAttente,     altFr: "Salle d'attente – I-CA.RE Pey Berland",   altEn: "Waiting room – I-CA.RE Pey Berland" },
-  { src: nansoutyFacade,        altFr: "Façade – I-CA.RE Nansouty",               altEn: "Facade – I-CA.RE Nansouty" },
-  { src: jardinPublicCab2,      altFr: "Cabinet – I-CA.RE Jardin Public",          altEn: "Office – I-CA.RE Jardin Public" },
-  { src: peyBerlandFacade,      altFr: "Façade – I-CA.RE Pey Berland",            altEn: "Facade – I-CA.RE Pey Berland" },
-  { src: nansoutyCab1,          altFr: "Cabinet – I-CA.RE Nansouty",              altEn: "Office – I-CA.RE Nansouty" },
-  { src: jardinPublicAttente,   altFr: "Salle d'attente – I-CA.RE Jardin Public", altEn: "Waiting room – I-CA.RE Jardin Public" },
-  { src: peyBerlandCab1,        altFr: "Cabinet – I-CA.RE Pey Berland",           altEn: "Office – I-CA.RE Pey Berland" },
+  { src: heroHomeFacade1,    altFr: "Façade élégante – I-CA.RE",                altEn: "Elegant facade – I-CA.RE" },
+  { src: heroHomeAttente1,   altFr: "Salle d'attente chaleureuse – I-CA.RE",    altEn: "Warm waiting room – I-CA.RE" },
+  { src: heroHomeCabinet1,   altFr: "Cabinet de soin – I-CA.RE",                altEn: "Care practice – I-CA.RE" },
+  { src: heroHomeFacade2,    altFr: "Immeuble patrimonial – I-CA.RE",           altEn: "Heritage building – I-CA.RE" },
+  { src: heroHomeAttente2,   altFr: "Espace d'accueil lumineux – I-CA.RE",      altEn: "Bright reception area – I-CA.RE" },
+  { src: heroHomeCabinet2,   altFr: "Cabinet de bien-être – I-CA.RE",           altEn: "Wellbeing practice – I-CA.RE" },
 ];
 
 /** Reduced set for mobile (4 slides) */
