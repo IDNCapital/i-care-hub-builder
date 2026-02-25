@@ -24,7 +24,7 @@ import {
   Star,
   CheckCircle2,
 } from "lucide-react";
-import medicalOffice from "@/assets/medical-office.jpg";
+import peyBerlandCab1 from "@/assets/pey-berland/cab1.webp";
 
 export default function Professionnels() {
   const { t, i18n } = useTranslation();
@@ -94,7 +94,7 @@ export default function Professionnels() {
       {/* Hero */}
       <section className="relative min-h-[85vh] flex items-center pt-20">
         <div className="absolute inset-0">
-          <img src={medicalOffice} alt={lang === "fr" ? "Cabinet médical lumineux et moderne aménagé par I-CA.RE" : "Bright, modern medical office fitted out by I-CA.RE"} className="w-full h-full object-cover" loading="eager" />
+          <img src={peyBerlandCab1} alt={lang === "fr" ? "Cabinet – I-CA.RE Pey Berland" : "Office – I-CA.RE Pey Berland"} className="w-full h-full object-cover" loading="eager" />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/30" />
         </div>
         <div className="container relative z-10 py-20">
