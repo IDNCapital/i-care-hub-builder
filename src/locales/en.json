@@ -2,7 +2,7 @@
   "nav": {
     "home": "Home",
     "projects": "Projects",
-    "professionals": "Health Professionals",
+    "professionals": "Care & Wellbeing Practitioners",
     "investment": "Investment",
     "approach": "Our Approach",
     "contact": "Contact",
@@ -27,19 +27,19 @@
     "cookies": "cookies"
   },
   "home": {
-    "heroTitle": "We transform urban ground floors into healthcare and well-being spaces",
+    "heroTitle": "We transform urban ground floors into care and wellbeing spaces",
     "heroSubtitle": "150 to 200 sqm designed for confidentiality, acoustic performance and comfort. 7 to 10 offices per asset, in the heart of neighbourhoods.",
     "baseline": "Des lieux de soin, pensés comme des lieux de vie",
-    "ctaProfessionals": "Health Professionals",
+    "ctaProfessionals": "Care & Wellbeing Practitioners",
     "ctaApproach": "Discover Our Approach",
     "whatWeDo": "What We Do",
-    "whatWeDoSubtitle": "We acquire undervalued retail spaces, requalify them into healthcare facilities, stabilise them within 24 to 36 months, then sell after 4 years.",
+    "whatWeDoSubtitle": "We acquire undervalued retail spaces, requalify them into care and wellbeing facilities, stabilise them within 24 to 36 months, then sell after 4 years.",
     "whyChoose": "Why Practitioners Choose I-CA.RE",
     "whyChooseDesc": "150 to 200 sqm spaces designed with and for practitioners. Every detail — acoustics, confidentiality, ergonomics — is crafted to support your daily practice.",
     "allBenefits": "Discover All Benefits",
     "officesPerAsset": "offices per transformed asset",
     "ourOperations": "Our Operations",
-    "ourOperationsDesc": "Granular, local and controlled transformations — serving community healthcare.",
+    "ourOperationsDesc": "Granular, local and controlled transformations — serving community care.",
     "viewAllProjects": "View All Projects",
     "localImpact": "Our Local Impact",
     "localImpactDesc": "Facing medical desertification, we act at neighbourhood level. Each I-CA.RE operation requalifies a vacant space and brings care closer to residents.",
@@ -50,13 +50,13 @@
     "discover": "Discover"
   },
   "investment": {
-    "heroTag": "Healthcare Real Estate Investment",
-    "heroTitle": "Invest in Community Healthcare",
+    "heroTag": "Care & Wellbeing Real Estate Investment",
+    "heroTitle": "Invest in Community Care",
     "heroSubtitle": "Tangible real estate assets with strong use value, driven by structural demand.",
     "ctaMemo": "Request the Investment Memo",
     "ctaCall": "Schedule a Confidential Call",
     "concept": "The I-CA.RE Concept",
-    "conceptP1": "I-CA.RE acquires undervalued urban ground floors (150 to 200 sqm) and transforms them into next-generation healthcare and well-being spaces.",
+    "conceptP1": "I-CA.RE acquires undervalued urban ground floors (150 to 200 sqm) and transforms them into next-generation care and wellbeing spaces.",
     "conceptP2": "Each asset hosts 7 to 10 independent offices (12–18 sqm), designed for confidentiality, acoustic performance and comfort. The granular multi-tenant structure structurally reduces vacancy risk.",
     "surfacePerAsset": "per asset (ground floor)",
     "officesPerOp": "offices per operation",
@@ -65,7 +65,7 @@
     "executionModel": "Execution Model",
     "executionModelDesc": "An integrated value chain, from acquisition to exit.",
     "forInvestors": "For Investors",
-    "forInvestorsP1": "I-CA.RE structures healthcare real estate operations with an entrepreneurial sponsor-led model. The investor contributes 100% of equity; I-CA.RE contributes 100% of the industry: development, engineering, construction, leasing, asset management and exit strategy.",
+    "forInvestorsP1": "I-CA.RE structures care and wellbeing real estate operations with an entrepreneurial sponsor-led model. The investor contributes 100% of equity; I-CA.RE contributes 100% of the industry: development, engineering, construction, leasing, asset management and exit strategy.",
     "forInvestorsP2": "Our investment memo details the financial model, distribution structure (waterfall), governance and roadmap.",
     "accessNote": "Confidential access after submitting a short form. No commitment required.",
     "partners": "Are You a Partner?",
@@ -137,7 +137,7 @@
     "selectType": "Please select a contact type",
     "success": "Your message has been sent successfully!",
     "types": {
-      "professionnel": "Health Professional",
+      "professionnel": "Care or Wellbeing Practitioner",
       "professionnelDesc": "You wish to join an I-CA.RE practice",
       "collectivite": "Local Authority / Institution",
       "collectiviteDesc": "You represent a municipality or institution",
@@ -146,13 +146,13 @@
     }
   },
   "professionals": {
-    "heroTag": "For Health Professionals",
+    "heroTag": "For care, allied health and wellbeing practitioners",
     "heroTitle": "Set up your practice in a space built to last",
     "heroSubtitle": "Turnkey, compliant, bright and purpose-designed spaces for your practice.",
     "ctaAvailability": "View Availability",
     "ctaExchange": "Schedule a Call",
     "socialProof": {},
-    "whyTitle": "Why Professionals Choose I-CA.RE",
+    "whyTitle": "Why Practitioners Choose I-CA.RE",
     "whySubtitle": "Three pillars for a seamless practice.",
     "pillars": {
       "security": "Regulatory Compliance",
@@ -184,10 +184,10 @@
       "installDesc": "Key handover, operational support and post-move-in follow-up. You practise with confidence from day one."
     },
     "testimonialsTitle": "They Practise at I-CA.RE",
-    "testimonialsSubtitle": "Professionals who chose quality.",
+    "testimonialsSubtitle": "Practitioners who chose quality.",
     "formTitle": "Find Your Future Practice",
     "formSubtitle": "Describe your project in a few clicks. Our team will get back to you within 48 hours with a tailored proposal.",
-    "formProfession": "Type of Professional",
+    "formProfession": "Type of Practitioner",
     "formProfessionPlaceholder": "Select your profession",
     "formCity": "Preferred City",
     "formCityPlaceholder": "e.g. Bordeaux, Floirac, Lormont…",
@@ -217,7 +217,7 @@
       "orthophoniste": "Speech Therapist",
       "sage_femme": "Midwife",
       "dentiste": "Dentist",
-      "autre": "Other Health Professional"
+      "autre": "Other care or wellbeing practitioner"
     },
     "dateOptions": {
       "immediat": "As soon as possible",
@@ -230,7 +230,7 @@
   },
   "projects": {
     "title": "Our Projects",
-    "subtitle": "Granular healthcare spaces: 5 offices per 100 sqm, rents from €600 to €800/month, vacancy controlled through multi-tenant structure.",
+    "subtitle": "Granular care spaces: 5 offices per 100 sqm, rents from €600 to €800/month, vacancy controlled through multi-tenant structure.",
     "ctaAvailability": "Request Availability",
     "filter": "Filter:",
     "allCities": "All cities",
@@ -257,7 +257,7 @@
     "interested": "Interested?",
     "conceptTitle": "Concept & Architectural Vision",
     "architecturalQuality": "Architectural Quality",
-    "architecturalQualityDesc": "Each office has its own warm character, designed specifically in relation to its urban and architectural context.\n\nAll spaces are fully renovated to new standards and include:\n• Acoustic partitions and doors\n• Warm floor and wall finishes\n• Reversible heat pump\n• Dimmable LED lighting\n• Water points in each office\n• Video intercom with medical practice function",
+    "architecturalQualityDesc": "Each office has its own warm character, designed specifically in relation to its urban and architectural context.\n\nAll spaces are fully renovated to new standards and include:\n• Acoustic partitions and doors\n• Warm floor and wall finishes\n• Reversible heat pump\n• Dimmable LED lighting\n• Water points in each office\n• Video intercom with practice function",
     "gallery": "Gallery",
     "keyFeatures": "Key Features",
     "practicalInfo": "Practical Information",
@@ -274,11 +274,15 @@
   },
   "approach": {
     "heroTitle": "Our Approach",
-    "heroSubtitle": "Vision, method and commitment in service of community health.",
+    "heroSubtitle": "Vision, method and commitment in service of care and wellbeing across communities.",
     "ctaTeam": "Speak With Our Team",
-    "founderQuote": "I founded I-CA.RE with the conviction that access to healthcare is a fundamental challenge for our communities. By renovating healthcare spaces, we create the conditions for local, human and high-quality medicine.",
-    "founderName": "Founder of I-CA.RE",
-    "founderRole": "Healthcare real estate entrepreneur",
+    "founderSectionTitle": "A human & family-led approach",
+    "founderIntro": "I-CA.RE is led by a complementary, deeply committed duo.",
+    "founderJazmin": "With a background in humanistic psychotherapy, Jazmin brings sensitivity, a strong design aesthetic, and a high standard for the quality of welcome.",
+    "founderNicolas": "Nicolas brings more than ten years of experience in real estate, the transformation of spaces, and project delivery.",
+    "founderAmbition": "Their ambition: to create high-quality, comfortable and calming places that support human care.",
+    "founderName": "Jazmin Cousins",
+    "founderRole": "Managing Director & Co-founder",
     "desertTitle": "Facing Medical Deserts, We Act",
     "desertSubtitle": "Figures that drive us to act, every day.",
     "stat1Value": "6 million",
@@ -287,8 +291,8 @@
     "stat2Label": "of GPs will retire by 2030",
     "stat3Value": "87%",
     "stat3Label": "of the territory classified as a medical tension zone",
-    "desertP1": "In France, millions of people live in areas where access to healthcare has become difficult. Doctors are retiring, outdated premises stand empty, and residents are moving further from health services.",
-    "desertP2": "I-CA.RE provides a concrete answer: we identify high-potential buildings, transform them into modern healthcare spaces, and settle practitioners in optimal conditions.",
+    "desertP1": "In France, millions of people live in areas where access to care has become difficult. Doctors are retiring, outdated premises stand empty, and residents are moving further from care services.",
+    "desertP2": "I-CA.RE provides a concrete answer: we identify high-potential buildings, transform them into modern care and wellbeing spaces, and settle practitioners in optimal conditions.",
     "milestones": {
       "2023": "I-CA.RE founded",
       "2024": "First operating assets in Bordeaux",
@@ -299,9 +303,9 @@
     "valuesSubtitle": "The principles that guide every decision we make.",
     "values": {
       "responsibility": "Responsibility",
-      "responsibilityDesc": "We embrace our role in improving access to healthcare for all.",
+      "responsibilityDesc": "We embrace our role in improving access to care for all.",
       "impact": "Local Impact",
-      "impactDesc": "Every project strengthens the healthcare fabric of a neighbourhood, a city.",
+      "impactDesc": "Every project strengthens the care fabric of a neighbourhood, a city.",
       "care": "Care",
       "careDesc": "Towards practitioners, patients, neighbours and our partners.",
       "excellence": "Excellence",
@@ -314,8 +318,8 @@
     "whatWeDo": "What we do:",
     "steps": {
       "s1Title": "Identification",
-      "s1Desc": "We identify areas of medical tension and buildings with high transformation potential.",
-      "s1d1": "Analysis of local healthcare needs",
+      "s1Desc": "We identify areas of tension and buildings with high transformation potential.",
+      "s1d1": "Analysis of local care needs",
       "s1d2": "Mapping of medical deserts",
       "s1d3": "Sourcing of property opportunities",
       "s1d4": "Dialogue with local authorities",
@@ -326,7 +330,7 @@
       "s2d3": "Regulatory analysis",
       "s2d4": "Financial feasibility",
       "s3Title": "Design",
-      "s3Desc": "Our architectural partners (Rivage IC and IDNéa) design spaces optimised for healthcare.",
+      "s3Desc": "Our architectural partners (Rivage IC and IDNéa) design spaces optimised for care and wellbeing.",
       "s3d1": "Profession-specific floor plans",
       "s3d2": "Optimised patient pathway",
       "s3d3": "Disability access",
@@ -338,7 +342,7 @@
       "s4d3": "Heritage preservation",
       "s4d4": "Turnkey delivery",
       "s5Title": "Leasing",
-      "s5Desc": "We recruit healthcare professionals and assemble a balanced multidisciplinary team.",
+      "s5Desc": "We recruit care, allied health and wellbeing practitioners and assemble a balanced multidisciplinary team.",
       "s5d1": "Targeted sourcing by profession",
       "s5d2": "Move-in support",
       "s5d3": "Team building",
@@ -354,9 +358,9 @@
     "partnersDesc": "We surround ourselves with the finest experts to guarantee excellence in delivery.",
     "partners": {
       "rivage": "Architecture & Design",
-      "rivageDesc": "Architectural practice specialising in healthcare and well-being projects.",
+      "rivageDesc": "Architectural practice specialising in care and wellbeing projects.",
       "idnea": "Engineering & Design",
-      "idneaDesc": "Technical consultancy for optimising healthcare spaces.",
+      "idneaDesc": "Technical consultancy for optimising care spaces.",
       "insidebat": "Construction & Delivery",
       "insidebatDesc": "General contractor, expert in high-quality refurbishment."
     },
@@ -374,11 +378,11 @@
     },
     "collectivitesTag": "For Local Authorities",
     "collectivitesTitle": "Combat Medical Desertification",
-    "collectivitesDesc": "I-CA.RE supports local authorities in creating healthcare centres that are attractive to professionals and accessible to residents.",
+    "collectivitesDesc": "I-CA.RE supports local authorities in creating care and wellbeing spaces that are attractive to practitioners and accessible to residents.",
     "collectivitesCta": "Arrange an Institutional Meeting",
     "collectivitesBenefits": {
-      "service": "Local Healthcare Service",
-      "serviceDesc": "Bring healthcare professionals back to your area and improve access to care for your residents.",
+      "service": "Local Care Provision",
+      "serviceDesc": "Bring care and wellbeing practitioners back to your area and improve access to care for your residents.",
       "heritage": "Built Heritage Revitalisation",
       "heritageDesc": "Give new life to underused or degraded buildings through quality refurbishment.",
       "employment": "Employment & Attractiveness",
@@ -389,9 +393,9 @@
     "caseStudyTag": "Case Study",
     "caseStudyTitle": "Pey Berland: An Asset in the Heart of Bordeaux",
     "caseStudyContext": "Context",
-    "caseStudyContextDesc": "In the historic centre of Bordeaux, at the foot of the Pey Berland cathedral, a ground-floor unit to be requalified as a healthcare space.",
+    "caseStudyContextDesc": "In the historic centre of Bordeaux, at the foot of the Pey Berland cathedral, a ground-floor unit to be requalified as a care space.",
     "caseStudySolution": "The I-CA.RE Solution",
-    "caseStudySolutionDesc": "Full refurbishment into 5 offices and a waiting room across 90 sqm. The asset now hosts 8 professionals — psychologists, psychotherapist and sophrologists.",
+    "caseStudySolutionDesc": "Full refurbishment into 5 offices and a waiting room across 90 sqm. The asset now hosts 8 practitioners — psychologists, psychotherapist and sophrologists.",
     "caseStudyStats": {
       "offices": "offices",
       "practitioners": "tenants",
@@ -399,7 +403,7 @@
       "opening": "operating"
     },
     "ctaTitle": "Want to contribute to this vision?",
-    "ctaDesc": "Whether you are a health professional, a local authority or an investor, join us in this mission."
+    "ctaDesc": "Whether you are a care or wellbeing practitioner, a local authority or an investor, join us in this mission."
   },
   "footer": {
     "baseline": "Des lieux de soin, pensés comme des lieux de vie",
@@ -432,7 +436,7 @@
   },
   "services": {
     "acquisition": "Acquisition & Requalification",
-    "acquisitionDesc": "We identify undervalued urban ground floors — vacant shops, obsolete premises — and transform them into high-performing healthcare spaces.",
+    "acquisitionDesc": "We identify undervalued urban ground floors — vacant shops, obsolete premises — and transform them into high-performing care spaces.",
     "design": "User-Centred Design",
     "designDesc": "Each space is designed for confidentiality, acoustic performance and comfort for practitioners and patients alike.",
     "turnkey": "Turnkey Offices",
@@ -442,7 +446,7 @@
   },
   "benefits": {
     "optimised": "150–200 sqm Optimised",
-    "optimisedDesc": "Ground-floor areas designed for health and well-being.",
+    "optimisedDesc": "Ground-floor areas designed for care and wellbeing.",
     "accessibility": "Disability Access",
     "accessibilityDesc": "Full compliance with accessibility standards.",
     "proximity": "Neighbourhood Locations",
@@ -456,7 +460,7 @@
     "retirement": "of GPs retiring by 2030"
   },
   "impactActions": {
-    "requalification": "Requalification of vacant spaces into healthcare facilities",
+    "requalification": "Requalification of vacant spaces into care facilities",
     "heritage": "Revitalisation of local built heritage",
     "territorial": "Sustainable and entrepreneurial territorial development"
   },
@@ -466,22 +470,22 @@
     "a_venir": "Upcoming"
   },
   "typologyLabels": {
-    "cabinet_medical": "Medical Practice",
+    "cabinet_medical": "Care Practice",
     "pole_pluridisciplinaire": "Multidisciplinary Hub",
-    "coworking_sante": "Healthcare Coworking",
+    "coworking_sante": "Care & Wellbeing Coworking",
     "centre_paramedical": "Paramedical Centre",
-    "maison_de_sante": "Healthcare Centre"
+    "maison_de_sante": "Care Centre"
   },
   "seo": {
-    "homeTitle": "I-CA.RE — Healthcare Space Renovation | Turnkey Medical Offices",
-    "homeDesc": "I-CA.RE transforms urban ground floors into healthcare and well-being spaces. Bordeaux, Floirac, Lormont.",
+    "homeTitle": "I-CA.RE — Care & Wellbeing Spaces | Turnkey Offices",
+    "homeDesc": "I-CA.RE transforms urban ground floors into care and wellbeing spaces. Bordeaux, Floirac, Lormont.",
     "projectsTitle": "Our Projects — I-CA.RE",
-    "projectsDesc": "Discover I-CA.RE healthcare real estate operations: medical offices, rents from €600 to €800/month. Bordeaux metropolitan area.",
-    "professionalsTitle": "Health Professionals — Join I-CA.RE",
-    "professionalsDesc": "Set up your practice in a healthcare space built to last. Turnkey, compliant spaces designed for your practice. Join I-CA.RE.",
+    "projectsDesc": "Discover I-CA.RE care real estate operations: care offices, rents from €600 to €800/month. Bordeaux metropolitan area.",
+    "professionalsTitle": "Care & Wellbeing Practitioners — Join I-CA.RE",
+    "professionalsDesc": "Set up your practice in a care space built to last. Turnkey, compliant spaces designed for your practice. Join I-CA.RE.",
     "approachTitle": "Our Approach — I-CA.RE Vision & Method",
-    "approachDesc": "Vision, 6-step method and societal commitment from I-CA.RE: healthcare space renovation, fighting medical deserts across France.",
+    "approachDesc": "Vision, 6-step method and societal commitment from I-CA.RE: care space renovation, fighting medical deserts across France.",
     "contactTitle": "Contact Us — I-CA.RE",
-    "contactDesc": "Contact I-CA.RE: join a medical practice, propose a territorial project or explore our healthcare real estate investment opportunities."
+    "contactDesc": "Contact I-CA.RE: join a care practice, propose a territorial project or explore our care and wellbeing real estate investment opportunities."
   }
 }

@@ -2,7 +2,7 @@
   "nav": {
     "home": "Accueil",
     "projects": "Projets",
-    "professionals": "Professionnels de santé",
+    "professionals": "Praticiens du soin et du bien-être",
     "investment": "Investissement",
     "approach": "Notre approche",
     "contact": "Contact",
@@ -27,19 +27,19 @@
     "cookies": "cookies"
   },
   "home": {
-    "heroTitle": "Nous transformons des rez-de-chaussée urbains en espaces de santé et de bien-être",
+    "heroTitle": "Nous transformons des rez-de-chaussée urbains en espaces de soin et de bien-être",
     "heroSubtitle": "150 à 200 m² conçus pour la confidentialité, la performance acoustique et le confort. 7 à 10 cabinets par actif, au cœur des quartiers.",
     "baseline": "Des lieux de soin, pensés comme des lieux de vie",
-    "ctaProfessionals": "Professionnels de santé",
+    "ctaProfessionals": "Praticiens du soin et du bien-être",
     "ctaApproach": "Découvrir notre approche",
     "whatWeDo": "Ce que nous faisons",
-    "whatWeDoSubtitle": "Nous acquérons des locaux sous-valorisés, les requalifions en espaces de santé, les stabilisons en 24 à 36 mois, puis les cédons après 4 ans.",
-    "whyChoose": "Pourquoi les professionnels choisissent I-CA.RE",
+    "whatWeDoSubtitle": "Nous acquérons des locaux sous-valorisés, les requalifions en espaces de soin et de bien-être, les stabilisons en 24 à 36 mois, puis les cédons après 4 ans.",
+    "whyChoose": "Pourquoi les praticiens choisissent I-CA.RE",
     "whyChooseDesc": "Des espaces de 150 à 200 m² pensés avec et pour les praticiens. Chaque détail — acoustique, confidentialité, ergonomie — est conçu pour faciliter votre exercice quotidien.",
     "allBenefits": "Découvrir tous les avantages",
     "officesPerAsset": "cabinets par actif transformé",
     "ourOperations": "Nos opérations",
-    "ourOperationsDesc": "Des transformations granulaires, locales et maîtrisées — au service de la santé de proximité.",
+    "ourOperationsDesc": "Des transformations granulaires, locales et maîtrisées — au service du soin de proximité.",
     "viewAllProjects": "Voir tous les projets",
     "localImpact": "Notre impact local",
     "localImpactDesc": "Face à la désertification médicale, nous agissons à l'échelle du quartier. Chaque opération I-CA.RE requalifie un local vacant et rapproche les soins des habitants.",
@@ -50,13 +50,13 @@
     "discover": "Découvrir"
   },
   "investment": {
-    "heroTag": "Investissement immobilier de santé",
-    "heroTitle": "Investir dans la santé de proximité",
+    "heroTag": "Investissement immobilier de santé et de bien-être",
+    "heroTitle": "Investir dans le soin de proximité",
     "heroSubtitle": "Des actifs immobiliers tangibles, à forte valeur d'usage, portés par une demande structurelle.",
     "ctaMemo": "Recevoir la note d'investissement",
     "ctaCall": "Planifier un échange confidentiel",
     "concept": "Le concept I-CA.RE",
-    "conceptP1": "I-CA.RE acquiert des rez-de-chaussée urbains sous-valorisés (150 à 200 m²) et les transforme en espaces de santé et de bien-être nouvelle génération.",
+    "conceptP1": "I-CA.RE acquiert des rez-de-chaussée urbains sous-valorisés (150 à 200 m²) et les transforme en espaces de soin et de bien-être nouvelle génération.",
     "conceptP2": "Chaque actif accueille 7 à 10 cabinets indépendants (12–18 m²), conçus pour la confidentialité, la performance acoustique et le confort. La structure multi-locataires granulaire réduit structurellement le risque de vacance.",
     "surfacePerAsset": "surface par actif (RDC)",
     "officesPerOp": "cabinets par opération",
@@ -65,7 +65,7 @@
     "executionModel": "Modèle d'exécution",
     "executionModelDesc": "Une chaîne de valeur intégrée, de l'acquisition à la cession.",
     "forInvestors": "Pour les investisseurs",
-    "forInvestorsP1": "I-CA.RE structure des opérations immobilières de santé avec un modèle entrepreneurial sponsor-led. L'investisseur apporte 100 % de l'equity, I-CA.RE apporte 100 % de l'industrie : développement, ingénierie, construction, commercialisation, asset management et stratégie de sortie.",
+    "forInvestorsP1": "I-CA.RE structure des opérations immobilières de soin et de bien-être avec un modèle entrepreneurial sponsor-led. L'investisseur apporte 100 % de l'equity, I-CA.RE apporte 100 % de l'industrie : développement, ingénierie, construction, commercialisation, asset management et stratégie de sortie.",
     "forInvestorsP2": "Notre note d'investissement détaille le modèle financier, la structure de distribution (waterfall), la gouvernance et la feuille de route.",
     "accessNote": "Accès confidentiel après dépôt d'un formulaire court. Aucun engagement.",
     "partners": "Vous êtes un partenaire ?",
@@ -137,7 +137,7 @@
     "selectType": "Veuillez sélectionner un type de contact",
     "success": "Votre message a été envoyé avec succès !",
     "types": {
-      "professionnel": "Professionnel de santé",
+      "professionnel": "Praticien du soin ou du bien-être",
       "professionnelDesc": "Vous souhaitez rejoindre un cabinet I-CA.RE",
       "collectivite": "Collectivité / Institution",
       "collectiviteDesc": "Vous représentez une commune ou une institution",
@@ -146,13 +146,13 @@
     }
   },
   "professionals": {
-    "heroTag": "Pour les professionnels de santé",
+    "heroTag": "Pour les praticiens du soin, du paramédical et du bien-être",
     "heroTitle": "Installez votre activité dans un lieu de soin pensé pour durer",
     "heroSubtitle": "Des espaces clé en main, conformes, lumineux et adaptés à votre pratique.",
     "ctaAvailability": "Voir les disponibilités",
     "ctaExchange": "Planifier un échange",
     "socialProof": {},
-    "whyTitle": "Pourquoi les professionnels choisissent I-CA.RE",
+    "whyTitle": "Pourquoi les praticiens choisissent I-CA.RE",
     "whySubtitle": "Trois piliers pour exercer en toute sérénité.",
     "pillars": {
       "security": "Sécurité réglementaire",
@@ -184,10 +184,10 @@
       "installDesc": "Remise des clés, accompagnement opérationnel et suivi post-installation. Vous exercez sereinement dès le premier jour."
     },
     "testimonialsTitle": "Ils exercent chez I-CA.RE",
-    "testimonialsSubtitle": "Des professionnels qui ont fait le choix de la qualité.",
+    "testimonialsSubtitle": "Des praticiens qui ont fait le choix de la qualité.",
     "formTitle": "Trouvez votre futur cabinet",
     "formSubtitle": "Décrivez votre projet en quelques clics. Notre équipe vous recontacte sous 48h avec une proposition personnalisée.",
-    "formProfession": "Type de professionnel",
+    "formProfession": "Type de praticien",
     "formProfessionPlaceholder": "Sélectionnez votre profession",
     "formCity": "Ville recherchée",
     "formCityPlaceholder": "Ex : Bordeaux, Floirac, Lormont…",
@@ -217,7 +217,7 @@
       "orthophoniste": "Orthophoniste",
       "sage_femme": "Sage-femme",
       "dentiste": "Chirurgien-dentiste",
-      "autre": "Autre profession de santé"
+      "autre": "Autre praticien du soin ou du bien-être"
     },
     "dateOptions": {
       "immediat": "Dès que possible",
@@ -230,7 +230,7 @@
   },
   "projects": {
     "title": "Nos Projets",
-    "subtitle": "Des espaces de santé granulaires : 5 cabinets pour 100 m², loyers de 600 à 800 €/mois, vacance maîtrisée par la structure multi-locataires.",
+    "subtitle": "Des espaces de soin granulaires : 5 cabinets pour 100 m², loyers de 600 à 800 €/mois, vacance maîtrisée par la structure multi-locataires.",
     "ctaAvailability": "Demander une disponibilité",
     "filter": "Filtrer :",
     "allCities": "Toutes les villes",
@@ -257,7 +257,7 @@
     "interested": "Intéressé ?",
     "conceptTitle": "Concept & vision architecturale",
     "architecturalQuality": "Qualité architecturale",
-    "architecturalQualityDesc": "Chaque cabinet possède une ambiance chaleureuse qui lui est propre, pensée spécifiquement en lien avec son contexte urbain et architectural.\n\nTous les espaces sont rénovés intégralement à neuf et comprennent :\n• Cloisons et portes acoustiques\n• Revêtements sols et murs chaleureux\n• Pompe à chaleur réversible\n• Éclairage LED sur variateur\n• Points d'eau dans les cabinets\n• Système visiophone avec fonction cabinet médical",
+    "architecturalQualityDesc": "Chaque cabinet possède une ambiance chaleureuse qui lui est propre, pensée spécifiquement en lien avec son contexte urbain et architectural.\n\nTous les espaces sont rénovés intégralement à neuf et comprennent :\n• Cloisons et portes acoustiques\n• Revêtements sols et murs chaleureux\n• Pompe à chaleur réversible\n• Éclairage LED sur variateur\n• Points d'eau dans les cabinets\n• Système visiophone avec mode cabinet",
     "gallery": "Galerie",
     "keyFeatures": "Caractéristiques clés",
     "practicalInfo": "Informations pratiques",
@@ -274,11 +274,15 @@
   },
   "approach": {
     "heroTitle": "Notre Approche",
-    "heroSubtitle": "Vision, méthode et engagement au service de la santé des territoires.",
+    "heroSubtitle": "Vision, méthode et engagement au service du soin et du bien-être des territoires.",
     "ctaTeam": "Échanger avec notre équipe",
-    "founderQuote": "J'ai créé I-CA.RE avec la conviction que l'accès aux soins est un enjeu fondamental pour nos territoires. En rénovant des lieux de santé, nous créons les conditions d'une médecine de proximité, humaine et de qualité.",
-    "founderName": "Fondateur d'I-CA.RE",
-    "founderRole": "Entrepreneur en immobilier de santé",
+    "founderSectionTitle": "Une démarche humaine & familiale",
+    "founderIntro": "I-CA.RE est porté par un duo à la fois complémentaire et profondément engagé.",
+    "founderJazmin": "Issue de l'univers de la psychothérapie humaniste, Jazmin apporte sa sensibilité, son sens du design et de l'esthétisme, et son engagement dans la qualité d'accueil.",
+    "founderNicolas": "Nicolas met au service du projet son expérience de plus de dix ans dans l'immobilier, la transformation de lieux et la maîtrise d'opération.",
+    "founderAmbition": "Leur ambition : créer des lieux de qualité, confortables et apaisants, au service de l'accompagnement humain.",
+    "founderName": "Jazmin Cousins",
+    "founderRole": "Directrice Générale & Co-founder",
     "desertTitle": "Face aux déserts médicaux, nous agissons",
     "desertSubtitle": "Des chiffres qui nous poussent à agir, au quotidien.",
     "stat1Value": "6 millions",
@@ -287,8 +291,8 @@
     "stat2Label": "des médecins généralistes partiront à la retraite d'ici 2030",
     "stat3Value": "87%",
     "stat3Label": "du territoire classé en zone de tension médicale",
-    "desertP1": "En France, des millions de personnes vivent dans des zones où l'accès aux soins est devenu difficile. Les médecins partent à la retraite, les locaux vétustes se vident, les habitants s'éloignent des services de santé.",
-    "desertP2": "I-CA.RE apporte une réponse concrète : nous identifions les bâtiments à fort potentiel, les transformons en espaces de santé modernes, et y installons des professionnels dans des conditions optimales.",
+    "desertP1": "En France, des millions de personnes vivent dans des zones où l'accès aux soins est devenu difficile. Les médecins partent à la retraite, les locaux vétustes se vident, les habitants s'éloignent des services de soin.",
+    "desertP2": "I-CA.RE apporte une réponse concrète : nous identifions les bâtiments à fort potentiel, les transformons en espaces de soin et de bien-être modernes, et y installons des praticiens dans des conditions optimales.",
     "milestones": {
       "2023": "Création d'I-CA.RE",
       "2024": "Premiers actifs en exploitation à Bordeaux",
@@ -301,7 +305,7 @@
       "responsibility": "Responsabilité",
       "responsibilityDesc": "Nous assumons notre rôle dans l'amélioration de l'accès aux soins pour tous.",
       "impact": "Impact Local",
-      "impactDesc": "Chaque projet renforce le tissu de santé d'un quartier, d'une ville.",
+      "impactDesc": "Chaque projet renforce le tissu de soin d'un quartier, d'une ville.",
       "care": "Bienveillance",
       "careDesc": "Envers les praticiens, les patients, les riverains et nos partenaires.",
       "excellence": "Exigence",
@@ -314,8 +318,8 @@
     "whatWeDo": "Ce que nous faisons :",
     "steps": {
       "s1Title": "Identification",
-      "s1Desc": "Nous identifions les territoires en tension médicale et les bâtiments à fort potentiel de transformation.",
-      "s1d1": "Analyse des besoins de santé locaux",
+      "s1Desc": "Nous identifions les territoires en tension et les bâtiments à fort potentiel de transformation.",
+      "s1d1": "Analyse des besoins de soin locaux",
       "s1d2": "Cartographie des déserts médicaux",
       "s1d3": "Sourcing d'opportunités foncières",
       "s1d4": "Dialogue avec les élus locaux",
@@ -326,7 +330,7 @@
       "s2d3": "Analyse réglementaire",
       "s2d4": "Faisabilité économique",
       "s3Title": "Conception",
-      "s3Desc": "Nos partenaires architectes (Rivage IC et IDNéa) conçoivent des espaces optimisés pour la santé.",
+      "s3Desc": "Nos partenaires architectes (Rivage IC et IDNéa) conçoivent des espaces optimisés pour le soin et le bien-être.",
       "s3d1": "Plans fonctionnels métiers",
       "s3d2": "Parcours patient optimisé",
       "s3d3": "Accessibilité PMR",
@@ -338,7 +342,7 @@
       "s4d3": "Respect du patrimoine",
       "s4d4": "Livraison clé en main",
       "s5Title": "Commercialisation",
-      "s5Desc": "Nous recrutons les professionnels de santé et constituons une équipe pluridisciplinaire équilibrée.",
+      "s5Desc": "Nous recrutons les praticiens du soin, du paramédical et du bien-être et constituons une équipe pluridisciplinaire équilibrée.",
       "s5d1": "Sourcing ciblé par profession",
       "s5d2": "Accompagnement installation",
       "s5d3": "Constitution d'équipe",
@@ -354,9 +358,9 @@
     "partnersDesc": "Nous nous entourons des meilleurs experts pour garantir l'excellence de nos réalisations.",
     "partners": {
       "rivage": "Architecture & conception",
-      "rivageDesc": "Cabinet d'architecture spécialisé dans les projets de santé et de bien-être.",
+      "rivageDesc": "Cabinet d'architecture spécialisé dans les projets de soin et de bien-être.",
       "idnea": "Ingénierie & design",
-      "idneaDesc": "Bureau d'études techniques pour l'optimisation des espaces de santé.",
+      "idneaDesc": "Bureau d'études techniques pour l'optimisation des espaces de soin.",
       "insidebat": "Travaux & réalisation",
       "insidebatDesc": "Entreprise générale de bâtiment, experte en réhabilitation de qualité."
     },
@@ -374,11 +378,11 @@
     },
     "collectivitesTag": "Pour les collectivités",
     "collectivitesTitle": "Luttez contre la désertification médicale",
-    "collectivitesDesc": "I-CA.RE accompagne les collectivités dans la création de centres de santé attractifs pour les professionnels et accessibles pour les habitants.",
+    "collectivitesDesc": "I-CA.RE accompagne les collectivités dans la création d'espaces de soin et de bien-être attractifs pour les praticiens et accessibles pour les habitants.",
     "collectivitesCta": "Organiser un rendez-vous institutionnel",
     "collectivitesBenefits": {
-      "service": "Service de santé local",
-      "serviceDesc": "Ramenez des professionnels de santé dans votre commune et améliorez l'accès aux soins pour vos administrés.",
+      "service": "Offre de soin locale",
+      "serviceDesc": "Ramenez des praticiens du soin et du bien-être dans votre commune et améliorez l'accès aux soins pour vos administrés.",
       "heritage": "Revalorisation du bâti",
       "heritageDesc": "Donnez une nouvelle vie à des bâtiments sous-utilisés ou dégradés grâce à une réhabilitation de qualité.",
       "employment": "Emploi & attractivité",
@@ -389,9 +393,9 @@
     "caseStudyTag": "Exemple de réalisation",
     "caseStudyTitle": "Pey Berland : un actif au cœur de Bordeaux",
     "caseStudyContext": "Le contexte",
-    "caseStudyContextDesc": "En plein centre historique de Bordeaux, au pied de la cathédrale Pey Berland, un local de rez-de-chaussée à requalifier en espace de santé.",
+    "caseStudyContextDesc": "En plein centre historique de Bordeaux, au pied de la cathédrale Pey Berland, un local de rez-de-chaussée à requalifier en espace de soin.",
     "caseStudySolution": "La solution I-CA.RE",
-    "caseStudySolutionDesc": "Réhabilitation intégrale en 5 cabinets et une salle d'attente sur 90 m². L'actif accueille aujourd'hui 8 professionnels — psychologues, psychothérapeute et sophrologues.",
+    "caseStudySolutionDesc": "Réhabilitation intégrale en 5 cabinets et une salle d'attente sur 90 m². L'actif accueille aujourd'hui 8 praticiens — psychologues, psychothérapeute et sophrologues.",
     "caseStudyStats": {
       "offices": "cabinets",
       "practitioners": "locataires",
@@ -399,7 +403,7 @@
       "opening": "en exploitation"
     },
     "ctaTitle": "Envie de contribuer à cette vision ?",
-    "ctaDesc": "Que vous soyez professionnel de santé, élu local ou investisseur, rejoignez-nous dans cette mission."
+    "ctaDesc": "Que vous soyez praticien du soin ou du bien-être, élu local ou investisseur, rejoignez-nous dans cette mission."
   },
   "footer": {
     "baseline": "Des lieux de soin, pensés comme des lieux de vie",
@@ -432,7 +436,7 @@
   },
   "services": {
     "acquisition": "Acquisition & Requalification",
-    "acquisitionDesc": "Nous identifions des rez-de-chaussée urbains sous-valorisés — commerces vacants, locaux obsolètes — et les transformons en espaces de santé performants.",
+    "acquisitionDesc": "Nous identifions des rez-de-chaussée urbains sous-valorisés — commerces vacants, locaux obsolètes — et les transformons en espaces de soin performants.",
     "design": "Conception Centrée Usagers",
     "designDesc": "Chaque espace est conçu pour la confidentialité, la performance acoustique et le confort des praticiens comme des patients.",
     "turnkey": "Cabinets Clés en Main",
@@ -442,7 +446,7 @@
   },
   "benefits": {
     "optimised": "150–200 m² optimisés",
-    "optimisedDesc": "Surfaces de rez-de-chaussée pensées pour la santé et le bien-être.",
+    "optimisedDesc": "Surfaces de rez-de-chaussée pensées pour le soin et le bien-être.",
     "accessibility": "Accessibilité PMR",
     "accessibilityDesc": "Conformité totale aux normes d'accessibilité.",
     "proximity": "Emplacements de Proximité",
@@ -456,7 +460,7 @@
     "retirement": "de départs en retraite de médecins d'ici 2030"
   },
   "impactActions": {
-    "requalification": "Requalification de locaux vacants en espaces de santé",
+    "requalification": "Requalification de locaux vacants en espaces de soin",
     "heritage": "Revalorisation du patrimoine bâti de proximité",
     "territorial": "Développement territorial durable et entrepreneurial"
   },
@@ -466,22 +470,22 @@
     "a_venir": "À venir"
   },
   "typologyLabels": {
-    "cabinet_medical": "Cabinet médical",
+    "cabinet_medical": "Cabinet de soin",
     "pole_pluridisciplinaire": "Pôle pluridisciplinaire",
-    "coworking_sante": "Coworking santé",
+    "coworking_sante": "Coworking soin & bien-être",
     "centre_paramedical": "Centre paramédical",
     "maison_de_sante": "Maison de santé"
   },
   "seo": {
-    "homeTitle": "I-CA.RE — Rénovation de lieux de santé | Cabinets médicaux clé en main",
-    "homeDesc": "I-CA.RE transforme des rez-de-chaussée urbains en espaces de santé et de bien-être. Bordeaux, Floirac, Lormont.",
+    "homeTitle": "I-CA.RE — Espaces de soin et de bien-être | Cabinets clé en main",
+    "homeDesc": "I-CA.RE transforme des rez-de-chaussée urbains en espaces de soin et de bien-être. Bordeaux, Floirac, Lormont.",
     "projectsTitle": "Nos Projets — I-CA.RE",
-    "projectsDesc": "Découvrez les opérations immobilières de santé I-CA.RE : cabinets médicaux, loyers de 600 à 800 €/mois. Bordeaux et métropole bordelaise.",
-    "professionalsTitle": "Professionnels de Santé — Rejoindre I-CA.RE",
+    "projectsDesc": "Découvrez les opérations immobilières de soin I-CA.RE : cabinets de soin, loyers de 600 à 800 €/mois. Bordeaux et métropole bordelaise.",
+    "professionalsTitle": "Praticiens du soin et du bien-être — Rejoindre I-CA.RE",
     "professionalsDesc": "Installez votre cabinet dans un lieu de soin pensé pour durer. Espaces clé en main, conformes et adaptés à votre pratique. Rejoignez I-CA.RE.",
     "approachTitle": "Notre Approche — Vision et méthode I-CA.RE",
-    "approachDesc": "Vision, méthode en 6 étapes et engagement sociétal d'I-CA.RE : rénovation de lieux de santé, lutte contre les déserts médicaux en Nouvelle-Aquitaine et Occitanie.",
+    "approachDesc": "Vision, méthode en 6 étapes et engagement sociétal d'I-CA.RE : rénovation de lieux de soin, lutte contre les déserts médicaux en Nouvelle-Aquitaine et Occitanie.",
     "contactTitle": "Contactez-nous — I-CA.RE",
-    "contactDesc": "Contactez I-CA.RE : rejoignez un cabinet médical, proposez un projet territorial ou explorez nos opportunités d'investissement immobilier de santé."
+    "contactDesc": "Contactez I-CA.RE : rejoignez un cabinet de soin, proposez un projet territorial ou explorez nos opportunités d'investissement immobilier de soin et de bien-être."
   }
 }

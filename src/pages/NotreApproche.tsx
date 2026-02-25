@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import {
   Heart, Target, Users, Building2, HandHeart, Lightbulb, ArrowRight,
-  Search, FileSearch, Ruler, HardHat, Settings, TrendingUp, Shield, Quote,
+  Search, FileSearch, Ruler, HardHat, Settings, TrendingUp, Shield,
 } from "lucide-react";
 import { SECTION_IMAGES } from "@/lib/projectImages";
 
@@ -87,15 +87,16 @@ export default function NotreApproche() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <img src={SECTION_IMAGES.portrait} alt={lang === "fr" ? "Jazmin Cousins — Directrice Générale & Co-founder" : "Jazmin Cousins — Managing Director & Co-founder"} className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]" loading="lazy" />
-              <p className="text-sm text-muted-foreground mt-3 text-center">Jazmin Cousins — {lang === "fr" ? "Directrice Générale & Co-founder" : "Managing Director & Co-founder"}</p>
+              <img src={SECTION_IMAGES.portrait} alt={t("approach.founderName") + " — " + t("approach.founderRole")} className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]" loading="lazy" />
+              <p className="text-sm text-muted-foreground mt-3 text-center">{t("approach.founderName")} — {t("approach.founderRole")}</p>
             </div>
             <div>
-              <div className="flex items-center gap-4 mb-6"><Quote className="w-12 h-12 text-primary" /></div>
-              <blockquote className="text-2xl md:text-3xl font-medium mb-6 leading-relaxed">"{t("approach.founderQuote")}"</blockquote>
-              <div className="border-l-4 border-primary pl-6">
-                <p className="font-semibold text-lg">{t("approach.founderName")}</p>
-                <p className="text-muted-foreground">{t("approach.founderRole")}</p>
+              <h2 className="section-title mb-8">{t("approach.founderSectionTitle")}</h2>
+              <div className="space-y-5 text-lg text-muted-foreground leading-relaxed">
+                <p>{t("approach.founderIntro")}</p>
+                <p>{t("approach.founderJazmin")}</p>
+                <p>{t("approach.founderNicolas")}</p>
+                <p className="font-medium text-foreground italic">{t("approach.founderAmbition")}</p>
               </div>
             </div>
           </div>
