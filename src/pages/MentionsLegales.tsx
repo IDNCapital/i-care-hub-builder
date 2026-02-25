@@ -1,71 +1,104 @@
 import { Layout } from "@/components/Layout";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { localePath } from "@/lib/routes";
 
 export default function MentionsLegales() {
   const { i18n } = useTranslation();
-  const lang = i18n.language === "en" ? "en" : "fr";
+  const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
   return (
     <Layout>
       <Helmet>
         <title>{lang === "en" ? "Legal Notice — I-CA.RE" : "Mentions légales — I-CA.RE"}</title>
-        <meta name="description" content={lang === "en" ? "Legal notice for the I-CA.RE website: publisher, host and director of publication." : "Mentions légales du site I-CA.RE : informations sur l'éditeur, l'hébergeur et le directeur de publication."} />
+        <meta name="description" content={lang === "en" ? "Legal notice for the I-CA.RE website: publisher, host and director of publication." : "Mentions légales du site I-CA.RE : éditeur, hébergeur et directeur de publication."} />
         <meta name="robots" content="noindex" />
       </Helmet>
 
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">{lang === "en" ? "Legal Notice" : "Mentions légales"}</h1>
-          <p className="text-muted-foreground">{lang === "en" ? "Last updated: February 2026" : "Dernière mise à jour : février 2026"}</p>
         </div>
       </section>
 
       <section className="section-padding">
         <div className="container max-w-3xl prose prose-lg">
 
-          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "1. Publisher" : "1. Éditeur du site"}</h2>
+          {/* 1. Éditeur */}
+          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "1. Website Publisher" : "1. Éditeur du site"}</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">
+            {lang === "en" ? "This website is published by:" : "Le présent site est édité par :"}
+          </p>
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
-            <li><strong className="text-foreground">{lang === "en" ? "Company name:" : "Dénomination sociale :"}</strong> I-CA.RE SAS</li>
+            <li><strong className="text-foreground">I-CA.RE</strong></li>
             <li><strong className="text-foreground">{lang === "en" ? "Legal form:" : "Forme juridique :"}</strong> {lang === "en" ? "Simplified Joint Stock Company (SAS)" : "Société par Actions Simplifiée (SAS)"}</li>
-            <li><strong className="text-foreground">{lang === "en" ? "Registered office:" : "Siège social :"}</strong> Bordeaux, France</li>
-            <li><strong className="text-foreground">Email :</strong> <a href="mailto:contact@i-ca.re" className="text-primary hover:underline">contact@i-ca.re</a></li>
-            <li><strong className="text-foreground">{lang === "en" ? "Phone:" : "Téléphone :"}</strong> <a href="tel:+33649808097" className="text-primary hover:underline">06 49 80 80 97</a></li>
+            <li><strong className="text-foreground">{lang === "en" ? "Share capital:" : "Capital social :"}</strong> 1 000 €</li>
+            <li><strong className="text-foreground">{lang === "en" ? "Registered office:" : "Siège social :"}</strong> 106 B rue Bertrand de Goth, 33800 Bordeaux</li>
+            <li><strong className="text-foreground">RCS Bordeaux :</strong> 942 176 884</li>
+            <li><strong className="text-foreground">{lang === "en" ? "EU VAT number:" : "Numéro de TVA intracommunautaire :"}</strong> FR37942176884</li>
+            <li><strong className="text-foreground">Code APE :</strong> 68.20B — {lang === "en" ? "Leasing of land and other real property" : "Location de terrains et autres biens immobiliers"}</li>
+            <li><strong className="text-foreground">{lang === "en" ? "Chair:" : "Président :"}</strong> IDN CAPITAL</li>
+            <li><strong className="text-foreground">{lang === "en" ? "Managing Director:" : "Directeur Général :"}</strong> Jazmin Cousins</li>
           </ul>
+          <div className="mt-4 space-y-2 text-muted-foreground">
+            <p><strong className="text-foreground">Email :</strong> <a href="mailto:contact@i-ca.re" className="text-primary hover:underline">contact@i-ca.re</a></p>
+            <p><strong className="text-foreground">{lang === "en" ? "Phone:" : "Téléphone :"}</strong> <a href="tel:+33649808097" className="text-primary hover:underline">06 49 80 80 97</a></p>
+          </div>
 
-          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "2. Host" : "2. Hébergeur"}</h2>
+          {/* 2. Directeur de publication */}
+          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "2. Director of Publication" : "2. Directeur de la publication"}</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            {lang === "en"
+              ? "The director of publication is the legal representative of I-CA.RE."
+              : "Le directeur de la publication est le représentant légal de la société I-CA.RE."}
+          </p>
+
+          {/* 3. Hébergement */}
+          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "3. Hosting" : "3. Hébergement"}</h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">
+            {lang === "en" ? "The website is hosted by:" : "Le site est hébergé par :"}
+          </p>
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
-            <li><strong className="text-foreground">{lang === "en" ? "Company:" : "Raison sociale :"}</strong> Lovable (Lovable Technologies Inc.)</li>
+            <li><strong className="text-foreground">Lovable</strong> (Lovable Technologies Inc.)</li>
             <li><strong className="text-foreground">{lang === "en" ? "Address:" : "Adresse :"}</strong> San Francisco, CA, {lang === "en" ? "United States" : "États-Unis"}</li>
-            <li><strong className="text-foreground">{lang === "en" ? "Website:" : "Site web :"}</strong> <a href="https://lovable.dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://lovable.dev</a></li>
+            <li><strong className="text-foreground">{lang === "en" ? "Website:" : "Site internet :"}</strong> <a href="https://lovable.dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://lovable.dev</a></li>
           </ul>
 
-          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "3. Intellectual Property" : "3. Propriété intellectuelle"}</h2>
+          {/* 4. Propriété intellectuelle */}
+          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "4. Intellectual Property" : "4. Propriété intellectuelle"}</h2>
           <p className="text-muted-foreground leading-relaxed">
             {lang === "en"
-              ? "All content on this site (text, images, graphics, logo, icons, sounds, software) is the exclusive property of I-CA.RE SAS or its partners and is protected by French and international intellectual property laws. Any reproduction, representation, modification, publication or adaptation of all or part of the elements of the site is prohibited without prior written authorisation."
-              : "L'ensemble du contenu du site (textes, images, graphismes, logo, icônes, sons, logiciels) est la propriété exclusive d'I-CA.RE SAS ou de ses partenaires et est protégé par les lois françaises et internationales relatives à la propriété intellectuelle. Toute reproduction, représentation, modification, publication ou adaptation de tout ou partie des éléments du site est interdite sans autorisation écrite préalable."}
+              ? "All elements composing the website (text, images, graphics, logo, architecture, structure, source code, database) are the exclusive property of I-CA.RE or are subject to a right of use. Any reproduction, representation, modification, publication or adaptation, in whole or in part, of the website elements, by any means or process, is prohibited without prior written authorisation from I-CA.RE."
+              : "L'ensemble des éléments composant le site (textes, images, graphismes, logo, architecture, structure, code source, base de données) est la propriété exclusive de I-CA.RE ou fait l'objet d'un droit d'utilisation. Toute reproduction, représentation, modification, publication ou adaptation, totale ou partielle, des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sans autorisation écrite préalable de I-CA.RE."}
           </p>
 
-          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "4. Limitation of Liability" : "4. Limitation de responsabilité"}</h2>
+          {/* 5. Responsabilité */}
+          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "5. Liability" : "5. Responsabilité"}</h2>
           <p className="text-muted-foreground leading-relaxed">
             {lang === "en"
-              ? "I-CA.RE SAS endeavours to ensure the accuracy and currency of information published on this site. However, it cannot guarantee the accuracy, precision or completeness of the information provided. Accordingly, I-CA.RE SAS declines all liability for any inaccuracies, errors or omissions in the information available on the site."
-              : "I-CA.RE SAS s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur ce site. Toutefois, elle ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition. En conséquence, I-CA.RE SAS décline toute responsabilité pour les éventuelles imprécisions, inexactitudes ou omissions portant sur des informations disponibles sur le site."}
+              ? "I-CA.RE endeavours to ensure the accuracy and currency of information published on the website. However, the company cannot guarantee the accuracy, precision or completeness of the information provided. The use of the information and content available on the website cannot under any circumstances engage the liability of I-CA.RE."
+              : "I-CA.RE s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur le site. Toutefois, la société ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition. L'utilisation des informations et contenus disponibles sur l'ensemble du site ne saurait en aucun cas engager la responsabilité de I-CA.RE."}
           </p>
 
-          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "5. Hyperlinks" : "5. Liens hypertextes"}</h2>
+          {/* 6. Données personnelles */}
+          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "6. Personal Data" : "6. Données personnelles"}</h2>
           <p className="text-muted-foreground leading-relaxed">
             {lang === "en"
-              ? "The site may contain hyperlinks to other sites. I-CA.RE SAS exercises no control over the content of these third-party sites and assumes no liability for their content or any damage resulting from their use."
-              : "Le site peut contenir des liens hypertextes vers d'autres sites. I-CA.RE SAS n'exerce aucun contrôle sur le contenu de ces sites tiers et n'assume aucune responsabilité quant à leur contenu ou aux éventuels dommages résultant de leur utilisation."}
+              ? "Information relating to the processing of personal data is detailed in the "
+              : "Les informations relatives au traitement des données personnelles sont détaillées dans la "}
+            <Link to={localePath(lang, "privacy")} className="text-primary hover:underline">
+              {lang === "en" ? "Privacy Policy" : "Politique de confidentialité"}
+            </Link>
+            {lang === "en" ? " available on the website." : " accessible sur le site."}
           </p>
 
-          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "6. Applicable Law" : "6. Droit applicable"}</h2>
+          {/* 7. Droit applicable */}
+          <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "7. Applicable Law" : "7. Droit applicable"}</h2>
           <p className="text-muted-foreground leading-relaxed">
             {lang === "en"
-              ? "These legal notices are governed by French law. In the event of a dispute, the courts of Bordeaux shall have sole jurisdiction."
-              : "Les présentes mentions légales sont régies par le droit français. En cas de litige, les tribunaux de Bordeaux seront seuls compétents."}
+              ? "This website is subject to French law. Any dispute relating to its use shall fall within the jurisdiction of the competent French courts."
+              : "Le présent site est soumis au droit français. Tout litige relatif à son utilisation relève de la compétence des juridictions françaises compétentes."}
           </p>
         </div>
       </section>
