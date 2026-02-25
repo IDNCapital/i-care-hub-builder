@@ -20,6 +20,7 @@ import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import PolitiqueCookies from "./pages/PolitiqueCookies";
 import NotFound from "./pages/NotFound";
 import { CookieBanner } from "./components/CookieBanner";
+import { ScrollToTop } from "./components/ScrollToTop";
 import { useAnalytics } from "./hooks/useAnalytics";
 
 const queryClient = new QueryClient();
@@ -129,6 +130,7 @@ const App = () => (
               <Route path="/methode" element={<Navigate to="/fr/notre-approche" replace />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <ScrollToTop />
             <CookieBanner />
           </AnalyticsProvider>
         </BrowserRouter>
