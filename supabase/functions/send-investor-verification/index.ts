@@ -169,9 +169,12 @@ Deno.serve(async (req) => {
       }
     }
 
-    const verificationBase = requireEnv("VERIFICATION_LINK_BASE").replace(/\/$/, "");
+    const verificationBase = requireEnv("VERIFICATION_LINK_BASE").trim();
     const verifyPath = locale === "en" ? "/en/investment/verify" : "/fr/investissement/verify";
-    const verificationLink = `${verificationBase}${verifyPath}?token=${verificationToken}`;
+    const verificationLink = new URL(
+      `${verifyPath}?token=${verificationToken}`,
+      verificationBase
+    ).toString();
 
     const isFr = locale !== "en";
     const subject = isFr
