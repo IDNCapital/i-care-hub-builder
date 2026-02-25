@@ -81,7 +81,7 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="font-semibold mb-1">{t("contact.email")}</h3>
-                <a href="mailto:contact@i-care.fr" className="text-muted-foreground hover:text-foreground transition-colors">contact@i-care.fr</a>
+                <a href="mailto:contact@i-ca.re" className="text-muted-foreground hover:text-foreground transition-colors">contact@i-ca.re</a>
               </div>
             </div>
             <div className="flex items-start gap-4 p-6 bg-secondary rounded-2xl">
@@ -90,7 +90,7 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="font-semibold mb-1">{t("contact.phone")}</h3>
-                <a href="tel:+33500000000" className="text-muted-foreground hover:text-foreground transition-colors">05 00 00 00 00</a>
+                <a href="tel:+33649808097" className="text-muted-foreground hover:text-foreground transition-colors">06 49 80 80 97</a>
               </div>
             </div>
           </div>

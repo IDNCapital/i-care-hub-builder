@@ -128,32 +128,7 @@ export default function Professionnels() {
         </div>
       </section>
 
-      {/* Social Proof Bar */}
-      <section className="py-6 bg-foreground">
-        <div className="container">
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-center">
-            <div>
-              <span className="text-2xl font-heading font-bold text-primary">+50</span>
-              <p className="text-xs text-background/60">{t("professionals.socialProof.practitioners")}</p>
-            </div>
-            <div className="w-px h-8 bg-background/15 hidden sm:block" />
-            <div>
-              <span className="text-2xl font-heading font-bold text-primary">3</span>
-              <p className="text-xs text-background/60">{t("professionals.socialProof.centres")}</p>
-            </div>
-            <div className="w-px h-8 bg-background/15 hidden sm:block" />
-            <div>
-              <span className="text-2xl font-heading font-bold text-primary">98%</span>
-              <p className="text-xs text-background/60">{t("professionals.socialProof.satisfaction")}</p>
-            </div>
-            <div className="w-px h-8 bg-background/15 hidden sm:block" />
-            <div>
-              <span className="text-2xl font-heading font-bold text-primary">48h</span>
-              <p className="text-xs text-background/60">{t("professionals.socialProof.response")}</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Spacer instead of unvalidated social proof */}
 
       {/* 3 Pillars */}
       <section className="section-padding">

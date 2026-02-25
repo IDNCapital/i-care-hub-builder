@@ -151,12 +151,7 @@
     "heroSubtitle": "Des espaces clé en main, conformes, lumineux et adaptés à votre pratique.",
     "ctaAvailability": "Voir les disponibilités",
     "ctaExchange": "Planifier un échange",
-    "socialProof": {
-      "practitioners": "praticiens installés",
-      "centres": "centres opérationnels",
-      "satisfaction": "taux de satisfaction",
-      "response": "délai de réponse"
-    },
+    "socialProof": {},
     "whyTitle": "Pourquoi les professionnels choisissent I-CA.RE",
     "whySubtitle": "Trois piliers pour exercer en toute sérénité.",
     "pillars": {
@@ -206,7 +201,7 @@
     "formRgpdLink": "politique de confidentialité",
     "formSubmit": "Envoyer ma demande",
     "formSubmitting": "Envoi en cours…",
-    "formDisclaimer": "Réponse garantie sous 48h ouvrées. Vos données ne sont jamais partagées.",
+    "formDisclaimer": "Vos données ne sont jamais partagées avec des tiers.",
     "formErrorConsent": "Veuillez accepter la politique de confidentialité.",
     "formErrorRequired": "Veuillez remplir les champs obligatoires.",
     "formSuccess": "Votre demande a été envoyée avec succès ! Notre équipe vous recontactera sous 48h.",
@@ -271,8 +266,11 @@
     "offices": "cabinets (12–18 m²)",
     "delivery": "livraison",
     "rent": "loyer / cabinet / mois",
+    "rentDetails": "Les loyers sont maîtrisés et varient entre 600 € et 800 € hors charges, en fonction des surfaces et des spécificités du cabinet.",
     "interested": "Intéressé ?",
     "conceptTitle": "Concept & vision architecturale",
+    "architecturalQuality": "Qualité architecturale",
+    "architecturalQualityDesc": "Chaque cabinet possède une ambiance chaleureuse qui lui est propre, pensée spécifiquement en lien avec son contexte urbain et architectural.\n\nTous les espaces sont rénovés intégralement à neuf et comprennent :\n• Cloisons et portes acoustiques\n• Revêtements sols et murs chaleureux\n• Pompe à chaleur réversible\n• Éclairage LED sur variateur\n• Points d'eau dans les cabinets\n• Système visiophone avec fonction cabinet médical",
     "gallery": "Galerie",
     "keyFeatures": "Caractéristiques clés",
     "practicalInfo": "Informations pratiques",
@@ -463,7 +461,7 @@
     "proximity": "Emplacements de Proximité",
     "proximityDesc": "Au cœur des quartiers, proches des habitants.",
     "rents": "Loyers Maîtrisés",
-    "rentsDesc": "Tarifs encadrés pour une installation sereine."
+    "rentsDesc": "Les loyers varient entre 600 € et 800 € HT/mois, selon les surfaces et spécificités."
   },
   "impacts": {
     "deserts": "des Français concernés par les déserts médicaux",
