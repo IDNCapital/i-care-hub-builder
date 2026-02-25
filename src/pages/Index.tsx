@@ -16,9 +16,9 @@ import {
   Home,
   BadgeEuro,
 } from "lucide-react";
-import heroBuilding from "@/assets/hero-building.jpg";
-import medicalOffice from "@/assets/medical-office.jpg";
-import healthcareProfessional from "@/assets/healthcare-professional.jpg";
+import peyBerlandAttente from "@/assets/pey-berland/attente.webp";
+import peyBerlandCab2 from "@/assets/pey-berland/cab2.webp";
+import nansoutyCab1 from "@/assets/nansouty/cab1.webp";
 
 export default function Index() {
   const { t, i18n } = useTranslation();
@@ -54,7 +54,7 @@ export default function Index() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20">
         <div className="absolute inset-0">
-          <img src={heroBuilding} alt={lang === "fr" ? "Façade d'un espace de santé I-CA.RE rénové en rez-de-chaussée" : "Facade of a renovated I-CA.RE ground-floor healthcare space"} className="w-full h-full object-cover" loading="eager" />
+          <img src={peyBerlandAttente} alt={lang === "fr" ? "Salle d'attente – I-CA.RE Pey Berland" : "Waiting room – I-CA.RE Pey Berland"} className="w-full h-full object-cover" loading="eager" />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/30" />
         </div>
 
@@ -135,7 +135,7 @@ export default function Index() {
               </Button>
             </div>
             <div className="relative">
-              <img src={medicalOffice} alt={lang === "fr" ? "Intérieur lumineux d'un cabinet médical I-CA.RE" : "Bright interior of an I-CA.RE medical office"} className="rounded-xl shadow-card w-full" loading="lazy" />
+              <img src={peyBerlandCab2} alt={lang === "fr" ? "Cabinet – I-CA.RE Pey Berland" : "Office – I-CA.RE Pey Berland"} className="rounded-xl shadow-card w-full" loading="lazy" />
               <div className="absolute -bottom-6 -left-6 bg-card rounded-xl p-5 shadow-card">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
@@ -174,7 +174,7 @@ export default function Index() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
-              <img src={healthcareProfessional} alt={lang === "fr" ? "Professionnelle de santé accueillant un patient" : "Health professional welcoming a patient"} className="rounded-xl shadow-card w-full" loading="lazy" />
+              <img src={nansoutyCab1} alt={lang === "fr" ? "Cabinet – I-CA.RE Nansouty" : "Office – I-CA.RE Nansouty"} className="rounded-xl shadow-card w-full" loading="lazy" />
             </div>
             <div className="order-1 lg:order-2">
               <h2 className="section-title mb-6">{t("home.localImpact")}</h2>

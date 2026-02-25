@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { useProject } from "@/hooks/useProjects";
 import { Analytics } from "@/lib/analytics";
-import heroBuilding from "@/assets/hero-building.jpg";
+import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -94,7 +94,11 @@ export default function ProjetDetail() {
       </Helmet>
 
       <section className="relative h-[60vh] min-h-[400px]">
-        <img src={project.hero_image_url || heroBuilding} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover" loading="eager" />
+        {project.hero_image_url ? (
+          <img src={project.hero_image_url} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover" loading="eager" />
+        ) : (
+          <VisuelsAVenir className="w-full h-full" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 pb-12">
           <div className="container">

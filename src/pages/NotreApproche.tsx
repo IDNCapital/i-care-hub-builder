@@ -8,9 +8,9 @@ import {
   Heart, Target, Users, Building2, HandHeart, Lightbulb, ArrowRight,
   Search, FileSearch, Ruler, HardHat, Settings, TrendingUp, Shield, Quote,
 } from "lucide-react";
-import neighborhood from "@/assets/neighborhood.jpg";
-import healthcareProfessional from "@/assets/healthcare-professional.jpg";
-import renovationBeforeAfter from "@/assets/renovation-before-after.jpg";
+import portraitJazmin from "@/assets/portrait-jazmin.webp";
+import nansoutyAttente from "@/assets/nansouty/attente.webp";
+import peyBerlandFacade from "@/assets/pey-berland/facade.webp";
 
 export default function NotreApproche() {
   const { t, i18n } = useTranslation();
@@ -88,7 +88,10 @@ export default function NotreApproche() {
       <section className="section-padding">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div><img src={healthcareProfessional} alt="I-CA.RE" className="rounded-3xl shadow-elevated w-full" loading="lazy" /></div>
+            <div>
+              <img src={portraitJazmin} alt={lang === "fr" ? "Jazmin Cousins — Directrice Générale & Co-founder" : "Jazmin Cousins — Managing Director & Co-founder"} className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]" loading="lazy" />
+              <p className="text-sm text-muted-foreground mt-3 text-center">Jazmin Cousins — {lang === "fr" ? "Directrice Générale & Co-founder" : "Managing Director & Co-founder"}</p>
+            </div>
             <div>
               <div className="flex items-center gap-4 mb-6"><Quote className="w-12 h-12 text-primary" /></div>
               <blockquote className="text-2xl md:text-3xl font-medium mb-6 leading-relaxed">"{t("approach.founderQuote")}"</blockquote>
@@ -158,7 +161,7 @@ export default function NotreApproche() {
               <h2 className="section-title mb-6">{t("approach.methodTitle")}</h2>
               <p className="text-lg text-muted-foreground">{t("approach.methodDesc")}</p>
             </div>
-            <div><img src={renovationBeforeAfter} alt="I-CA.RE transformation" className="rounded-3xl shadow-elevated w-full" loading="lazy" /></div>
+            <div><img src={peyBerlandFacade} alt={lang === "fr" ? "Façade – I-CA.RE Pey Berland" : "Facade – I-CA.RE Pey Berland"} className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]" loading="lazy" /></div>
           </div>
           <div className="space-y-12">
             {steps.map((step, index) => (
@@ -231,7 +234,7 @@ export default function NotreApproche() {
               <p className="text-lg text-muted-foreground mb-8">{t("approach.collectivitesDesc")}</p>
               <Button asChild><Link to={localePath(lang, "contact")}>{t("approach.collectivitesCta")}<ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
             </div>
-            <div><img src={neighborhood} alt="I-CA.RE neighbourhood" className="rounded-3xl shadow-elevated w-full" loading="lazy" /></div>
+            <div><img src={nansoutyAttente} alt={lang === "fr" ? "Salle d'attente – I-CA.RE Nansouty" : "Waiting room – I-CA.RE Nansouty"} className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]" loading="lazy" /></div>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {collectiviteBenefits.map((b) => (
