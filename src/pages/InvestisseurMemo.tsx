@@ -13,9 +13,12 @@ import {
   UserCheck,
 } from "lucide-react";
 
-// Gate check
+// Gate check — now uses localStorage access token
 function useInvestorAccess() {
-  return sessionStorage.getItem("icare_investor_access") === "granted";
+  const token = localStorage.getItem("icare_investor_token");
+  // Also support legacy sessionStorage for backward compat
+  const legacyAccess = sessionStorage.getItem("icare_investor_access") === "granted";
+  return !!(token || legacyAccess);
 }
 
 const financialModel = [

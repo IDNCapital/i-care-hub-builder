@@ -16,6 +16,8 @@ export type Database = {
     Tables: {
       investor_leads: {
         Row: {
+          access_token_expires_at: string | null
+          access_token_hash: string | null
           area_interest: string | null
           consent: boolean
           consent_at: string | null
@@ -24,6 +26,7 @@ export type Database = {
           first_name: string
           id: string
           last_contacted_at: string | null
+          last_email_sent_at: string | null
           last_name: string
           message: string | null
           notes_internal: string | null
@@ -32,8 +35,14 @@ export type Database = {
           source_page: string
           status: Database["public"]["Enums"]["investor_lead_status"]
           ticket_range: string
+          verification_expires_at: string | null
+          verification_sent_at: string | null
+          verification_token_hash: string | null
+          verified_at: string | null
         }
         Insert: {
+          access_token_expires_at?: string | null
+          access_token_hash?: string | null
           area_interest?: string | null
           consent?: boolean
           consent_at?: string | null
@@ -42,6 +51,7 @@ export type Database = {
           first_name: string
           id?: string
           last_contacted_at?: string | null
+          last_email_sent_at?: string | null
           last_name: string
           message?: string | null
           notes_internal?: string | null
@@ -50,8 +60,14 @@ export type Database = {
           source_page?: string
           status?: Database["public"]["Enums"]["investor_lead_status"]
           ticket_range: string
+          verification_expires_at?: string | null
+          verification_sent_at?: string | null
+          verification_token_hash?: string | null
+          verified_at?: string | null
         }
         Update: {
+          access_token_expires_at?: string | null
+          access_token_hash?: string | null
           area_interest?: string | null
           consent?: boolean
           consent_at?: string | null
@@ -60,6 +76,7 @@ export type Database = {
           first_name?: string
           id?: string
           last_contacted_at?: string | null
+          last_email_sent_at?: string | null
           last_name?: string
           message?: string | null
           notes_internal?: string | null
@@ -68,6 +85,10 @@ export type Database = {
           source_page?: string
           status?: Database["public"]["Enums"]["investor_lead_status"]
           ticket_range?: string
+          verification_expires_at?: string | null
+          verification_sent_at?: string | null
+          verification_token_hash?: string | null
+          verified_at?: string | null
         }
         Relationships: []
       }
