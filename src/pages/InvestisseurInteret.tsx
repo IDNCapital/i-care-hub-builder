@@ -10,9 +10,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
-import { supabase } from "@/integrations/supabase/client";
 import { Analytics } from "@/lib/analytics";
-import { FileText, ArrowLeft } from "lucide-react";
+import { FileText, ArrowLeft, Mail } from "lucide-react";
 
 const PROFILE_KEYS = ["family_office", "investisseur_prive", "cgp", "banque", "autre"] as const;
 const TICKET_KEYS = ["<100k", "100-250k", "250-500k", "500k-1M", ">1M"] as const;
@@ -23,6 +22,7 @@ export default function InvestisseurInteret() {
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -56,33 +56,46 @@ export default function InvestisseurInteret() {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase.from("investor_leads").insert({
-        first_name: formData.firstName.trim().slice(0, 100),
-        last_name: formData.lastName.trim().slice(0, 100),
-        email: formData.email.trim().toLowerCase().slice(0, 255),
-        phone: formData.phone.trim().slice(0, 30) || null,
-        profile_type: formData.profileType,
-        ticket_range: formData.ticketRange,
-        area_interest: formData.areaInterest.trim().slice(0, 200) || null,
-        message: formData.message.trim().slice(0, 2000) || null,
-        consent: true,
-        consent_at: new Date().toISOString(),
-        source_page: `/${lang}/investment`,
-      });
-
-      if (error) {
-        if (error.code === "23505") {
-          toast.success(t("interestForm.successExisting"));
-        } else {
-          throw error;
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const res = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/send-investor-verification`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          },
+          body: JSON.stringify({
+            first_name: formData.firstName.trim().slice(0, 100),
+            last_name: formData.lastName.trim().slice(0, 100),
+            email: formData.email.trim().toLowerCase().slice(0, 255),
+            phone: formData.phone.trim().slice(0, 30) || null,
+            profile_type: formData.profileType,
+            ticket_range: formData.ticketRange,
+            area_interest: formData.areaInterest.trim().slice(0, 200) || null,
+            message: formData.message.trim().slice(0, 2000) || null,
+            locale: lang,
+            source_page: `/${lang}/investissement`,
+          }),
         }
-      } else {
-        toast.success(t("interestForm.successNew"));
+      );
+
+      const result = await res.json();
+
+      if (result.status === "already_verified" && result.access_token) {
+        // Already verified — store token and redirect
+        localStorage.setItem("icare_investor_token", result.access_token);
+        toast.success(t("interestForm.successExisting"));
+        navigate(localePath(lang, "investmentMemo"));
+        return;
       }
 
-      Analytics.formSubmission("investor_interest", `/${lang}/investment/interest`);
-      sessionStorage.setItem("icare_investor_access", "granted");
-      navigate(localePath(lang, "investmentMemo"));
+      if (result.status === "verification_sent" || result.status === "email_already_sent") {
+        setEmailSent(true);
+        Analytics.formSubmission("investor_interest", `/${lang}/investment/interest`);
+      } else if (result.error) {
+        throw new Error(result.error);
+      }
     } catch (err) {
       console.error("Investor lead submission error:", err);
       toast.error(t("interestForm.errorGeneric"));
@@ -94,6 +107,52 @@ export default function InvestisseurInteret() {
   const updateField = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
+  // Confirmation screen after form submission
+  if (emailSent) {
+    return (
+      <Layout>
+        <Helmet>
+          <title>{lang === "en" ? "Check Your Email — I-CA.RE" : "Vérifiez vos emails — I-CA.RE"}</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+        <section className="pt-32 pb-20">
+          <div className="container">
+            <div className="max-w-lg mx-auto text-center">
+              <div className="w-16 h-16 rounded-full bg-primary/15 flex items-center justify-center mx-auto mb-6">
+                <Mail className="w-8 h-8 text-primary" />
+              </div>
+              <h1 className="text-2xl md:text-3xl font-heading font-bold mb-4">
+                {lang === "en" ? "Check your email" : "Vérifiez vos emails"}
+              </h1>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+                {lang === "en"
+                  ? "A confirmation email has been sent to:"
+                  : "Un email de confirmation vient d'être envoyé à :"}
+              </p>
+              <p className="text-lg font-semibold mb-8">{formData.email}</p>
+              <p className="text-muted-foreground leading-relaxed mb-8">
+                {lang === "en"
+                  ? "Click the link in the email to access the investment memo. The link is valid for 24 hours."
+                  : "Cliquez sur le lien dans l'email pour accéder à la note d'investissement. Le lien est valide pendant 24 heures."}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {lang === "en"
+                  ? "Didn't receive the email? Check your spam folder or"
+                  : "Vous n'avez pas reçu l'email ? Vérifiez vos spams ou"}{" "}
+                <button
+                  onClick={() => setEmailSent(false)}
+                  className="text-primary underline hover:no-underline"
+                >
+                  {lang === "en" ? "try again" : "réessayez"}
+                </button>.
+              </p>
+            </div>
+          </div>
+        </section>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

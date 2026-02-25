@@ -13,6 +13,7 @@ import ProjetDetail from "./pages/ProjetDetail";
 import Investissement from "./pages/Investissement";
 import InvestisseurInteret from "./pages/InvestisseurInteret";
 import InvestisseurMemo from "./pages/InvestisseurMemo";
+import InvestisseurVerify from "./pages/InvestisseurVerify";
 import NotreApproche from "./pages/NotreApproche";
 import Contact from "./pages/Contact";
 import MentionsLegales from "./pages/MentionsLegales";
@@ -85,6 +86,7 @@ const App = () => (
                 <Route path="/investissement" element={<Investissement />} />
                 <Route path="/investissement/interet" element={<InvestisseurInteret />} />
                 <Route path="/investissement/memo" element={<InvestisseurMemo />} />
+                <Route path="/investissement/verify" element={<InvestisseurVerify />} />
                 <Route path="/notre-approche" element={<NotreApproche />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/mentions-legales" element={<MentionsLegales />} />
@@ -103,6 +105,7 @@ const App = () => (
                 <Route path="/investment" element={<Investissement />} />
                 <Route path="/investment/interest" element={<InvestisseurInteret />} />
                 <Route path="/investment/memo" element={<InvestisseurMemo />} />
+                <Route path="/investment/verify" element={<InvestisseurVerify />} />
                 <Route path="/our-approach" element={<NotreApproche />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/legal" element={<MentionsLegales />} />
