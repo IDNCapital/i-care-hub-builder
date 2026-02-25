@@ -42,7 +42,7 @@
     "ourOperationsDesc": "Des transformations granulaires, locales et maîtrisées — au service du soin de proximité.",
     "viewAllProjects": "Voir tous les projets",
     "localImpact": "Notre impact local",
-    "localImpactDesc": "Face à la désertification médicale, nous agissons à l'échelle du quartier. Chaque opération I-CA.RE requalifie un local vacant et rapproche les soins des habitants.",
+    "localImpactDesc": "Nous agissons à l'échelle du quartier. Chaque opération I-CA.RE requalifie un local vacant et rapproche les soins des habitants.",
     "readyToJoin": "Prêt à exercer dans un espace I-CA.RE ?",
     "readyToJoinDesc": "Intégrez un cabinet clé en main, au cœur d'un quartier, dans un espace conçu pour votre pratique.",
     "applyNow": "Déposer ma candidature",
@@ -283,15 +283,15 @@
     "founderAmbition": "Leur ambition : créer des lieux de qualité, confortables et apaisants, au service de l'accompagnement humain.",
     "founderName": "Jazmin Cousins",
     "founderRole": "Directrice Générale & Co-founder",
-    "desertTitle": "Face aux déserts médicaux, nous agissons",
-    "desertSubtitle": "Des chiffres qui nous poussent à agir, au quotidien.",
-    "stat1Value": "6 millions",
-    "stat1Label": "de Français sans médecin traitant",
-    "stat2Value": "30%",
-    "stat2Label": "des médecins généralistes partiront à la retraite d'ici 2030",
-    "stat3Value": "87%",
-    "stat3Label": "du territoire classé en zone de tension médicale",
-    "desertP1": "En France, des millions de personnes vivent dans des zones où l'accès aux soins est devenu difficile. Les médecins partent à la retraite, les locaux vétustes se vident, les habitants s'éloignent des services de soin.",
+    "desertTitle": "Notre secteur : large, structurel, durable",
+    "desertSubtitle": "Un marché profond, porté par l'évolution des modes de vie et par des besoins de lieux adaptés à l'accueil du public.",
+    "stat1Value": "77 000",
+    "stat1Label": "psychologues en France (effectifs actifs au 1er janvier 2024)",
+    "stat2Value": "80 000+",
+    "stat2Label": "professionnels de la rééducation (diététiciens, ergothérapeutes, psychomotriciens, orthophonistes, orthoptistes…), hors kinésithérapeutes et pédicures-podologues",
+    "stat3Value": "3 Md€+",
+    "stat3Label": "marché du bien-être de services (espaces et prestations) en France",
+    "desertP1": "Ce n'est pas un « petit marché » : c'est un secteur très profond, porté par l'évolution des modes de vie et par des besoins de lieux adaptés à l'accueil du public — confidentialité, acoustique, qualité d'accueil.",
     "desertP2": "I-CA.RE apporte une réponse concrète : nous identifions les bâtiments à fort potentiel, les transformons en espaces de soin et de bien-être modernes, et y installons des praticiens dans des conditions optimales.",
     "milestones": {
       "2023": "Création d'I-CA.RE",
@@ -320,7 +320,7 @@
       "s1Title": "Identification",
       "s1Desc": "Nous identifions les territoires en tension et les bâtiments à fort potentiel de transformation.",
       "s1d1": "Analyse des besoins de soin locaux",
-      "s1d2": "Cartographie des déserts médicaux",
+      "s1d2": "Cartographie des besoins en locaux de soin",
       "s1d3": "Sourcing d'opportunités foncières",
       "s1d4": "Dialogue avec les élus locaux",
       "s2Title": "Diagnostic",
@@ -377,8 +377,8 @@
       "commercialDesc": "Praticiens, exploitation, services"
     },
     "collectivitesTag": "Pour les collectivités",
-    "collectivitesTitle": "Luttez contre la désertification médicale",
-    "collectivitesDesc": "I-CA.RE accompagne les collectivités dans la création d'espaces de soin et de bien-être attractifs pour les praticiens et accessibles pour les habitants.",
+    "collectivitesTitle": "Un marché profond, des lieux souvent inadaptés",
+    "collectivitesDesc": "Le secteur du soin, du paramédical et du bien-être est porté par des métiers nombreux et une demande structurée. Mais l'offre immobilière n'a pas suivi : beaucoup de praticiens exercent dans des lieux initialement résidentiels ou peu adaptés à la réception du public (confidentialité, acoustique, image professionnelle, accueil).\n\nI-CA.RE répond à cette réalité en requalifiant des rez-de-chaussée et des centralités sous-valorisés pour en faire des lieux de travail et d'accueil réellement pensés pour ces usages.",
     "collectivitesCta": "Organiser un rendez-vous institutionnel",
     "collectivitesBenefits": {
       "service": "Offre de soin locale",
@@ -455,7 +455,7 @@
     "rentsDesc": "Les loyers varient entre 600 € et 800 € HT/mois, selon les surfaces et spécificités."
   },
   "impacts": {
-    "deserts": "des Français concernés par les déserts médicaux",
+    "deserts": "des Français concernés par le manque de praticiens de proximité",
     "noDoctor": "de personnes sans médecin traitant en France",
     "retirement": "de départs en retraite de médecins d'ici 2030"
   },
@@ -484,7 +484,7 @@
     "professionalsTitle": "Praticiens du soin et du bien-être — Rejoindre I-CA.RE",
     "professionalsDesc": "Installez votre cabinet dans un lieu de soin pensé pour durer. Espaces clé en main, conformes et adaptés à votre pratique. Rejoignez I-CA.RE.",
     "approachTitle": "Notre Approche — Vision et méthode I-CA.RE",
-    "approachDesc": "Vision, méthode en 6 étapes et engagement sociétal d'I-CA.RE : rénovation de lieux de soin, lutte contre les déserts médicaux en Nouvelle-Aquitaine et Occitanie.",
+    "approachDesc": "Vision, méthode en 6 étapes et engagement sociétal d'I-CA.RE : rénovation de lieux de soin et de bien-être en Nouvelle-Aquitaine et Occitanie.",
     "contactTitle": "Contactez-nous — I-CA.RE",
     "contactDesc": "Contactez I-CA.RE : rejoignez un cabinet de soin, proposez un projet territorial ou explorez nos opportunités d'investissement immobilier de soin et de bien-être."
   }

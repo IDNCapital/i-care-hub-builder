@@ -189,7 +189,7 @@ export default function NotreApproche() {
       <section className="section-padding bg-foreground text-background">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-6">{t("approach.partnersTitle")}</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 text-accent">{t("approach.partnersTitle")}</h2>
             <p className="text-background/70 text-lg">{t("approach.partnersDesc")}</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
