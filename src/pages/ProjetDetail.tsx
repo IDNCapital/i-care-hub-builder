@@ -18,6 +18,7 @@ import {
 import { useProject } from "@/hooks/useProjects";
 import { Analytics } from "@/lib/analytics";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
+import { getProjectHero, getProjectGallery } from "@/lib/projectImages";
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -94,11 +95,14 @@ export default function ProjetDetail() {
       </Helmet>
 
       <section className="relative h-[60vh] min-h-[400px]">
-        {project.hero_image_url ? (
-          <img src={project.hero_image_url} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover" loading="eager" />
-        ) : (
-          <VisuelsAVenir className="w-full h-full" />
-        )}
+        {(() => {
+          const heroSrc = getProjectHero(project.slug, project.hero_image_url);
+          return heroSrc ? (
+            <img src={heroSrc} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover" loading="eager" />
+          ) : (
+            <VisuelsAVenir className="w-full h-full" />
+          );
+        })()}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 pb-12">
           <div className="container">
@@ -172,16 +176,19 @@ export default function ProjetDetail() {
               <div className="mt-6 bg-secondary rounded-2xl p-6">
                 <p className="text-sm text-muted-foreground leading-relaxed">{t("projectDetail.rentDetails")}</p>
               </div>
-              {project.image_gallery && project.image_gallery.length > 0 && (
-                <div className="mt-12">
-                  <h3 className="text-2xl font-semibold mb-6">{t("projectDetail.gallery")}</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    {project.image_gallery.map((url, i) => (
-                      <img key={i} src={url} alt={`${project.name} — ${i + 1}`} className="rounded-2xl w-full h-48 object-cover" loading="lazy" />
-                    ))}
+              {(() => {
+                const gallery = getProjectGallery(project.slug, project.image_gallery);
+                return gallery.length > 0 ? (
+                  <div className="mt-12">
+                    <h3 className="text-2xl font-semibold mb-6">{t("projectDetail.gallery")}</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      {gallery.map((url, i) => (
+                        <img key={i} src={url} alt={`${project.name} — ${i + 1}`} className="rounded-2xl w-full h-48 object-cover" loading="lazy" />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                ) : null;
+              })()}
             </div>
 
             <div>

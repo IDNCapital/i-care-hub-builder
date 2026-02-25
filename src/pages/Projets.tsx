@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { useProjects } from "@/hooks/useProjects";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
+import { getProjectHero } from "@/lib/projectImages";
 
 export default function Projets() {
   const { t, i18n } = useTranslation();
@@ -124,19 +125,22 @@ export default function Projets() {
               {filtered.map((project) => (
                 <Link key={project.id} to={`${localePath(lang, "projects")}/${project.slug}`} className="group bg-background rounded-3xl overflow-hidden shadow-card hover:shadow-elevated transition-all duration-300 hover:-translate-y-1">
                   <div className="relative aspect-[4/3] overflow-hidden">
-                    {project.hero_image_url ? (
-                      <>
-                        <img src={project.hero_image_url} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                        <div className="absolute top-4 left-4">
-                          <span className={`text-sm font-medium px-3 py-1.5 rounded-full ${statusColor(project.status)}`}>{statusLabels[project.status]}</span>
-                        </div>
-                        <div className="absolute top-4 right-4">
-                          <span className="text-xs font-medium px-3 py-1.5 rounded-full bg-background/90 text-foreground">{typologyLabels[project.typology]}</span>
-                        </div>
-                      </>
-                    ) : (
-                      <VisuelsAVenir className="w-full h-full" />
-                    )}
+                    {(() => {
+                      const heroSrc = getProjectHero(project.slug, project.hero_image_url);
+                      return heroSrc ? (
+                        <>
+                          <img src={heroSrc} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                          <div className="absolute top-4 left-4">
+                            <span className={`text-sm font-medium px-3 py-1.5 rounded-full ${statusColor(project.status)}`}>{statusLabels[project.status]}</span>
+                          </div>
+                          <div className="absolute top-4 right-4">
+                            <span className="text-xs font-medium px-3 py-1.5 rounded-full bg-background/90 text-foreground">{typologyLabels[project.typology]}</span>
+                          </div>
+                        </>
+                      ) : (
+                        <VisuelsAVenir className="w-full h-full" />
+                      );
+                    })()}
                   </div>
                   <div className="p-6">
                     <div className="flex items-center gap-2 text-muted-foreground mb-2">
