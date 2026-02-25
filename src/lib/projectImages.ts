@@ -83,6 +83,33 @@ export const SECTION_IMAGES = {
   approachCollectivites: nansoutyAttente,
 } as const;
 
+// ─── Home hero slideshow (alternating facades / interiors) ─
+
+export interface HeroSlide {
+  src: string;
+  altFr: string;
+  altEn: string;
+}
+
+/** Full set for desktop (7 slides, alternating facade ↔ interior) */
+export const HOME_HERO_SLIDES: HeroSlide[] = [
+  { src: peyBerlandAttente,     altFr: "Salle d'attente – I-CA.RE Pey Berland",   altEn: "Waiting room – I-CA.RE Pey Berland" },
+  { src: nansoutyFacade,        altFr: "Façade – I-CA.RE Nansouty",               altEn: "Facade – I-CA.RE Nansouty" },
+  { src: jardinPublicCab2,      altFr: "Cabinet – I-CA.RE Jardin Public",          altEn: "Office – I-CA.RE Jardin Public" },
+  { src: peyBerlandFacade,      altFr: "Façade – I-CA.RE Pey Berland",            altEn: "Facade – I-CA.RE Pey Berland" },
+  { src: nansoutyCab1,          altFr: "Cabinet – I-CA.RE Nansouty",              altEn: "Office – I-CA.RE Nansouty" },
+  { src: jardinPublicAttente,   altFr: "Salle d'attente – I-CA.RE Jardin Public", altEn: "Waiting room – I-CA.RE Jardin Public" },
+  { src: peyBerlandCab1,        altFr: "Cabinet – I-CA.RE Pey Berland",           altEn: "Office – I-CA.RE Pey Berland" },
+];
+
+/** Reduced set for mobile (4 slides) */
+export const HOME_HERO_SLIDES_MOBILE: HeroSlide[] = [
+  HOME_HERO_SLIDES[0],
+  HOME_HERO_SLIDES[1],
+  HOME_HERO_SLIDES[2],
+  HOME_HERO_SLIDES[3],
+];
+
 // ─── Helpers ─────────────────────────────────────────────
 
 /** Default hero for a page context. Always returns a valid image. */

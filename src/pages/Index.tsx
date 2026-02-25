@@ -17,6 +17,7 @@ import {
   BadgeEuro,
 } from "lucide-react";
 import { getDefaultHero, SECTION_IMAGES } from "@/lib/projectImages";
+import { HeroSlideshow } from "@/components/HeroSlideshow";
 
 export default function Index() {
   const { t, i18n } = useTranslation();
@@ -51,20 +52,17 @@ export default function Index() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20">
-        <div className="absolute inset-0">
-          <img src={getDefaultHero("home")} alt={lang === "fr" ? "Salle d'attente – I-CA.RE Pey Berland" : "Waiting room – I-CA.RE Pey Berland"} className="w-full h-full object-cover" loading="eager" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/30" />
-        </div>
+        <HeroSlideshow lang={lang} />
 
         <div className="container relative z-10 py-20">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-foreground leading-tight mb-6 opacity-0 animate-fade-up">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6 opacity-0 animate-fade-up">
               {t("home.heroTitle")}
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-4 opacity-0 animate-fade-up stagger-1">
+            <p className="text-xl md:text-2xl text-white/80 leading-relaxed mb-4 opacity-0 animate-fade-up stagger-1">
               {t("home.heroSubtitle")}
             </p>
-            <p className="text-base text-muted-foreground/70 font-heading italic mb-10 opacity-0 animate-fade-up stagger-2">
+            <p className="text-base text-white/60 font-heading italic mb-10 opacity-0 animate-fade-up stagger-2">
               Des lieux de soin, pensés comme des lieux de vie
             </p>
             <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-up stagger-3">
