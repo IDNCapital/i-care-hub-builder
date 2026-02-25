@@ -144,6 +144,7 @@ export default function ProjetDetail() {
               <Ruler className="w-8 h-8 text-primary mx-auto mb-3" />
               <p className="text-lg font-bold">600–800 €</p>
               <p className="text-sm text-muted-foreground">{t("projectDetail.rent")}</p>
+              <p className="text-xs text-muted-foreground mt-1">{lang === "fr" ? "HT" : "excl."}</p>
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
               <Phone className="w-8 h-8 text-primary mx-auto mb-3" />
@@ -157,6 +158,15 @@ export default function ProjetDetail() {
               <h2 className="text-3xl font-semibold mb-6">{t("projectDetail.conceptTitle")}</h2>
               <div className="prose prose-lg max-w-none text-muted-foreground">
                 <p className="text-lg leading-relaxed whitespace-pre-line">{description}</p>
+              </div>
+
+              <div className="mt-10 bg-secondary rounded-2xl p-6">
+                <h3 className="text-xl font-semibold mb-4">{t("projectDetail.architecturalQuality")}</h3>
+                <p className="text-muted-foreground whitespace-pre-line text-sm leading-relaxed">{t("projectDetail.architecturalQualityDesc")}</p>
+              </div>
+
+              <div className="mt-6 bg-secondary rounded-2xl p-6">
+                <p className="text-sm text-muted-foreground leading-relaxed">{t("projectDetail.rentDetails")}</p>
               </div>
               {project.image_gallery && project.image_gallery.length > 0 && (
                 <div className="mt-12">

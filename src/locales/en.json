@@ -151,12 +151,7 @@
     "heroSubtitle": "Turnkey, compliant, bright and purpose-designed spaces for your practice.",
     "ctaAvailability": "View Availability",
     "ctaExchange": "Schedule a Call",
-    "socialProof": {
-      "practitioners": "practitioners settled",
-      "centres": "operational centres",
-      "satisfaction": "satisfaction rate",
-      "response": "response time"
-    },
+    "socialProof": {},
     "whyTitle": "Why Professionals Choose I-CA.RE",
     "whySubtitle": "Three pillars for a seamless practice.",
     "pillars": {
@@ -206,7 +201,7 @@
     "formRgpdLink": "Privacy Policy",
     "formSubmit": "Send My Enquiry",
     "formSubmitting": "Sending…",
-    "formDisclaimer": "Guaranteed response within 48 working hours. Your data is never shared.",
+    "formDisclaimer": "Your data is never shared with third parties.",
     "formErrorConsent": "Please accept the privacy policy.",
     "formErrorRequired": "Please fill in all required fields.",
     "formSuccess": "Your enquiry has been sent successfully! Our team will contact you within 48 hours.",
@@ -271,8 +266,11 @@
     "offices": "offices (12–18 sqm)",
     "delivery": "delivery",
     "rent": "rent / office / month",
+    "rentDetails": "Rents are controlled and range between €600 and €800 excluding charges, depending on floor area and specific office features.",
     "interested": "Interested?",
     "conceptTitle": "Concept & Architectural Vision",
+    "architecturalQuality": "Architectural Quality",
+    "architecturalQualityDesc": "Each office has its own warm character, designed specifically in relation to its urban and architectural context.\n\nAll spaces are fully renovated to new standards and include:\n• Acoustic partitions and doors\n• Warm floor and wall finishes\n• Reversible heat pump\n• Dimmable LED lighting\n• Water points in each office\n• Video intercom with medical practice function",
     "gallery": "Gallery",
     "keyFeatures": "Key Features",
     "practicalInfo": "Practical Information",
@@ -463,7 +461,7 @@
     "proximity": "Neighbourhood Locations",
     "proximityDesc": "In the heart of communities, close to residents.",
     "rents": "Controlled Rents",
-    "rentsDesc": "Regulated rates for a stress-free set-up."
+    "rentsDesc": "Rents range between €600 and €800 excl. charges/month, depending on area and features."
   },
   "impacts": {
     "deserts": "of French people affected by medical deserts",

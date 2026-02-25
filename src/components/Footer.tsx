@@ -92,10 +92,16 @@ export function Footer() {
             <div className="space-y-3 text-sm text-background/70">
               <p>Bordeaux, France</p>
               <a
-                href="mailto:contact@i-care.fr"
+                href="mailto:contact@i-ca.re"
                 className="block hover:text-background transition-colors duration-300"
               >
-                contact@i-care.fr
+                contact@i-ca.re
+              </a>
+              <a
+                href="tel:+33649808097"
+                className="block hover:text-background transition-colors duration-300"
+              >
+                06 49 80 80 97
               </a>
             </div>
             <div className="mt-6">
