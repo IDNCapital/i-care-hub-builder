@@ -15,6 +15,14 @@ async function sha256(input: string): Promise<string> {
     .join("");
 }
 
+function requireEnv(name: string): string {
+  const value = Deno.env.get(name);
+  if (!value) {
+    throw new Error(`Missing environment variable: ${name}`);
+  }
+  return value;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -60,8 +68,8 @@ Deno.serve(async (req) => {
     }
 
     const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+      requireEnv("SUPABASE_URL"),
+      requireEnv("SUPABASE_SERVICE_ROLE_KEY")
     );
 
     // Check if lead already exists
@@ -161,8 +169,9 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Send verification email via Infomaniak SMTP
-    const verificationLink = `https://i-ca.re/${locale === "en" ? "en" : "fr"}/investissement/verify?token=${verificationToken}`;
+    const verificationBase = requireEnv("VERIFICATION_LINK_BASE").replace(/\/$/, "");
+    const verifyPath = locale === "en" ? "/en/investment/verify" : "/fr/investissement/verify";
+    const verificationLink = `${verificationBase}${verifyPath}?token=${verificationToken}`;
 
     const isFr = locale !== "en";
     const subject = isFr
@@ -221,18 +230,25 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
+    const smtpHost = requireEnv("INFOMANIAK_SMTP_HOST");
+    const smtpPort = Number(requireEnv("INFOMANIAK_SMTP_PORT"));
+    const smtpUser = requireEnv("INFOMANIAK_SMTP_USER");
+    const smtpPass = requireEnv("INFOMANIAK_SMTP_PASS");
+    const mailFromName = requireEnv("MAIL_FROM_NAME");
+    const mailFromEmail = requireEnv("MAIL_FROM_EMAIL");
+
     const transporter = nodemailer.createTransport({
-      host: "mail.infomaniak.com",
-      port: 465,
-      secure: true,
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
       auth: {
-        user: Deno.env.get("INFOMANIAK_SMTP_USER")!,
-        pass: Deno.env.get("INFOMANIAK_SMTP_PASS")!,
+        user: smtpUser,
+        pass: smtpPass,
       },
     });
 
     await transporter.sendMail({
-      from: `"I-CA.RE" <${Deno.env.get("INFOMANIAK_SMTP_USER")!}>`,
+      from: `"${mailFromName}" <${mailFromEmail}>`,
       to: cleanEmail,
       subject,
       html: htmlBody,
