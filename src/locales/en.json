@@ -42,7 +42,7 @@
     "ourOperationsDesc": "Granular, local and controlled transformations — serving community care.",
     "viewAllProjects": "View All Projects",
     "localImpact": "Our Local Impact",
-    "localImpactDesc": "Facing medical desertification, we act at neighbourhood level. Each I-CA.RE operation requalifies a vacant space and brings care closer to residents.",
+    "localImpactDesc": "We act at neighbourhood level. Each I-CA.RE operation requalifies a vacant space and brings care closer to residents.",
     "readyToJoin": "Ready to practise in an I-CA.RE space?",
     "readyToJoinDesc": "Join a turnkey office, in the heart of a neighbourhood, in a space designed for your practice.",
     "applyNow": "Submit My Application",
@@ -283,15 +283,15 @@
     "founderAmbition": "Their ambition: to create high-quality, comfortable and calming places that support human care.",
     "founderName": "Jazmin Cousins",
     "founderRole": "Managing Director & Co-founder",
-    "desertTitle": "Facing Medical Deserts, We Act",
-    "desertSubtitle": "Figures that drive us to act, every day.",
-    "stat1Value": "6 million",
-    "stat1Label": "people in France without a GP",
-    "stat2Value": "30%",
-    "stat2Label": "of GPs will retire by 2030",
-    "stat3Value": "87%",
-    "stat3Label": "of the territory classified as a medical tension zone",
-    "desertP1": "In France, millions of people live in areas where access to care has become difficult. Doctors are retiring, outdated premises stand empty, and residents are moving further from care services.",
+    "desertTitle": "A broad, structural and durable market",
+    "desertSubtitle": "A deep sector, driven by evolving lifestyles and the need for premises suited to receiving the public.",
+    "stat1Value": "77,000",
+    "stat1Label": "psychologists in France (active professionals as of 1 January 2024)",
+    "stat2Value": "80,000+",
+    "stat2Label": "rehabilitation professionals (dieticians, occupational therapists, psychomotor therapists, speech therapists, orthoptists…), excluding physiotherapists and podiatrists",
+    "stat3Value": "€3bn+",
+    "stat3Label": "wellbeing services market (spaces and services) in France",
+    "desertP1": "The sector is deep: multiple professions, multiple uses, and the real bottleneck is often adapted premises for receiving the public — privacy, acoustic comfort, quality of welcome.",
     "desertP2": "I-CA.RE provides a concrete answer: we identify high-potential buildings, transform them into modern care and wellbeing spaces, and settle practitioners in optimal conditions.",
     "milestones": {
       "2023": "I-CA.RE founded",
@@ -320,7 +320,7 @@
       "s1Title": "Identification",
       "s1Desc": "We identify areas of tension and buildings with high transformation potential.",
       "s1d1": "Analysis of local care needs",
-      "s1d2": "Mapping of medical deserts",
+      "s1d2": "Mapping of care premises needs",
       "s1d3": "Sourcing of property opportunities",
       "s1d4": "Dialogue with local authorities",
       "s2Title": "Diagnostic",
@@ -377,8 +377,8 @@
       "commercialDesc": "Practitioners, operations, services"
     },
     "collectivitesTag": "For Local Authorities",
-    "collectivitesTitle": "Combat Medical Desertification",
-    "collectivitesDesc": "I-CA.RE supports local authorities in creating care and wellbeing spaces that are attractive to practitioners and accessible to residents.",
+    "collectivitesTitle": "Deep demand, often inadequate premises",
+    "collectivitesDesc": "The care, allied health and wellbeing sector is broad and long-term. Yet premises supply often lags behind: many professionals work in spaces originally designed for residential use, not for receiving the public (privacy, acoustics, professional identity, welcome).\n\nI-CA.RE addresses this by requalifying undervalued ground floors and urban centralities into spaces genuinely designed for these practices.",
     "collectivitesCta": "Arrange an Institutional Meeting",
     "collectivitesBenefits": {
       "service": "Local Care Provision",
@@ -455,7 +455,7 @@
     "rentsDesc": "Rents range between €600 and €800 excl. charges/month, depending on area and features."
   },
   "impacts": {
-    "deserts": "of French people affected by medical deserts",
+    "deserts": "of French people affected by lack of local practitioners",
     "noDoctor": "people without a GP in France",
     "retirement": "of GPs retiring by 2030"
   },
@@ -484,7 +484,7 @@
     "professionalsTitle": "Care & Wellbeing Practitioners — Join I-CA.RE",
     "professionalsDesc": "Set up your practice in a care space built to last. Turnkey, compliant spaces designed for your practice. Join I-CA.RE.",
     "approachTitle": "Our Approach — I-CA.RE Vision & Method",
-    "approachDesc": "Vision, 6-step method and societal commitment from I-CA.RE: care space renovation, fighting medical deserts across France.",
+    "approachDesc": "Vision, 6-step method and societal commitment from I-CA.RE: care and wellbeing space renovation across France.",
     "contactTitle": "Contact Us — I-CA.RE",
     "contactDesc": "Contact I-CA.RE: join a care practice, propose a territorial project or explore our care and wellbeing real estate investment opportunities."
   }
