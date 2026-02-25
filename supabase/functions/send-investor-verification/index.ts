@@ -1,5 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
-import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
+import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -221,22 +221,20 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
-    const smtpClient = new SMTPClient({
-      connection: {
-        hostname: "mail.infomaniak.com",
-        port: 587,
-        tls: true,
-        auth: {
-          username: Deno.env.get("INFOMANIAK_SMTP_USER")!,
-          password: Deno.env.get("INFOMANIAK_SMTP_PASS")!,
-        },
-      },
+    const smtpClient = new SmtpClient();
+
+    await smtpClient.connectTLS({
+      hostname: "mail.infomaniak.com",
+      port: 465,
+      username: Deno.env.get("INFOMANIAK_SMTP_USER")!,
+      password: Deno.env.get("INFOMANIAK_SMTP_PASS")!,
     });
 
     await smtpClient.send({
-      from: `I-CA.RE <${Deno.env.get("INFOMANIAK_SMTP_USER")!}>`,
+      from: Deno.env.get("INFOMANIAK_SMTP_USER")!,
       to: cleanEmail,
       subject,
+      content: "",
       html: htmlBody,
     });
 
