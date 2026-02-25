@@ -70,7 +70,7 @@ export default function PolitiqueCookies() {
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">6. Contact</h2>
           <p className="text-muted-foreground leading-relaxed">
-            Pour toute question concernant notre politique de cookies, vous pouvez nous contacter à l'adresse : <a href="mailto:dpo@i-care.fr" className="text-primary hover:underline">dpo@i-care.fr</a>.
+            Pour toute question concernant notre politique de cookies, vous pouvez nous contacter à l'adresse : <a href="mailto:contact@i-ca.re" className="text-primary hover:underline">contact@i-ca.re</a>.
           </p>
         </div>
       </section>

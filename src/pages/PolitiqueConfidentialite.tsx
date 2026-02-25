@@ -96,8 +96,8 @@ export default function PolitiqueConfidentialite() {
             Pour exercer vos droits ou pour toute question relative à la protection de vos données personnelles, vous pouvez contacter notre Délégué à la Protection des Données :
           </p>
           <ul className="space-y-2 text-muted-foreground list-none pl-0 mt-4">
-            <li><strong className="text-foreground">Email :</strong> <a href="mailto:dpo@i-care.fr" className="text-primary hover:underline">dpo@i-care.fr</a></li>
-            <li><strong className="text-foreground">Courrier :</strong> I-CA.RE SAS — DPO, [Adresse], 33000 Bordeaux</li>
+            <li><strong className="text-foreground">Email :</strong> <a href="mailto:contact@i-ca.re" className="text-primary hover:underline">contact@i-ca.re</a></li>
+            <li><strong className="text-foreground">Courrier :</strong> I-CA.RE SAS — DPO, Bordeaux, France</li>
           </ul>
           <p className="text-muted-foreground leading-relaxed mt-4">
             Vous disposez également du droit d'introduire une réclamation auprès de la CNIL (Commission Nationale de l'Informatique et des Libertés) : <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">www.cnil.fr</a>.
