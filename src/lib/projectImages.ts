@@ -22,15 +22,24 @@ import peyBerlandFacade from "@/assets/pey-berland/facade.webp";
 import chartronsFacade from "@/assets/chartrons/facade.webp";
 import chartronsPlan from "@/assets/chartrons/plan.webp";
 
+// Portrait
+import portraitJazmin from "@/assets/portrait-jazmin.webp";
+
+// ─── Types ───────────────────────────────────────────────
+
 export interface ProjectImages {
   hero: string;
   gallery: string[];
 }
 
-/**
- * Local image mapping by project slug.
- * Projects not listed here (e.g. Floirac, Lormont) have no images → "Visuels à venir".
- */
+export type PageContext =
+  | "home"
+  | "professionnels"
+  | "investissement"
+  | "approche";
+
+// ─── Project image mapping (by slug) ─────────────────────
+
 export const PROJECT_IMAGES: Record<string, ProjectImages> = {
   "i-ca-re-nansouty": {
     hero: nansoutyAttente,
@@ -50,6 +59,37 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
   },
 };
 
+// ─── Page-level default heroes ───────────────────────────
+
+const PAGE_HEROES: Record<PageContext, string> = {
+  home: peyBerlandAttente,
+  professionnels: peyBerlandCab1,
+  investissement: nansoutyFacade,
+  approche: nansoutyAttente,
+};
+
+// ─── Section-level images (for inline use) ───────────────
+
+export const SECTION_IMAGES = {
+  /** "Why choose I-CA.RE" section on homepage */
+  homeWhyChoose: peyBerlandCab2,
+  /** Societal impact section on homepage */
+  homeImpact: nansoutyCab1,
+  /** Founder portrait on Notre Approche */
+  portrait: portraitJazmin,
+  /** Method section on Notre Approche */
+  approachMethod: peyBerlandFacade,
+  /** Collectivités section on Notre Approche */
+  approachCollectivites: nansoutyAttente,
+} as const;
+
+// ─── Helpers ─────────────────────────────────────────────
+
+/** Default hero for a page context. Always returns a valid image. */
+export function getDefaultHero(context: PageContext): string {
+  return PAGE_HEROES[context] ?? peyBerlandAttente;
+}
+
 /** Get hero image for a project, falling back to DB url or undefined */
 export function getProjectHero(slug: string, dbHeroUrl?: string | null): string | undefined {
   return PROJECT_IMAGES[slug]?.hero ?? dbHeroUrl ?? undefined;
@@ -59,6 +99,5 @@ export function getProjectHero(slug: string, dbHeroUrl?: string | null): string 
 export function getProjectGallery(slug: string, dbGallery?: string[] | null): string[] {
   const local = PROJECT_IMAGES[slug]?.gallery ?? [];
   const db = dbGallery ?? [];
-  // Prefer local, append any DB images not already present
   return [...local, ...db.filter((url) => !local.includes(url))];
 }

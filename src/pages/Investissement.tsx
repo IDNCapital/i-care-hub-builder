@@ -13,7 +13,7 @@ import {
   HandshakeIcon,
   ArrowRight,
 } from "lucide-react";
-import nansoutyFacade from "@/assets/nansouty/facade.webp";
+import { getDefaultHero } from "@/lib/projectImages";
 
 const modelStepsData = [
   {
@@ -115,7 +115,7 @@ export default function Investissement() {
       {/* Hero */}
       <section className="relative min-h-[80vh] flex items-center pt-20">
         <div className="absolute inset-0">
-          <img src={nansoutyFacade} alt={lang === "fr" ? "Façade – I-CA.RE Nansouty" : "Facade – I-CA.RE Nansouty"} className="w-full h-full object-cover" loading="eager" />
+          <img src={getDefaultHero("investissement")} alt={lang === "fr" ? "Façade – I-CA.RE Nansouty" : "Facade – I-CA.RE Nansouty"} className="w-full h-full object-cover" loading="eager" />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/75 to-foreground/30" />
         </div>
         <div className="container relative z-10 py-20">
