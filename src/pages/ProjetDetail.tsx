@@ -100,6 +100,7 @@ export default function ProjetDetail() {
           <VisuelsAVenir className="w-full h-full" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 pb-12">
           <div className="container">
             <Link to={localePath(lang, "projects")} className="inline-flex items-center text-sm text-background/80 hover:text-background mb-4 transition-colors">
               <ArrowLeft className="mr-2 h-4 w-4" />
