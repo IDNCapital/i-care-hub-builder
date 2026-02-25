@@ -36,7 +36,7 @@ export function useProject(slug: string) {
 
 export const STATUS_LABELS: Record<string, string> = {
   en_exploitation: "En exploitation",
-  en_travaux: "En travaux",
+  en_travaux: "En développement",
   a_venir: "À venir",
 };
 

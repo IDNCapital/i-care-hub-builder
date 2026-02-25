@@ -226,20 +226,7 @@
       "1an": "Within the year",
       "plus": "Over a year"
     },
-    "testimonials": {
-      "t1Quote": "I found in I-CA.RE a partner who truly understands my profession. My office is bright, functional and my patients notice the difference.",
-      "t1Name": "Dr Marie L.",
-      "t1Role": "General Practitioner",
-      "t1Location": "Floirac",
-      "t2Quote": "The administrative support saved me considerable time. I focused on my clinical set-up; I-CA.RE handled everything else.",
-      "t2Name": "Sophie D.",
-      "t2Role": "Physiotherapist",
-      "t2Location": "Bordeaux Bastide",
-      "t3Quote": "The acoustic insulation is outstanding. My patients feel at ease the moment they walk in. It's exactly what I was looking for.",
-      "t3Name": "Thomas R.",
-      "t3Role": "Psychologist",
-      "t3Location": "Bordeaux Bastide"
-    }
+    "testimonials": {}
   },
   "projects": {
     "title": "Our Projects",
@@ -303,10 +290,10 @@
     "desertP1": "In France, millions of people live in areas where access to healthcare has become difficult. Doctors are retiring, outdated premises stand empty, and residents are moving further from health services.",
     "desertP2": "I-CA.RE provides a concrete answer: we identify high-potential buildings, transform them into modern healthcare spaces, and settle practitioners in optimal conditions.",
     "milestones": {
-      "2022": "I-CA.RE founded",
-      "2023": "First project in Floirac",
-      "2024": "Expansion to Toulouse",
-      "2025": "3 operational centres"
+      "2023": "I-CA.RE founded",
+      "2024": "First operating assets in Bordeaux",
+      "2025": "3 operating assets, 3 in development",
+      "2026": "Chartrons delivery (Q4), Floirac and Lormont start"
     },
     "valuesTitle": "Our Values",
     "valuesSubtitle": "The principles that guide every decision we make.",
@@ -400,16 +387,16 @@
       "securityDesc": "Benefit from a solid operator committed to long-term management and community engagement."
     },
     "caseStudyTag": "Case Study",
-    "caseStudyTitle": "Floirac: An Exemplary Healthcare Centre",
+    "caseStudyTitle": "Pey Berland: An Asset in the Heart of Bordeaux",
     "caseStudyContext": "Context",
-    "caseStudyContextDesc": "A town of 17,000 inhabitants on the outskirts of Bordeaux, Floirac faced an acute shortage of healthcare professionals.",
+    "caseStudyContextDesc": "In the historic centre of Bordeaux, at the foot of the Pey Berland cathedral, a ground-floor unit to be requalified as a healthcare space.",
     "caseStudySolution": "The I-CA.RE Solution",
-    "caseStudySolutionDesc": "Refurbishment of a former 800 sqm retail unit into a multidisciplinary healthcare hub, with 8 offices and full disability access.",
+    "caseStudySolutionDesc": "Full refurbishment into 5 offices and a waiting room across 90 sqm. The asset now hosts 8 professionals — psychologists, psychotherapist and sophrologists.",
     "caseStudyStats": {
       "offices": "offices",
-      "practitioners": "practitioners",
+      "practitioners": "tenants",
       "surface": "floor area",
-      "opening": "opening"
+      "opening": "operating"
     },
     "ctaTitle": "Want to contribute to this vision?",
     "ctaDesc": "Whether you are a health professional, a local authority or an investor, join us in this mission."
@@ -475,7 +462,7 @@
   },
   "statusLabels": {
     "en_exploitation": "Operational",
-    "en_travaux": "Under Construction",
+    "en_travaux": "In Development",
     "a_venir": "Upcoming"
   },
   "typologyLabels": {
@@ -487,9 +474,9 @@
   },
   "seo": {
     "homeTitle": "I-CA.RE — Healthcare Space Renovation | Turnkey Medical Offices",
-    "homeDesc": "I-CA.RE transforms urban ground floors into healthcare and well-being spaces: 150–200 sqm, 7 to 10 offices, confidentiality and acoustic comfort. Bordeaux and Toulouse.",
+    "homeDesc": "I-CA.RE transforms urban ground floors into healthcare and well-being spaces. Bordeaux, Floirac, Lormont.",
     "projectsTitle": "Our Projects — I-CA.RE",
-    "projectsDesc": "Discover I-CA.RE healthcare real estate operations: 12 to 18 sqm offices, rents from €600 to €800/month, 5 offices per 100 sqm. Bordeaux, Toulouse.",
+    "projectsDesc": "Discover I-CA.RE healthcare real estate operations: medical offices, rents from €600 to €800/month. Bordeaux metropolitan area.",
     "professionalsTitle": "Health Professionals — Join I-CA.RE",
     "professionalsDesc": "Set up your practice in a healthcare space built to last. Turnkey, compliant spaces designed for your practice. Join I-CA.RE.",
     "approachTitle": "Our Approach — I-CA.RE Vision & Method",
