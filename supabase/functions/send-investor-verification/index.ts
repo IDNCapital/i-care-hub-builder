@@ -1,5 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
-import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
+import nodemailer from "npm:nodemailer@6.9.16";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -221,24 +221,22 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
-    const smtpClient = new SmtpClient();
-
-    await smtpClient.connectTLS({
-      hostname: "mail.infomaniak.com",
+    const transporter = nodemailer.createTransport({
+      host: "mail.infomaniak.com",
       port: 465,
-      username: Deno.env.get("INFOMANIAK_SMTP_USER")!,
-      password: Deno.env.get("INFOMANIAK_SMTP_PASS")!,
+      secure: true,
+      auth: {
+        user: Deno.env.get("INFOMANIAK_SMTP_USER")!,
+        pass: Deno.env.get("INFOMANIAK_SMTP_PASS")!,
+      },
     });
 
-    await smtpClient.send({
-      from: Deno.env.get("INFOMANIAK_SMTP_USER")!,
+    await transporter.sendMail({
+      from: `"I-CA.RE" <${Deno.env.get("INFOMANIAK_SMTP_USER")!}>`,
       to: cleanEmail,
       subject,
-      content: "",
       html: htmlBody,
     });
-
-    await smtpClient.close();
 
     return new Response(
       JSON.stringify({ status: "verification_sent" }),
