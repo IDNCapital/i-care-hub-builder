@@ -51,10 +51,10 @@ export default function NotreApproche() {
   ];
 
   const milestones = [
-    { year: "2022", event: t("approach.milestones.2022") },
     { year: "2023", event: t("approach.milestones.2023") },
     { year: "2024", event: t("approach.milestones.2024") },
     { year: "2025", event: t("approach.milestones.2025") },
+    { year: "2026", event: t("approach.milestones.2026") },
   ];
 
   const teamMembers = [
@@ -253,7 +253,7 @@ export default function NotreApproche() {
                 <div><h4 className="font-semibold mb-2">{t("approach.caseStudySolution")}</h4><p className="text-muted-foreground">{t("approach.caseStudySolutionDesc")}</p></div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[{ value: "8", label: t("approach.caseStudyStats.offices") }, { value: "12", label: t("approach.caseStudyStats.practitioners") }, { value: "800m²", label: t("approach.caseStudyStats.surface") }, { value: "2025", label: t("approach.caseStudyStats.opening") }].map((s) => (
+                {[{ value: "5", label: t("approach.caseStudyStats.offices") }, { value: "8", label: t("approach.caseStudyStats.practitioners") }, { value: "90m²", label: t("approach.caseStudyStats.surface") }, { value: "✓", label: t("approach.caseStudyStats.opening") }].map((s) => (
                   <div key={s.label} className="text-center p-4 bg-background rounded-xl">
                     <p className="text-2xl font-bold text-primary">{s.value}</p>
                     <p className="text-sm text-muted-foreground">{s.label}</p>

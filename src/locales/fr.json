@@ -226,20 +226,7 @@
       "1an": "Dans l'année",
       "plus": "Plus d'un an"
     },
-    "testimonials": {
-      "t1Quote": "J'ai trouvé en I-CA.RE un partenaire qui comprend les réalités de mon métier. Mon cabinet est lumineux, fonctionnel et mes patients le remarquent.",
-      "t1Name": "Dr. Marie L.",
-      "t1Role": "Médecin généraliste",
-      "t1Location": "Floirac",
-      "t2Quote": "L'accompagnement administratif m'a fait gagner un temps précieux. Je me suis concentrée sur mon installation clinique, I-CA.RE a géré le reste.",
-      "t2Name": "Sophie D.",
-      "t2Role": "Kinésithérapeute",
-      "t2Location": "Bordeaux Bastide",
-      "t3Quote": "L'isolation acoustique est exceptionnelle. Mes patients se sentent en confiance dès qu'ils entrent dans le cabinet. C'est exactement ce que je cherchais.",
-      "t3Name": "Thomas R.",
-      "t3Role": "Psychologue",
-      "t3Location": "Bordeaux Bastide"
-    }
+    "testimonials": {}
   },
   "projects": {
     "title": "Nos Projets",
@@ -303,10 +290,10 @@
     "desertP1": "En France, des millions de personnes vivent dans des zones où l'accès aux soins est devenu difficile. Les médecins partent à la retraite, les locaux vétustes se vident, les habitants s'éloignent des services de santé.",
     "desertP2": "I-CA.RE apporte une réponse concrète : nous identifions les bâtiments à fort potentiel, les transformons en espaces de santé modernes, et y installons des professionnels dans des conditions optimales.",
     "milestones": {
-      "2022": "Création d'I-CA.RE",
-      "2023": "Premier projet à Floirac",
-      "2024": "Expansion vers Toulouse",
-      "2025": "3 centres opérationnels"
+      "2023": "Création d'I-CA.RE",
+      "2024": "Premiers actifs en exploitation à Bordeaux",
+      "2025": "3 actifs exploités, 3 en développement",
+      "2026": "Livraison Chartrons (T4), démarrage Floirac et Lormont"
     },
     "valuesTitle": "Nos valeurs",
     "valuesSubtitle": "Les principes qui guident chacune de nos décisions.",
@@ -400,16 +387,16 @@
       "securityDesc": "Bénéficiez d'un opérateur solide qui s'engage sur le long terme dans la gestion et l'animation du lieu."
     },
     "caseStudyTag": "Exemple de réalisation",
-    "caseStudyTitle": "Floirac : un centre de santé exemplaire",
+    "caseStudyTitle": "Pey Berland : un actif au cœur de Bordeaux",
     "caseStudyContext": "Le contexte",
-    "caseStudyContextDesc": "Commune de 17 000 habitants en périphérie de Bordeaux, Floirac faisait face à un manque criant de professionnels de santé.",
+    "caseStudyContextDesc": "En plein centre historique de Bordeaux, au pied de la cathédrale Pey Berland, un local de rez-de-chaussée à requalifier en espace de santé.",
     "caseStudySolution": "La solution I-CA.RE",
-    "caseStudySolutionDesc": "Réhabilitation d'un ancien local commercial de 800m² en pôle de santé pluridisciplinaire, avec 8 cabinets et accessibilité PMR complète.",
+    "caseStudySolutionDesc": "Réhabilitation intégrale en 5 cabinets et une salle d'attente sur 90 m². L'actif accueille aujourd'hui 8 professionnels — psychologues, psychothérapeute et sophrologues.",
     "caseStudyStats": {
       "offices": "cabinets",
-      "practitioners": "praticiens",
+      "practitioners": "locataires",
       "surface": "de surface",
-      "opening": "ouverture"
+      "opening": "en exploitation"
     },
     "ctaTitle": "Envie de contribuer à cette vision ?",
     "ctaDesc": "Que vous soyez professionnel de santé, élu local ou investisseur, rejoignez-nous dans cette mission."
@@ -475,7 +462,7 @@
   },
   "statusLabels": {
     "en_exploitation": "En exploitation",
-    "en_travaux": "En travaux",
+    "en_travaux": "En développement",
     "a_venir": "À venir"
   },
   "typologyLabels": {
@@ -487,9 +474,9 @@
   },
   "seo": {
     "homeTitle": "I-CA.RE — Rénovation de lieux de santé | Cabinets médicaux clé en main",
-    "homeDesc": "I-CA.RE transforme des rez-de-chaussée urbains en espaces de santé et de bien-être : 150–200 m², 7 à 10 cabinets, confidentialité et confort acoustique. Bordeaux et Toulouse.",
+    "homeDesc": "I-CA.RE transforme des rez-de-chaussée urbains en espaces de santé et de bien-être. Bordeaux, Floirac, Lormont.",
     "projectsTitle": "Nos Projets — I-CA.RE",
-    "projectsDesc": "Découvrez les opérations immobilières de santé I-CA.RE : cabinets de 12 à 18 m², loyers de 600 à 800 €/mois, 5 cabinets pour 100 m². Bordeaux, Toulouse, Nouvelle-Aquitaine.",
+    "projectsDesc": "Découvrez les opérations immobilières de santé I-CA.RE : cabinets médicaux, loyers de 600 à 800 €/mois. Bordeaux et métropole bordelaise.",
     "professionalsTitle": "Professionnels de Santé — Rejoindre I-CA.RE",
     "professionalsDesc": "Installez votre cabinet dans un lieu de soin pensé pour durer. Espaces clé en main, conformes et adaptés à votre pratique. Rejoignez I-CA.RE.",
     "approachTitle": "Notre Approche — Vision et méthode I-CA.RE",

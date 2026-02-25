@@ -58,11 +58,6 @@ export default function Professionnels() {
     { icon: Key, number: "04", title: t("professionals.steps.install"), description: t("professionals.steps.installDesc") },
   ];
 
-  const testimonials = [
-    { quote: t("professionals.testimonials.t1Quote"), name: t("professionals.testimonials.t1Name"), role: t("professionals.testimonials.t1Role"), location: t("professionals.testimonials.t1Location"), rating: 5 },
-    { quote: t("professionals.testimonials.t2Quote"), name: t("professionals.testimonials.t2Name"), role: t("professionals.testimonials.t2Role"), location: t("professionals.testimonials.t2Location"), rating: 5 },
-    { quote: t("professionals.testimonials.t3Quote"), name: t("professionals.testimonials.t3Name"), role: t("professionals.testimonials.t3Role"), location: t("professionals.testimonials.t3Location"), rating: 5 },
-  ];
 
   const professionOptions = [
     "medecin_generaliste", "medecin_specialiste", "infirmier", "kinesitherapeute",
@@ -184,32 +179,7 @@ export default function Professionnels() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="section-padding">
-        <div className="container">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="section-title">{t("professionals.testimonialsTitle")}</h2>
-            <p className="section-subtitle mx-auto">{t("professionals.testimonialsSubtitle")}</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial) => (
-              <div key={testimonial.name} className="bg-card rounded-xl p-8 relative shadow-card">
-                <Quote className="w-8 h-8 text-accent/50 absolute top-6 right-6" />
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-accent text-accent" />
-                  ))}
-                </div>
-                <blockquote className="text-foreground leading-relaxed mb-6">"{testimonial.quote}"</blockquote>
-                <div className="border-t border-border pt-4">
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role} — {testimonial.location}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Form */}
       <section id="candidature" className="section-padding bg-foreground">
