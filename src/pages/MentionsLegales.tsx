@@ -60,9 +60,9 @@ export default function MentionsLegales() {
             {lang === "en" ? "The website is hosted by:" : "Le site est hébergé par :"}
           </p>
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
-            <li><strong className="text-foreground">Lovable</strong> (Lovable Technologies Inc.)</li>
-            <li><strong className="text-foreground">{lang === "en" ? "Address:" : "Adresse :"}</strong> San Francisco, CA, {lang === "en" ? "United States" : "États-Unis"}</li>
-            <li><strong className="text-foreground">{lang === "en" ? "Website:" : "Site internet :"}</strong> <a href="https://lovable.dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://lovable.dev</a></li>
+            <li><strong className="text-foreground">INFOMANIAK NETWORK SA</strong></li>
+            <li><strong className="text-foreground">{lang === "en" ? "Address:" : "Adresse :"}</strong> Rue Eugène-Marziano 25, 1227 Les Acacias (Genève), {lang === "en" ? "Switzerland" : "Suisse"}</li>
+            <li><strong className="text-foreground">{lang === "en" ? "Website:" : "Site internet :"}</strong> <a href="https://www.infomaniak.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://www.infomaniak.com</a></li>
           </ul>
 
           {/* 4. Propriété intellectuelle */}
