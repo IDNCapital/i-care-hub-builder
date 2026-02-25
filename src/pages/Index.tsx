@@ -55,7 +55,7 @@ export default function Index() {
         <HeroSlideshow lang={lang} />
 
         <div className="container relative z-10 py-20">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl bg-foreground/20 backdrop-blur-[2px] rounded-2xl p-8 md:p-12">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6 opacity-0 animate-fade-up">
               {t("home.heroTitle")}
             </h1>

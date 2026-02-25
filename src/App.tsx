@@ -89,6 +89,7 @@ const App = () => (
                 <Route path="/mentions-legales" element={<MentionsLegales />} />
                 <Route path="/confidentialite" element={<PolitiqueConfidentialite />} />
                 <Route path="/cookies" element={<PolitiqueCookies />} />
+                <Route path="/praticiens" element={<Professionnels />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
 
@@ -106,6 +107,7 @@ const App = () => (
                 <Route path="/legal" element={<MentionsLegales />} />
                 <Route path="/privacy" element={<PolitiqueConfidentialite />} />
                 <Route path="/cookies" element={<PolitiqueCookies />} />
+                <Route path="/practitioners" element={<Professionnels />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
 

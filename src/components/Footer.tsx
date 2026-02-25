@@ -31,7 +31,7 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link to={localePath(lang, "home")} className="inline-block">
-              <span className="text-2xl font-heading font-bold tracking-tight">
+            <span className="text-2xl font-heading font-bold tracking-tight whitespace-nowrap">
                 <span className="text-primary">I-</span>
                 <span className="text-background">CA</span>
                 <span className="text-primary">.</span>
