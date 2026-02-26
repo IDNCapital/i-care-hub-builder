@@ -12,64 +12,31 @@ import {
   Search,
   HandshakeIcon,
   ArrowRight,
+  Heart,
+  Shield,
+  Settings,
 } from "lucide-react";
 import { getDefaultHero } from "@/lib/projectImages";
-
-const modelStepsData = [
-  {
-    number: "01",
-    titleKey: "acquisition",
-    descKey: "acquisitionDesc",
-  },
-  {
-    number: "02",
-    titleKey: "requalification",
-    descKey: "requalificationDesc",
-  },
-  {
-    number: "03",
-    titleKey: "stabilisation",
-    descKey: "stabilisationDesc",
-  },
-  {
-    number: "04",
-    titleKey: "exit",
-    descKey: "exitDesc",
-  },
-];
 
 export default function Investissement() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
-  const modelSteps = [
+  const pillars = [
     {
-      number: "01",
-      title: lang === "en" ? "Acquisition" : "Acquisition",
-      description: lang === "en"
-        ? "Identification and acquisition of undervalued urban ground floors (vacant retail, obsolete premises) in areas with strong healthcare demand."
-        : "Identification et sécurisation de rez-de-chaussée urbains sous-valorisés (commerces vacants, locaux obsolètes) dans des zones à forte demande de santé.",
+      icon: Heart,
+      title: t("investment.pillar1Title"),
+      description: t("investment.pillar1Desc"),
     },
     {
-      number: "02",
-      title: lang === "en" ? "Requalification" : "Requalification",
-      description: lang === "en"
-        ? "Transformation into 7 to 10 healthcare and well-being offices (12–18 sqm each). Design optimised for confidentiality, acoustic performance and comfort."
-        : "Transformation en 7 à 10 cabinets de santé et bien-être (12–18 m² chacun). Conception optimisée pour la confidentialité, la performance acoustique et le confort.",
+      icon: Shield,
+      title: t("investment.pillar2Title"),
+      description: t("investment.pillar2Desc"),
     },
     {
-      number: "03",
-      title: lang === "en" ? "Stabilisation" : "Stabilisation",
-      description: lang === "en"
-        ? "Targeted leasing to healthcare professionals. Occupancy within 24 to 36 months. Granular multi-tenant structure reducing vacancy risk."
-        : "Commercialisation ciblée auprès des professionnels de santé. Remplissage locatif en 24 à 36 mois. Structure multi-locataires granulaire réduisant le risque de vacance.",
-    },
-    {
-      number: "04",
-      title: lang === "en" ? "Exit" : "Cession",
-      description: lang === "en"
-        ? "Sale of the stabilised asset after 4 years. The sponsor leads the exit strategy in coordination with the investor."
-        : "Revente de l'actif stabilisé après 4 ans. Le sponsor pilote la stratégie de sortie en coordination avec l'investisseur.",
+      icon: Settings,
+      title: t("investment.pillar3Title"),
+      description: t("investment.pillar3Desc"),
     },
   ];
 
@@ -78,8 +45,8 @@ export default function Investissement() {
       icon: Landmark,
       title: lang === "en" ? "Banks & Credit Institutions" : "Banques & établissements de crédit",
       description: lang === "en"
-        ? "Structured operation financing, complete dossiers, sponsor-led. Each project includes senior debt (~60% LTV) at asset level."
-        : "Financement d'opérations structurées, dossiers complets, sponsor-led. Chaque projet fait l'objet d'un montage avec dette senior (~60 % LTV) au niveau de l'actif.",
+        ? "Structured operation financing, complete dossiers. Each project includes senior debt at asset level."
+        : "Financement d'opérations structurées, dossiers complets. Chaque projet fait l'objet d'un montage avec dette senior au niveau de l'actif.",
       cta: lang === "en" ? "Discuss Financing" : "Discuter d'un financement",
     },
     {
@@ -94,8 +61,8 @@ export default function Investissement() {
       icon: HandshakeIcon,
       title: lang === "en" ? "Landlords & Property Owners" : "Bailleurs & propriétaires",
       description: lang === "en"
-        ? "Asset revaluation through complete requalification and multi-tenant leasing. Retain or sell a high-performing asset."
-        : "Revalorisation de votre actif par une requalification complète et une commercialisation multi-locataires. Vous conservez ou cédez un bien performant.",
+        ? "Asset revaluation through complete requalification and multi-tenant leasing. Retain a high-performing, sustainably managed asset."
+        : "Revalorisation de votre actif par une requalification complète et une commercialisation multi-locataires. Conservez un bien performant, durablement géré.",
       cta: lang === "en" ? "Revalue My Asset" : "Revaloriser mon actif",
     },
   ];
@@ -103,12 +70,12 @@ export default function Investissement() {
   return (
     <Layout>
       <Helmet>
-        <title>{lang === "en" ? "Healthcare Real Estate Investment — I-CA.RE" : "Investissement immobilier de santé — I-CA.RE"}</title>
+        <title>{lang === "en" ? "Invest in a Family-Backed Impact Real Estate Company — I-CA.RE" : "Investir dans une foncière privée familiale à impact — I-CA.RE"}</title>
         <meta
           name="description"
           content={lang === "en"
-            ? "I-CA.RE transforms urban ground floors into healthcare spaces: 150–200 sqm, 7–10 offices, stabilisation in 24–36 months. Request our investment memo."
-            : "I-CA.RE transforme des rez-de-chaussée urbains en espaces de santé : 150–200 m², 7–10 cabinets, stabilisation en 24–36 mois. Recevez notre note d'investissement."}
+            ? "I-CA.RE is a family-backed private real estate company transforming urban ground floors into care spaces. A patient capital approach, founded on utility and long-term stewardship."
+            : "I-CA.RE est une foncière privée familiale qui transforme des rez-de-chaussée urbains en espaces de soin. Une démarche patrimoniale responsable, fondée sur l'utilité et la gestion de long terme."}
         />
       </Helmet>
 
@@ -121,13 +88,17 @@ export default function Investissement() {
         <div className="container relative z-10 py-20">
           <div className="max-w-2xl">
             <span className="inline-block px-4 py-1.5 border border-background/20 text-background/70 text-xs font-bold uppercase tracking-[0.1em] rounded-full mb-6 opacity-0 animate-fade-up">
-              {t("investment.heroTag")}
+              {lang === "en" ? "Family-backed private real estate" : "Foncière privée familiale"}
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-background leading-tight mb-6 opacity-0 animate-fade-up stagger-1">
-              {t("investment.heroTitle")}
+              {lang === "en"
+                ? "Invest in I-CA.RE: a family-backed private real estate company serving community care"
+                : "Investir dans I-CA.RE : une foncière privée familiale au service de la santé de proximité"}
             </h1>
             <p className="text-xl md:text-2xl text-background/70 leading-relaxed mb-10 opacity-0 animate-fade-up stagger-2">
-              {t("investment.heroSubtitle")}
+              {lang === "en"
+                ? "A responsible, long-term stewardship strategy, founded on useful, well-located and sustainably operated assets."
+                : "Une stratégie patrimoniale responsable, fondée sur des actifs utiles, bien situés et durablement exploités."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-up stagger-3">
               <Button variant="hero" asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
@@ -171,7 +142,7 @@ export default function Investissement() {
         </div>
       </section>
 
-      {/* Modèle d'exécution */}
+      {/* Trois piliers */}
       <section className="section-padding bg-foreground">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-16">
@@ -181,12 +152,14 @@ export default function Investissement() {
             <p className="text-background/70 text-lg">{t("investment.executionModelDesc")}</p>
           </div>
           <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-8">
-              {modelSteps.map((step) => (
-                <div key={step.number} className="relative bg-background/8 border border-background/15 rounded-xl p-8">
-                  <span className="text-5xl font-heading font-bold text-primary/40 absolute top-6 right-8">{step.number}</span>
-                  <h3 className="text-2xl font-heading font-semibold mb-4 text-background pr-16">{step.title}</h3>
-                  <p className="text-background/70 leading-relaxed">{step.description}</p>
+            <div className="grid md:grid-cols-3 gap-8">
+              {pillars.map((pillar) => (
+                <div key={pillar.title} className="relative bg-background/8 border border-background/15 rounded-xl p-8 text-center">
+                  <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-6">
+                    <pillar.icon className="w-7 h-7 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-heading font-semibold mb-4 text-background">{pillar.title}</h3>
+                  <p className="text-background/70 leading-relaxed">{pillar.description}</p>
                 </div>
               ))}
             </div>
