@@ -53,8 +53,8 @@ export default function Investissement() {
       icon: Search,
       title: lang === "en" ? "Estate Agents & Introducers" : "Agents immobiliers & apporteurs",
       description: lang === "en"
-        ? "We are constantly sourcing 150 to 200 sqm undervalued ground floors in dense urban areas. Structured introduction fees."
-        : "Nous recherchons en permanence des rez-de-chaussée de 150 à 200 m², sous-valorisés, en zone urbaine dense. Rémunération d'apport d'affaires structurée.",
+        ? "We are constantly sourcing 50 to 300 sqm undervalued ground floors in dense urban areas. Structured introduction fees."
+        : "Nous recherchons en permanence des rez-de-chaussée de 50 à 300 m², sous-valorisés, en zone urbaine dense. Rémunération d'apport d'affaires structurée.",
       cta: lang === "en" ? "Submit a Property" : "Proposer un bien",
     },
     {
@@ -128,9 +128,9 @@ export default function Investissement() {
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { value: "150–200 m²", label: t("investment.surfacePerAsset") },
+              { value: "50–300 m²", label: t("investment.surfacePerAsset") },
               { value: "7–10", label: t("investment.officesPerOp") },
-              { value: "12–18 m²", label: t("investment.perOffice") },
+              { value: "~11–15 m²", label: t("investment.perOffice") },
               { value: "24–36 " + (lang === "en" ? "months" : "mois"), label: t("investment.stabilisation") },
             ].map((metric) => (
               <div key={metric.label} className="text-center bg-card rounded-xl border border-border p-6">
