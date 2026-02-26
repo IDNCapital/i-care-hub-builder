@@ -228,6 +228,23 @@
     },
     "testimonials": {}
   },
+  "testimonials": {
+    "sectionTitle": "Témoignages de praticiens",
+    "items": [
+      {
+        "quote": "J'exerce désormais au sein d'un lieu I-CA.RE et j'y ai trouvé un cadre à la fois professionnel et humain. Les aménagements sont de bonne qualité : rénovation, acoustique, confort, et une ambiance apaisante qui favorise réellement l'alliance thérapeutique. Le lieu me permet d'accueillir les patient·e·s dans de bonnes conditions, avec un sentiment de confidentialité et de sécurité. Au quotidien, l'environnement est respectueux et chaleureux, ce qui contribue à un impact positif concret sur ma pratique et sur la qualité de l'accueil que je peux proposer.",
+        "name": "Manon Arnaud",
+        "title": "Psychothérapie Intégrative & Humaniste",
+        "speciality": "Spécialisée dans la relation au corps et/ou à l'alimentation",
+        "affiliation": "Intervenante chez ENDAT-TCA",
+        "location": "I-CA.RE Nansouty",
+        "address": "106 bis rue Bertrand de Goth, 33800 Bordeaux",
+        "phone": "+33 6 31 12 01 68",
+        "email": "manon@amapola.care",
+        "website": "www.amapola.care"
+      }
+    ]
+  },
   "projects": {
     "title": "Nos Projets",
     "subtitle": "Des espaces de soin granulaires : 5 cabinets pour 100 m², loyers de 600 à 800 €/mois, vacance maîtrisée par la structure multi-locataires.",

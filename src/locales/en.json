@@ -228,6 +228,23 @@
     },
     "testimonials": {}
   },
+  "testimonials": {
+    "sectionTitle": "Practitioner Testimonials",
+    "items": [
+      {
+        "quote": "I now practise within an I-CA.RE space and have found a setting that is both professional and deeply human. The fit-out is of high quality: renovation, acoustics, comfort, and a soothing atmosphere that genuinely supports the therapeutic alliance. The space allows me to welcome patients in the right conditions, with a real sense of confidentiality and safety. Day to day, the environment is respectful and warm, which has a concrete positive impact on my practice and on the quality of welcome I can offer.",
+        "name": "Manon Arnaud",
+        "title": "Integrative & Humanistic Psychotherapy",
+        "speciality": "Specialising in the relationship with the body and/or food",
+        "affiliation": "Practitioner at ENDAT-TCA",
+        "location": "I-CA.RE Nansouty",
+        "address": "106 bis rue Bertrand de Goth, 33800 Bordeaux",
+        "phone": "+33 6 31 12 01 68",
+        "email": "manon@amapola.care",
+        "website": "www.amapola.care"
+      }
+    ]
+  },
   "projects": {
     "title": "Our Projects",
     "subtitle": "Granular care spaces: 5 offices per 100 sqm, rents from €600 to €800/month, vacancy controlled through multi-tenant structure.",
