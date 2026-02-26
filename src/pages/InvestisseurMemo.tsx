@@ -4,6 +4,8 @@ import { Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
+import { useState, useEffect } from "react";
+import { Loader2 } from "lucide-react";
 import {
   FileText,
   Phone,
@@ -13,12 +15,58 @@ import {
   UserCheck,
 } from "lucide-react";
 
-// Gate check — now uses localStorage access token
-function useInvestorAccess() {
-  const token = localStorage.getItem("icare_investor_token");
-  // Also support legacy sessionStorage for backward compat
-  const legacyAccess = sessionStorage.getItem("icare_investor_access") === "granted";
-  return !!(token || legacyAccess);
+type AccessState = "loading" | "granted" | "denied";
+
+/**
+ * Server-side token validation via check-investor-access edge function.
+ * Falls back to denied if no token or validation fails.
+ */
+function useInvestorAccess(): AccessState {
+  const [state, setState] = useState<AccessState>("loading");
+
+  useEffect(() => {
+    const token = localStorage.getItem("icare_investor_token");
+    // Also support legacy sessionStorage for backward compat
+    const legacyToken = sessionStorage.getItem("icare_investor_access") === "granted";
+
+    if (!token && !legacyToken) {
+      setState("denied");
+      return;
+    }
+
+    // If only legacy access (no real token), deny — legacy is no longer trusted
+    if (!token) {
+      sessionStorage.removeItem("icare_investor_access");
+      setState("denied");
+      return;
+    }
+
+    // Validate token server-side
+    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+    fetch(`https://${projectId}.supabase.co/functions/v1/check-investor-access`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+      },
+      body: JSON.stringify({ access_token: token }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.valid) {
+          setState("granted");
+        } else {
+          // Token invalid or expired — clear it
+          localStorage.removeItem("icare_investor_token");
+          setState("denied");
+        }
+      })
+      .catch(() => {
+        setState("denied");
+      });
+  }, []);
+
+  return state;
 }
 
 const financialModel = [
@@ -185,12 +233,28 @@ function DataTable({ title, rows }: { title: string; rows: { label: string; valu
 }
 
 export default function InvestisseurMemo() {
-  const hasAccess = useInvestorAccess();
+  const accessState = useInvestorAccess();
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
-  if (!hasAccess) {
+  if (accessState === "denied") {
     return <Navigate to={localePath(lang, "investmentInterest")} replace />;
+  }
+
+  if (accessState === "loading") {
+    return (
+      <Layout>
+        <Helmet>
+          <title>Note d'investissement — I-CA.RE</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+        <section className="pt-32 pb-20">
+          <div className="container flex justify-center">
+            <Loader2 className="w-10 h-10 text-primary animate-spin" />
+          </div>
+        </section>
+      </Layout>
+    );
   }
 
   return (
