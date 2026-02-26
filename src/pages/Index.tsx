@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { getDefaultHero, SECTION_IMAGES } from "@/lib/projectImages";
 import { HeroSlideshow } from "@/components/HeroSlideshow";
+import { TestimonialsSlider } from "@/components/TestimonialsSlider";
 
 export default function Index() {
   const { t, i18n } = useTranslation();
@@ -164,6 +165,9 @@ export default function Index() {
           </div>
         </div>
       </section>
+
+      {/* Testimonials */}
+      <TestimonialsSlider />
 
       {/* Societal Impact */}
       <section className="section-padding bg-secondary">
