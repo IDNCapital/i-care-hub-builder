@@ -47,6 +47,13 @@
     --shadow-soft: 0 2px 12px -2px hsl(0 0% 17% / 0.05);
     --shadow-card: 0 4px 20px -4px hsl(0 0% 17% / 0.07);
     --shadow-elevated: 0 8px 30px -8px hsl(0 0% 17% / 0.1);
+
+    /* Dark form section tokens */
+    --form-dark-bg: 0 0% 12%;         /* #1F1F1F */
+    --form-dark-border: 0 0% 100% / 0.15;
+    --form-dark-text: 48 33% 95%;     /* #F6F5F0 */
+    --form-dark-placeholder: 48 33% 95% / 0.45;
+    --form-dark-focus: 138 18% 67%;   /* #9EB8A5 */
   }
 
   * {
@@ -168,6 +175,58 @@
       -webkit-backdrop-filter: blur(10px);
     }
   }
+}
+
+/* ── Dark form section styling ── */
+.form-dark-section input,
+.form-dark-section textarea {
+  background: hsl(var(--form-dark-bg)) !important;
+  border-color: hsl(var(--form-dark-border)) !important;
+  color: hsl(var(--form-dark-text)) !important;
+  border-radius: 0.5rem;
+}
+
+.form-dark-section input::placeholder,
+.form-dark-section textarea::placeholder {
+  color: hsl(var(--form-dark-placeholder)) !important;
+}
+
+.form-dark-section input:focus,
+.form-dark-section textarea:focus,
+.form-dark-section input:focus-visible,
+.form-dark-section textarea:focus-visible {
+  outline: none !important;
+  ring: none !important;
+  border-color: hsl(var(--form-dark-focus)) !important;
+  box-shadow: 0 0 0 2px hsl(138 18% 67% / 0.25) !important;
+  --tw-ring-shadow: none !important;
+  --tw-ring-color: transparent !important;
+}
+
+/* ── Global focus ring override (sage green) ── */
+input:focus-visible,
+textarea:focus-visible,
+[role="combobox"]:focus-visible,
+button[data-state]:focus-visible {
+  --tw-ring-color: hsl(var(--ring));
+  box-shadow: 0 0 0 2px hsl(138 18% 67% / 0.25);
+  border-color: hsl(138 18% 67%);
+  outline: none;
+}
+
+/* ── Dark section Select trigger ── */
+.form-dark-section [data-radix-select-trigger],
+.form-dark-section [role="combobox"] {
+  background: hsl(var(--form-dark-bg)) !important;
+  border-color: hsl(var(--form-dark-border)) !important;
+  color: hsl(var(--form-dark-text)) !important;
+}
+
+.form-dark-section [data-radix-select-trigger]:focus,
+.form-dark-section [role="combobox"]:focus {
+  border-color: hsl(var(--form-dark-focus)) !important;
+  box-shadow: 0 0 0 2px hsl(138 18% 67% / 0.25) !important;
+  outline: none !important;
 }
 
 @layer utilities {

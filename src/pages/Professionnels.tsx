@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
@@ -20,9 +21,8 @@ import {
   MapPin,
   HardHat,
   Key,
-  Quote,
-  Star,
   CheckCircle2,
+  Loader2,
 } from "lucide-react";
 import { getDefaultHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
@@ -59,27 +59,28 @@ export default function Professionnels() {
     { icon: Key, number: "04", title: t("professionals.steps.install"), description: t("professionals.steps.installDesc") },
   ];
 
-
   const professionOptions = [
     "medecin_generaliste", "medecin_specialiste", "infirmier", "kinesitherapeute",
     "osteopathe", "psychologue", "orthophoniste", "sage_femme", "dentiste", "autre",
   ];
-
   const dateOptions = ["immediat", "3mois", "6mois", "1an", "plus"];
+  const cabinetCountOptions = ["1", "2", "3", "4+", "custom"];
 
   const [formData, setFormData] = useState({
     firstName: "", lastName: "", email: "", phone: "", organisation: "", website: "",
-    profession: "", ville: "", neighbourhood: "", dateInstallation: "", surface: "", message: "",
+    profession: "", ville: "", neighbourhood: "", dateInstallation: "", cabinetCount: "", cabinetConfig: "", message: "",
   });
   const [honeypot, setHoneypot] = useState("");
   const [rgpdConsent, setRgpdConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const showCabinetConfig = formData.cabinetCount === "4+" || formData.cabinetCount === "custom";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (honeypot) return; // bot trap
+    if (honeypot) return;
     if (!rgpdConsent) { toast.error(t("professionals.formErrorConsent")); return; }
-    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.profession || !formData.ville.trim()) {
+    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.profession || !formData.ville.trim() || !formData.cabinetCount) {
       toast.error(t("professionals.formErrorRequired")); return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -110,7 +111,8 @@ export default function Professionnels() {
             profession: formData.profession,
             neighbourhood: formData.neighbourhood || null,
             move_in_date: formData.dateInstallation || null,
-            surface: formData.surface || null,
+            cabinet_count: formData.cabinetCount || null,
+            cabinet_config: formData.cabinetConfig || null,
             website: formData.website || null,
             organisation: formData.organisation || null,
           },
@@ -121,7 +123,7 @@ export default function Professionnels() {
       if (data?.error) throw new Error(data.error);
 
       toast.success(t("professionals.formSuccess"));
-      setFormData({ firstName: "", lastName: "", email: "", phone: "", organisation: "", website: "", profession: "", ville: "", neighbourhood: "", dateInstallation: "", surface: "", message: "" });
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", organisation: "", website: "", profession: "", ville: "", neighbourhood: "", dateInstallation: "", cabinetCount: "", cabinetConfig: "", message: "" });
       setRgpdConsent(false);
     } catch (err) {
       console.error("Form submission error:", err);
@@ -130,6 +132,10 @@ export default function Professionnels() {
       setIsSubmitting(false);
     }
   };
+
+  // Dark section select classes
+  const darkSelectTrigger = "h-12 bg-[#1F1F1F] border-white/15 text-[#F6F5F0] data-[placeholder]:text-[#F6F5F0]/45 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/25";
+  const darkSelectContent = "bg-[#1F1F1F] border-white/15 rounded-lg shadow-elevated";
 
   return (
     <Layout>
@@ -236,8 +242,6 @@ export default function Professionnels() {
         </div>
       </section>
 
-
-
       {/* Form */}
       <section id="candidature" className="section-padding bg-foreground">
         <div className="container">
@@ -246,8 +250,8 @@ export default function Professionnels() {
               <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4 text-background">{t("professionals.formTitle")}</h2>
               <p className="text-background/70 text-lg">{t("professionals.formSubtitle")}</p>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Honeypot - hidden from users */}
+            <form onSubmit={handleSubmit} className="space-y-6 form-dark-section">
+              {/* Honeypot */}
               <div className="absolute -left-[9999px]" aria-hidden="true">
                 <input type="text" name="website_url_confirm" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
               </div>
@@ -255,94 +259,126 @@ export default function Professionnels() {
               {/* Identity fields */}
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-background">{t("professionals.formFirstName")} *</Label>
-                  <Input id="firstName" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" required maxLength={100} />
+                  <Label htmlFor="firstName" className="text-[#F6F5F0]">{t("professionals.formFirstName")} *</Label>
+                  <Input id="firstName" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} className="h-12" required maxLength={100} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-background">{t("professionals.formLastName")} *</Label>
-                  <Input id="lastName" value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" required maxLength={100} />
-                </div>
-              </div>
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-background">{t("professionals.formEmail")} *</Label>
-                  <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" required maxLength={255} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-background">{t("professionals.formPhone")} *</Label>
-                  <Input id="phone" type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="06 49 80 80 97" className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" required maxLength={30} />
+                  <Label htmlFor="lastName" className="text-[#F6F5F0]">{t("professionals.formLastName")} *</Label>
+                  <Input id="lastName" value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} className="h-12" required maxLength={100} />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="organisation" className="text-background">{t("professionals.formOrganisation")}</Label>
-                  <Input id="organisation" value={formData.organisation} onChange={(e) => setFormData({ ...formData, organisation: e.target.value })} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" maxLength={200} />
+                  <Label htmlFor="email" className="text-[#F6F5F0]">{t("professionals.formEmail")} *</Label>
+                  <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="h-12" required maxLength={255} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="website" className="text-background">{t("professionals.formWebsite")}</Label>
-                  <Input id="website" type="url" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} placeholder="https://" className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" maxLength={300} />
+                  <Label htmlFor="phone" className="text-[#F6F5F0]">{t("professionals.formPhone")} *</Label>
+                  <Input id="phone" type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="06 49 80 80 97" className="h-12" required maxLength={30} />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="organisation" className="text-[#F6F5F0]">{t("professionals.formOrganisation")}</Label>
+                  <Input id="organisation" value={formData.organisation} onChange={(e) => setFormData({ ...formData, organisation: e.target.value })} className="h-12" maxLength={200} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="website" className="text-[#F6F5F0]">{t("professionals.formWebsite")}</Label>
+                  <Input id="website" type="url" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} placeholder="https://" className="h-12" maxLength={300} />
                 </div>
               </div>
 
               {/* Project fields */}
               <div className="space-y-2">
-                <Label htmlFor="profession" className="text-background">{t("professionals.formProfession")} *</Label>
-                <select id="profession" value={formData.profession} onChange={(e) => setFormData({ ...formData, profession: e.target.value })} className="w-full h-12 px-4 rounded-lg border border-background/20 bg-background/10 text-background text-sm" required>
-                  <option value="">{t("professionals.formProfessionPlaceholder")}</option>
-                  {professionOptions.map((key) => (
-                    <option key={key} value={key}>{t(`professionals.professionOptions.${key}`)}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="ville" className="text-background">{t("professionals.formCity")} *</Label>
-                  <Input id="ville" value={formData.ville} onChange={(e) => setFormData({ ...formData, ville: e.target.value })} placeholder={t("professionals.formCityPlaceholder")} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" required maxLength={100} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="neighbourhood" className="text-background">{t("professionals.formNeighbourhood")}</Label>
-                  <Input id="neighbourhood" value={formData.neighbourhood} onChange={(e) => setFormData({ ...formData, neighbourhood: e.target.value })} placeholder={t("professionals.formNeighbourhoodPlaceholder")} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" maxLength={200} />
-                </div>
-              </div>
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="dateInstallation" className="text-background">{t("professionals.formDate")}</Label>
-                  <select id="dateInstallation" value={formData.dateInstallation} onChange={(e) => setFormData({ ...formData, dateInstallation: e.target.value })} className="w-full h-12 px-4 rounded-lg border border-background/20 bg-background/10 text-background text-sm">
-                    <option value="">{t("professionals.formDatePlaceholder")}</option>
-                    {dateOptions.map((key) => (
-                      <option key={key} value={key}>{t(`professionals.dateOptions.${key}`)}</option>
+                <Label className="text-[#F6F5F0]">{t("professionals.formProfession")} *</Label>
+                <Select value={formData.profession} onValueChange={(v) => setFormData({ ...formData, profession: v })}>
+                  <SelectTrigger className={darkSelectTrigger}>
+                    <SelectValue placeholder={t("professionals.formProfessionPlaceholder")} />
+                  </SelectTrigger>
+                  <SelectContent className={darkSelectContent}>
+                    {professionOptions.map((key) => (
+                      <SelectItem key={key} value={key} className="text-[#F6F5F0] focus:bg-primary/15 data-[state=checked]:bg-primary data-[state=checked]:text-[#1F1F1F]">
+                        {t(`professionals.professionOptions.${key}`)}
+                      </SelectItem>
                     ))}
-                  </select>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="ville" className="text-[#F6F5F0]">{t("professionals.formCity")} *</Label>
+                  <Input id="ville" value={formData.ville} onChange={(e) => setFormData({ ...formData, ville: e.target.value })} placeholder={t("professionals.formCityPlaceholder")} className="h-12" required maxLength={100} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="surface" className="text-background">{t("professionals.formSurface")}</Label>
-                  <select id="surface" value={formData.surface} onChange={(e) => setFormData({ ...formData, surface: e.target.value })} className="w-full h-12 px-4 rounded-lg border border-background/20 bg-background/10 text-background text-sm">
-                    <option value="">{t("professionals.formSurfacePlaceholder")}</option>
-                    <option value="15-20">15 – 20 {lang === "fr" ? "m²" : "sqm"}</option>
-                    <option value="20-30">20 – 30 {lang === "fr" ? "m²" : "sqm"}</option>
-                    <option value="30-50">30 – 50 {lang === "fr" ? "m²" : "sqm"}</option>
-                    <option value="50-80">50 – 80 {lang === "fr" ? "m²" : "sqm"}</option>
-                    <option value="80+">{lang === "fr" ? "Plus de 80 m²" : "Over 80 sqm"}</option>
-                  </select>
+                  <Label htmlFor="neighbourhood" className="text-[#F6F5F0]">{t("professionals.formNeighbourhood")}</Label>
+                  <Input id="neighbourhood" value={formData.neighbourhood} onChange={(e) => setFormData({ ...formData, neighbourhood: e.target.value })} placeholder={t("professionals.formNeighbourhoodPlaceholder")} className="h-12" maxLength={200} />
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="message" className="text-background">{t("professionals.formMessage")}</Label>
-                <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder={t("professionals.formMessagePlaceholder")} rows={4} className="bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" maxLength={1000} />
+
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className="text-[#F6F5F0]">{t("professionals.formDate")}</Label>
+                  <Select value={formData.dateInstallation} onValueChange={(v) => setFormData({ ...formData, dateInstallation: v })}>
+                    <SelectTrigger className={darkSelectTrigger}>
+                      <SelectValue placeholder={t("professionals.formDatePlaceholder")} />
+                    </SelectTrigger>
+                    <SelectContent className={darkSelectContent}>
+                      {dateOptions.map((key) => (
+                        <SelectItem key={key} value={key} className="text-[#F6F5F0] focus:bg-primary/15 data-[state=checked]:bg-primary data-[state=checked]:text-[#1F1F1F]">
+                          {t(`professionals.dateOptions.${key}`)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[#F6F5F0]">{t("professionals.formCabinetCount")} *</Label>
+                  <Select value={formData.cabinetCount} onValueChange={(v) => setFormData({ ...formData, cabinetCount: v, cabinetConfig: v !== "4+" && v !== "custom" ? "" : formData.cabinetConfig })}>
+                    <SelectTrigger className={darkSelectTrigger}>
+                      <SelectValue placeholder={t("professionals.formCabinetCountPlaceholder")} />
+                    </SelectTrigger>
+                    <SelectContent className={darkSelectContent}>
+                      {cabinetCountOptions.map((key) => (
+                        <SelectItem key={key} value={key} className="text-[#F6F5F0] focus:bg-primary/15 data-[state=checked]:bg-primary data-[state=checked]:text-[#1F1F1F]">
+                          {t(`professionals.cabinetCountOptions.${key}`)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-[#F6F5F0]/50 text-xs leading-relaxed mt-1.5">{t("professionals.formCabinetCountHint")}</p>
+                </div>
               </div>
+
+              {showCabinetConfig && (
+                <div className="space-y-2">
+                  <Label htmlFor="cabinetConfig" className="text-[#F6F5F0]">{t("professionals.formCabinetConfig")}</Label>
+                  <Textarea id="cabinetConfig" value={formData.cabinetConfig} onChange={(e) => setFormData({ ...formData, cabinetConfig: e.target.value })} rows={3} maxLength={500} />
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="message" className="text-[#F6F5F0]">{t("professionals.formMessage")}</Label>
+                <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder={t("professionals.formMessagePlaceholder")} rows={4} maxLength={1000} />
+              </div>
+
               <div className="flex items-start gap-3">
-                <Checkbox id="rgpd" checked={rgpdConsent} onCheckedChange={(checked) => setRgpdConsent(checked === true)} className="mt-1 border-background/40 data-[state=checked]:bg-primary data-[state=checked]:border-primary" />
-                <Label htmlFor="rgpd" className="text-background/70 text-sm leading-relaxed cursor-pointer">
+                <Checkbox id="rgpd" checked={rgpdConsent} onCheckedChange={(checked) => setRgpdConsent(checked === true)} className="mt-1 border-white/30 data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-[#1F1F1F]" />
+                <Label htmlFor="rgpd" className="text-[#F6F5F0]/70 text-sm leading-relaxed cursor-pointer">
                   {t("professionals.formRgpd")}{" "}
-                  <Link to={localePath(lang, "privacy")} className="underline hover:text-background">{t("professionals.formRgpdLink")}</Link>. *
+                  <Link to={localePath(lang, "privacy")} className="underline hover:text-[#F6F5F0]">{t("professionals.formRgpdLink")}</Link>. *
                 </Label>
               </div>
-              <Button type="submit" variant="hero" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-14 text-sm" disabled={isSubmitting}>
-                {isSubmitting ? t("professionals.formSubmitting") : t("professionals.formSubmit")}
-                <ArrowRight className="ml-2 h-5 w-5" />
+
+              <Button type="submit" variant="hero" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-14 text-sm transition-colors duration-200" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <><Loader2 className="mr-2 h-5 w-5 animate-spin" />{t("professionals.formSubmitting")}</>
+                ) : (
+                  <>{t("professionals.formSubmit")}<ArrowRight className="ml-2 h-5 w-5" /></>
+                )}
               </Button>
-              <p className="text-background/70 text-xs text-center font-medium">{t("professionals.formRecontact")}</p>
-              <p className="text-background/50 text-xs text-center">{t("professionals.formDisclaimer")}</p>
+              <p className="text-[#F6F5F0]/70 text-xs text-center font-medium">{t("professionals.formRecontact")}</p>
+              <p className="text-[#F6F5F0]/50 text-xs text-center">{t("professionals.formDisclaimer")}</p>
             </form>
           </div>
         </div>
