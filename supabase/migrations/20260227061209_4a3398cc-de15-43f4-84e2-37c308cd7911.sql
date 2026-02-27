@@ -1,0 +1,1 @@
+ALTER TABLE public.investor_leads ADD COLUMN IF NOT EXISTS notified_at TIMESTAMPTZ NULL;
