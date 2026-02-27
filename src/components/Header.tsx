@@ -1,11 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { getEquivalentPath, localePath } from "@/lib/routes";
 
-function Logo() {
+const Logo = memo(function Logo() {
   return (
     <div className="flex flex-col items-start">
       <span className="text-2xl font-heading font-bold tracking-tight leading-none whitespace-nowrap">
@@ -16,35 +16,31 @@ function Logo() {
       </span>
     </div>
   );
-}
+});
 
-export function Header() {
+export const Header = memo(function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const { t, i18n } = useTranslation();
 
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const otherLang = lang === "fr" ? "en" : "fr";
 
-  const navigation = [
+  const navigation = useMemo(() => [
     { name: t("nav.home"), href: localePath(lang, "home") },
     { name: t("nav.projects"), href: localePath(lang, "projects") },
     { name: t("nav.professionals"), href: localePath(lang, "professionals") },
     { name: t("nav.investment"), href: localePath(lang, "investment") },
     { name: t("nav.approach"), href: localePath(lang, "approach") },
     { name: t("nav.contact"), href: localePath(lang, "contact") },
-  ];
+  ], [t, lang]);
 
   const switchPath = getEquivalentPath(location.pathname, otherLang);
 
+  // Close mobile menu on route change
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    setIsOpen(false);
+  }, [location.pathname]);
 
   const isActive = (href: string) => {
     if (href === localePath(lang, "home")) {
@@ -55,13 +51,7 @@ export function Header() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
-      style={{
-        background: "rgba(246, 245, 240, 0.80)",
-        backdropFilter: "blur(10px)",
-        WebkitBackdropFilter: "blur(10px)",
-        borderBottom: "1px solid rgba(43, 43, 43, 0.06)",
-      }}
+      className="fixed top-0 left-0 right-0 z-50 header-blur"
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -161,4 +151,4 @@ export function Header() {
       </nav>
     </header>
   );
-}
+});

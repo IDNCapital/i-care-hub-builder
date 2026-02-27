@@ -9,6 +9,7 @@ import { localePath } from "@/lib/routes";
 import { useProjects } from "@/hooks/useProjects";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero } from "@/lib/projectImages";
+import { FadeImage } from "@/components/FadeImage";
 
 export default function Projets() {
   const { t, i18n } = useTranslation();
@@ -129,7 +130,7 @@ export default function Projets() {
                       const heroSrc = getProjectHero(project.slug, project.hero_image_url);
                       return heroSrc ? (
                         <>
-                          <img src={heroSrc} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                          <FadeImage src={heroSrc} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                           <div className="absolute top-4 left-4">
                             <span className={`text-sm font-medium px-3 py-1.5 rounded-full ${statusColor(project.status)}`}>{statusLabels[project.status]}</span>
                           </div>
