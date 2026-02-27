@@ -11,6 +11,7 @@ export function Footer() {
     { name: t("nav.projects"), href: localePath(lang, "projects") },
     { name: t("nav.professionals"), href: localePath(lang, "professionals") },
     { name: t("nav.investment"), href: localePath(lang, "investment") },
+    { name: lang === "fr" ? "Location cabinet Bordeaux" : "Office Rental Bordeaux", href: localePath(lang, "locationBordeaux") },
   ];
 
   const companyLinks = [

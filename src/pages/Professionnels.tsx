@@ -124,7 +124,17 @@ export default function Professionnels() {
         </div>
       </section>
 
-      {/* Spacer instead of unvalidated social proof */}
+      {/* Contextual link to location page */}
+      <section className="py-6">
+        <div className="container">
+          <p className="text-center text-muted-foreground">
+            {lang === "fr"
+              ? <>Vous cherchez un <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">cabinet paramédical à louer à Bordeaux</Link> ? Découvrez nos espaces disponibles.</>
+              : <>Looking for a <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">professional office to rent in Bordeaux</Link>? Discover our available spaces.</>
+            }
+          </p>
+        </div>
+      </section>
 
       {/* 3 Pillars */}
       <section className="section-padding">
@@ -252,7 +262,12 @@ export default function Professionnels() {
         <div className="container">
           <div className="cta-section text-center">
             <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4">{t("professionals.bottomCtaTitle")}</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">{t("professionals.bottomCtaDesc")}</p>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-4">{t("professionals.bottomCtaDesc")}</p>
+            <p className="text-sm text-muted-foreground mb-8">
+              <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">
+                {lang === "fr" ? "Voir les cabinets disponibles" : "View available offices"}
+              </Link>
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>
                 <Link to={localePath(lang, "projects")}>

@@ -125,12 +125,19 @@ export default function Index() {
                   </div>
                 ))}
               </div>
-              <Button className="mt-8" asChild>
-                <Link to={localePath(lang, "professionals")}>
-                  {t("home.allBenefits")}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                <Button asChild>
+                  <Link to={localePath(lang, "professionals")}>
+                    {t("home.allBenefits")}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button variant="outline" asChild>
+                  <Link to={localePath(lang, "locationBordeaux")}>
+                    {lang === "fr" ? "Voir les cabinets disponibles" : "View available offices"}
+                  </Link>
+                </Button>
+              </div>
             </div>
             <div className="relative">
               <FadeImage src={SECTION_IMAGES.homeWhyChoose} alt={lang === "fr" ? "Cabinet – I-CA.RE Pey Berland" : "Office – I-CA.RE Pey Berland"} className="rounded-xl shadow-card w-full aspect-[4/3] object-cover object-center" />
