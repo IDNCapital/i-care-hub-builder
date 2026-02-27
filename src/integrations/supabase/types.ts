@@ -14,6 +14,81 @@ export type Database = {
   }
   public: {
     Tables: {
+      contact_leads: {
+        Row: {
+          city: string | null
+          consent: boolean
+          consent_at: string | null
+          created_at: string
+          email: string
+          email_send_error: string | null
+          extra_data: Json | null
+          firstname: string | null
+          full_name: string | null
+          id: string
+          language: string
+          last_email_sent_at: string | null
+          lastname: string | null
+          message: string
+          organization: string | null
+          phone: string | null
+          source_url: string
+          status: string
+          type: string
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          city?: string | null
+          consent?: boolean
+          consent_at?: string | null
+          created_at?: string
+          email: string
+          email_send_error?: string | null
+          extra_data?: Json | null
+          firstname?: string | null
+          full_name?: string | null
+          id?: string
+          language?: string
+          last_email_sent_at?: string | null
+          lastname?: string | null
+          message: string
+          organization?: string | null
+          phone?: string | null
+          source_url: string
+          status?: string
+          type: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          city?: string | null
+          consent?: boolean
+          consent_at?: string | null
+          created_at?: string
+          email?: string
+          email_send_error?: string | null
+          extra_data?: Json | null
+          firstname?: string | null
+          full_name?: string | null
+          id?: string
+          language?: string
+          last_email_sent_at?: string | null
+          lastname?: string | null
+          message?: string
+          organization?: string | null
+          phone?: string | null
+          source_url?: string
+          status?: string
+          type?: string
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
+      }
       investor_leads: {
         Row: {
           access_token_expires_at: string | null

@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
-import { Analytics } from "@/lib/analytics";
+import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowRight,
   MapPin,
@@ -17,28 +19,78 @@ import {
   Building2,
   Users,
   Briefcase,
+  Loader2,
 } from "lucide-react";
+
+function getUtmParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    utm_source: params.get("utm_source") || undefined,
+    utm_medium: params.get("utm_medium") || undefined,
+    utm_campaign: params.get("utm_campaign") || undefined,
+  };
+}
 
 export default function Contact() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
   const contactTypes = [
-    { id: "professionnel", icon: Users, title: t("contact.types.professionnel"), description: t("contact.types.professionnelDesc") },
-    { id: "collectivite", icon: Building2, title: t("contact.types.collectivite"), description: t("contact.types.collectiviteDesc") },
-    { id: "investisseur", icon: Briefcase, title: t("contact.types.investisseur"), description: t("contact.types.investisseurDesc") },
+    { id: "professionnel", backendType: "praticien", icon: Users, title: t("contact.types.professionnel"), description: t("contact.types.professionnelDesc") },
+    { id: "collectivite", backendType: "collectivite", icon: Building2, title: t("contact.types.collectivite"), description: t("contact.types.collectiviteDesc") },
+    { id: "investisseur", backendType: "investisseur", icon: Briefcase, title: t("contact.types.investisseur"), description: t("contact.types.investisseurDesc") },
   ];
 
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [formData, setFormData] = useState({ nom: "", email: "", telephone: "", organisation: "", message: "" });
+  const [honeypot, setHoneypot] = useState("");
+  const [rgpdConsent, setRgpdConsent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot) return;
     if (!selectedType) { toast.error(t("contact.selectType")); return; }
-    Analytics.formSubmission("contact_" + selectedType, `/${lang}/contact`);
-    toast.success(t("contact.success"));
-    setFormData({ nom: "", email: "", telephone: "", organisation: "", message: "" });
-    setSelectedType(null);
+    if (!formData.nom.trim() || !formData.email.trim() || !formData.message.trim()) {
+      toast.error(t("contact.errorRequired")); return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) { toast.error(t("contact.errorEmail")); return; }
+    if (!rgpdConsent) { toast.error(t("contact.errorConsent")); return; }
+
+    const selectedConfig = contactTypes.find((ct) => ct.id === selectedType);
+    const backendType = selectedConfig?.backendType || "contact_general";
+
+    setIsSubmitting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("send-contact-lead", {
+        body: {
+          type: backendType,
+          full_name: formData.nom,
+          email: formData.email,
+          phone: formData.telephone || null,
+          organization: formData.organisation || null,
+          message: formData.message,
+          language: lang,
+          source_url: window.location.href,
+          honeypot,
+          ...getUtmParams(),
+        },
+      });
+      if (error) throw error;
+      if (data?.error === "rate_limited") { toast.error(t("contact.errorRateLimit")); return; }
+      if (data?.error) throw new Error(data.error);
+
+      toast.success(t("contact.success"));
+      setFormData({ nom: "", email: "", telephone: "", organisation: "", message: "" });
+      setSelectedType(null);
+      setRgpdConsent(false);
+    } catch (err) {
+      console.error("Contact form error:", err);
+      toast.error(t("contact.errorGeneric"));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const orgLabel = selectedType === "collectivite"
@@ -110,34 +162,52 @@ export default function Contact() {
               ))}
             </div>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Honeypot */}
+              <div className="absolute -left-[9999px]" aria-hidden="true">
+                <input type="text" name="company_url" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+              </div>
+
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="nom">{t("contact.fullName")} *</Label>
-                  <Input id="nom" value={formData.nom} onChange={(e) => setFormData({ ...formData, nom: e.target.value })} required />
+                  <Input id="nom" value={formData.nom} onChange={(e) => setFormData({ ...formData, nom: e.target.value })} required maxLength={200} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">{t("contact.email")} *</Label>
-                  <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
+                  <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required maxLength={255} />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="telephone">{t("contact.phone")}</Label>
-                  <Input id="telephone" type="tel" value={formData.telephone} onChange={(e) => setFormData({ ...formData, telephone: e.target.value })} />
+                  <Input id="telephone" type="tel" value={formData.telephone} onChange={(e) => setFormData({ ...formData, telephone: e.target.value })} maxLength={30} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="organisation">{orgLabel}</Label>
-                  <Input id="organisation" value={formData.organisation} onChange={(e) => setFormData({ ...formData, organisation: e.target.value })} />
+                  <Input id="organisation" value={formData.organisation} onChange={(e) => setFormData({ ...formData, organisation: e.target.value })} maxLength={200} />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="message">{t("contact.message")} *</Label>
-                <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder={t("contact.messagePlaceholder")} rows={6} required />
+                <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder={t("contact.messagePlaceholder")} rows={6} required maxLength={5000} />
               </div>
-              <Button type="submit" variant="hero" className="w-full">
-                {t("contact.submit")}
-                <ArrowRight className="ml-2 h-5 w-5" />
+
+              <div className="flex items-start gap-3">
+                <Checkbox id="rgpd-contact" checked={rgpdConsent} onCheckedChange={(checked) => setRgpdConsent(checked === true)} className="mt-1" />
+                <Label htmlFor="rgpd-contact" className="text-sm leading-relaxed cursor-pointer text-muted-foreground">
+                  {t("contact.rgpd")}{" "}
+                  <Link to={localePath(lang, "privacy")} className="text-primary underline underline-offset-4 hover:text-primary/80">{t("contact.rgpdLink")}</Link>. *
+                </Label>
+              </div>
+
+              <Button type="submit" variant="hero" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <><Loader2 className="mr-2 h-5 w-5 animate-spin" />{t("contact.submitting")}</>
+                ) : (
+                  <>{t("contact.submit")}<ArrowRight className="ml-2 h-5 w-5" /></>
+                )}
               </Button>
+              <p className="text-muted-foreground text-xs text-center">{t("contact.recontact")}</p>
             </form>
           </div>
         </div>
