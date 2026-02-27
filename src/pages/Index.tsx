@@ -132,7 +132,7 @@ export default function Index() {
               </Button>
             </div>
             <div className="relative">
-              <img src={SECTION_IMAGES.homeWhyChoose} alt={lang === "fr" ? "Cabinet – I-CA.RE Pey Berland" : "Office – I-CA.RE Pey Berland"} className="rounded-xl shadow-card w-full" loading="lazy" />
+              <img src={SECTION_IMAGES.homeWhyChoose} alt={lang === "fr" ? "Cabinet – I-CA.RE Pey Berland" : "Office – I-CA.RE Pey Berland"} className="rounded-xl shadow-card w-full aspect-[4/3] object-cover object-center" loading="lazy" />
               <div className="absolute -bottom-6 -left-6 bg-card rounded-xl p-5 shadow-card">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
@@ -174,7 +174,7 @@ export default function Index() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
-              <img src={SECTION_IMAGES.homeImpact} alt={lang === "fr" ? "Cabinet – I-CA.RE Nansouty" : "Office – I-CA.RE Nansouty"} className="rounded-xl shadow-card w-full" loading="lazy" />
+              <img src={SECTION_IMAGES.homeImpact} alt={lang === "fr" ? "Cabinet – I-CA.RE Nansouty" : "Office – I-CA.RE Nansouty"} className="rounded-xl shadow-card w-full aspect-[4/3] object-cover object-center" loading="lazy" />
             </div>
             <div className="order-1 lg:order-2">
               <h2 className="section-title mb-6">{t("home.localImpact")}</h2>
