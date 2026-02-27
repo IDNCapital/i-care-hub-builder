@@ -71,13 +71,8 @@ export default function Investissement() {
   return (
     <Layout>
       <Helmet>
-        <title>{lang === "en" ? "Invest in a Family-Backed Impact Real Estate Company — I-CA.RE" : "Investir dans une foncière privée familiale à impact — I-CA.RE"}</title>
-        <meta
-          name="description"
-          content={lang === "en"
-            ? "I-CA.RE is a family-backed private real estate company transforming urban ground floors into care spaces. A patient capital approach, founded on utility and long-term stewardship."
-            : "I-CA.RE est une foncière privée familiale qui transforme des rez-de-chaussée urbains en espaces de soin. Une démarche patrimoniale responsable, fondée sur l'utilité et la gestion de long terme."}
-        />
+        <title>{t("seo.investmentTitle")}</title>
+        <meta name="description" content={t("seo.investmentDesc")} />
       </Helmet>
 
       {/* Hero */}
