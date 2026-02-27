@@ -499,6 +499,54 @@
     "centre_paramedical": "Centre paramédical",
     "maison_de_sante": "Maison de santé"
   },
+  "locationBordeaux": {
+    "heroTag": "Location de cabinets à Bordeaux",
+    "h1": "Cabinets professionnels à louer à Bordeaux",
+    "heroSubtitle": "Des espaces rénovés, acoustiques et clé en main pour exercer dans un cadre d'exception — de 600 à 800 € HC/mois.",
+    "heroImageAlt": "Cabinet professionnel I-CA.RE à Bordeaux",
+    "ctaProjects": "Voir les espaces disponibles",
+    "introTitle": "Un cabinet à Bordeaux, pensé pour votre pratique",
+    "introP1": "Vous êtes psychologue, ostéopathe, sophrologue ou thérapeute et vous cherchez un cabinet à louer à Bordeaux ? I-CA.RE propose des espaces de consultation entièrement rénovés, conçus pour les professionnels du soin et du bien-être.",
+    "introP2": "Nos cabinets de 11 à 15 m² sont situés en rez-de-chaussée, en plein cœur des quartiers bordelais. Ils offrent isolation acoustique, lumière naturelle, conformité ERP et PMR, et un cadre chaleureux qui favorise la relation thérapeutique.",
+    "featuresTitle": "Ce qui distingue nos cabinets",
+    "featuresSubtitle": "Chaque espace est conçu pour allier confidentialité, confort et conformité réglementaire.",
+    "features": {
+      "acoustic": "Isolation acoustique renforcée",
+      "acousticDesc": "Cloisons et portes acoustiques pour garantir la confidentialité de vos échanges avec vos patients.",
+      "light": "Lumière naturelle optimisée",
+      "lightDesc": "Des espaces lumineux, avec éclairage LED sur variateur pour s'adapter à chaque usage.",
+      "surface": "11 à 15 m² par cabinet",
+      "surfaceDesc": "Une surface optimisée pour l'exercice individuel, avec possibilité d'aménagement personnalisé.",
+      "compliance": "Conformité ERP & PMR",
+      "complianceDesc": "Normes incendie, accessibilité, diagnostics complets : chaque cabinet est livré conforme.",
+      "location": "Emplacements de quartier",
+      "locationDesc": "En rez-de-chaussée, au cœur des quartiers de Bordeaux : Nansouty, Pey Berland, Jardin Public, Chartrons.",
+      "community": "Communauté de praticiens",
+      "communityDesc": "Exercez au sein d'un collectif pluridisciplinaire : psychologues, kinésithérapeutes, sophrologues, ostéopathes…"
+    },
+    "forWhomTitle": "Pour quels professionnels ?",
+    "forWhomDesc": "Nos cabinets sont adaptés à un large éventail de praticiens du soin et du bien-être.",
+    "professions": {
+      "psychologist": "Psychologue",
+      "psychotherapist": "Psychothérapeute",
+      "sophrologist": "Sophrologue",
+      "osteopath": "Ostéopathe",
+      "physio": "Kinésithérapeute",
+      "speechTherapist": "Orthophoniste",
+      "dietitian": "Diététicien(ne)",
+      "midwife": "Sage-femme",
+      "other": "Autres praticiens du bien-être"
+    },
+    "pricingTitle": "Conditions de location",
+    "pricingRent": "loyer HC / mois / cabinet",
+    "pricingSurface": "surface par cabinet",
+    "pricingTurnkey": "clé en main, prêt à exercer",
+    "approachTitle": "Une approche unique de l'immobilier de soin",
+    "approachDesc": "I-CA.RE identifie des rez-de-chaussée sous-valorisés à Bordeaux et les transforme en espaces de soin nouvelle génération. Découvrez notre méthode en 6 étapes, de l'acquisition à la gestion.",
+    "ctaApproach": "Découvrir notre approche",
+    "ctaTitle": "Prêt à trouver votre cabinet à Bordeaux ?",
+    "ctaDesc": "Consultez nos espaces disponibles ou contactez-nous pour échanger sur votre projet d'installation."
+  },
   "seo": {
     "homeTitle": "I-CA.RE — Espaces de soin et de bien-être | Cabinets clé en main",
     "homeDesc": "I-CA.RE transforme des rez-de-chaussée urbains en espaces de soin et de bien-être. Bordeaux, Floirac, Lormont.",
@@ -509,6 +557,8 @@
     "approachTitle": "Notre Approche — Vision et méthode I-CA.RE",
     "approachDesc": "Vision, méthode en 6 étapes et engagement sociétal d'I-CA.RE : rénovation de lieux de soin et de bien-être en Nouvelle-Aquitaine et Occitanie.",
     "contactTitle": "Contactez-nous — I-CA.RE",
-    "contactDesc": "Contactez I-CA.RE : rejoignez un cabinet de soin, proposez un projet territorial ou explorez nos opportunités d'investissement immobilier de soin et de bien-être."
+    "contactDesc": "Contactez I-CA.RE : rejoignez un cabinet de soin, proposez un projet territorial ou explorez nos opportunités d'investissement immobilier de soin et de bien-être.",
+    "locationBordeauxTitle": "Cabinet paramédical à louer à Bordeaux | I-CA.RE",
+    "locationBordeauxDesc": "Location de cabinets professionnels à Bordeaux pour psychologues, thérapeutes et professionnels du soin. Espaces rénovés, acoustiques, de 600 à 800€ HC."
   }
 }

@@ -14,6 +14,7 @@ const routeMap: Record<string, Record<string, string>> = {
     legal: "mentions-legales",
     privacy: "confidentialite",
     cookies: "cookies",
+    locationBordeaux: "location-cabinet-bordeaux",
   },
   en: {
     home: "",
@@ -29,6 +30,7 @@ const routeMap: Record<string, Record<string, string>> = {
     legal: "legal",
     privacy: "privacy",
     cookies: "cookies",
+    locationBordeaux: "office-rental-bordeaux",
   },
 };
 

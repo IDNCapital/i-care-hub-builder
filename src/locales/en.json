@@ -499,6 +499,54 @@
     "centre_paramedical": "Paramedical Centre",
     "maison_de_sante": "Care Centre"
   },
+  "locationBordeaux": {
+    "heroTag": "Office Rental in Bordeaux",
+    "h1": "Professional offices for rent in Bordeaux",
+    "heroSubtitle": "Renovated, acoustically insulated, turnkey spaces for your practice — from €600 to €800 excl. charges/month.",
+    "heroImageAlt": "I-CA.RE professional office in Bordeaux",
+    "ctaProjects": "View available spaces",
+    "introTitle": "An office in Bordeaux, designed for your practice",
+    "introP1": "Are you a psychologist, osteopath, sophrologist or therapist looking for an office to rent in Bordeaux? I-CA.RE offers fully renovated consultation spaces designed for care and wellbeing professionals.",
+    "introP2": "Our 11 to 15 sqm offices are located on the ground floor, in the heart of Bordeaux neighbourhoods. They offer acoustic insulation, natural light, ERP and disability compliance, and a warm setting that supports the therapeutic relationship.",
+    "featuresTitle": "What sets our offices apart",
+    "featuresSubtitle": "Each space is designed to combine confidentiality, comfort and regulatory compliance.",
+    "features": {
+      "acoustic": "Enhanced acoustic insulation",
+      "acousticDesc": "Acoustic partitions and doors to guarantee the confidentiality of your exchanges with patients.",
+      "light": "Optimised natural light",
+      "lightDesc": "Bright spaces with dimmable LED lighting to suit every use.",
+      "surface": "11 to 15 sqm per office",
+      "surfaceDesc": "An optimised area for individual practice, with the option of personalised fit-out.",
+      "compliance": "ERP & disability compliance",
+      "complianceDesc": "Fire safety, accessibility, full diagnostics: every office is delivered to standard.",
+      "location": "Neighbourhood locations",
+      "locationDesc": "On the ground floor, in the heart of Bordeaux neighbourhoods: Nansouty, Pey Berland, Jardin Public, Chartrons.",
+      "community": "Practitioner community",
+      "communityDesc": "Practise within a multidisciplinary community: psychologists, physiotherapists, sophrologists, osteopaths…"
+    },
+    "forWhomTitle": "For which professionals?",
+    "forWhomDesc": "Our offices are suited to a wide range of care and wellbeing practitioners.",
+    "professions": {
+      "psychologist": "Psychologist",
+      "psychotherapist": "Psychotherapist",
+      "sophrologist": "Sophrologist",
+      "osteopath": "Osteopath",
+      "physio": "Physiotherapist",
+      "speechTherapist": "Speech Therapist",
+      "dietitian": "Dietitian",
+      "midwife": "Midwife",
+      "other": "Other wellbeing practitioners"
+    },
+    "pricingTitle": "Rental conditions",
+    "pricingRent": "rent excl. charges / month / office",
+    "pricingSurface": "surface per office",
+    "pricingTurnkey": "turnkey, ready to practise",
+    "approachTitle": "A unique approach to care real estate",
+    "approachDesc": "I-CA.RE identifies undervalued ground floors in Bordeaux and transforms them into next-generation care spaces. Discover our 6-step method, from acquisition to management.",
+    "ctaApproach": "Discover our approach",
+    "ctaTitle": "Ready to find your office in Bordeaux?",
+    "ctaDesc": "Browse our available spaces or contact us to discuss your practice setup."
+  },
   "seo": {
     "homeTitle": "I-CA.RE — Care & Wellbeing Spaces | Turnkey Offices",
     "homeDesc": "I-CA.RE transforms urban ground floors into care and wellbeing spaces. Bordeaux, Floirac, Lormont.",
@@ -509,6 +557,8 @@
     "approachTitle": "Our Approach — I-CA.RE Vision & Method",
     "approachDesc": "Vision, 6-step method and societal commitment from I-CA.RE: care and wellbeing space renovation across France.",
     "contactTitle": "Contact Us — I-CA.RE",
-    "contactDesc": "Contact I-CA.RE: join a care practice, propose a territorial project or explore our care and wellbeing real estate investment opportunities."
+    "contactDesc": "Contact I-CA.RE: join a care practice, propose a territorial project or explore our care and wellbeing real estate investment opportunities.",
+    "locationBordeauxTitle": "Professional Office for Rent in Bordeaux | I-CA.RE",
+    "locationBordeauxDesc": "Professional office rental in Bordeaux for psychologists, therapists and care professionals. Renovated, acoustic spaces, from €600 to €800 excl. charges."
   }
 }
