@@ -172,7 +172,12 @@ export default function Projets() {
         <div className="container">
           <div className="cta-section text-center">
             <h2 className="text-3xl md:text-4xl font-semibold mb-4">{t("projects.ctaBottom")}</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">{t("projects.ctaBottomDesc")}</p>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-4">{t("projects.ctaBottomDesc")}</p>
+            <p className="text-sm text-muted-foreground mb-8">
+              <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">
+                {lang === "fr" ? "Location de cabinets à Bordeaux" : "Office rental in Bordeaux"}
+              </Link>
+            </p>
             <Button variant="hero" asChild>
               <Link to={localePath(lang, "contact")}>
                 {t("common.contactUs")}
