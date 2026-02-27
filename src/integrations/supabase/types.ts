@@ -30,6 +30,7 @@ export type Database = {
           last_name: string
           message: string | null
           notes_internal: string | null
+          notified_at: string | null
           phone: string | null
           profile_type: string
           source_page: string
@@ -55,6 +56,7 @@ export type Database = {
           last_name: string
           message?: string | null
           notes_internal?: string | null
+          notified_at?: string | null
           phone?: string | null
           profile_type: string
           source_page?: string
@@ -80,6 +82,7 @@ export type Database = {
           last_name?: string
           message?: string | null
           notes_internal?: string | null
+          notified_at?: string | null
           phone?: string | null
           profile_type?: string
           source_page?: string
