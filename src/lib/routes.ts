@@ -35,56 +35,59 @@ const routeMap: Record<string, Record<string, string>> = {
 };
 
 /**
- * Given a full pathname like /fr/projets/some-slug,
- * returns the equivalent path in the target language.
+ * Build a localized path for a given route key.
+ * FR routes live at the root (/projets), EN routes under /en/ (/en/projects).
+ */
+export function localePath(lang: "fr" | "en", routeKey: string, slug?: string): string {
+  const path = routeMap[lang]?.[routeKey] ?? routeKey;
+  if (lang === "fr") {
+    if (slug) return `/${path}/${slug}`;
+    return path ? `/${path}` : "/";
+  }
+  // EN
+  if (slug) return `/en/${path}/${slug}`;
+  return path ? `/en/${path}` : "/en/";
+}
+
+/**
+ * Given a full pathname, returns the equivalent path in the target language.
+ * FR paths have no prefix (/projets), EN paths have /en/ prefix (/en/projects).
  */
 export function getEquivalentPath(
   currentPath: string,
   targetLang: "fr" | "en"
 ): string {
-  // Extract current language and rest of path
-  const match = currentPath.match(/^\/(fr|en)(\/.*)?$/);
-  if (!match) return `/${targetLang}/`;
+  // Detect current language from path
+  const enMatch = currentPath.match(/^\/en(\/.*)?$/);
+  const currentLang: "fr" | "en" = enMatch ? "en" : "fr";
+  const rest = enMatch
+    ? (enMatch[1] || "/").replace(/^\//, "")
+    : currentPath.replace(/^\//, "");
 
-  const currentLang = match[1] as "fr" | "en";
-  const rest = (match[2] || "/").replace(/^\//, "");
-
-  // Find which route key matches
   const currentRoutes = routeMap[currentLang];
   const targetRoutes = routeMap[targetLang];
 
-  for (const [key, frPath] of Object.entries(currentRoutes)) {
-    if (!frPath) continue;
+  for (const [key, routePath] of Object.entries(currentRoutes)) {
+    if (!routePath) continue;
 
-    // Check for exact match or prefix match (for detail pages with slugs)
-    if (rest === frPath) {
-      const targetPath = targetRoutes[key];
-      return `/${targetLang}/${targetPath}`;
+    if (rest === routePath) {
+      return localePath(targetLang, key);
     }
 
-    if (rest.startsWith(frPath + "/")) {
-      const slug = rest.slice(frPath.length + 1);
-      const targetPath = targetRoutes[key];
-      return `/${targetLang}/${targetPath}/${slug}`;
+    if (rest.startsWith(routePath + "/")) {
+      const slug = rest.slice(routePath.length + 1);
+      return localePath(targetLang, key, slug);
     }
   }
 
   // Home page
   if (rest === "" || rest === "/") {
-    return `/${targetLang}/`;
+    return localePath(targetLang, "home");
   }
 
-  // Fallback: keep the same path segment
-  return `/${targetLang}/${rest}`;
-}
-
-/**
- * Build a localized path for a given route key
- */
-export function localePath(lang: "fr" | "en", routeKey: string, slug?: string): string {
-  const path = routeMap[lang]?.[routeKey] ?? routeKey;
-  if (slug) return `/${lang}/${path}/${slug}`;
-  return `/${lang}/${path}`;
+  // Fallback
+  if (targetLang === "en") return `/en/${rest}`;
+  return `/${rest}`;
 }
 
 export { routeMap };
