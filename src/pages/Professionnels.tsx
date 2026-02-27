@@ -89,16 +89,31 @@ export default function Professionnels() {
 
     setIsSubmitting(true);
     try {
-      const { data, error } = await supabase.functions.invoke("send-practitioner-lead", {
+      const params = new URLSearchParams(window.location.search);
+      const { data, error } = await supabase.functions.invoke("send-contact-lead", {
         body: {
-          first_name: formData.firstName, last_name: formData.lastName,
-          email: formData.email, phone: formData.phone,
-          organisation: formData.organisation || null, website: formData.website || null,
-          profession: formData.profession, city: formData.ville,
-          neighbourhood: formData.neighbourhood || null,
-          move_in_date: formData.dateInstallation || null,
-          surface: formData.surface || null, message: formData.message || null,
-          lang, source_url: window.location.href, honeypot,
+          type: "cabinet_request",
+          firstname: formData.firstName,
+          lastname: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          organization: formData.organisation || null,
+          city: formData.ville,
+          message: formData.message || t("professionals.formSubmit"),
+          language: lang,
+          source_url: window.location.href,
+          honeypot,
+          utm_source: params.get("utm_source") || undefined,
+          utm_medium: params.get("utm_medium") || undefined,
+          utm_campaign: params.get("utm_campaign") || undefined,
+          extra_data: {
+            profession: formData.profession,
+            neighbourhood: formData.neighbourhood || null,
+            move_in_date: formData.dateInstallation || null,
+            surface: formData.surface || null,
+            website: formData.website || null,
+            organisation: formData.organisation || null,
+          },
         },
       });
       if (error) throw error;
