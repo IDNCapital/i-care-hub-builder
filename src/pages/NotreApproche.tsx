@@ -9,6 +9,7 @@ import {
   Search, FileSearch, Ruler, HardHat, Settings, TrendingUp, Shield,
 } from "lucide-react";
 import { SECTION_IMAGES } from "@/lib/projectImages";
+import { FadeImage } from "@/components/FadeImage";
 
 export default function NotreApproche() {
   const { t, i18n } = useTranslation();
@@ -84,7 +85,7 @@ export default function NotreApproche() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <img src={SECTION_IMAGES.portrait} alt={t("approach.founderName") + " — " + t("approach.founderRole")} className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]" loading="lazy" />
+              <FadeImage src={SECTION_IMAGES.portrait} alt={t("approach.founderName") + " — " + t("approach.founderRole")} className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]" />
               <p className="text-sm text-muted-foreground mt-3 text-center">{t("approach.founderName")} — {t("approach.founderRole")}</p>
             </div>
             <div>
@@ -157,7 +158,7 @@ export default function NotreApproche() {
               <h2 className="section-title mb-6">{t("approach.methodTitle")}</h2>
               <p className="text-lg text-muted-foreground">{t("approach.methodDesc")}</p>
             </div>
-            <div><img src={SECTION_IMAGES.approachMethod} alt={lang === "fr" ? "Façade – I-CA.RE Pey Berland" : "Facade – I-CA.RE Pey Berland"} className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]" loading="lazy" /></div>
+            <div><FadeImage src={SECTION_IMAGES.approachMethod} alt={lang === "fr" ? "Façade – I-CA.RE Pey Berland" : "Facade – I-CA.RE Pey Berland"} className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]" /></div>
           </div>
           <div className="space-y-12">
             {steps.map((step, index) => (
@@ -214,7 +215,7 @@ export default function NotreApproche() {
               <p className="text-lg text-muted-foreground mb-8">{t("approach.collectivitesDesc")}</p>
               <Button asChild><Link to={localePath(lang, "contact")}>{t("approach.collectivitesCta")}<ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
             </div>
-            <div><img src={SECTION_IMAGES.approachCollectivites} alt={lang === "fr" ? "Salle d'attente – I-CA.RE Nansouty" : "Waiting room – I-CA.RE Nansouty"} className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]" loading="lazy" /></div>
+            <div><FadeImage src={SECTION_IMAGES.approachCollectivites} alt={lang === "fr" ? "Salle d'attente – I-CA.RE Nansouty" : "Waiting room – I-CA.RE Nansouty"} className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]" /></div>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {collectiviteBenefits.map((b) => (

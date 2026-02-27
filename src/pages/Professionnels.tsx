@@ -25,6 +25,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { getDefaultHero } from "@/lib/projectImages";
+import { FadeImage } from "@/components/FadeImage";
 
 export default function Professionnels() {
   const { t, i18n } = useTranslation();
@@ -94,7 +95,7 @@ export default function Professionnels() {
       {/* Hero */}
       <section className="relative min-h-[85vh] flex items-center pt-20">
         <div className="absolute inset-0">
-          <img src={getDefaultHero("professionnels")} alt={lang === "fr" ? "Cabinet – I-CA.RE Pey Berland" : "Consultation room – I-CA.RE Pey Berland"} className="w-full h-full object-cover" loading="eager" />
+          <FadeImage src={getDefaultHero("professionnels")} alt={lang === "fr" ? "Cabinet – I-CA.RE Pey Berland" : "Consultation room – I-CA.RE Pey Berland"} className="w-full h-full object-cover" loading="eager" fadeDuration={500} />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/30" />
         </div>
         <div className="container relative z-10 py-20">

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { HOME_HERO_SLIDES, HOME_HERO_SLIDES_MOBILE, type HeroSlide } from "@/lib/projectImages";
 
-const SLIDE_DURATION = 9000;   // ms per slide
-const FADE_DURATION = 1600;    // ms cross-fade
+const SLIDE_DURATION = 9000;
+const FADE_DURATION = 800;
 
 interface Props {
   lang: "fr" | "en";
@@ -12,23 +12,34 @@ export function HeroSlideshow({ lang }: Props) {
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReduced, setPrefersReduced] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [readySlides, setReadySlides] = useState<Set<number>>(new Set([0]));
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Detect mobile + reduced motion once
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
     setPrefersReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }, []);
 
   const slides: HeroSlide[] = isMobile ? HOME_HERO_SLIDES_MOBILE : HOME_HERO_SLIDES;
-
-  // If reduced motion, show first slide only (no slideshow)
   const shouldAnimate = !prefersReduced;
+
+  // Preload next slide image before transitioning
+  const preloadSlide = useCallback((index: number) => {
+    if (readySlides.has(index)) return;
+    const img = new Image();
+    img.src = slides[index].src;
+    img.onload = () => {
+      setReadySlides((prev) => new Set(prev).add(index));
+    };
+  }, [slides, readySlides]);
 
   const startTimer = useCallback(() => {
     if (!shouldAnimate) return;
     timerRef.current = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % slides.length);
+      setActiveIndex((prev) => {
+        const next = (prev + 1) % slides.length;
+        return next;
+      });
     }, SLIDE_DURATION);
   }, [shouldAnimate, slides.length]);
 
@@ -39,13 +50,18 @@ export function HeroSlideshow({ lang }: Props) {
     }
   }, []);
 
-  // Start/stop slideshow
+  // Preload the next slide ahead of time
+  useEffect(() => {
+    if (!shouldAnimate) return;
+    const nextIndex = (activeIndex + 1) % slides.length;
+    preloadSlide(nextIndex);
+  }, [activeIndex, shouldAnimate, slides.length, preloadSlide]);
+
   useEffect(() => {
     startTimer();
     return stopTimer;
   }, [startTimer, stopTimer]);
 
-  // Pause when tab hidden
   useEffect(() => {
     const onVisChange = () => {
       if (document.hidden) stopTimer();
@@ -55,7 +71,7 @@ export function HeroSlideshow({ lang }: Props) {
     return () => document.removeEventListener("visibilitychange", onVisChange);
   }, [startTimer, stopTimer]);
 
-  // Preload first image
+  // Preload first image via link tag
   useEffect(() => {
     if (slides[0]) {
       const link = document.createElement("link");
@@ -78,6 +94,7 @@ export function HeroSlideshow({ lang }: Props) {
             src={slide.src}
             alt={alt}
             loading={i === 0 ? "eager" : "lazy"}
+            decoding={i === 0 ? "sync" : "async"}
             className="absolute inset-0 w-full h-full object-cover"
             style={{
               opacity: isActive ? 1 : 0,

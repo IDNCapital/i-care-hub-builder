@@ -152,6 +152,22 @@
     letter-spacing: 0.07em;
     font-weight: 700;
   }
+
+
+  /* Header blur — reduced on mobile for performance */
+  .header-blur {
+    background: rgba(246, 245, 240, 0.80);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(43, 43, 43, 0.06);
+  }
+
+  @media (min-width: 768px) {
+    .header-blur {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+  }
 }
 
 @layer utilities {
@@ -199,6 +215,6 @@
     transform: scale(1) translate(0, 0);
   }
   100% {
-    transform: scale(1.05) translate(-0.3%, -0.3%);
+    transform: scale(1.03) translate(-0.2%, -0.2%);
   }
 }

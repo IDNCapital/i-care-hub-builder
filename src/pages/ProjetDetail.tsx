@@ -19,6 +19,7 @@ import { useProject } from "@/hooks/useProjects";
 import { Analytics } from "@/lib/analytics";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero, getProjectGallery } from "@/lib/projectImages";
+import { FadeImage } from "@/components/FadeImage";
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -98,7 +99,7 @@ export default function ProjetDetail() {
         {(() => {
           const heroSrc = getProjectHero(project.slug, project.hero_image_url);
           return heroSrc ? (
-            <img src={heroSrc} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover" loading="eager" />
+            <FadeImage src={heroSrc} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover" loading="eager" fadeDuration={500} />
           ) : (
             <VisuelsAVenir className="w-full h-full" />
           );
@@ -183,7 +184,7 @@ export default function ProjetDetail() {
                     <h3 className="text-2xl font-semibold mb-6">{t("projectDetail.gallery")}</h3>
                     <div className="grid grid-cols-2 gap-4">
                       {gallery.map((url, i) => (
-                        <img key={i} src={url} alt={`${project.name} — ${i + 1}`} className="rounded-2xl w-full h-48 object-cover" loading="lazy" />
+                        <FadeImage key={i} src={url} alt={`${project.name} — ${i + 1}`} className="rounded-2xl w-full h-48 object-cover" />
                       ))}
                     </div>
                   </div>
