@@ -161,7 +161,8 @@ Deno.serve(async (req) => {
     if (extra_data && typeof extra_data === "object") {
       const fieldLabels: Record<string, string> = {
         profession: "Profession", neighbourhood: "Quartier", move_in_date: "Date souhaitée",
-        surface: "Surface", website: "Site web", organisation: "Organisation",
+        cabinet_count: "Nb cabinets", cabinet_config: "Configuration", surface: "Surface",
+        website: "Site web", organisation: "Organisation",
       };
       for (const [key, label] of Object.entries(fieldLabels)) {
         if (extra_data[key]) {

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
@@ -216,22 +217,30 @@ export default function InvestisseurInteret() {
 
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="profileType">{t("interestForm.profile")} *</Label>
-                  <select id="profileType" value={formData.profileType} onChange={(e) => updateField("profileType", e.target.value)} required className="w-full h-12 px-4 rounded-lg border border-border bg-background text-sm">
-                    <option value="">{t("interestForm.selectProfile")}</option>
-                    {PROFILE_KEYS.map((key) => (
-                      <option key={key} value={key}>{t(`interestForm.profileOptions.${key}`)}</option>
-                    ))}
-                  </select>
+                  <Label>{t("interestForm.profile")} *</Label>
+                  <Select value={formData.profileType} onValueChange={(v) => updateField("profileType", v)}>
+                    <SelectTrigger className="h-12">
+                      <SelectValue placeholder={t("interestForm.selectProfile")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {PROFILE_KEYS.map((key) => (
+                        <SelectItem key={key} value={key}>{t(`interestForm.profileOptions.${key}`)}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="ticketRange">{t("interestForm.ticket")} *</Label>
-                  <select id="ticketRange" value={formData.ticketRange} onChange={(e) => updateField("ticketRange", e.target.value)} required className="w-full h-12 px-4 rounded-lg border border-border bg-background text-sm">
-                    <option value="">{t("interestForm.selectTicket")}</option>
-                    {TICKET_KEYS.map((key) => (
-                      <option key={key} value={key}>{t(`interestForm.ticketOptions.${key}`)}</option>
-                    ))}
-                  </select>
+                  <Label>{t("interestForm.ticket")} *</Label>
+                  <Select value={formData.ticketRange} onValueChange={(v) => updateField("ticketRange", v)}>
+                    <SelectTrigger className="h-12">
+                      <SelectValue placeholder={t("interestForm.selectTicket")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TICKET_KEYS.map((key) => (
+                        <SelectItem key={key} value={key}>{t(`interestForm.ticketOptions.${key}`)}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
