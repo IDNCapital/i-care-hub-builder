@@ -43,16 +43,18 @@ export const Header = memo(function Header() {
   }, [location.pathname]);
 
   const isActive = (href: string) => {
-    if (href === localePath(lang, "home")) {
-      return location.pathname === `/${lang}` || location.pathname === `/${lang}/`;
+    const homePath = localePath(lang, "home");
+    if (href === homePath) {
+      if (lang === "fr") {
+        return location.pathname === "/";
+      }
+      return location.pathname === "/en" || location.pathname === "/en/";
     }
     return location.pathname.startsWith(href);
   };
 
   return (
-    <header
-      className="fixed top-0 left-0 right-0 z-50 header-blur"
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 header-blur">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <Link to={localePath(lang, "home")} className="flex items-center">

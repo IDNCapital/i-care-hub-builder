@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,18 +32,16 @@ function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-/** Syncs i18n language with the URL :lang param */
-function LangSync({ children }: { children: React.ReactNode }) {
-  const { lang } = useParams<{ lang: string }>();
+/** Syncs i18n language with the route group */
+function LangSync({ lang, children }: { lang: "fr" | "en"; children: React.ReactNode }) {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    if (lang && (lang === "fr" || lang === "en") && i18n.language !== lang) {
+    if (i18n.language !== lang) {
       i18n.changeLanguage(lang);
     }
   }, [lang, i18n]);
 
-  // Set html lang attribute
   useEffect(() => {
     document.documentElement.lang = lang === "en" ? "en-GB" : "fr-FR";
   }, [lang]);
@@ -51,12 +49,11 @@ function LangSync({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-/** Detects language and redirects to the right prefix */
-function LangRedirect() {
-  const stored = localStorage.getItem("i18nextLng");
-  const detected = stored || (navigator.language?.startsWith("en") ? "en" : "fr");
-  const lang = detected === "en" ? "en" : "fr";
-  return <Navigate to={`/${lang}/`} replace />;
+/** Redirects old /fr/* URLs to root equivalents */
+function FrRedirect() {
+  const location = useLocation();
+  const rest = location.pathname.replace(/^\/fr\/?/, "/").replace(/\/\//g, "/");
+  return <Navigate to={rest || "/"} replace />;
 }
 
 const App = () => (
@@ -75,31 +72,8 @@ const App = () => (
         <BrowserRouter>
           <AnalyticsProvider>
             <Routes>
-              {/* Root redirect */}
-              <Route path="/" element={<LangRedirect />} />
-
-              {/* FR routes */}
-              <Route path="/fr/*" element={<LangSync><Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/projets" element={<Projets />} />
-                <Route path="/projets/:slug" element={<ProjetDetail />} />
-                <Route path="/professionnels" element={<Professionnels />} />
-                <Route path="/investissement" element={<Investissement />} />
-                <Route path="/investissement/interet" element={<InvestisseurInteret />} />
-                <Route path="/investissement/memo" element={<InvestisseurMemo />} />
-                <Route path="/investissement/verify" element={<InvestisseurVerify />} />
-                <Route path="/notre-approche" element={<NotreApproche />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/mentions-legales" element={<MentionsLegales />} />
-                <Route path="/confidentialite" element={<PolitiqueConfidentialite />} />
-                <Route path="/cookies" element={<PolitiqueCookies />} />
-                <Route path="/praticiens" element={<Professionnels />} />
-                <Route path="/location-cabinet-bordeaux" element={<LocationCabinetBordeaux />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes></LangSync>} />
-
-              {/* EN routes */}
-              <Route path="/en/*" element={<LangSync><Routes>
+              {/* EN routes (prefixed) */}
+              <Route path="/en/*" element={<LangSync lang="en"><Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/projects" element={<Projets />} />
                 <Route path="/projects/:slug" element={<ProjetDetail />} />
@@ -118,23 +92,35 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
 
-              {/* Legacy redirects (old URLs without prefix → FR) */}
-              <Route path="/projets" element={<Navigate to="/fr/projets" replace />} />
-              <Route path="/projets/:slug" element={<Navigate to="/fr/projets" replace />} />
-              <Route path="/professionnels" element={<Navigate to="/fr/professionnels" replace />} />
-              <Route path="/investissement" element={<Navigate to="/fr/investissement" replace />} />
-              <Route path="/investissement/*" element={<Navigate to="/fr/investissement" replace />} />
-              <Route path="/notre-approche" element={<Navigate to="/fr/notre-approche" replace />} />
-              <Route path="/contact" element={<Navigate to="/fr/contact" replace />} />
-              <Route path="/mentions-legales" element={<Navigate to="/fr/mentions-legales" replace />} />
-              <Route path="/confidentialite" element={<Navigate to="/fr/confidentialite" replace />} />
-              <Route path="/cookies" element={<Navigate to="/fr/cookies" replace />} />
-              <Route path="/vision" element={<Navigate to="/fr/notre-approche" replace />} />
-              <Route path="/a-propos" element={<Navigate to="/fr/notre-approche" replace />} />
-              <Route path="/collectivites" element={<Navigate to="/fr/notre-approche" replace />} />
-              <Route path="/investisseurs" element={<Navigate to="/fr/investissement" replace />} />
-              <Route path="/methode" element={<Navigate to="/fr/notre-approche" replace />} />
-              <Route path="*" element={<NotFound />} />
+              {/* Legacy /fr/* redirects → root */}
+              <Route path="/fr/*" element={<FrRedirect />} />
+
+              {/* Legacy redirects (old URLs without prefix) */}
+              <Route path="/vision" element={<Navigate to="/notre-approche" replace />} />
+              <Route path="/a-propos" element={<Navigate to="/notre-approche" replace />} />
+              <Route path="/collectivites" element={<Navigate to="/notre-approche" replace />} />
+              <Route path="/investisseurs" element={<Navigate to="/investissement" replace />} />
+              <Route path="/methode" element={<Navigate to="/notre-approche" replace />} />
+              <Route path="/praticiens" element={<Navigate to="/professionnels" replace />} />
+
+              {/* FR routes (root, no prefix) */}
+              <Route path="/*" element={<LangSync lang="fr"><Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/projets" element={<Projets />} />
+                <Route path="/projets/:slug" element={<ProjetDetail />} />
+                <Route path="/professionnels" element={<Professionnels />} />
+                <Route path="/investissement" element={<Investissement />} />
+                <Route path="/investissement/interet" element={<InvestisseurInteret />} />
+                <Route path="/investissement/memo" element={<InvestisseurMemo />} />
+                <Route path="/investissement/verify" element={<InvestisseurVerify />} />
+                <Route path="/notre-approche" element={<NotreApproche />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/mentions-legales" element={<MentionsLegales />} />
+                <Route path="/confidentialite" element={<PolitiqueConfidentialite />} />
+                <Route path="/cookies" element={<PolitiqueCookies />} />
+                <Route path="/location-cabinet-bordeaux" element={<LocationCabinetBordeaux />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes></LangSync>} />
             </Routes>
             <ScrollToTop />
             <CookieBanner />
