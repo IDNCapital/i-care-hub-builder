@@ -95,6 +95,78 @@ export type Database = {
         }
         Relationships: []
       }
+      practitioner_leads: {
+        Row: {
+          city: string
+          consent: boolean
+          consent_at: string | null
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          lang: string
+          last_email_sent_at: string | null
+          last_name: string
+          message: string | null
+          move_in_date: string | null
+          neighbourhood: string | null
+          notified_at: string | null
+          organisation: string | null
+          phone: string
+          profession: string
+          source_url: string | null
+          status: string
+          surface: string | null
+          website: string | null
+        }
+        Insert: {
+          city: string
+          consent?: boolean
+          consent_at?: string | null
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          lang?: string
+          last_email_sent_at?: string | null
+          last_name: string
+          message?: string | null
+          move_in_date?: string | null
+          neighbourhood?: string | null
+          notified_at?: string | null
+          organisation?: string | null
+          phone: string
+          profession: string
+          source_url?: string | null
+          status?: string
+          surface?: string | null
+          website?: string | null
+        }
+        Update: {
+          city?: string
+          consent?: boolean
+          consent_at?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          lang?: string
+          last_email_sent_at?: string | null
+          last_name?: string
+          message?: string | null
+          move_in_date?: string | null
+          neighbourhood?: string | null
+          notified_at?: string | null
+          organisation?: string | null
+          phone?: string
+          profession?: string
+          source_url?: string | null
+          status?: string
+          surface?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       projets: {
         Row: {
           address: string | null

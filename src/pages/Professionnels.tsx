@@ -10,7 +10,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
-import { Analytics } from "@/lib/analytics";
+import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowRight,
   Shield,
@@ -67,22 +67,53 @@ export default function Professionnels() {
 
   const dateOptions = ["immediat", "3mois", "6mois", "1an", "plus"];
 
-  const [formData, setFormData] = useState({ profession: "", ville: "", dateInstallation: "", surface: "", message: "" });
+  const [formData, setFormData] = useState({
+    firstName: "", lastName: "", email: "", phone: "", organisation: "", website: "",
+    profession: "", ville: "", neighbourhood: "", dateInstallation: "", surface: "", message: "",
+  });
+  const [honeypot, setHoneypot] = useState("");
   const [rgpdConsent, setRgpdConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot) return; // bot trap
     if (!rgpdConsent) { toast.error(t("professionals.formErrorConsent")); return; }
-    if (!formData.profession || !formData.ville) { toast.error(t("professionals.formErrorRequired")); return; }
+    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.profession || !formData.ville.trim()) {
+      toast.error(t("professionals.formErrorRequired")); return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) { toast.error(t("professionals.formErrorEmail")); return; }
+    const phoneRegex = /^[+\d\s.\-()]{6,30}$/;
+    if (!phoneRegex.test(formData.phone.trim())) { toast.error(t("professionals.formErrorPhone")); return; }
+
     setIsSubmitting(true);
-    Analytics.formSubmission("candidature_professionnel", `/${lang}/professionnels`);
-    setTimeout(() => {
+    try {
+      const { data, error } = await supabase.functions.invoke("send-practitioner-lead", {
+        body: {
+          first_name: formData.firstName, last_name: formData.lastName,
+          email: formData.email, phone: formData.phone,
+          organisation: formData.organisation || null, website: formData.website || null,
+          profession: formData.profession, city: formData.ville,
+          neighbourhood: formData.neighbourhood || null,
+          move_in_date: formData.dateInstallation || null,
+          surface: formData.surface || null, message: formData.message || null,
+          lang, source_url: window.location.href, honeypot,
+        },
+      });
+      if (error) throw error;
+      if (data?.error === "rate_limited") { toast.error(t("professionals.formErrorRateLimit")); return; }
+      if (data?.error) throw new Error(data.error);
+
       toast.success(t("professionals.formSuccess"));
-      setFormData({ profession: "", ville: "", dateInstallation: "", surface: "", message: "" });
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", organisation: "", website: "", profession: "", ville: "", neighbourhood: "", dateInstallation: "", surface: "", message: "" });
       setRgpdConsent(false);
+    } catch (err) {
+      console.error("Form submission error:", err);
+      toast.error(t("professionals.formErrorGeneric"));
+    } finally {
       setIsSubmitting(false);
-    }, 800);
+    }
   };
 
   return (
@@ -201,6 +232,44 @@ export default function Professionnels() {
               <p className="text-background/70 text-lg">{t("professionals.formSubtitle")}</p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Honeypot - hidden from users */}
+              <div className="absolute -left-[9999px]" aria-hidden="true">
+                <input type="text" name="website_url_confirm" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+              </div>
+
+              {/* Identity fields */}
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName" className="text-background">{t("professionals.formFirstName")} *</Label>
+                  <Input id="firstName" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" required maxLength={100} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName" className="text-background">{t("professionals.formLastName")} *</Label>
+                  <Input id="lastName" value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" required maxLength={100} />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-background">{t("professionals.formEmail")} *</Label>
+                  <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" required maxLength={255} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-background">{t("professionals.formPhone")} *</Label>
+                  <Input id="phone" type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="06 49 80 80 97" className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" required maxLength={30} />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="organisation" className="text-background">{t("professionals.formOrganisation")}</Label>
+                  <Input id="organisation" value={formData.organisation} onChange={(e) => setFormData({ ...formData, organisation: e.target.value })} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" maxLength={200} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="website" className="text-background">{t("professionals.formWebsite")}</Label>
+                  <Input id="website" type="url" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} placeholder="https://" className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" maxLength={300} />
+                </div>
+              </div>
+
+              {/* Project fields */}
               <div className="space-y-2">
                 <Label htmlFor="profession" className="text-background">{t("professionals.formProfession")} *</Label>
                 <select id="profession" value={formData.profession} onChange={(e) => setFormData({ ...formData, profession: e.target.value })} className="w-full h-12 px-4 rounded-lg border border-background/20 bg-background/10 text-background text-sm" required>
@@ -210,9 +279,15 @@ export default function Professionnels() {
                   ))}
                 </select>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="ville" className="text-background">{t("professionals.formCity")} *</Label>
-                <Input id="ville" value={formData.ville} onChange={(e) => setFormData({ ...formData, ville: e.target.value })} placeholder={t("professionals.formCityPlaceholder")} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" required maxLength={100} />
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="ville" className="text-background">{t("professionals.formCity")} *</Label>
+                  <Input id="ville" value={formData.ville} onChange={(e) => setFormData({ ...formData, ville: e.target.value })} placeholder={t("professionals.formCityPlaceholder")} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" required maxLength={100} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="neighbourhood" className="text-background">{t("professionals.formNeighbourhood")}</Label>
+                  <Input id="neighbourhood" value={formData.neighbourhood} onChange={(e) => setFormData({ ...formData, neighbourhood: e.target.value })} placeholder={t("professionals.formNeighbourhoodPlaceholder")} className="h-12 bg-background/10 border-background/20 text-background placeholder:text-background/40 rounded-lg" maxLength={200} />
+                </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
@@ -251,6 +326,7 @@ export default function Professionnels() {
                 {isSubmitting ? t("professionals.formSubmitting") : t("professionals.formSubmit")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
+              <p className="text-background/70 text-xs text-center font-medium">{t("professionals.formRecontact")}</p>
               <p className="text-background/50 text-xs text-center">{t("professionals.formDisclaimer")}</p>
             </form>
           </div>
