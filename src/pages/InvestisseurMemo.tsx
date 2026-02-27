@@ -69,27 +69,18 @@ function useInvestorAccess(): AccessState {
   return state;
 }
 
-const financialModel = [
-  { label: "Surface type", value: "180 m² (RDC)" },
-  { label: "Acquisition", value: "500 000 €" },
-  { label: "Travaux + ingénierie", value: "200 000 €" },
-  { label: "Investissement total", value: "700 000 €" },
-  { label: "Dette bancaire (60 %)", value: "420 000 €" },
-  { label: "Apport investisseur (40 %)", value: "280 000 €" },
+const keyMetrics = [
+  { label: "Surface type par actif", value: "50 – 300 m² (RDC)" },
+  { label: "Densité", value: "~5 cabinets / 100 m²" },
+  { label: "Loyer moyen par cabinet", value: "600 – 800 € / mois" },
+  { label: "Structure de financement", value: "dette senior + equity investisseur" },
 ];
 
-const revenueModel = [
-  { label: "Loyer moyen par cabinet", value: "700 € / mois" },
-  { label: "Nombre de cabinets", value: "9" },
-  { label: "Loyers bruts annuels", value: "75 600 €" },
-  { label: "Net après vacance et charges", value: "~70 000 € / an" },
-  { label: "Cash-flow net après dette", value: "~40 000 € / an" },
-];
-
-const exitScenario = [
-  { label: "Horizon de sortie cible", value: "4 ans" },
-  { label: "Valeur de sortie estimée", value: "800 000 – 900 000 €" },
-  { label: "TRI investisseur net cible", value: "15 – 18 %" },
+const performanceTargets = [
+  { label: "Rendement courant stabilisé", value: "6 – 7 % / an" },
+  { label: "TRI cible annualisé", value: "~10 %" },
+  { label: "Horizon de détention", value: "moyen-long terme" },
+  { label: "Vacance cible structurelle", value: "< 5 %" },
 ];
 
 const waterfallSteps = [
@@ -107,44 +98,61 @@ const waterfallSteps = [
   },
   {
     number: "03",
-    title: "Partage 80 / 20 jusqu'à 15 % de TRI",
+    title: "Partage des profits",
     description:
-      "Au-delà du hurdle, les profits sont répartis à 80 % pour l'investisseur et 20 % pour le sponsor, jusqu'à atteindre un TRI de 15 %.",
+      "Au-delà du hurdle, les profits sont répartis entre l'investisseur et le sponsor selon une clé définie contractuellement, alignant les intérêts sur la performance réelle.",
+  },
+];
+
+const riskMitigation = [
+  {
+    title: "Granularité locative",
+    description:
+      "Chaque actif comprend 7 à 10 cabinets indépendants. Le départ d'un locataire n'affecte qu'une fraction marginale du revenu global.",
   },
   {
-    number: "04",
-    title: "Super promote au-delà de 15 %",
+    title: "Diversification sectorielle",
     description:
-      "Au-delà de 15 % de TRI, les profits excédentaires sont partagés 50 / 50 entre l'investisseur et le sponsor.",
+      "Les locataires exercent des professions variées (psychologues, kinésithérapeutes, ostéopathes, médecins…), réduisant la corrélation de vacance.",
+  },
+  {
+    title: "Gestion locale active",
+    description:
+      "I-CA.RE assure directement l'exploitation, la maintenance et la commercialisation des actifs, sans intermédiaire, au plus près du terrain.",
+  },
+  {
+    title: "Demande structurelle",
+    description:
+      "La demande de locaux adaptés au soin est portée par des tendances démographiques de long terme et une pénurie chronique d'offre conforme.",
   },
 ];
 
 const governanceRoles = [
   {
     role: "Investisseur",
-    contribution: "100 % de l'equity (40 % du total)",
+    contribution: "Apport en capital",
     details: [
-      "Apport en capital sur chaque opération",
-      "Rendement préférentiel (hurdle 6 %)",
-      "Priorité au remboursement intégral du capital",
-      "Reporting régulier et droit de regard",
+      "Apport en equity sur chaque opération",
+      "Rendement préférentiel prioritaire",
+      "Remboursement intégral avant tout partage",
+      "Reporting régulier et transparence",
     ],
   },
   {
     role: "I-CA.RE (sponsor)",
-    contribution: "100 % de l'industrie",
+    contribution: "Apport en industrie",
     details: [
-      "Développement et sourcing des actifs",
+      "Sourcing et sélection des actifs",
       "Ingénierie, conception, pilotage des travaux",
       "Commercialisation et mise en location",
-      "Asset management et stratégie de sortie",
+      "Gestion patrimoniale et exploitation",
     ],
   },
   {
     role: "Dette bancaire",
-    contribution: "≈ 60 % LTV au niveau projet",
+    contribution: "Financement senior au niveau projet",
     details: [
-      "Financement senior au niveau de chaque opération",
+      "Levier au niveau de chaque actif",
       "Pas de recours sur l'investisseur",
       "Garantie hypothécaire sur l'actif",
       "Amortissement sur la durée de détention",
@@ -191,9 +199,9 @@ const investorProfiles = [
     icon: Briefcase,
     title: "Investisseurs privés",
     description:
-      "Accès à une classe d'actifs habituellement réservée aux institutionnels. Ticket d'entrée adapté, reporting dédié, structure entrepreneuriale.",
+      "Accès à une classe d'actifs habituellement réservée aux institutionnels. Reporting dédié, structure entrepreneuriale, rendement régulier.",
     features: [
-      "Ticket à partir de 280 K€",
+      "Rendement courant régulier",
       "Reporting transparent",
       "Accompagnement personnalisé",
     ],
@@ -261,7 +269,7 @@ export default function InvestisseurMemo() {
     <Layout>
       <Helmet>
         <title>Note d'investissement — I-CA.RE</title>
-        <meta name="description" content="Note d'investissement détaillée I-CA.RE : modèle financier, waterfall, gouvernance, feuille de route 2026–2028." />
+        <meta name="description" content="Note d'investissement I-CA.RE : approche patrimoniale, mutualisation du risque locatif, gouvernance et feuille de route." />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
@@ -276,7 +284,7 @@ export default function InvestisseurMemo() {
               Note d'investissement
             </h1>
             <p className="text-xl text-muted-foreground">
-              Modèle financier, structure de distribution, gouvernance et feuille de route détaillés.
+              Approche patrimoniale, mutualisation du risque, gouvernance et feuille de route.
             </p>
           </div>
         </div>
@@ -287,10 +295,10 @@ export default function InvestisseurMemo() {
         <div className="container">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { value: "280 K€", label: "ticket investisseur" },
-              { value: "15–18 %", label: "TRI net cible" },
+              { value: "6–7 %", label: "rendement courant stabilisé" },
+              { value: "~10 %", label: "TRI cible annualisé" },
               { value: "6 %", label: "hurdle préférentiel" },
-              { value: "4 ans", label: "horizon de sortie" },
+              { value: "< 5 %", label: "vacance cible structurelle" },
             ].map((metric) => (
               <div key={metric.label} className="text-center">
                 <p className="text-2xl md:text-3xl font-heading font-bold text-foreground">
@@ -383,21 +391,20 @@ export default function InvestisseurMemo() {
         </div>
       </section>
 
-      {/* Modèle financier */}
+      {/* Modèle économique */}
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto">
-            <h2 className="section-title mb-6 text-center">Modèle financier type</h2>
+            <h2 className="section-title mb-6 text-center">Modèle économique</h2>
             <p className="text-muted-foreground text-center mb-12">
-              Opération type : 180 m² en rez-de-chaussée, 9 cabinets, financement mixte dette/equity.
+              Une approche patrimoniale fondée sur des actifs granulaires, un rendement courant régulier et une mutualisation structurelle du risque locatif.
             </p>
             <div className="space-y-8">
-              <DataTable title="Structure d'investissement" rows={financialModel} />
-              <DataTable title="Revenus locatifs" rows={revenueModel} />
-              <DataTable title="Scénario de sortie" rows={exitScenario} />
+              <DataTable title="Caractéristiques d'un actif type" rows={keyMetrics} />
+              <DataTable title="Objectifs de performance" rows={performanceTargets} />
             </div>
             <p className="text-xs text-muted-foreground mt-6 text-center">
-              Données indicatives basées sur une opération type. Les performances passées ne préjugent pas des performances futures.
+              Données indicatives. Les performances passées ne préjugent pas des performances futures. Les objectifs ne constituent pas une garantie.
             </p>
           </div>
         </div>
@@ -434,19 +441,46 @@ export default function InvestisseurMemo() {
         </div>
       </section>
 
+      {/* Mutualisation du risque */}
+      <section className="section-padding">
+        <div className="container">
+          <div className="max-w-3xl mx-auto mb-16">
+            <h2 className="section-title mb-6 text-center">Mutualisation du risque locatif</h2>
+            <p className="text-muted-foreground text-center text-lg">
+              La granularité des actifs I-CA.RE constitue un mécanisme de protection intrinsèque du rendement.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {riskMitigation.map((item, index) => (
+              <div key={item.title} className="bg-card rounded-xl p-8 border border-border">
+                <div className="flex items-start gap-4">
+                  <span className="text-4xl font-heading font-bold text-primary/30">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Waterfall */}
       <section className="section-padding bg-foreground">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-semibold mb-6 text-background">
-              Structure de distribution (waterfall)
+              Structure de distribution
             </h2>
             <p className="text-background/70 text-lg">
               Un mécanisme d'alignement des intérêts entre investisseur et sponsor, avec priorité absolue au remboursement du capital investi.
             </p>
           </div>
           <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-3 gap-8">
               {waterfallSteps.map((step) => (
                 <div key={step.number} className="relative bg-background/8 border border-background/15 rounded-xl p-8">
                   <span className="text-5xl font-heading font-bold text-primary/40 absolute top-6 right-8">
@@ -508,12 +542,11 @@ export default function InvestisseurMemo() {
             <div className="bg-background rounded-xl border border-border p-8">
               <span className="text-xs font-bold uppercase tracking-[0.1em] px-3 py-1 rounded-full bg-primary/15 text-primary inline-block mb-4">Phase 3</span>
               <h3 className="text-2xl font-heading font-bold mb-2">2028</h3>
-              <p className="text-sm font-semibold text-foreground mb-4">Sortie portefeuille</p>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">Cession du portefeuille stabilisé.</p>
+              <p className="text-sm font-semibold text-foreground mb-4">Expansion régionale</p>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-4">Portefeuille stabilisé, extension géographique.</p>
               <div className="border-t border-border pt-4">
-                <p className="text-xs text-muted-foreground">Pistes d'expansion :</p>
+                <p className="text-xs text-muted-foreground">Nouvelles métropoles envisagées :</p>
                 <p className="text-sm mt-1">La Rochelle, Nantes, Rennes</p>
-                <p className="text-xs text-muted-foreground mt-2">Formats élargis possibles (modèle clinique privée)</p>
               </div>
             </div>
           </div>
