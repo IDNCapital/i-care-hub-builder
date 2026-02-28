@@ -2,41 +2,32 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowRight, MapPin } from "lucide-react";
-import { useCallback, useRef } from "react";
+import { ArrowRight, MapPin, Mail } from "lucide-react";
+
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { useProjects } from "@/hooks/useProjects";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
-import { BordeauxMap } from "@/components/BordeauxMap";
-
-/** Map centre-id → project slug in Supabase */
-const CENTRE_SLUG: Record<string, string> = {
-  chartrons: "i-ca-re-chartrons",
-  nansouty: "i-ca-re-nansouty",
-  "jardin-public": "i-ca-re-jardin-public",
-  "pey-berland": "i-ca-re-pey-berland",
-};
-
 type CentreStatus = "available" | "full" | "coming_soon";
 
 interface StaticCentre {
   id: string;
   name: string;
+  address: string;
   status: CentreStatus;
-  desc?: string;
   slug?: string;
 }
 
+/** Ordered: available first, then full, then coming_soon */
 const STATIC_CENTRES: StaticCentre[] = [
-  { id: "chartrons", name: "Chartrons", status: "available", slug: "i-ca-re-chartrons" },
-  { id: "nansouty", name: "Nansouty", status: "full", slug: "i-ca-re-nansouty" },
-  { id: "jardin-public", name: "Jardin Public", status: "full", slug: "i-ca-re-jardin-public" },
-  { id: "pey-berland", name: "Pey-Berland", status: "full", slug: "i-ca-re-pey-berland" },
-  { id: "floirac", name: "Floirac", status: "coming_soon" },
-  { id: "lormont", name: "Lormont", status: "coming_soon" },
+  { id: "chartrons", name: "Chartrons", address: "20 cours Saint Louis, 33300 Bordeaux", status: "available", slug: "i-ca-re-chartrons" },
+  { id: "nansouty", name: "Nansouty", address: "106b rue Bertrand de Goth, 33800 Bordeaux", status: "full", slug: "i-ca-re-nansouty" },
+  { id: "jardin-public", name: "Jardin Public", address: "38 cours du Maréchal Foch, 33000 Bordeaux", status: "full", slug: "i-ca-re-jardin-public" },
+  { id: "pey-berland", name: "Pey-Berland", address: "6 rue Père Louis de Jabrun, 33000 Bordeaux", status: "full", slug: "i-ca-re-pey-berland" },
+  { id: "floirac", name: "Floirac", address: "23 avenue de la Libération, 33270 Floirac", status: "coming_soon" },
+  { id: "lormont", name: "Lormont", address: "1 rue Marc Tallavi, 33310 Lormont", status: "coming_soon" },
 ];
 
 const badgeStyles: Record<CentreStatus, string> = {
@@ -49,14 +40,6 @@ export default function Projets() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const { data: projects } = useProjects();
-  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
-  const scrollToCentre = useCallback((id: string) => {
-    const el = cardRefs.current[id];
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }, []);
 
   const badgeLabel = (status: CentreStatus) => {
     switch (status) {
@@ -108,7 +91,7 @@ export default function Projets() {
         </div>
       </section>
 
-      {/* Map */}
+      {/* Centre Cards */}
       <section className="section-padding bg-background">
         <div className="container">
           <h2 className="text-2xl md:text-3xl font-semibold text-center mb-4">
@@ -118,25 +101,6 @@ export default function Projets() {
             {t("projects.subtitle")}
           </p>
 
-          {/* Legend */}
-          <div className="flex flex-wrap justify-center gap-6 mb-8">
-            {(["available", "full", "coming_soon"] as CentreStatus[]).map((s) => (
-              <div key={s} className="flex items-center gap-2 text-sm">
-                <span className={`w-3 h-3 rounded-full ${
-                  s === "available" ? "bg-primary" : s === "full" ? "bg-muted-foreground/40" : "bg-accent"
-                }`} />
-                <span className="text-muted-foreground">{badgeLabel(s)}</span>
-              </div>
-            ))}
-          </div>
-
-          <BordeauxMap onCentreClick={scrollToCentre} />
-        </div>
-      </section>
-
-      {/* Centre Cards */}
-      <section className="section-padding">
-        <div className="container">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {STATIC_CENTRES.map((centre) => {
               const project = getProject(centre.slug);
@@ -145,8 +109,7 @@ export default function Projets() {
               return (
                 <div
                   key={centre.id}
-                  ref={(el) => { cardRefs.current[centre.id] = el; }}
-                  className="group bg-background rounded-3xl overflow-hidden shadow-card hover:shadow-elevated transition-all duration-300"
+                  className="group bg-background rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-elevated hover:-translate-y-1 transition-all duration-300"
                 >
                   {/* Image */}
                   <div className="relative aspect-[4/3] overflow-hidden">
@@ -168,49 +131,51 @@ export default function Projets() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                      <MapPin className="w-4 h-4" />
-                      <span className="text-sm">Bordeaux</span>
+                  <div className="p-6 flex flex-col gap-3">
+                    <h3 className="text-xl font-semibold">{centre.name}</h3>
+
+                    <div className="flex items-start gap-2 text-muted-foreground">
+                      <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
+                      <span className="text-sm">{centre.address}</span>
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">
-                      {centre.name}
-                    </h3>
 
                     {centre.status === "available" && (
-                      <p className="text-primary text-sm font-medium mb-4">
+                      <p className="text-primary text-sm font-medium">
                         {t("projects.availableUnits")}
                       </p>
                     )}
 
                     {project && (
-                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                      <p className="text-muted-foreground text-sm line-clamp-2">
                         {getDescription(project)}
                       </p>
                     )}
 
                     {/* CTAs */}
-                    <div className="flex flex-wrap gap-3 mt-auto">
-                      {centre.slug ? (
-                        <>
-                          <Button variant="outline" size="sm" asChild>
-                            <Link to={`${localePath(lang, "projects")}/${centre.slug}`}>
-                              {t("projects.viewSpace")}
-                            </Link>
-                          </Button>
-                          {centre.status === "available" && (
-                            <Button size="sm" asChild>
-                              <Link to={localePath(lang, "contact")}>
-                                {t("projects.findOffice")}
-                                <ArrowRight className="ml-1.5 h-4 w-4" />
-                              </Link>
-                            </Button>
-                          )}
-                        </>
-                      ) : (
-                        <span className="text-sm text-muted-foreground italic">
-                          {t("projects.comingSoonBadge")}
-                        </span>
+                    <div className="flex flex-wrap gap-3 mt-2">
+                      {centre.status === "available" && centre.slug && (
+                        <Button size="sm" asChild>
+                          <Link to={`${localePath(lang, "projects")}/${centre.slug}`}>
+                            {t("projects.viewSpace")}
+                            <ArrowRight className="ml-1.5 h-4 w-4" />
+                          </Link>
+                        </Button>
+                      )}
+                      {centre.status === "full" && centre.slug && (
+                        <Button variant="outline" size="sm" asChild>
+                          <Link to={localePath(lang, "contact")}>
+                            <Mail className="mr-1.5 h-4 w-4" />
+                            {lang === "fr" ? "Être informé des disponibilités" : "Get notified of availability"}
+                          </Link>
+                        </Button>
+                      )}
+                      {centre.status === "coming_soon" && (
+                        <Button variant="outline" size="sm" asChild>
+                          <Link to={localePath(lang, "contact")}>
+                            <Mail className="mr-1.5 h-4 w-4" />
+                            {lang === "fr" ? "Être informé de l'ouverture" : "Get notified of opening"}
+                          </Link>
+                        </Button>
                       )}
                     </div>
                   </div>
@@ -220,8 +185,6 @@ export default function Projets() {
           </div>
         </div>
       </section>
-
-      {/* Bottom CTA */}
       <section className="section-padding">
         <div className="container">
           <div className="cta-section text-center">
