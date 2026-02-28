@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Accueil",
-    "projects": "Projets",
+    "projects": "Nos lieux de soin",
     "professionals": "Praticiens du soin et du bien-être",
     "investment": "Investissement",
     "approach": "Notre approche",
@@ -285,24 +285,24 @@
     ]
   },
   "projects": {
-    "title": "Nos Projets",
-    "subtitle": "Des espaces de soin granulaires : 5 cabinets pour 100 m², loyers de 600 à 800 €/mois, vacance maîtrisée par la structure multi-locataires.",
+    "title": "Nos lieux de soin",
+    "subtitle": "Découvrez les lieux I-CA.RE déjà en activité ou en cours d'ouverture.",
     "ctaAvailability": "Demander une disponibilité",
     "filter": "Filtrer :",
     "allCities": "Toutes les villes",
     "allStatuses": "Tous les statuts",
     "allTypologies": "Toutes les typologies",
     "reset": "Réinitialiser",
-    "noResults": "Aucun projet ne correspond à vos critères.",
+    "noResults": "Aucun lieu ne correspond à vos critères.",
     "units": "unités",
     "ctaBottom": "Un projet dans votre ville ?",
     "ctaBottomDesc": "Nous étudions en permanence de nouvelles opportunités. Contactez-nous pour nous parler de votre territoire."
   },
   "projectDetail": {
-    "allProjects": "Tous les projets",
-    "notFound": "Projet introuvable",
-    "notFoundDesc": "Ce projet n'existe pas ou a été déplacé.",
-    "backToProjects": "Retour aux projets",
+    "allProjects": "Tous les lieux de soin",
+    "notFound": "Lieu introuvable",
+    "notFoundDesc": "Ce lieu n'existe pas ou a été déplacé.",
+    "backToProjects": "Retour aux lieux de soin",
     "requestAvailability": "Demander une disponibilité",
     "scheduleVisit": "Planifier une visite",
     "surface": "m² de surface",
@@ -479,7 +479,7 @@
   "seo": {
     "homeTitle": "Cabinets paramédicaux à Bordeaux | I-CA.RE",
     "homeDesc": "Location de cabinets professionnels à Bordeaux pour psychologues, thérapeutes et praticiens du bien-être. Espaces rénovés et confidentiels.",
-    "projectsTitle": "Nos cabinets à Bordeaux | I-CA.RE",
+    "projectsTitle": "Nos lieux de soin à Bordeaux | I-CA.RE",
     "projectsDesc": "Découvrez les cabinets I-CA.RE à Bordeaux : Nansouty, Jardin Public, Pey Berland et futurs développements.",
     "professionalsTitle": "Cabinet à louer Bordeaux | I-CA.RE",
     "professionalsDesc": "Vous recherchez un cabinet professionnel à Bordeaux ? Espaces acoustiques et rénovés pour psychologues et praticiens paramédicaux.",
