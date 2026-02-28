@@ -15,6 +15,7 @@ import {
   Accessibility,
   Home,
   BadgeEuro,
+  Shield,
 } from "lucide-react";
 import { getDefaultHero, SECTION_IMAGES } from "@/lib/projectImages";
 import { HeroSlideshow } from "@/components/HeroSlideshow";
@@ -61,8 +62,11 @@ export default function Index() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6 opacity-0 animate-fade-up">
               {t("home.heroTitle")}
             </h1>
-            <p className="text-xl md:text-2xl text-white/80 leading-relaxed mb-4 opacity-0 animate-fade-up stagger-1">
+            <p className="text-xl md:text-2xl text-white/80 leading-relaxed mb-3 opacity-0 animate-fade-up stagger-1">
               {t("home.heroSubtitle")}
+            </p>
+            <p className="text-base text-white/60 mb-2 opacity-0 animate-fade-up stagger-1">
+              {t("home.heroMicro")}
             </p>
             <p className="text-base text-white/60 font-heading italic mb-10 opacity-0 animate-fade-up stagger-2">
               Des lieux de soin, pensés comme des lieux de vie
@@ -70,7 +74,7 @@ export default function Index() {
             <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-up stagger-3">
               <Button variant="hero" asChild>
                 <Link to={localePath(lang, "professionals")}>
-                  {t("home.ctaProfessionals")}
+                  {t("home.ctaFindOffice")}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -80,6 +84,31 @@ export default function Index() {
                 </Link>
               </Button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Practitioner Promise */}
+      <section className="section-padding">
+        <div className="container">
+          <div className="text-center mb-16">
+            <h2 className="section-title">{t("homePromise.title")}</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {([
+              { icon: Shield, title: t("homePromise.confidentiality"), desc: t("homePromise.confidentialityDesc") },
+              { icon: Building2, title: t("homePromise.image"), desc: t("homePromise.imageDesc") },
+              { icon: Users, title: t("homePromise.respect"), desc: t("homePromise.respectDesc") },
+              { icon: Heart, title: t("homePromise.stability"), desc: t("homePromise.stabilityDesc") },
+            ] as const).map((item, i) => (
+              <div key={i} className="text-center">
+                <div className="w-14 h-14 rounded-2xl bg-primary/15 flex items-center justify-center mx-auto mb-5">
+                  <item.icon className="w-7 h-7 text-primary" />
+                </div>
+                <h3 className="text-lg font-heading font-semibold mb-3">{item.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

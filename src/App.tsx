@@ -21,6 +21,7 @@ import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import PolitiqueCookies from "./pages/PolitiqueCookies";
 import NotFound from "./pages/NotFound";
 import LocationCabinetBordeaux from "./pages/LocationCabinetBordeaux";
+import FAQ from "./pages/FAQ";
 import { CookieBanner } from "./components/CookieBanner";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { useAnalytics } from "./hooks/useAnalytics";
@@ -89,6 +90,7 @@ const App = () => (
                 <Route path="/cookies" element={<PolitiqueCookies />} />
                 <Route path="/practitioners" element={<Professionnels />} />
                 <Route path="/office-rental-bordeaux" element={<LocationCabinetBordeaux />} />
+                <Route path="/faq" element={<FAQ />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
 
@@ -119,6 +121,7 @@ const App = () => (
                 <Route path="/confidentialite" element={<PolitiqueConfidentialite />} />
                 <Route path="/cookies" element={<PolitiqueCookies />} />
                 <Route path="/location-cabinet-bordeaux" element={<LocationCabinetBordeaux />} />
+                <Route path="/questions-frequentes" element={<FAQ />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
             </Routes>
