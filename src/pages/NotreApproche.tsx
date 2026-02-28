@@ -74,10 +74,11 @@ export default function NotreApproche() {
           {/* Nicolas */}
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="lg:order-2">
-              {/* Placeholder for Nicolas portrait — replace src once image is uploaded */}
-              <div className="rounded-3xl shadow-elevated w-full aspect-[3/4] bg-muted flex items-center justify-center overflow-hidden">
-                <span className="text-muted-foreground/40 text-sm italic">Photo à venir</span>
-              </div>
+              <FadeImage
+                src={SECTION_IMAGES.portraitNicolas}
+                alt={`${t("approach.nicolasName")} — ${t("approach.nicolasRole")}`}
+                className="rounded-3xl shadow-elevated w-full object-cover aspect-[3/4]"
+              />
             </div>
             <div className="lg:order-1">
               <p className="text-primary font-medium mb-2">{t("approach.nicolasRole")}</p>

@@ -24,6 +24,7 @@ import chartronsPlan from "@/assets/chartrons/plan.webp";
 
 // Portrait
 import portraitJazmin from "@/assets/portrait-jazmin.webp";
+import portraitNicolas from "@/assets/portrait-nicolas.jpg";
 
 // ─── Generated hero images ──────────────────────────────
 import heroHomeFacade1 from "@/assets/hero/hero-home-facade-1.webp";
@@ -87,6 +88,8 @@ export const SECTION_IMAGES = {
   homeImpact: nansoutyCab1,
   /** Founder portrait on Notre Approche */
   portrait: portraitJazmin,
+  /** Nicolas portrait on Notre Approche */
+  portraitNicolas: portraitNicolas,
   /** Method section on Notre Approche */
   approachMethod: peyBerlandFacade,
   /** Collectivités section on Notre Approche */
