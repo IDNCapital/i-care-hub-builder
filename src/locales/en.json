@@ -27,11 +27,12 @@
     "cookies": "cookies"
   },
   "home": {
-    "heroTitle": "We transform urban ground floors into care and wellbeing spaces",
-    "heroSubtitle": "Spaces ranging from 50 to 300 sqm, designed for confidentiality, comfort and performance. 7 to 10 offices per asset, in the heart of neighbourhoods.",
+    "heroTitle": "Care offices designed for your practice.",
+    "heroSubtitle": "Private spaces of 11 to 15 sqm within shared premises, designed for confidentiality, comfort and quality of welcome.",
+    "heroMicro": "Professional, stable spaces suited to care and wellbeing professions.",
     "baseline": "Des lieux de soin, pensés comme des lieux de vie",
-    "ctaProfessionals": "Care & Wellbeing Practitioners",
-    "ctaApproach": "Discover Our Approach",
+    "ctaFindOffice": "Find my office",
+    "ctaApproach": "Discover our approach",
     "whatWeDo": "What We Do",
     "whatWeDoSubtitle": "We acquire undervalued retail spaces, renovate them to the highest standards, and operate them sustainably in service of community care.",
     "whyChoose": "Why Practitioners Choose I-CA.RE",
@@ -489,6 +490,41 @@
     "investmentTitle": "Healthcare Real Estate Investment | I-CA.RE",
     "investmentDesc": "Invest in healthcare-focused real estate assets in Bordeaux. Structured and long-term model.",
     "locationBordeauxTitle": "Professional Office for Rent in Bordeaux | I-CA.RE",
-    "locationBordeauxDesc": "Professional office rental in Bordeaux for psychologists, therapists and care professionals. Renovated, acoustic spaces, from €600 to €800 excl. charges."
+    "locationBordeauxDesc": "Professional office rental in Bordeaux for psychologists, therapists and care professionals. Renovated, acoustic spaces, from €600 to €800 excl. charges.",
+    "faqTitle": "Frequently Asked Questions | I-CA.RE",
+    "faqDesc": "Answers to common questions about renting an I-CA.RE office: organisation, rent, commitment, fit-out."
+  },
+  "homePromise": {
+    "title": "What this changes for your practice",
+    "confidentiality": "Real confidentiality",
+    "confidentialityDesc": "The acoustic insulation of each office is engineered to guarantee the privacy of therapeutic exchanges. What your patients say stays in your office.",
+    "image": "A coherent professional image",
+    "imageDesc": "Well-maintained, bright spaces designed for receiving the public. Your patients immediately perceive a professional and reassuring environment.",
+    "respect": "A respectful setting among practitioners",
+    "respectDesc": "The practices hosted are compatible with one another. The environment is structured so that everyone can work with peace of mind.",
+    "stability": "Stability and continuity",
+    "stabilityDesc": "Our spaces are built to last. Long-term asset management ensures a sustainable setting for your activity."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know before joining an I-CA.RE space.",
+    "q1": "How are I-CA.RE spaces organised?",
+    "a1": "Each I-CA.RE location comprises 7 to 10 private offices of 11 to 15 sqm, plus shared common areas: waiting room, restrooms and a break area. Offices are fully partitioned and soundproofed to ensure the confidentiality of exchanges.",
+    "q2": "What does the rent include?",
+    "a2": "The rent covers exclusive use of your office, access to common areas, maintenance of shared spaces, building insurance and running costs (water, communal electricity, internet). There are no hidden fees or additional charges.",
+    "q3": "Is the office fitted out?",
+    "a3": "Yes, each office is delivered turnkey: flooring, paint, lighting, electrical outlets and network are in place. You can start practising from day one. Furniture (desk, chair, décor) is your responsibility to personalise your space.",
+    "q4": "What is the commitment period?",
+    "a4": "We offer flexible professional leases, generally 3 years renewable, with 6 months' notice. This can be adapted to your situation. Our goal is to offer stability while remaining flexible.",
+    "q5": "How are practitioners selected?",
+    "a5": "We ensure a coherent and respectful community. Practitioners are selected based on their professional practice, compatibility with other occupants and commitment to shared living rules. We favour care, allied health and wellbeing professions.",
+    "q6": "Are the spaces suitable for receiving the public?",
+    "a6": "Yes, all our locations comply with disability access standards and regulatory requirements for establishments receiving the public. Patient welcome is considered from the design stage: signage, comfortable waiting room, ground-level access or lift.",
+    "q7": "Can I rent multiple offices?",
+    "a7": "Yes, if you need several spaces — for example for a practice requiring two rooms or to host a colleague — we can adapt the configuration. Contact us to discuss.",
+    "q8": "In which cities are you located?",
+    "a8": "We are currently based in Bordeaux, with several operating assets and others in development across the Bordeaux metropolitan area. Our ambition is to expand progressively to other French cities.",
+    "ctaTitle": "A specific question?",
+    "ctaDesc": "Our team is available to answer all your questions and support you in your installation project."
   }
 }

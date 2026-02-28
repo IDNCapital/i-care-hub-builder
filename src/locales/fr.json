@@ -27,10 +27,11 @@
     "cookies": "cookies"
   },
   "home": {
-    "heroTitle": "Nous transformons des rez-de-chaussée urbains en espaces de soin et de bien-être",
-    "heroSubtitle": "Des espaces de 50 à 300 m², conçus pour allier confidentialité, confort et performance. 7 à 10 cabinets par actif, au cœur des quartiers.",
+    "heroTitle": "Cabinets de soin conçus pour votre pratique.",
+    "heroSubtitle": "Des espaces privatifs de 11 à 15 m² au sein de lieux mutualisés, pensés pour la confidentialité, le confort et la qualité d'accueil.",
+    "heroMicro": "Des lieux professionnels, stables et adaptés aux métiers du soin et du bien-être.",
     "baseline": "Des lieux de soin, pensés comme des lieux de vie",
-    "ctaProfessionals": "Praticiens du soin et du bien-être",
+    "ctaFindOffice": "Trouver mon cabinet",
     "ctaApproach": "Découvrir notre approche",
     "whatWeDo": "Ce que nous faisons",
     "whatWeDoSubtitle": "Nous acquérons des locaux sous-valorisés, les rénovons avec exigence et les exploitons durablement au service du soin de proximité.",
@@ -489,6 +490,41 @@
     "investmentTitle": "Investissement cabinets paramédicaux Bordeaux | I-CA.RE",
     "investmentDesc": "Investir dans des actifs immobiliers dédiés aux métiers du soin et du bien-être à Bordeaux. Modèle structuré et sécurisé.",
     "locationBordeauxTitle": "Cabinet paramédical à louer à Bordeaux | I-CA.RE",
-    "locationBordeauxDesc": "Location de cabinets professionnels à Bordeaux pour psychologues et praticiens du soin. Surfaces optimisées, loyers maîtrisés."
+    "locationBordeauxDesc": "Location de cabinets professionnels à Bordeaux pour psychologues et praticiens du soin. Surfaces optimisées, loyers maîtrisés.",
+    "faqTitle": "Questions fréquentes | I-CA.RE",
+    "faqDesc": "Réponses aux questions fréquentes sur la location de cabinets I-CA.RE : organisation, loyer, engagement, aménagement."
+  },
+  "homePromise": {
+    "title": "Ce que cela change pour votre pratique",
+    "confidentiality": "Confidentialité réelle",
+    "confidentialityDesc": "L'isolation acoustique de chaque cabinet est étudiée pour garantir le respect de l'intimité thérapeutique. Ce que vos patient·e·s disent reste dans votre cabinet.",
+    "image": "Image professionnelle cohérente",
+    "imageDesc": "Des lieux soignés, lumineux et adaptés à l'accueil du public. Vos patient·e·s perçoivent immédiatement un cadre professionnel et rassurant.",
+    "respect": "Un cadre respectueux entre praticiens",
+    "respectDesc": "Les pratiques accueillies sont compatibles entre elles. L'environnement est structuré pour que chacun puisse exercer sereinement.",
+    "stability": "Stabilité et continuité",
+    "stabilityDesc": "Nos espaces sont conçus pour durer. La gestion patrimoniale à long terme garantit un cadre pérenne pour votre activité."
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "subtitle": "Tout ce qu'il faut savoir avant de rejoindre un espace I-CA.RE.",
+    "q1": "Comment sont organisés les espaces I-CA.RE ?",
+    "a1": "Chaque lieu I-CA.RE comprend entre 7 et 10 cabinets privatifs de 11 à 15 m², ainsi que des espaces communs mutualisés : salle d'attente, sanitaires, espace de pause. Les cabinets sont entièrement cloisonnés et insonorisés pour garantir la confidentialité des échanges.",
+    "q2": "Que comprend le loyer ?",
+    "a2": "Le loyer couvre l'usage exclusif de votre cabinet, l'accès aux espaces communs, l'entretien des parties partagées, l'assurance du bâtiment et les charges courantes (eau, électricité des communs, internet). Vous n'avez aucun frais caché ni charge supplémentaire à prévoir.",
+    "q3": "Le cabinet est-il aménagé ?",
+    "a3": "Oui, chaque cabinet est livré clé en main : sol, peinture, éclairage, prises électriques et réseau sont en place. Vous pouvez exercer dès votre installation. L'aménagement mobilier (bureau, fauteuil, décoration) reste à votre charge pour personnaliser votre espace.",
+    "q4": "Quelle est la durée d'engagement ?",
+    "a4": "Nous proposons des baux professionnels souples, généralement d'une durée de 3 ans renouvelable, avec un préavis de 6 mois. Cette durée peut être adaptée selon votre situation. Notre objectif est de vous offrir de la stabilité tout en restant flexible.",
+    "q5": "Comment sont sélectionnés les praticiens ?",
+    "a5": "Nous veillons à constituer un collectif cohérent et respectueux. Les praticiens sont sélectionnés sur la base de leur pratique professionnelle, de leur compatibilité avec les autres occupants et de leur engagement à respecter les règles de vie commune. Nous privilégions les métiers du soin, du paramédical et du bien-être.",
+    "q6": "Les espaces sont-ils adaptés à l'accueil du public ?",
+    "a6": "Oui, tous nos lieux sont conformes aux normes d'accessibilité PMR et aux exigences réglementaires pour les établissements recevant du public (ERP). L'accueil des patient·e·s est pensé dès la conception : signalétique, salle d'attente confortable, accès de plain-pied ou ascenseur.",
+    "q7": "Puis-je louer plusieurs cabinets ?",
+    "a7": "Oui, si vous avez besoin de plusieurs espaces — par exemple pour une pratique nécessitant deux pièces ou pour accueillir un·e collaborateur·rice — nous pouvons adapter la configuration. Contactez-nous pour en discuter.",
+    "q8": "Dans quelles villes êtes-vous implantés ?",
+    "a8": "Nous sommes actuellement implantés à Bordeaux, avec plusieurs actifs en exploitation et d'autres en développement dans la métropole bordelaise. Notre ambition est de nous développer progressivement dans d'autres villes françaises.",
+    "ctaTitle": "Une question spécifique ?",
+    "ctaDesc": "Notre équipe est disponible pour répondre à toutes vos questions et vous accompagner dans votre projet d'installation."
   }
 }

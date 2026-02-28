@@ -16,6 +16,7 @@ export function Footer() {
 
   const companyLinks = [
     { name: t("nav.approach"), href: localePath(lang, "approach") },
+    { name: lang === "fr" ? "Questions fréquentes" : "FAQ", href: localePath(lang, "faq") },
     { name: t("nav.contact"), href: localePath(lang, "contact") },
   ];
 
