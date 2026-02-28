@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Home",
-    "projects": "Projects",
+    "projects": "Our Care Spaces",
     "professionals": "Care & Wellbeing Practitioners",
     "investment": "Investment",
     "approach": "Our Approach",
@@ -285,8 +285,8 @@
     ]
   },
   "projects": {
-    "title": "Our Projects",
-    "subtitle": "Granular care spaces: 5 offices per 100 sqm, rents from €600 to €800/month, vacancy controlled through multi-tenant structure.",
+    "title": "Our Care Spaces",
+    "subtitle": "Discover I-CA.RE spaces already open or coming soon.",
     "ctaAvailability": "Request Availability",
     "filter": "Filter:",
     "allCities": "All cities",
@@ -299,10 +299,10 @@
     "ctaBottomDesc": "We are continuously exploring new opportunities. Get in touch to tell us about your area."
   },
   "projectDetail": {
-    "allProjects": "All Projects",
-    "notFound": "Project Not Found",
-    "notFoundDesc": "This project does not exist or has been moved.",
-    "backToProjects": "Back to Projects",
+    "allProjects": "All Care Spaces",
+    "notFound": "Space Not Found",
+    "notFoundDesc": "This space does not exist or has been moved.",
+    "backToProjects": "Back to Care Spaces",
     "requestAvailability": "Request Availability",
     "scheduleVisit": "Schedule a Visit",
     "surface": "sqm of floor area",
@@ -479,7 +479,7 @@
   "seo": {
     "homeTitle": "Healthcare Offices in Bordeaux | I-CA.RE",
     "homeDesc": "Professional healthcare offices for therapists and wellness practitioners in Bordeaux. Renovated and confidential spaces.",
-    "projectsTitle": "Our Projects — I-CA.RE",
+    "projectsTitle": "Our Care Spaces — I-CA.RE",
     "projectsDesc": "Discover I-CA.RE care real estate operations: care offices, rents from €600 to €800/month. Bordeaux metropolitan area.",
     "professionalsTitle": "Therapy Offices for Rent in Bordeaux | I-CA.RE",
     "professionalsDesc": "Professional offices for therapists and healthcare practitioners in Bordeaux. Designed for confidentiality and comfort.",
