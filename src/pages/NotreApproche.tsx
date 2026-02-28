@@ -77,7 +77,7 @@ export default function NotreApproche() {
               <FadeImage
                 src={SECTION_IMAGES.portraitNicolas}
                 alt={`${t("approach.nicolasName")} — ${t("approach.nicolasRole")}`}
-                className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]"
+                className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3] object-top"
               />
             </div>
             <div className="lg:order-1">
