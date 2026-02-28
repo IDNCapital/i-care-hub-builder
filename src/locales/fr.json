@@ -287,6 +287,7 @@
   "projects": {
     "title": "Nos lieux de soin",
     "subtitle": "Découvrez les lieux I-CA.RE déjà en activité ou en cours d'ouverture.",
+    "introAnchor": "Des lieux ancrés dans les quartiers bordelais, développés de manière progressive et maîtrisée.",
     "ctaAvailability": "Demander une disponibilité",
     "filter": "Filtrer :",
     "allCities": "Toutes les villes",
@@ -296,7 +297,22 @@
     "noResults": "Aucun lieu ne correspond à vos critères.",
     "units": "unités",
     "ctaBottom": "Un projet dans votre ville ?",
-    "ctaBottomDesc": "Nous étudions en permanence de nouvelles opportunités. Contactez-nous pour nous parler de votre territoire."
+    "ctaBottomDesc": "Nous étudions en permanence de nouvelles opportunités. Contactez-nous pour nous parler de votre territoire.",
+    "mapTitle": "Nos implantations à Bordeaux Métropole",
+    "viewSpace": "Voir le lieu",
+    "findOffice": "Trouver un cabinet ici",
+    "availableBadge": "Disponible",
+    "fullBadge": "Complet",
+    "comingSoonBadge": "Ouverture prochaine",
+    "availableUnits": "3 cabinets encore disponibles",
+    "centres": {
+      "chartrons": { "name": "Chartrons", "status": "available", "desc": "3 cabinets encore disponibles" },
+      "nansouty": { "name": "Nansouty", "status": "full" },
+      "jardin-public": { "name": "Jardin Public", "status": "full" },
+      "pey-berland": { "name": "Pey-Berland", "status": "full" },
+      "floirac": { "name": "Floirac", "status": "coming_soon" },
+      "lormont": { "name": "Lormont", "status": "coming_soon" }
+    }
   },
   "projectDetail": {
     "allProjects": "Tous les lieux de soin",

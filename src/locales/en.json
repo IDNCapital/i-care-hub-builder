@@ -287,16 +287,32 @@
   "projects": {
     "title": "Our Care Spaces",
     "subtitle": "Discover I-CA.RE spaces already open or coming soon.",
+    "introAnchor": "Spaces rooted in Bordeaux's neighbourhoods, developed progressively and thoughtfully.",
     "ctaAvailability": "Request Availability",
     "filter": "Filter:",
     "allCities": "All cities",
     "allStatuses": "All statuses",
     "allTypologies": "All typologies",
     "reset": "Reset",
-    "noResults": "No projects match your criteria.",
+    "noResults": "No spaces match your criteria.",
     "units": "units",
     "ctaBottom": "A project in your city?",
-    "ctaBottomDesc": "We are continuously exploring new opportunities. Get in touch to tell us about your area."
+    "ctaBottomDesc": "We are continuously exploring new opportunities. Get in touch to tell us about your area.",
+    "mapTitle": "Our locations in Bordeaux Métropole",
+    "viewSpace": "View space",
+    "findOffice": "Find an office here",
+    "availableBadge": "Available",
+    "fullBadge": "Full",
+    "comingSoonBadge": "Opening soon",
+    "availableUnits": "3 offices still available",
+    "centres": {
+      "chartrons": { "name": "Chartrons", "status": "available", "desc": "3 offices still available" },
+      "nansouty": { "name": "Nansouty", "status": "full" },
+      "jardin-public": { "name": "Jardin Public", "status": "full" },
+      "pey-berland": { "name": "Pey-Berland", "status": "full" },
+      "floirac": { "name": "Floirac", "status": "coming_soon" },
+      "lormont": { "name": "Lormont", "status": "coming_soon" }
+    }
   },
   "projectDetail": {
     "allProjects": "All Care Spaces",
