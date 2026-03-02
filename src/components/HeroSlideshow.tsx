@@ -4,8 +4,6 @@ import { HOME_HERO_SLIDES, HOME_HERO_SLIDES_MOBILE, type HeroSlide } from "@/lib
 const SLIDE_DURATION = 9000;
 const FADE_DURATION = 800;
 const IDLE_FALLBACK_MS = 1200;
-
-/** All slides sit at this scale by default — never at scale(1) */
 const START_SCALE = "scale(1.08)";
 
 interface Props {
@@ -16,9 +14,11 @@ export function HeroSlideshow({ lang }: Props) {
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReduced, setPrefersReduced] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState<number | null>(null);
   const [canLoadRest, setCanLoadRest] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const idleRef = useRef<number | ReturnType<typeof setTimeout> | null>(null);
+  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -28,7 +28,18 @@ export function HeroSlideshow({ lang }: Props) {
   const slides: HeroSlide[] = isMobile ? HOME_HERO_SLIDES_MOBILE : HOME_HERO_SLIDES;
   const shouldAnimate = !prefersReduced;
 
-  // ── Unlock rest of slides after first image loads or idle ──
+  // Track previous slide so it keeps its animation during fadeout
+  const setActiveWithPrev = useCallback((next: number) => {
+    setActiveIndex((prev) => {
+      setPrevIndex(prev);
+      // Clear prevIndex after fade completes
+      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+      fadeTimerRef.current = setTimeout(() => setPrevIndex(null), FADE_DURATION + 50);
+      return next;
+    });
+  }, []);
+
+  // ── Unlock rest of slides ──
   const unlockRest = useCallback(() => {
     setCanLoadRest(true);
     if (idleRef.current !== null) {
@@ -59,20 +70,19 @@ export function HeroSlideshow({ lang }: Props) {
     };
   }, [canLoadRest, unlockRest]);
 
-  // ── Prefetch slide 1 after unlock ──
   useEffect(() => {
     if (!canLoadRest || slides.length < 2) return;
     const img = new Image();
     img.src = slides[1].src;
   }, [canLoadRest, slides]);
 
-  // ── Slideshow timer (only after rest loaded) ──
+  // ── Timer ──
   const startTimer = useCallback(() => {
     if (!shouldAnimate || !canLoadRest) return;
     timerRef.current = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % slides.length);
+      setActiveWithPrev((activeIndex + 1) % slides.length);
     }, SLIDE_DURATION);
-  }, [shouldAnimate, canLoadRest, slides.length]);
+  }, [shouldAnimate, canLoadRest, slides.length, activeIndex, setActiveWithPrev]);
 
   const stopTimer = useCallback(() => {
     if (timerRef.current) {
@@ -82,20 +92,29 @@ export function HeroSlideshow({ lang }: Props) {
   }, []);
 
   useEffect(() => {
-    startTimer();
-    return stopTimer;
-  }, [startTimer, stopTimer]);
+    if (!shouldAnimate || !canLoadRest) return;
+    const id = setInterval(() => {
+      setActiveIndex((prev) => {
+        const next = (prev + 1) % slides.length;
+        setPrevIndex(prev);
+        if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+        fadeTimerRef.current = setTimeout(() => setPrevIndex(null), FADE_DURATION + 50);
+        return next;
+      });
+    }, SLIDE_DURATION);
+    return () => clearInterval(id);
+  }, [shouldAnimate, canLoadRest, slides.length]);
 
   useEffect(() => {
     const onVisChange = () => {
       if (document.hidden) stopTimer();
-      else startTimer();
+      // Timer restarts via the effect above
     };
     document.addEventListener("visibilitychange", onVisChange);
     return () => document.removeEventListener("visibilitychange", onVisChange);
-  }, [startTimer, stopTimer]);
+  }, [stopTimer]);
 
-  // Prefetch next slide ahead of transition
+  // Prefetch next slide
   useEffect(() => {
     if (!canLoadRest || !shouldAnimate) return;
     const nextIndex = (activeIndex + 1) % slides.length;
@@ -103,7 +122,7 @@ export function HeroSlideshow({ lang }: Props) {
     img.src = slides[nextIndex].src;
   }, [activeIndex, canLoadRest, shouldAnimate, slides]);
 
-  // ── Preload first slide via <link> ──
+  // ── Preload first slide ──
   useEffect(() => {
     if (slides[0]) {
       const link = document.createElement("link");
@@ -124,6 +143,8 @@ export function HeroSlideshow({ lang }: Props) {
       {renderSlides.map((slide, i) => {
         const realIndex = canLoadRest ? i : 0;
         const isActive = realIndex === activeIndex;
+        // Keep animation on previous slide while it fades out
+        const isAnimated = isActive || realIndex === prevIndex;
         const alt = lang === "fr" ? slide.altFr : slide.altEn;
 
         return (
@@ -138,28 +159,22 @@ export function HeroSlideshow({ lang }: Props) {
             onLoad={realIndex === 0 ? unlockRest : undefined}
             className="absolute inset-0 w-full h-full object-cover object-center"
             style={{
-              /* ── Opacity crossfade (independent of transform) ── */
               opacity: isActive ? 1 : 0,
               transition: shouldAnimate
                 ? `opacity ${FADE_DURATION}ms ease-in-out`
                 : "none",
-              /* ── Transform: ALWAYS at START_SCALE minimum, never scale(1) ── */
-              transform: shouldAnimate && isActive ? undefined : `translate3d(0,0,0) ${START_SCALE}`,
-              /* ── Ken Burns only on active slide, present from first paint ── */
-              animation: shouldAnimate && isActive
+              transform: isAnimated ? undefined : `translate3d(0,0,0) ${START_SCALE}`,
+              animation: shouldAnimate && isAnimated
                 ? `heroKenBurns ${SLIDE_DURATION}ms ease-in-out forwards`
                 : "none",
-              /* ── GPU compositing hints ── */
-              willChange: isActive ? "opacity, transform" : "auto",
+              willChange: isAnimated ? "opacity, transform" : "auto",
               backfaceVisibility: "hidden",
-              imageRendering: "auto",
               transformOrigin: "center",
             }}
           />
         );
       })}
 
-      {/* Overlay — anthracite gradient for text readability */}
       <div
         className="absolute inset-0"
         style={{
@@ -167,7 +182,6 @@ export function HeroSlideshow({ lang }: Props) {
             "linear-gradient(90deg, rgba(43,43,43,0.62) 0%, rgba(43,43,43,0.35) 45%, rgba(43,43,43,0.10) 75%, rgba(43,43,43,0) 100%)",
         }}
       />
-      {/* Very subtle cream veil for warmth */}
       <div
         className="absolute inset-0"
         style={{
