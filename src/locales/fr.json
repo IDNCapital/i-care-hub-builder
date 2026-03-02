@@ -46,7 +46,7 @@
     "localImpactDesc": "Nous agissons à l'échelle du quartier. Chaque opération I-CA.RE requalifie un local vacant et rapproche les soins des habitants.",
     "readyToJoin": "Prêt à exercer dans un espace I-CA.RE ?",
     "readyToJoinDesc": "Intégrez un cabinet clé en main, au cœur d'un quartier, dans un espace conçu pour votre pratique.",
-    "applyNow": "Déposer ma candidature",
+    "applyNow": "Échanger sur mon projet",
     "contactUs": "Nous contacter",
     "discover": "Découvrir"
   },
@@ -342,7 +342,7 @@
     "deliveryLabel": "Livraison",
     "ctaTitle": "Ce projet vous intéresse ?",
     "ctaDesc": "Contactez-nous pour obtenir le dossier complet, planifier une visite ou réserver votre cabinet.",
-    "applyNow": "Déposer ma candidature"
+    "applyNow": "Échanger sur mon projet"
   },
   "approach": {
     "heroTitle": "Des lieux pensés pour le soin, conçus pour durer",
