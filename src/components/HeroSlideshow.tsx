@@ -16,7 +16,7 @@ export function HeroSlideshow({ lang }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
   const [canLoadRest, setCanLoadRest] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [firstLoaded, setFirstLoaded] = useState(false);
   const idleRef = useRef<number | ReturnType<typeof setTimeout> | null>(null);
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -27,17 +27,6 @@ export function HeroSlideshow({ lang }: Props) {
 
   const slides: HeroSlide[] = isMobile ? HOME_HERO_SLIDES_MOBILE : HOME_HERO_SLIDES;
   const shouldAnimate = !prefersReduced;
-
-  // Track previous slide so it keeps its animation during fadeout
-  const setActiveWithPrev = useCallback((next: number) => {
-    setActiveIndex((prev) => {
-      setPrevIndex(prev);
-      // Clear prevIndex after fade completes
-      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
-      fadeTimerRef.current = setTimeout(() => setPrevIndex(null), FADE_DURATION + 50);
-      return next;
-    });
-  }, []);
 
   // ── Unlock rest of slides ──
   const unlockRest = useCallback(() => {
@@ -51,6 +40,11 @@ export function HeroSlideshow({ lang }: Props) {
       idleRef.current = null;
     }
   }, []);
+
+  const handleFirstLoad = useCallback(() => {
+    setFirstLoaded(true);
+    unlockRest();
+  }, [unlockRest]);
 
   useEffect(() => {
     if (canLoadRest) return;
@@ -77,20 +71,6 @@ export function HeroSlideshow({ lang }: Props) {
   }, [canLoadRest, slides]);
 
   // ── Timer ──
-  const startTimer = useCallback(() => {
-    if (!shouldAnimate || !canLoadRest) return;
-    timerRef.current = setInterval(() => {
-      setActiveWithPrev((activeIndex + 1) % slides.length);
-    }, SLIDE_DURATION);
-  }, [shouldAnimate, canLoadRest, slides.length, activeIndex, setActiveWithPrev]);
-
-  const stopTimer = useCallback(() => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  }, []);
-
   useEffect(() => {
     if (!shouldAnimate || !canLoadRest) return;
     const id = setInterval(() => {
@@ -105,16 +85,6 @@ export function HeroSlideshow({ lang }: Props) {
     return () => clearInterval(id);
   }, [shouldAnimate, canLoadRest, slides.length]);
 
-  useEffect(() => {
-    const onVisChange = () => {
-      if (document.hidden) stopTimer();
-      // Timer restarts via the effect above
-    };
-    document.addEventListener("visibilitychange", onVisChange);
-    return () => document.removeEventListener("visibilitychange", onVisChange);
-  }, [stopTimer]);
-
-  // Prefetch next slide
   useEffect(() => {
     if (!canLoadRest || !shouldAnimate) return;
     const nextIndex = (activeIndex + 1) % slides.length;
@@ -140,10 +110,21 @@ export function HeroSlideshow({ lang }: Props) {
 
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true" style={{ contain: "paint" }}>
+      {/* ── Placeholder: dominant color shown instantly, hides when image loads ── */}
+      <div
+        className="absolute inset-0 transition-opacity duration-700 ease-out"
+        style={{
+          /* Warm stone/facade dominant colour from hero images */
+          background: "linear-gradient(135deg, hsl(35 20% 45%) 0%, hsl(30 15% 55%) 50%, hsl(25 12% 40%) 100%)",
+          opacity: firstLoaded ? 0 : 1,
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      />
+
       {renderSlides.map((slide, i) => {
         const realIndex = canLoadRest ? i : 0;
         const isActive = realIndex === activeIndex;
-        // Keep animation on previous slide while it fades out
         const isAnimated = isActive || realIndex === prevIndex;
         const alt = lang === "fr" ? slide.altFr : slide.altEn;
 
@@ -156,7 +137,7 @@ export function HeroSlideshow({ lang }: Props) {
             decoding="async"
             fetchPriority={realIndex === 0 ? "high" : "low"}
             sizes="100vw"
-            onLoad={realIndex === 0 ? unlockRest : undefined}
+            onLoad={realIndex === 0 ? handleFirstLoad : undefined}
             className="absolute inset-0 w-full h-full object-cover object-center"
             style={{
               opacity: isActive ? 1 : 0,
@@ -175,11 +156,13 @@ export function HeroSlideshow({ lang }: Props) {
         );
       })}
 
+      {/* Overlay — anthracite gradient */}
       <div
         className="absolute inset-0"
         style={{
           background:
             "linear-gradient(90deg, rgba(43,43,43,0.62) 0%, rgba(43,43,43,0.35) 45%, rgba(43,43,43,0.10) 75%, rgba(43,43,43,0) 100%)",
+          zIndex: 2,
         }}
       />
       <div
@@ -187,6 +170,7 @@ export function HeroSlideshow({ lang }: Props) {
         style={{
           background:
             "linear-gradient(180deg, rgba(246,245,240,0.06) 0%, rgba(246,245,240,0.03) 100%)",
+          zIndex: 2,
         }}
       />
     </div>
