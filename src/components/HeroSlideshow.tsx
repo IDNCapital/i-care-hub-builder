@@ -71,13 +71,15 @@ export function HeroSlideshow({ lang }: Props) {
     return () => document.removeEventListener("visibilitychange", onVisChange);
   }, [startTimer, stopTimer]);
 
-  // Preload first image via link tag
+  // Preload first image via link tag with high priority
   useEffect(() => {
     if (slides[0]) {
       const link = document.createElement("link");
       link.rel = "preload";
       link.as = "image";
       link.href = slides[0].src;
+      link.setAttribute("fetchpriority", "high");
+      link.type = "image/webp";
       document.head.appendChild(link);
       return () => { document.head.removeChild(link); };
     }
@@ -95,6 +97,8 @@ export function HeroSlideshow({ lang }: Props) {
             alt={alt}
             loading={i === 0 ? "eager" : "lazy"}
             decoding={i === 0 ? "sync" : "async"}
+            fetchPriority={i === 0 ? "high" : "low"}
+            sizes="100vw"
             className="absolute inset-0 w-full h-full object-cover"
             style={{
               opacity: isActive ? 1 : 0,
