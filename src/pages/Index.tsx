@@ -122,8 +122,8 @@ export default function Index() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
-              <div key={service.title} className="card-premium opacity-0 animate-fade-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-5">
+              <div key={service.title} className="card-premium flex flex-col items-center text-center md:items-start md:text-left opacity-0 animate-fade-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-5 mx-auto md:mx-0">
                   <service.icon className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="text-lg font-heading font-semibold mb-3">{service.title}</h3>
