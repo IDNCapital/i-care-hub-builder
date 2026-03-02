@@ -271,9 +271,9 @@ button[data-state]:focus-visible {
 
 @keyframes heroKenBurns {
   0% {
-    transform: scale(1) translate(0, 0);
+    transform: translate3d(0, 0, 0) scale(1.08);
   }
   100% {
-    transform: scale(1.03) translate(-0.2%, -0.2%);
+    transform: translate3d(-0.2%, -0.2%, 0) scale(1.15);
   }
 }
