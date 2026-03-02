@@ -3,6 +3,7 @@ import { HOME_HERO_SLIDES, HOME_HERO_SLIDES_MOBILE, type HeroSlide } from "@/lib
 
 const SLIDE_DURATION = 9000;
 const FADE_DURATION = 800;
+const IDLE_FALLBACK_MS = 1200;
 
 interface Props {
   lang: "fr" | "en";
@@ -12,8 +13,9 @@ export function HeroSlideshow({ lang }: Props) {
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReduced, setPrefersReduced] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [readySlides, setReadySlides] = useState<Set<number>>(new Set([0]));
+  const [canLoadRest, setCanLoadRest] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const idleRef = useRef<number | ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -23,25 +25,53 @@ export function HeroSlideshow({ lang }: Props) {
   const slides: HeroSlide[] = isMobile ? HOME_HERO_SLIDES_MOBILE : HOME_HERO_SLIDES;
   const shouldAnimate = !prefersReduced;
 
-  // Preload next slide image before transitioning
-  const preloadSlide = useCallback((index: number) => {
-    if (readySlides.has(index)) return;
-    const img = new Image();
-    img.src = slides[index].src;
-    img.onload = () => {
-      setReadySlides((prev) => new Set(prev).add(index));
-    };
-  }, [slides, readySlides]);
+  // ── Unlock rest of slides after first image loads or idle ──
+  const unlockRest = useCallback(() => {
+    setCanLoadRest(true);
+    // Cancel fallback if it's still pending
+    if (idleRef.current !== null) {
+      if (typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(idleRef.current as number);
+      } else {
+        clearTimeout(idleRef.current as ReturnType<typeof setTimeout>);
+      }
+      idleRef.current = null;
+    }
+  }, []);
 
+  // Fallback: unlock via requestIdleCallback or setTimeout
+  useEffect(() => {
+    if (canLoadRest) return;
+    if (typeof window.requestIdleCallback === "function") {
+      idleRef.current = window.requestIdleCallback(() => unlockRest(), { timeout: IDLE_FALLBACK_MS });
+    } else {
+      idleRef.current = setTimeout(() => unlockRest(), IDLE_FALLBACK_MS);
+    }
+    return () => {
+      if (idleRef.current !== null) {
+        if (typeof window.cancelIdleCallback === "function") {
+          window.cancelIdleCallback(idleRef.current as number);
+        } else {
+          clearTimeout(idleRef.current as ReturnType<typeof setTimeout>);
+        }
+      }
+    };
+  }, [canLoadRest, unlockRest]);
+
+  // ── Prefetch only slide 1 (next) after unlock ──
+  useEffect(() => {
+    if (!canLoadRest || slides.length < 2) return;
+    const img = new Image();
+    img.src = slides[1].src;
+  }, [canLoadRest, slides]);
+
+  // ── Slideshow timer ──
   const startTimer = useCallback(() => {
-    if (!shouldAnimate) return;
+    if (!shouldAnimate || !canLoadRest) return;
     timerRef.current = setInterval(() => {
-      setActiveIndex((prev) => {
-        const next = (prev + 1) % slides.length;
-        return next;
-      });
+      setActiveIndex((prev) => (prev + 1) % slides.length);
     }, SLIDE_DURATION);
-  }, [shouldAnimate, slides.length]);
+  }, [shouldAnimate, canLoadRest, slides.length]);
 
   const stopTimer = useCallback(() => {
     if (timerRef.current) {
@@ -49,13 +79,6 @@ export function HeroSlideshow({ lang }: Props) {
       timerRef.current = null;
     }
   }, []);
-
-  // Preload the next slide ahead of time
-  useEffect(() => {
-    if (!shouldAnimate) return;
-    const nextIndex = (activeIndex + 1) % slides.length;
-    preloadSlide(nextIndex);
-  }, [activeIndex, shouldAnimate, slides.length, preloadSlide]);
 
   useEffect(() => {
     startTimer();
@@ -71,7 +94,15 @@ export function HeroSlideshow({ lang }: Props) {
     return () => document.removeEventListener("visibilitychange", onVisChange);
   }, [startTimer, stopTimer]);
 
-  // Preload first image via link tag with high priority
+  // Prefetch next slide ahead of transition
+  useEffect(() => {
+    if (!canLoadRest || !shouldAnimate) return;
+    const nextIndex = (activeIndex + 1) % slides.length;
+    const img = new Image();
+    img.src = slides[nextIndex].src;
+  }, [activeIndex, canLoadRest, shouldAnimate, slides]);
+
+  // ── Preload first slide via <link> ──
   useEffect(() => {
     if (slides[0]) {
       const link = document.createElement("link");
@@ -85,27 +116,33 @@ export function HeroSlideshow({ lang }: Props) {
     }
   }, [slides]);
 
+  // ── Which slides to render ──
+  const renderSlides = canLoadRest ? slides : [slides[0]];
+
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-      {slides.map((slide, i) => {
-        const isActive = i === activeIndex;
+      {renderSlides.map((slide, i) => {
+        // When only slide 0 is rendered, it's always active.
+        // When all slides rendered, use activeIndex.
+        const realIndex = canLoadRest ? i : 0;
+        const isActive = realIndex === activeIndex;
         const alt = lang === "fr" ? slide.altFr : slide.altEn;
         return (
           <img
             key={slide.src}
             src={slide.src}
             alt={alt}
-            loading={i === 0 ? "eager" : "lazy"}
-            decoding={i === 0 ? "sync" : "async"}
-            fetchPriority={i === 0 ? "high" : "low"}
+            loading={realIndex === 0 ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={realIndex === 0 ? "high" : "low"}
             sizes="100vw"
+            onLoad={realIndex === 0 ? unlockRest : undefined}
             className="absolute inset-0 w-full h-full object-cover"
             style={{
               opacity: isActive ? 1 : 0,
               transition: shouldAnimate
                 ? `opacity ${FADE_DURATION}ms ease-in-out`
                 : "none",
-              transform: shouldAnimate && isActive ? undefined : "scale(1)",
               animation: shouldAnimate && isActive
                 ? `heroKenBurns ${SLIDE_DURATION}ms ease-in-out forwards`
                 : "none",
