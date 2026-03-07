@@ -20,6 +20,7 @@ import { Analytics } from "@/lib/analytics";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero, getProjectGallery } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
+import { getCentreBySlug } from "@/lib/centres";
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -130,6 +131,27 @@ export default function ProjetDetail() {
           <Button variant="hero-outline" asChild className="flex-1"><Link to={localePath(lang, "contact")}>{t("projectDetail.scheduleVisit")}</Link></Button>
         </div>
       </section>
+
+      {/* Full notice for completed centres */}
+      {(() => {
+        const centre = slug ? getCentreBySlug(slug) : undefined;
+        if (!centre || centre.status !== "full") return null;
+        return (
+          <section className="pb-0 pt-8">
+            <div className="container">
+              <div className="bg-secondary border border-border rounded-2xl p-6 text-center max-w-3xl mx-auto">
+                <p className="text-sm text-muted-foreground leading-relaxed">{t("projects.fullNotice")}</p>
+                <Button size="sm" variant="outline" asChild className="mt-4">
+                  <Link to={localePath(lang, "contact")}>
+                    {t("common.contactUs")}
+                    <ArrowRight className="ml-1.5 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
       <section className="section-padding">
         <div className="container">

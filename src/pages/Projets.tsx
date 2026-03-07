@@ -10,25 +10,7 @@ import { useProjects } from "@/hooks/useProjects";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
-type CentreStatus = "available" | "full" | "coming_soon";
-
-interface StaticCentre {
-  id: string;
-  name: string;
-  address: string;
-  status: CentreStatus;
-  slug?: string;
-}
-
-/** Ordered: available first, then full, then coming_soon */
-const STATIC_CENTRES: StaticCentre[] = [
-  { id: "chartrons", name: "Chartrons", address: "20 cours Saint Louis, 33300 Bordeaux", status: "available", slug: "i-ca-re-chartrons" },
-  { id: "nansouty", name: "Nansouty", address: "106b rue Bertrand de Goth, 33800 Bordeaux", status: "full", slug: "i-ca-re-nansouty" },
-  { id: "jardin-public", name: "Jardin Public", address: "38 cours du Maréchal Foch, 33000 Bordeaux", status: "full", slug: "i-ca-re-jardin-public" },
-  { id: "pey-berland", name: "Pey-Berland", address: "6 rue Père Louis de Jabrun, 33000 Bordeaux", status: "full", slug: "i-ca-re-pey-berland" },
-  { id: "floirac", name: "Floirac", address: "23 avenue de la Libération, 33270 Floirac", status: "coming_soon" },
-  { id: "lormont", name: "Lormont", address: "1 rue Marc Tallavi, 33310 Lormont", status: "coming_soon" },
-];
+import { STATIC_CENTRES, type CentreStatus } from "@/lib/centres";
 
 const badgeStyles: Record<CentreStatus, string> = {
   available: "bg-primary/15 text-primary",
@@ -111,8 +93,8 @@ export default function Projets() {
                   key={centre.id}
                   className="group bg-background rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-elevated hover:-translate-y-1 transition-all duration-300"
                 >
-                  {/* Image */}
-                  <div className="relative aspect-[4/3] overflow-hidden">
+                  {/* Image — clickable */}
+                  <Link to={centre.slug ? `${localePath(lang, "projects")}/${centre.slug}` : localePath(lang, "contact")} className="block relative aspect-[4/3] overflow-hidden">
                     {heroSrc ? (
                       <FadeImage
                         src={heroSrc}
@@ -128,11 +110,17 @@ export default function Projets() {
                         {badgeLabel(centre.status)}
                       </span>
                     </div>
-                  </div>
+                  </Link>
 
                   {/* Content */}
                   <div className="p-6 flex flex-col gap-3">
-                    <h3 className="text-xl font-semibold">{centre.name}</h3>
+                    {centre.slug ? (
+                      <Link to={`${localePath(lang, "projects")}/${centre.slug}`} className="hover:text-primary transition-colors">
+                        <h3 className="text-xl font-semibold">{centre.name}</h3>
+                      </Link>
+                    ) : (
+                      <h3 className="text-xl font-semibold">{centre.name}</h3>
+                    )}
 
                     <div className="flex items-start gap-2 text-muted-foreground">
                       <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
@@ -154,28 +142,48 @@ export default function Projets() {
                     {/* CTAs */}
                     <div className="flex flex-wrap gap-3 mt-2">
                       {centre.status === "available" && centre.slug && (
-                        <Button size="sm" asChild>
-                          <Link to={`${localePath(lang, "projects")}/${centre.slug}`}>
-                            {t("projects.viewSpace")}
-                            <ArrowRight className="ml-1.5 h-4 w-4" />
-                          </Link>
-                        </Button>
+                        <>
+                          <Button size="sm" asChild>
+                            <Link to={`${localePath(lang, "projects")}/${centre.slug}`}>
+                              {t("projects.viewSpace")}
+                              <ArrowRight className="ml-1.5 h-4 w-4" />
+                            </Link>
+                          </Button>
+                        </>
                       )}
                       {centre.status === "full" && centre.slug && (
-                        <Button variant="outline" size="sm" asChild>
-                          <Link to={localePath(lang, "contact")}>
-                            <Mail className="mr-1.5 h-4 w-4" />
-                            {lang === "fr" ? "Être informé des disponibilités" : "Get notified of availability"}
-                          </Link>
-                        </Button>
+                        <>
+                          <Button size="sm" asChild>
+                            <Link to={`${localePath(lang, "projects")}/${centre.slug}`}>
+                              {t("projects.discoverSpace")}
+                              <ArrowRight className="ml-1.5 h-4 w-4" />
+                            </Link>
+                          </Button>
+                          <Button variant="outline" size="sm" asChild>
+                            <Link to={localePath(lang, "contact")}>
+                              <Mail className="mr-1.5 h-4 w-4" />
+                              {lang === "fr" ? "Être informé des disponibilités" : "Get notified of availability"}
+                            </Link>
+                          </Button>
+                        </>
                       )}
                       {centre.status === "coming_soon" && (
-                        <Button variant="outline" size="sm" asChild>
-                          <Link to={localePath(lang, "contact")}>
-                            <Mail className="mr-1.5 h-4 w-4" />
-                            {lang === "fr" ? "Être informé de l'ouverture" : "Get notified of opening"}
-                          </Link>
-                        </Button>
+                        <>
+                          {centre.slug ? (
+                            <Button size="sm" asChild>
+                              <Link to={`${localePath(lang, "projects")}/${centre.slug}`}>
+                                {t("projects.discoverProject")}
+                                <ArrowRight className="ml-1.5 h-4 w-4" />
+                              </Link>
+                            </Button>
+                          ) : null}
+                          <Button variant="outline" size="sm" asChild>
+                            <Link to={localePath(lang, "contact")}>
+                              <Mail className="mr-1.5 h-4 w-4" />
+                              {lang === "fr" ? "Être informé de l'ouverture" : "Get notified of opening"}
+                            </Link>
+                          </Button>
+                        </>
                       )}
                     </div>
                   </div>
