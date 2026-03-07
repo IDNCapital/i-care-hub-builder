@@ -10,25 +10,7 @@ import { useProjects } from "@/hooks/useProjects";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
-type CentreStatus = "available" | "full" | "coming_soon";
-
-interface StaticCentre {
-  id: string;
-  name: string;
-  address: string;
-  status: CentreStatus;
-  slug?: string;
-}
-
-/** Ordered: available first, then full, then coming_soon */
-const STATIC_CENTRES: StaticCentre[] = [
-  { id: "chartrons", name: "Chartrons", address: "20 cours Saint Louis, 33300 Bordeaux", status: "available", slug: "i-ca-re-chartrons" },
-  { id: "nansouty", name: "Nansouty", address: "106b rue Bertrand de Goth, 33800 Bordeaux", status: "full", slug: "i-ca-re-nansouty" },
-  { id: "jardin-public", name: "Jardin Public", address: "38 cours du Maréchal Foch, 33000 Bordeaux", status: "full", slug: "i-ca-re-jardin-public" },
-  { id: "pey-berland", name: "Pey-Berland", address: "6 rue Père Louis de Jabrun, 33000 Bordeaux", status: "full", slug: "i-ca-re-pey-berland" },
-  { id: "floirac", name: "Floirac", address: "23 avenue de la Libération, 33270 Floirac", status: "coming_soon" },
-  { id: "lormont", name: "Lormont", address: "1 rue Marc Tallavi, 33310 Lormont", status: "coming_soon" },
-];
+import { STATIC_CENTRES, type CentreStatus } from "@/lib/centres";
 
 const badgeStyles: Record<CentreStatus, string> = {
   available: "bg-primary/15 text-primary",

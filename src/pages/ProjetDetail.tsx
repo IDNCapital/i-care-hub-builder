@@ -20,6 +20,7 @@ import { Analytics } from "@/lib/analytics";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero, getProjectGallery } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
+import { getCentreBySlug } from "@/lib/centres";
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
