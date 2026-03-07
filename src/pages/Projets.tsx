@@ -111,8 +111,8 @@ export default function Projets() {
                   key={centre.id}
                   className="group bg-background rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-elevated hover:-translate-y-1 transition-all duration-300"
                 >
-                  {/* Image */}
-                  <div className="relative aspect-[4/3] overflow-hidden">
+                  {/* Image — clickable */}
+                  <Link to={centre.slug ? `${localePath(lang, "projects")}/${centre.slug}` : localePath(lang, "contact")} className="block relative aspect-[4/3] overflow-hidden">
                     {heroSrc ? (
                       <FadeImage
                         src={heroSrc}
@@ -128,11 +128,17 @@ export default function Projets() {
                         {badgeLabel(centre.status)}
                       </span>
                     </div>
-                  </div>
+                  </Link>
 
                   {/* Content */}
                   <div className="p-6 flex flex-col gap-3">
-                    <h3 className="text-xl font-semibold">{centre.name}</h3>
+                    {centre.slug ? (
+                      <Link to={`${localePath(lang, "projects")}/${centre.slug}`} className="hover:text-primary transition-colors">
+                        <h3 className="text-xl font-semibold">{centre.name}</h3>
+                      </Link>
+                    ) : (
+                      <h3 className="text-xl font-semibold">{centre.name}</h3>
+                    )}
 
                     <div className="flex items-start gap-2 text-muted-foreground">
                       <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
@@ -154,28 +160,48 @@ export default function Projets() {
                     {/* CTAs */}
                     <div className="flex flex-wrap gap-3 mt-2">
                       {centre.status === "available" && centre.slug && (
-                        <Button size="sm" asChild>
-                          <Link to={`${localePath(lang, "projects")}/${centre.slug}`}>
-                            {t("projects.viewSpace")}
-                            <ArrowRight className="ml-1.5 h-4 w-4" />
-                          </Link>
-                        </Button>
+                        <>
+                          <Button size="sm" asChild>
+                            <Link to={`${localePath(lang, "projects")}/${centre.slug}`}>
+                              {t("projects.viewSpace")}
+                              <ArrowRight className="ml-1.5 h-4 w-4" />
+                            </Link>
+                          </Button>
+                        </>
                       )}
                       {centre.status === "full" && centre.slug && (
-                        <Button variant="outline" size="sm" asChild>
-                          <Link to={localePath(lang, "contact")}>
-                            <Mail className="mr-1.5 h-4 w-4" />
-                            {lang === "fr" ? "Être informé des disponibilités" : "Get notified of availability"}
-                          </Link>
-                        </Button>
+                        <>
+                          <Button size="sm" asChild>
+                            <Link to={`${localePath(lang, "projects")}/${centre.slug}`}>
+                              {t("projects.discoverSpace")}
+                              <ArrowRight className="ml-1.5 h-4 w-4" />
+                            </Link>
+                          </Button>
+                          <Button variant="outline" size="sm" asChild>
+                            <Link to={localePath(lang, "contact")}>
+                              <Mail className="mr-1.5 h-4 w-4" />
+                              {lang === "fr" ? "Être informé des disponibilités" : "Get notified of availability"}
+                            </Link>
+                          </Button>
+                        </>
                       )}
                       {centre.status === "coming_soon" && (
-                        <Button variant="outline" size="sm" asChild>
-                          <Link to={localePath(lang, "contact")}>
-                            <Mail className="mr-1.5 h-4 w-4" />
-                            {lang === "fr" ? "Être informé de l'ouverture" : "Get notified of opening"}
-                          </Link>
-                        </Button>
+                        <>
+                          {centre.slug ? (
+                            <Button size="sm" asChild>
+                              <Link to={`${localePath(lang, "projects")}/${centre.slug}`}>
+                                {t("projects.discoverProject")}
+                                <ArrowRight className="ml-1.5 h-4 w-4" />
+                              </Link>
+                            </Button>
+                          ) : null}
+                          <Button variant="outline" size="sm" asChild>
+                            <Link to={localePath(lang, "contact")}>
+                              <Mail className="mr-1.5 h-4 w-4" />
+                              {lang === "fr" ? "Être informé de l'ouverture" : "Get notified of opening"}
+                            </Link>
+                          </Button>
+                        </>
                       )}
                     </div>
                   </div>
