@@ -201,7 +201,7 @@ export default function Projets() {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-4">{t("projects.ctaBottomDesc")}</p>
             <p className="text-sm text-muted-foreground mb-8">
               <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">
-                {lang === "fr" ? "Location de cabinets à Bordeaux" : "Office rental in Bordeaux"}
+                {lang === "fr" ? "Découvrez nos cabinets à louer à Bordeaux" : "Discover our offices for rent in Bordeaux"}
               </Link>
             </p>
             <Button variant="hero" asChild>

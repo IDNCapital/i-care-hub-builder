@@ -393,7 +393,7 @@ export default function Professionnels() {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-4">{t("professionals.bottomCtaDesc")}</p>
             <p className="text-sm text-muted-foreground mb-4">
               <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">
-                {lang === "fr" ? "Voir les cabinets disponibles" : "View available offices"}
+                {lang === "fr" ? "Cabinets de consultation à Bordeaux" : "Consultation offices in Bordeaux"}
               </Link>
               <span className="mx-2">·</span>
               <Link to={localePath(lang, "faq")} className="text-primary underline underline-offset-4 hover:text-primary/80">

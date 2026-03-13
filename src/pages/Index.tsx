@@ -249,7 +249,12 @@ export default function Index() {
         <div className="container">
           <div className="cta-section text-center">
             <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4">{t("home.readyToJoin")}</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-8">{t("home.readyToJoinDesc")}</p>
+            <p className="text-muted-foreground max-w-2xl mx-auto mb-4">{t("home.readyToJoinDesc")}</p>
+            <p className="text-sm text-muted-foreground mb-8">
+              <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">
+                {lang === "fr" ? "Voir tous les cabinets à louer à Bordeaux" : "View all offices for rent in Bordeaux"}
+              </Link>
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>
                 <Link to={`${localePath(lang, "professionals")}#candidature`}>
