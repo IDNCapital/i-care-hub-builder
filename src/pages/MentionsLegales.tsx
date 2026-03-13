@@ -10,11 +10,12 @@ export default function MentionsLegales() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{lang === "en" ? "Legal Notice — I-CA.RE" : "Mentions légales — I-CA.RE"}</title>
-        <meta name="description" content={lang === "en" ? "Legal notice for the I-CA.RE website: publisher, host and director of publication." : "Mentions légales du site I-CA.RE : éditeur, hébergeur et directeur de publication."} />
-        <meta name="robots" content="noindex" />
-      </Helmet>
+      <SeoHead
+        title={lang === "en" ? "Legal Notice — I-CA.RE" : "Mentions légales — I-CA.RE"}
+        description={lang === "en" ? "Legal notice for the I-CA.RE website: publisher, host and director of publication." : "Mentions légales du site I-CA.RE : éditeur, hébergeur et directeur de publication."}
+        path={lang === "fr" ? "/mentions-legales" : "/en/legal"}
+        noIndex
+      />
 
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container">
