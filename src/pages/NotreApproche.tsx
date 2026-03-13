@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { SeoHead } from "@/components/SeoHead";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { ArrowRight, ExternalLink } from "lucide-react";
@@ -14,10 +14,11 @@ export default function NotreApproche() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.approachTitle")}</title>
-        <meta name="description" content={t("seo.approachDesc")} />
-      </Helmet>
+      <SeoHead
+        title={t("seo.approachTitle")}
+        description={t("seo.approachDesc")}
+        path={lang === "fr" ? "/notre-approche" : "/en/our-approach"}
+      />
 
       {/* 1 — Vision */}
       <section className="pt-32 pb-20 bg-secondary">

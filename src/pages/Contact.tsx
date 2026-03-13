@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { SeoHead } from "@/components/SeoHead";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -101,10 +101,11 @@ export default function Contact() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.contactTitle")}</title>
-        <meta name="description" content={t("seo.contactDesc")} />
-      </Helmet>
+      <SeoHead
+        title={t("seo.contactTitle")}
+        description={t("seo.contactDesc")}
+        path={lang === "fr" ? "/contact" : "/en/contact"}
+      />
 
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container">

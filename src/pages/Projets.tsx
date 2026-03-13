@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { SeoHead } from "@/components/SeoHead";
 import { ArrowRight, MapPin, Mail } from "lucide-react";
 
 import { useTranslation } from "react-i18next";
@@ -43,10 +43,11 @@ export default function Projets() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.projectsTitle")}</title>
-        <meta name="description" content={t("seo.projectsDesc")} />
-      </Helmet>
+      <SeoHead
+        title={t("seo.projectsTitle")}
+        description={t("seo.projectsDesc")}
+        path={lang === "fr" ? "/projets" : "/en/projects"}
+      />
 
       {/* Hero */}
       <section className="pt-32 pb-16 bg-secondary">

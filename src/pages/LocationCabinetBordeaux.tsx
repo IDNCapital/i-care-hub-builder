@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { SeoHead } from "@/components/SeoHead";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { FadeImage } from "@/components/FadeImage";
@@ -59,14 +59,11 @@ export default function LocationCabinetBordeaux() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.locationBordeauxTitle")}</title>
-        <meta name="description" content={t("seo.locationBordeauxDesc")} />
-        <link
-          rel="canonical"
-          href={`https://i-ca.re/${lang === "fr" ? "location-cabinet-bordeaux" : "en/office-rental-bordeaux"}`}
-        />
-      </Helmet>
+      <SeoHead
+        title={t("seo.locationBordeauxTitle")}
+        description={t("seo.locationBordeauxDesc")}
+        path={lang === "fr" ? "/location-cabinet-bordeaux" : "/en/office-rental-bordeaux"}
+      />
 
       {/* ── HERO ── */}
       <section className="relative min-h-[70vh] flex items-center pt-20">

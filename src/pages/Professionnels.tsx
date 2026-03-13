@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { SeoHead } from "@/components/SeoHead";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -139,10 +139,11 @@ export default function Professionnels() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.professionalsTitle")}</title>
-        <meta name="description" content={t("seo.professionalsDesc")} />
-      </Helmet>
+      <SeoHead
+        title={t("seo.professionalsTitle")}
+        description={t("seo.professionalsDesc")}
+        path={lang === "fr" ? "/professionnels" : "/en/health-professionals"}
+      />
 
       {/* Hero */}
       <section className="relative min-h-[85vh] flex items-center pt-20">

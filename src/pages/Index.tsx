@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { SeoHead } from "@/components/SeoHead";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import {
@@ -48,10 +48,11 @@ export default function Index() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.homeTitle")}</title>
-        <meta name="description" content={t("seo.homeDesc")} />
-      </Helmet>
+      <SeoHead
+        title={t("seo.homeTitle")}
+        description={t("seo.homeDesc")}
+        path={lang === "fr" ? "/" : "/en/"}
+      />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20">

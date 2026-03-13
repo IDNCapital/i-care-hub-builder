@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.i-care.fr/sitemap.xml
+Sitemap: https://i-ca.re/sitemap.xml

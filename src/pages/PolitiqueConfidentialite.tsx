@@ -1,5 +1,5 @@
 import { Layout } from "@/components/Layout";
-import { Helmet } from "react-helmet-async";
+import { SeoHead } from "@/components/SeoHead";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
@@ -18,11 +18,12 @@ function FrVersion() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>Politique de confidentialité — I-CA.RE</title>
-        <meta name="description" content="Politique de confidentialité et protection des données personnelles d'I-CA.RE, conforme au RGPD." />
-        <meta name="robots" content="noindex" />
-      </Helmet>
+      <SeoHead
+        title="Politique de confidentialité — I-CA.RE"
+        description="Politique de confidentialité et protection des données personnelles d'I-CA.RE, conforme au RGPD."
+        path="/confidentialite"
+        noIndex
+      />
 
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container">
@@ -163,11 +164,12 @@ function EnVersion() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>Privacy Policy — I-CA.RE</title>
-        <meta name="description" content="I-CA.RE privacy policy and personal data protection, compliant with GDPR." />
-        <meta name="robots" content="noindex" />
-      </Helmet>
+      <SeoHead
+        title="Privacy Policy — I-CA.RE"
+        description="I-CA.RE privacy policy and personal data protection, compliant with GDPR."
+        path="/en/privacy"
+        noIndex
+      />
 
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container">

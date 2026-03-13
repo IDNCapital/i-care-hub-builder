@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { SeoHead } from "@/components/SeoHead";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { ArrowRight } from "lucide-react";
@@ -23,10 +23,11 @@ export default function FAQ() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.faqTitle")}</title>
-        <meta name="description" content={t("seo.faqDesc")} />
-      </Helmet>
+      <SeoHead
+        title={t("seo.faqTitle")}
+        description={t("seo.faqDesc")}
+        path={lang === "fr" ? "/questions-frequentes" : "/en/faq"}
+      />
 
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container">
