@@ -5,76 +5,70 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { FadeImage } from "@/components/FadeImage";
-import { getDefaultHero } from "@/lib/projectImages";
+import { getDefaultHero, PROJECT_IMAGES } from "@/lib/projectImages";
+import { STATIC_CENTRES } from "@/lib/centres";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
   ArrowRight,
-  CheckCircle2,
   MapPin,
+  TreePine,
   Volume2,
-  Sun,
-  Ruler,
-  Shield,
-  Users,
 } from "lucide-react";
 
 export default function LocationCabinetBordeaux() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
-  const features = [
+  const centresWithImages = STATIC_CENTRES.filter((c) => c.slug && PROJECT_IMAGES[c.slug]);
+
+  const whyBlocks = [
     {
       icon: Volume2,
-      title: t("locationBordeaux.features.acoustic"),
-      desc: t("locationBordeaux.features.acousticDesc"),
-    },
-    {
-      icon: Sun,
-      title: t("locationBordeaux.features.light"),
-      desc: t("locationBordeaux.features.lightDesc"),
-    },
-    {
-      icon: Ruler,
-      title: t("locationBordeaux.features.surface"),
-      desc: t("locationBordeaux.features.surfaceDesc"),
-    },
-    {
-      icon: Shield,
-      title: t("locationBordeaux.features.compliance"),
-      desc: t("locationBordeaux.features.complianceDesc"),
+      title: t("locationBordeaux.why.spaces"),
+      desc: t("locationBordeaux.why.spacesDesc"),
     },
     {
       icon: MapPin,
-      title: t("locationBordeaux.features.location"),
-      desc: t("locationBordeaux.features.locationDesc"),
+      title: t("locationBordeaux.why.neighbourhoods"),
+      desc: t("locationBordeaux.why.neighbourhoodsDesc"),
     },
     {
-      icon: Users,
-      title: t("locationBordeaux.features.community"),
-      desc: t("locationBordeaux.features.communityDesc"),
+      icon: TreePine,
+      title: t("locationBordeaux.why.atmosphere"),
+      desc: t("locationBordeaux.why.atmosphereDesc"),
     },
   ];
 
-  const professions = [
-    t("locationBordeaux.professions.psychologist"),
-    t("locationBordeaux.professions.psychotherapist"),
-    t("locationBordeaux.professions.sophrologist"),
-    t("locationBordeaux.professions.osteopath"),
-    t("locationBordeaux.professions.physio"),
-    t("locationBordeaux.professions.speechTherapist"),
-    t("locationBordeaux.professions.dietitian"),
-    t("locationBordeaux.professions.midwife"),
-    t("locationBordeaux.professions.other"),
+  const faqItems = [
+    { q: t("locationBordeaux.faq.q1"), a: t("locationBordeaux.faq.a1") },
+    { q: t("locationBordeaux.faq.q2"), a: t("locationBordeaux.faq.a2") },
+    { q: t("locationBordeaux.faq.q3"), a: t("locationBordeaux.faq.a3") },
+    { q: t("locationBordeaux.faq.q4"), a: t("locationBordeaux.faq.a4") },
   ];
+
+  const statusLabel = (status: string) => {
+    if (status === "available") return t("projects.statusAvailable");
+    if (status === "full") return t("projects.statusFull");
+    return t("projects.statusComingSoon");
+  };
 
   return (
     <Layout>
       <Helmet>
         <title>{t("seo.locationBordeauxTitle")}</title>
         <meta name="description" content={t("seo.locationBordeauxDesc")} />
-        <link rel="canonical" href={`https://i-ca.re/${lang === "fr" ? "fr/location-cabinet-bordeaux" : "en/office-rental-bordeaux"}`} />
+        <link
+          rel="canonical"
+          href={`https://i-ca.re/${lang === "fr" ? "location-cabinet-bordeaux" : "en/office-rental-bordeaux"}`}
+        />
       </Helmet>
 
-      {/* Hero */}
+      {/* ── HERO ── */}
       <section className="relative min-h-[70vh] flex items-center pt-20">
         <div className="absolute inset-0">
           <FadeImage
@@ -114,7 +108,7 @@ export default function LocationCabinetBordeaux() {
         </div>
       </section>
 
-      {/* Intro */}
+      {/* ── SECTION 1 — Introduction ── */}
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
@@ -122,96 +116,162 @@ export default function LocationCabinetBordeaux() {
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
               {t("locationBordeaux.introP1")}
             </p>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed mb-6">
               {t("locationBordeaux.introP2")}
+            </p>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              {t("locationBordeaux.introP3")}
             </p>
           </div>
         </div>
       </section>
 
-      {/* Features grid */}
+      {/* ── SECTION 2 — Nos cabinets ── */}
       <section className="section-padding bg-muted/50">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="section-title">{t("locationBordeaux.featuresTitle")}</h2>
-            <p className="section-subtitle mx-auto">{t("locationBordeaux.featuresSubtitle")}</p>
+            <h2 className="section-title">{t("locationBordeaux.centresTitle")}</h2>
+            <p className="section-subtitle mx-auto">{t("locationBordeaux.centresSubtitle")}</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((f) => (
-              <div key={f.title} className="card-premium group hover:shadow-elevated transition-all duration-300">
-                <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
-                  <f.icon className="w-6 h-6 text-primary" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {STATIC_CENTRES.map((centre) => {
+              const images = centre.slug ? PROJECT_IMAGES[centre.slug] : null;
+              const heroImg = images?.hero;
+              return (
+                <div key={centre.id} className="card-premium group hover:shadow-elevated transition-all duration-300 overflow-hidden">
+                  {heroImg ? (
+                    <Link to={localePath(lang, "projects", centre.slug)}>
+                      <FadeImage
+                        src={heroImg}
+                        alt={`Cabinet I-CA.RE ${centre.name}`}
+                        className="w-full h-48 object-cover"
+                        fadeDuration={400}
+                      />
+                    </Link>
+                  ) : (
+                    <div className="w-full h-48 bg-muted flex items-center justify-center">
+                      <MapPin className="w-8 h-8 text-muted-foreground/40" />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-heading font-semibold">{centre.name}</h3>
+                      <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
+                        centre.status === "available"
+                          ? "bg-primary/15 text-primary"
+                          : centre.status === "full"
+                            ? "bg-muted-foreground/15 text-muted-foreground"
+                            : "bg-accent/50 text-accent-foreground"
+                      }`}>
+                        {statusLabel(centre.status)}
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4">{centre.address}</p>
+                    {centre.slug && (
+                      <Link
+                        to={localePath(lang, "projects", centre.slug)}
+                        className="text-sm font-medium text-primary hover:underline inline-flex items-center gap-1"
+                      >
+                        {centre.status === "available"
+                          ? t("projects.viewSpace")
+                          : centre.status === "full"
+                            ? t("projects.discoverSpace")
+                            : t("projects.discoverProject")}
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    )}
+                  </div>
                 </div>
-                <h3 className="text-lg font-heading font-semibold mb-3">{f.title}</h3>
-                <p className="text-muted-foreground leading-relaxed text-sm">{f.desc}</p>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 3 — Pourquoi rejoindre ── */}
+      <section className="section-padding">
+        <div className="container">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="section-title">{t("locationBordeaux.whyTitle")}</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {whyBlocks.map((b) => (
+              <div key={b.title} className="text-center">
+                <div className="w-14 h-14 rounded-xl bg-primary/15 flex items-center justify-center mx-auto mb-5">
+                  <b.icon className="w-7 h-7 text-primary" />
+                </div>
+                <h3 className="text-lg font-heading font-semibold mb-3">{b.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{b.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* For whom */}
+      {/* ── SECTION 4 — Exemples avec photos ── */}
+      <section className="section-padding bg-muted/50">
+        <div className="container">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="section-title">{t("locationBordeaux.examplesTitle")}</h2>
+            <p className="section-subtitle mx-auto">{t("locationBordeaux.examplesSubtitle")}</p>
+          </div>
+          <div className="space-y-16">
+            {centresWithImages.map((centre) => {
+              const images = PROJECT_IMAGES[centre.slug!];
+              return (
+                <div key={centre.id}>
+                  <h3 className="text-xl font-heading font-semibold mb-6 text-center">
+                    I-CA.RE {centre.name}
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {images.gallery.slice(0, 4).map((img, i) => (
+                      <FadeImage
+                        key={i}
+                        src={img}
+                        alt={`Cabinet I-CA.RE ${centre.name} – photo ${i + 1}`}
+                        className="w-full h-40 md:h-52 object-cover rounded-lg"
+                        fadeDuration={400}
+                      />
+                    ))}
+                  </div>
+                  <div className="text-center mt-4">
+                    <Link
+                      to={localePath(lang, "projects", centre.slug)}
+                      className="text-sm font-medium text-primary hover:underline inline-flex items-center gap-1"
+                    >
+                      {t("locationBordeaux.seeDetails")}
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 5 — FAQ ── */}
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto">
-            <h2 className="section-title text-center">{t("locationBordeaux.forWhomTitle")}</h2>
-            <p className="section-subtitle text-center mx-auto mb-10">{t("locationBordeaux.forWhomDesc")}</p>
-            <div className="flex flex-wrap justify-center gap-3">
-              {professions.map((p) => (
-                <span
-                  key={p}
-                  className="px-4 py-2 bg-primary/10 text-foreground text-sm font-medium rounded-full"
-                >
-                  {p}
-                </span>
+            <h2 className="section-title text-center">{t("locationBordeaux.faqTitle")}</h2>
+            <Accordion type="single" collapsible className="mt-10">
+              {faqItems.map((item, i) => (
+                <AccordionItem key={i} value={`faq-${i}`}>
+                  <AccordionTrigger className="text-left text-base font-medium">
+                    {item.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                    {item.a}
+                  </AccordionContent>
+                </AccordionItem>
               ))}
-            </div>
+            </Accordion>
           </div>
         </div>
       </section>
 
-      {/* Pricing & practical */}
-      <section className="section-padding bg-muted/50">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="section-title">{t("locationBordeaux.pricingTitle")}</h2>
-            <div className="grid sm:grid-cols-3 gap-8 mt-12">
-              <div>
-                <p className="text-4xl font-heading font-bold text-primary">600–800 €</p>
-                <p className="text-muted-foreground mt-2 text-sm">{t("locationBordeaux.pricingRent")}</p>
-              </div>
-              <div>
-                <p className="text-4xl font-heading font-bold text-primary">11–15 m²</p>
-                <p className="text-muted-foreground mt-2 text-sm">{t("locationBordeaux.pricingSurface")}</p>
-              </div>
-              <div>
-                <p className="text-4xl font-heading font-bold text-primary">100%</p>
-                <p className="text-muted-foreground mt-2 text-sm">{t("locationBordeaux.pricingTurnkey")}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Approach link */}
-      <section className="section-padding">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="section-title">{t("locationBordeaux.approachTitle")}</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              {t("locationBordeaux.approachDesc")}
-            </p>
-            <Button variant="outline" asChild>
-              <Link to={localePath(lang, "approach")}>
-                {t("locationBordeaux.ctaApproach")}
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Bottom CTA */}
+      {/* ── SECTION 6 — CTA final ── */}
       <section className="section-padding bg-foreground">
         <div className="container">
           <div className="max-w-2xl mx-auto text-center">
@@ -223,14 +283,18 @@ export default function LocationCabinetBordeaux() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>
-                <Link to={localePath(lang, "projects")}>
-                  {t("locationBordeaux.ctaProjects")}
+                <Link to={localePath(lang, "contact")}>
+                  {t("home.applyNow")}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button variant="hero-outline" className="border-background/30 text-background hover:bg-background/10" asChild>
-                <Link to={localePath(lang, "contact")}>
-                  {t("common.contactUs")}
+              <Button
+                variant="hero-outline"
+                className="border-background/30 text-background hover:bg-background/10"
+                asChild
+              >
+                <Link to={localePath(lang, "projects")}>
+                  {t("locationBordeaux.ctaProjects")}
                 </Link>
               </Button>
             </div>
