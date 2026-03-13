@@ -101,10 +101,11 @@ export default function Contact() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.contactTitle")}</title>
-        <meta name="description" content={t("seo.contactDesc")} />
-      </Helmet>
+      <SeoHead
+        title={t("seo.contactTitle")}
+        description={t("seo.contactDesc")}
+        path={lang === "fr" ? "/contact" : "/en/contact"}
+      />
 
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container">

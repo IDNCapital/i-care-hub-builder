@@ -48,10 +48,11 @@ export default function Index() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.homeTitle")}</title>
-        <meta name="description" content={t("seo.homeDesc")} />
-      </Helmet>
+      <SeoHead
+        title={t("seo.homeTitle")}
+        description={t("seo.homeDesc")}
+        path={lang === "fr" ? "/" : "/en/"}
+      />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20">

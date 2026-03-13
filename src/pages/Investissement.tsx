@@ -70,10 +70,11 @@ export default function Investissement() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.investmentTitle")}</title>
-        <meta name="description" content={t("seo.investmentDesc")} />
-      </Helmet>
+      <SeoHead
+        title={t("seo.investmentTitle")}
+        description={t("seo.investmentDesc")}
+        path={lang === "fr" ? "/investissement" : "/en/investment"}
+      />
 
       {/* Hero */}
       <section className="relative min-h-[80vh] flex items-center pt-20">

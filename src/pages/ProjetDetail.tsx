@@ -91,10 +91,11 @@ export default function ProjetDetail() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{project.name} — I-CA.RE</title>
-        <meta name="description" content={shortDesc} />
-      </Helmet>
+      <SeoHead
+        title={`${project.name} — I-CA.RE`}
+        description={shortDesc}
+        path={lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}
+      />
 
       <section className="relative h-[60vh] min-h-[400px]">
         {(() => {

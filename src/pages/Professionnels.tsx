@@ -139,10 +139,11 @@ export default function Professionnels() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.professionalsTitle")}</title>
-        <meta name="description" content={t("seo.professionalsDesc")} />
-      </Helmet>
+      <SeoHead
+        title={t("seo.professionalsTitle")}
+        description={t("seo.professionalsDesc")}
+        path={lang === "fr" ? "/professionnels" : "/en/health-professionals"}
+      />
 
       {/* Hero */}
       <section className="relative min-h-[85vh] flex items-center pt-20">
