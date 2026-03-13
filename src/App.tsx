@@ -94,6 +94,7 @@ const App = () => (
                 <Route path="/office-rental-bordeaux" element={<LocationCabinetBordeaux />} />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/blog/finding-office-bordeaux-practitioner" element={<BlogTrouverCabinet />} />
+                <Route path="/setting-up-practice" element={<InstallerCabinet />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
 
