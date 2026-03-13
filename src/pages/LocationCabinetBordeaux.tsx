@@ -2,6 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
+import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { FadeImage } from "@/components/FadeImage";
 import { getDefaultHero, PROJECT_IMAGES } from "@/lib/projectImages";
