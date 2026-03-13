@@ -164,11 +164,12 @@ function EnVersion() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>Privacy Policy — I-CA.RE</title>
-        <meta name="description" content="I-CA.RE privacy policy and personal data protection, compliant with GDPR." />
-        <meta name="robots" content="noindex" />
-      </Helmet>
+      <SeoHead
+        title="Privacy Policy — I-CA.RE"
+        description="I-CA.RE privacy policy and personal data protection, compliant with GDPR."
+        path="/en/privacy"
+        noIndex
+      />
 
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container">
