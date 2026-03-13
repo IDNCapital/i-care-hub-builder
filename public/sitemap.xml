@@ -161,4 +161,20 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- Blog: Trouver cabinet Bordeaux -->
+  <url>
+    <loc>https://i-ca.re/blog/trouver-cabinet-bordeaux-praticien</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/blog/trouver-cabinet-bordeaux-praticien" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/blog/finding-office-bordeaux-practitioner" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/en/blog/finding-office-bordeaux-practitioner</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/blog/trouver-cabinet-bordeaux-praticien" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/blog/finding-office-bordeaux-practitioner" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>
