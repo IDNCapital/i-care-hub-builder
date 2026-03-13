@@ -260,7 +260,12 @@ export default function ProjetDetail() {
         <div className="container">
           <div className="cta-section text-center">
             <h2 className="text-3xl md:text-4xl font-semibold mb-4">{t("projectDetail.ctaTitle")}</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">{t("projectDetail.ctaDesc")}</p>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-4">{t("projectDetail.ctaDesc")}</p>
+            <p className="text-sm text-muted-foreground mb-8">
+              <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">
+                {lang === "fr" ? "Voir tous les cabinets I-CA.RE à Bordeaux" : "View all I-CA.RE offices in Bordeaux"}
+              </Link>
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>
                 <Link to={localePath(lang, "contact")}>{t("projectDetail.requestAvailability")}<ArrowRight className="ml-2 h-5 w-5" /></Link>
