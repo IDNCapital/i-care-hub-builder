@@ -58,14 +58,11 @@ export default function LocationCabinetBordeaux() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{t("seo.locationBordeauxTitle")}</title>
-        <meta name="description" content={t("seo.locationBordeauxDesc")} />
-        <link
-          rel="canonical"
-          href={`https://i-ca.re/${lang === "fr" ? "location-cabinet-bordeaux" : "en/office-rental-bordeaux"}`}
-        />
-      </Helmet>
+      <SeoHead
+        title={t("seo.locationBordeauxTitle")}
+        description={t("seo.locationBordeauxDesc")}
+        path={lang === "fr" ? "/location-cabinet-bordeaux" : "/en/office-rental-bordeaux"}
+      />
 
       {/* ── HERO ── */}
       <section className="relative min-h-[70vh] flex items-center pt-20">
