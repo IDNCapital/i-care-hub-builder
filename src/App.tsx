@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import LocationCabinetBordeaux from "./pages/LocationCabinetBordeaux";
 import FAQ from "./pages/FAQ";
 import BlogTrouverCabinet from "./pages/BlogTrouverCabinet";
+import InstallerCabinet from "./pages/InstallerCabinet";
 import { CookieBanner } from "./components/CookieBanner";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { useAnalytics } from "./hooks/useAnalytics";
