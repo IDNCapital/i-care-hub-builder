@@ -186,6 +186,12 @@ export default function Professionnels() {
               : <>Looking for a <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">professional office to rent in Bordeaux</Link>? Discover our available spaces.</>
             }
           </p>
+          <p className="text-center text-muted-foreground mt-2">
+            {lang === "fr"
+              ? <>Consultez nos <Link to={localePath(lang, "installerCabinet")} className="text-primary underline underline-offset-4 hover:text-primary/80">ressources pour s'installer comme praticien</Link>.</>
+              : <>Browse our <Link to={localePath(lang, "installerCabinet")} className="text-primary underline underline-offset-4 hover:text-primary/80">resources for setting up as a practitioner</Link>.</>
+            }
+          </p>
         </div>
       </section>
 
