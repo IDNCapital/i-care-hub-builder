@@ -177,4 +177,21 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- S'installer comme praticien (editorial hub) -->
+  <url>
+    <loc>https://i-ca.re/installer-cabinet-praticien</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/installer-cabinet-praticien" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/setting-up-practice" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://i-ca.re/installer-cabinet-praticien" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/en/setting-up-practice</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/installer-cabinet-praticien" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/setting-up-practice" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
