@@ -52,9 +52,21 @@ export default function LocationCabinetBordeaux() {
   ];
 
   const statusLabel = (status: string) => {
-    if (status === "available") return t("projects.statusAvailable");
-    if (status === "full") return t("projects.statusFull");
-    return t("projects.statusComingSoon");
+    if (status === "available") return t("projects.availableBadge");
+    if (status === "full") return t("projects.fullBadge");
+    return t("projects.comingSoonBadge");
+  };
+
+  const statusBadgeClass = (status: string) => {
+    if (status === "available") return "bg-[hsl(var(--primary)/0.15)] text-primary";
+    if (status === "full") return "bg-muted text-muted-foreground";
+    return "bg-[hsl(38,30%,90%)] text-[hsl(38,40%,35%)]";
+  };
+
+  const ctaLabel = (status: string) => {
+    if (status === "available") return t("projects.viewSpace");
+    if (status === "full") return t("projects.discoverSpace");
+    return t("projects.discoverProject");
   };
 
   return (
@@ -134,51 +146,51 @@ export default function LocationCabinetBordeaux() {
             {STATIC_CENTRES.map((centre) => {
               const images = centre.slug ? PROJECT_IMAGES[centre.slug] : null;
               const heroImg = images?.hero;
+              const linkTo = centre.slug
+                ? localePath(lang, "projects", centre.slug)
+                : localePath(lang, "contact");
+
               return (
-                <div key={centre.id} className="card-premium group hover:shadow-elevated transition-all duration-300 overflow-hidden">
-                  {heroImg ? (
-                    <Link to={localePath(lang, "projects", centre.slug)}>
+                <Link
+                  key={centre.id}
+                  to={linkTo}
+                  className="group card-premium overflow-hidden transition-all duration-300 hover:shadow-elevated hover:-translate-y-1 block"
+                >
+                  {/* Image area with badge overlay */}
+                  <div className="relative w-full h-52 overflow-hidden">
+                    {heroImg ? (
                       <FadeImage
                         src={heroImg}
                         alt={`Cabinet I-CA.RE ${centre.name}`}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         fadeDuration={400}
                       />
-                    </Link>
-                  ) : (
-                    <div className="w-full h-48 bg-muted flex items-center justify-center">
-                      <MapPin className="w-8 h-8 text-muted-foreground/40" />
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-heading font-semibold">{centre.name}</h3>
-                      <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
-                        centre.status === "available"
-                          ? "bg-primary/15 text-primary"
-                          : centre.status === "full"
-                            ? "bg-muted-foreground/15 text-muted-foreground"
-                            : "bg-accent/50 text-accent-foreground"
-                      }`}>
-                        {statusLabel(centre.status)}
-                      </span>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">{centre.address}</p>
-                    {centre.slug && (
-                      <Link
-                        to={localePath(lang, "projects", centre.slug)}
-                        className="text-sm font-medium text-primary hover:underline inline-flex items-center gap-1"
-                      >
-                        {centre.status === "available"
-                          ? t("projects.viewSpace")
-                          : centre.status === "full"
-                            ? t("projects.discoverSpace")
-                            : t("projects.discoverProject")}
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
+                    ) : (
+                      <div className="w-full h-full bg-[hsl(38,30%,93%)] flex flex-col items-center justify-center gap-3">
+                        <MapPin className="w-8 h-8 text-[hsl(38,40%,65%)]" />
+                        <span className="text-sm font-medium text-[hsl(38,40%,45%)]">
+                          {t("projects.comingSoonBadge")}
+                        </span>
+                      </div>
                     )}
+                    {/* Status badge on image */}
+                    <span className={`absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm ${statusBadgeClass(centre.status)}`}>
+                      {statusLabel(centre.status)}
+                    </span>
                   </div>
-                </div>
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <h3 className="text-xl font-heading font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
+                      {centre.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground/70 mb-5">{centre.address}</p>
+                    <span className="text-sm font-semibold text-primary inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
+                      {ctaLabel(centre.status)}
+                      <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </div>
+                </Link>
               );
             })}
           </div>
