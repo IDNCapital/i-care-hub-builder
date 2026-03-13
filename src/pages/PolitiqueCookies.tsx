@@ -1,5 +1,5 @@
 import { Layout } from "@/components/Layout";
-import { Helmet } from "react-helmet-async";
+import { SeoHead } from "@/components/SeoHead";
 
 export default function PolitiqueCookies() {
   return (
