@@ -124,6 +124,7 @@ const App = () => (
                 <Route path="/cookies" element={<PolitiqueCookies />} />
                 <Route path="/location-cabinet-bordeaux" element={<LocationCabinetBordeaux />} />
                 <Route path="/questions-frequentes" element={<FAQ />} />
+                <Route path="/blog/trouver-cabinet-bordeaux-praticien" element={<BlogTrouverCabinet />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
             </Routes>
