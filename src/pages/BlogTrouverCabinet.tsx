@@ -6,25 +6,71 @@ import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { STATIC_CENTRES } from "@/lib/centres";
 import { ArrowRight, MapPin } from "lucide-react";
+import { FadeImage } from "@/components/FadeImage";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+import cab1Image from "@/assets/pey-berland/cab1.webp";
+import facadeImage from "@/assets/jardin-public/facade.webp";
 
 export default function BlogTrouverCabinet() {
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
-  const title = lang === "fr"
-    ? "Comment trouver un cabinet à Bordeaux quand on est praticien ?"
-    : "How to find a practice office in Bordeaux as a practitioner?";
+  const title =
+    lang === "fr"
+      ? "Comment trouver un cabinet à Bordeaux quand on est praticien ?"
+      : "How to find a practice office in Bordeaux as a practitioner?";
 
-  const metaDesc = lang === "fr"
-    ? "Psychologue, thérapeute, ostéopathe ou professionnel du bien-être : découvrez comment trouver un cabinet à Bordeaux et les critères essentiels pour bien choisir votre lieu d'exercice."
-    : "Psychologist, therapist, osteopath or wellbeing professional: discover how to find a practice office in Bordeaux and the key criteria for choosing the right space.";
+  const metaDesc =
+    lang === "fr"
+      ? "Psychologue, thérapeute, ostéopathe ou professionnel du bien-être : découvrez comment trouver un cabinet à Bordeaux et les critères essentiels pour bien choisir votre lieu d'exercice."
+      : "Psychologist, therapist, osteopath or wellbeing professional: discover how to find a practice office in Bordeaux and the key criteria for choosing the right space.";
+
+  const faqItems = lang === "fr"
+    ? [
+        {
+          q: "Quelle surface pour un cabinet de consultation ?",
+          a: "Une surface de 11 à 15 m² est idéale pour un cabinet de consultation individuel. Elle permet d'accueillir confortablement le patient, de disposer le mobilier nécessaire et de conserver un espace aéré et apaisant. C'est la surface proposée dans les cabinets I-CA.RE.",
+        },
+        {
+          q: "Peut-on partager un cabinet entre praticiens ?",
+          a: "Oui, le partage de cabinet est une solution de plus en plus courante. Cela permet de mutualiser les coûts, d'occuper l'espace de manière optimale et de bénéficier d'échanges professionnels enrichissants. Chez I-CA.RE, chaque praticien dispose de son propre cabinet au sein d'un lieu partagé.",
+        },
+        {
+          q: "Combien coûte un cabinet à Bordeaux ?",
+          a: "Le coût d'un cabinet à Bordeaux varie selon le quartier, la surface et les prestations incluses. Chez I-CA.RE, les loyers incluent les charges, l'accès à la salle d'attente, l'entretien des espaces communs et l'assurance du lieu, pour un budget maîtrisé et sans surprise.",
+        },
+      ]
+    : [
+        {
+          q: "What surface area for a consultation office?",
+          a: "A surface area of 11 to 15 sqm is ideal for an individual consultation office. It allows you to comfortably welcome patients, arrange necessary furniture and maintain an airy, soothing space. This is the surface offered by I-CA.RE offices.",
+        },
+        {
+          q: "Can practitioners share an office?",
+          a: "Yes, office sharing is an increasingly common solution. It allows costs to be shared, space to be used optimally and practitioners to benefit from enriching professional exchanges. At I-CA.RE, each practitioner has their own office within a shared space.",
+        },
+        {
+          q: "How much does an office in Bordeaux cost?",
+          a: "The cost of an office in Bordeaux varies depending on the neighbourhood, surface area and included services. At I-CA.RE, rents include utilities, waiting room access, common area maintenance and premises insurance, for a controlled budget with no surprises.",
+        },
+      ];
 
   return (
     <Layout>
       <SeoHead
         title={`${title} | I-CA.RE`}
         description={metaDesc}
-        path={lang === "fr" ? "/blog/trouver-cabinet-bordeaux-praticien" : "/en/blog/finding-office-bordeaux-practitioner"}
+        path={
+          lang === "fr"
+            ? "/blog/trouver-cabinet-bordeaux-praticien"
+            : "/en/blog/finding-office-bordeaux-practitioner"
+        }
       />
 
       {/* Hero */}
@@ -48,9 +94,8 @@ export default function BlogTrouverCabinet() {
 
       <article className="section-padding">
         <div className="container max-w-3xl">
-
           {/* Introduction */}
-          <div className="prose-section mb-16">
+          <div className="prose-section mb-12">
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
               {lang === "fr"
                 ? "De nombreux praticiens du soin et du bien-être rencontrent les mêmes difficultés lorsqu'ils cherchent un cabinet de consultation à Bordeaux : les loyers sont élevés, les locaux rarement adaptés à la pratique thérapeutique, et l'isolement professionnel pèse au quotidien."
@@ -63,12 +108,25 @@ export default function BlogTrouverCabinet() {
             </p>
           </div>
 
+          {/* Image 1 — after introduction */}
+          <div className="mb-16 rounded-xl overflow-hidden">
+            <FadeImage
+              src={cab1Image}
+              alt={
+                lang === "fr"
+                  ? "Cabinet de consultation I-CA.RE à Bordeaux"
+                  : "I-CA.RE consultation office in Bordeaux"
+              }
+              className="w-full h-auto aspect-[16/9] object-cover"
+            />
+          </div>
+
           {/* Section 1 */}
           <section className="mb-16">
             <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6">
               {lang === "fr"
-                ? "Pourquoi il est difficile de trouver un cabinet de consultation à Bordeaux"
-                : "Why finding a consultation office in Bordeaux is difficult"}
+                ? "Pourquoi il est difficile de trouver un cabinet à Bordeaux"
+                : "Why finding an office in Bordeaux is difficult"}
             </h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
@@ -93,6 +151,31 @@ export default function BlogTrouverCabinet() {
                     : "Difficulty finding a calm, professional environment that ensures the confidentiality of exchanges"}
                 </li>
               </ul>
+              <p>
+                {lang === "fr" ? (
+                  <>
+                    En savoir plus sur{" "}
+                    <Link
+                      to={localePath(lang, "professionals")}
+                      className="text-primary underline underline-offset-4 hover:text-primary/80"
+                    >
+                      notre accompagnement pour les praticiens du soin et du bien-être
+                    </Link>
+                    .
+                  </>
+                ) : (
+                  <>
+                    Learn more about{" "}
+                    <Link
+                      to={localePath(lang, "professionals")}
+                      className="text-primary underline underline-offset-4 hover:text-primary/80"
+                    >
+                      our support for care and wellbeing practitioners
+                    </Link>
+                    .
+                  </>
+                )}
+              </p>
             </div>
           </section>
 
@@ -118,7 +201,7 @@ export default function BlogTrouverCabinet() {
 
               <div>
                 <h3 className="text-xl font-heading font-semibold mb-3">
-                  {lang === "fr" ? "Surface adaptée" : "Suitable surface area"}
+                  {lang === "fr" ? "Surface" : "Surface area"}
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {lang === "fr"
@@ -140,7 +223,7 @@ export default function BlogTrouverCabinet() {
 
               <div>
                 <h3 className="text-xl font-heading font-semibold mb-3">
-                  {lang === "fr" ? "Atmosphère du lieu" : "Atmosphere of the space"}
+                  {lang === "fr" ? "Ambiance du lieu" : "Atmosphere of the space"}
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {lang === "fr"
@@ -161,7 +244,7 @@ export default function BlogTrouverCabinet() {
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
                 {lang === "fr"
-                  ? "Louer un cabinet à louer à Bordeaux en solo peut paraître rassurant, mais l'exercice isolé présente des limites : pas d'échanges entre pairs, coûts fixes plus élevés, gestion administrative chronophage."
+                  ? "Louer un cabinet à Bordeaux en solo peut paraître rassurant, mais l'exercice isolé présente des limites : pas d'échanges entre pairs, coûts fixes plus élevés, gestion administrative chronophage."
                   : "Renting a solo office in Bordeaux may seem reassuring, but isolated practice has its limits: no peer exchanges, higher fixed costs, time-consuming administrative management."}
               </p>
               <p>
@@ -196,6 +279,20 @@ export default function BlogTrouverCabinet() {
                 ? "Les lieux I-CA.RE à Bordeaux"
                 : "I-CA.RE spaces in Bordeaux"}
             </h2>
+
+            {/* Image 2 — I-CA.RE space */}
+            <div className="mb-8 rounded-xl overflow-hidden">
+              <FadeImage
+                src={facadeImage}
+                alt={
+                  lang === "fr"
+                    ? "Façade d'un lieu I-CA.RE à Bordeaux"
+                    : "Facade of an I-CA.RE space in Bordeaux"
+                }
+                className="w-full h-auto aspect-[16/9] object-cover"
+              />
+            </div>
+
             <p className="text-muted-foreground leading-relaxed mb-8">
               {lang === "fr"
                 ? "I-CA.RE propose aujourd'hui six lieux de soin dans la métropole bordelaise, chacun avec son identité propre. Nos cabinets de consultation à Bordeaux sont conçus pour répondre aux exigences des praticiens du soin et du bien-être."
@@ -203,16 +300,23 @@ export default function BlogTrouverCabinet() {
             </p>
             <div className="grid sm:grid-cols-2 gap-4 mb-8">
               {STATIC_CENTRES.map((centre) => (
-                <div key={centre.id} className="flex items-start gap-3 p-4 rounded-lg bg-muted/50">
+                <div
+                  key={centre.id}
+                  className="flex items-start gap-3 p-4 rounded-lg bg-muted/50"
+                >
                   <MapPin className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                   <div>
-                    <p className="font-heading font-semibold text-foreground">{centre.name}</p>
-                    <p className="text-sm text-muted-foreground">{centre.address}</p>
+                    <p className="font-heading font-semibold text-foreground">
+                      {centre.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {centre.address}
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
-            <p className="text-muted-foreground leading-relaxed">
+            <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to={localePath(lang, "locationBordeaux")}
                 className="text-primary font-medium underline underline-offset-4 hover:text-primary/80"
@@ -221,7 +325,15 @@ export default function BlogTrouverCabinet() {
                   ? "Découvrez tous nos cabinets à louer à Bordeaux →"
                   : "Discover all our offices for rent in Bordeaux →"}
               </Link>
-            </p>
+              <Link
+                to={localePath(lang, "projects")}
+                className="text-primary font-medium underline underline-offset-4 hover:text-primary/80"
+              >
+                {lang === "fr"
+                  ? "Voir tous nos lieux de soin →"
+                  : "View all our care spaces →"}
+              </Link>
+            </div>
           </section>
 
           {/* Section 5 — Conclusion */}
@@ -236,6 +348,26 @@ export default function BlogTrouverCabinet() {
             </p>
           </section>
 
+          {/* FAQ */}
+          <section className="mb-16">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-8">
+              {lang === "fr"
+                ? "Questions fréquentes"
+                : "Frequently asked questions"}
+            </h2>
+            <Accordion type="single" collapsible className="w-full">
+              {faqItems.map((item, i) => (
+                <AccordionItem key={i} value={`faq-${i}`}>
+                  <AccordionTrigger className="text-left font-heading font-semibold text-base">
+                    {item.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                    {item.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </section>
         </div>
       </article>
 
@@ -255,8 +387,10 @@ export default function BlogTrouverCabinet() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>
-                <Link to={localePath(lang, "contact")}>
-                  {lang === "fr" ? "Échanger sur mon projet" : "Discuss My Project"}
+                <Link to={`${localePath(lang, "professionals")}#candidature`}>
+                  {lang === "fr"
+                    ? "Échanger sur mon projet"
+                    : "Discuss My Project"}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -266,7 +400,9 @@ export default function BlogTrouverCabinet() {
                 asChild
               >
                 <Link to={localePath(lang, "locationBordeaux")}>
-                  {lang === "fr" ? "Voir les cabinets disponibles" : "View available offices"}
+                  {lang === "fr"
+                    ? "Voir les cabinets disponibles"
+                    : "View available offices"}
                 </Link>
               </Button>
             </div>
