@@ -52,9 +52,21 @@ export default function LocationCabinetBordeaux() {
   ];
 
   const statusLabel = (status: string) => {
-    if (status === "available") return t("projects.statusAvailable");
-    if (status === "full") return t("projects.statusFull");
-    return t("projects.statusComingSoon");
+    if (status === "available") return t("projects.availableBadge");
+    if (status === "full") return t("projects.fullBadge");
+    return t("projects.comingSoonBadge");
+  };
+
+  const statusBadgeClass = (status: string) => {
+    if (status === "available") return "bg-[hsl(var(--primary)/0.15)] text-primary";
+    if (status === "full") return "bg-muted text-muted-foreground";
+    return "bg-[hsl(38,30%,90%)] text-[hsl(38,40%,35%)]";
+  };
+
+  const ctaLabel = (status: string) => {
+    if (status === "available") return t("projects.viewSpace");
+    if (status === "full") return t("projects.discoverSpace");
+    return t("projects.discoverProject");
   };
 
   return (
