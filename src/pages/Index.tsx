@@ -217,7 +217,7 @@ export default function Index() {
             </div>
             <div className="order-1 lg:order-2">
               <h2 className="section-title mb-6">{t("home.localImpact")}</h2>
-              <p className="text-lg text-muted-foreground mb-8">{t("home.localImpactDesc")}</p>
+              <p className="text-lg text-muted-foreground mb-8"><InlineBrand>{t("home.localImpactDesc")}</InlineBrand></p>
               <div className="grid grid-cols-3 gap-6 mb-8">
                 {impacts.map((impact) => (
                   <div key={impact.label} className="text-center">
