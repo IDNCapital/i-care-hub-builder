@@ -21,6 +21,7 @@ import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero, getProjectGallery } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
 import { getCentreBySlug } from "@/lib/centres";
+import { BrandName } from "@/components/BrandName";
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
