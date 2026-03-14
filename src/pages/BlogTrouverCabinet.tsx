@@ -99,7 +99,7 @@ export default function BlogTrouverCabinet() {
           <div className="prose-section mb-12">
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
               {lang === "fr"
-                ? "De nombreux praticiens du soin et du bien-être rencontrent les mêmes difficultés lorsqu'ils cherchent un cabinet de consultation à Bordeaux : les loyers sont élevés, les locaux rarement adaptés à la pratique thérapeutique, et l'isolement professionnel pèse au quotidien."
+                ? "De nombreux praticiens du soin et du bien-être rencontrent les mêmes difficultés lorsqu'ils cherchent un cabinet de consultation à Bordeaux : les loyers sont élevés, les locaux rarement adaptés à la pratique thérapeutique, et l'isolement professionnel peut peser au quotidien."
                 : "Many care and wellbeing practitioners face the same challenges when looking for a consultation office in Bordeaux: high rents, premises rarely suited to therapeutic practice, and professional isolation that takes its toll."}
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
