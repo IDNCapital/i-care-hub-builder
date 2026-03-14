@@ -244,7 +244,7 @@ function EnVersion() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">5. Legal Basis</h2>
           <ul className="space-y-1 text-muted-foreground">
             <li>• User consent (forms, cookies)</li>
-            <li>• Legitimate interest of I-CA.RE for enquiry and prospect follow-up</li>
+            <li>• Legitimate interest of <BrandName /> for enquiry and prospect follow-up</li>
           </ul>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">6. Data Retention</h2>
