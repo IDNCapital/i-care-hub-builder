@@ -43,7 +43,7 @@ export default function NotreApproche() {
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="section-title mb-6">{t("approach.foundersTitle")}</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              {t("approach.foundersIntro")}
+              <InlineBrand>{t("approach.foundersIntro")}</InlineBrand>
             </p>
           </div>
 
