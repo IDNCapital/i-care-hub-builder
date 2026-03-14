@@ -71,8 +71,8 @@ export default function MentionsLegales() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "4. Intellectual Property" : "4. Propriété intellectuelle"}</h2>
           <p className="text-muted-foreground leading-relaxed">
             {lang === "en"
-              ? "All elements composing the website (text, images, graphics, logo, architecture, structure, source code, database) are the exclusive property of I-CA.RE or are subject to a right of use. Any reproduction, representation, modification, publication or adaptation, in whole or in part, of the website elements, by any means or process, is prohibited without prior written authorisation from I-CA.RE."
-              : "L'ensemble des éléments composant le site (textes, images, graphismes, logo, architecture, structure, code source, base de données) est la propriété exclusive de I-CA.RE ou fait l'objet d'un droit d'utilisation. Toute reproduction, représentation, modification, publication ou adaptation, totale ou partielle, des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sans autorisation écrite préalable de I-CA.RE."}
+              ? <>All elements composing the website (text, images, graphics, logo, architecture, structure, source code, database) are the exclusive property of <BrandName /> or are subject to a right of use. Any reproduction, representation, modification, publication or adaptation, in whole or in part, of the website elements, by any means or process, is prohibited without prior written authorisation from <BrandName />.</>
+              : <>L'ensemble des éléments composant le site (textes, images, graphismes, logo, architecture, structure, code source, base de données) est la propriété exclusive de <BrandName /> ou fait l'objet d'un droit d'utilisation. Toute reproduction, représentation, modification, publication ou adaptation, totale ou partielle, des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sans autorisation écrite préalable de <BrandName />.</>}
           </p>
 
           {/* 5. Responsabilité */}
