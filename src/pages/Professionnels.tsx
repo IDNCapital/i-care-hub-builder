@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { getDefaultHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
+import { InlineBrand } from "@/components/BrandName";
 
 export default function Professionnels() {
   const { t, i18n } = useTranslation();
@@ -199,7 +200,7 @@ export default function Professionnels() {
       <section className="section-padding">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="section-title">{t("professionals.whyTitle")}</h2>
+            <h2 className="section-title"><InlineBrand>{t("professionals.whyTitle")}</InlineBrand></h2>
             <p className="section-subtitle mx-auto">{t("professionals.whySubtitle")}</p>
           </div>
           <div className="grid lg:grid-cols-3 gap-8">
@@ -372,7 +373,7 @@ export default function Professionnels() {
               <div className="flex items-start gap-3">
                 <Checkbox id="rgpd" checked={rgpdConsent} onCheckedChange={(checked) => setRgpdConsent(checked === true)} className="mt-1 border-white/30 data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-[#1F1F1F]" />
                 <Label htmlFor="rgpd" className="text-[#F6F5F0]/70 text-sm leading-relaxed cursor-pointer">
-                  {t("professionals.formRgpd")}{" "}
+                  <InlineBrand>{t("professionals.formRgpd")}</InlineBrand>{" "}
                   <Link to={localePath(lang, "privacy")} className="underline hover:text-[#F6F5F0]">{t("professionals.formRgpdLink")}</Link>. *
                 </Label>
               </div>

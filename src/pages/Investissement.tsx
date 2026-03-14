@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { getDefaultHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
+import { BrandName, InlineBrand } from "@/components/BrandName";
 
 export default function Investissement() {
   const { t, i18n } = useTranslation();
@@ -79,7 +80,7 @@ export default function Investissement() {
       {/* Hero */}
       <section className="relative min-h-[80vh] flex items-center pt-20">
         <div className="absolute inset-0">
-          <FadeImage src={getDefaultHero("investissement")} alt={lang === "fr" ? "Façade – I-CA.RE Nansouty" : "Facade – I-CA.RE Nansouty"} className="w-full h-full object-cover" loading="eager" fadeDuration={500} />
+          <FadeImage src={getDefaultHero("investissement")} alt={lang === "fr" ? "Façade – I‑CA.RE Nansouty" : "Facade – I‑CA.RE Nansouty"} className="w-full h-full object-cover" loading="eager" fadeDuration={500} />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/75 to-foreground/30" />
         </div>
         <div className="container relative z-10 py-20">
@@ -89,8 +90,8 @@ export default function Investissement() {
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-background leading-tight mb-6 opacity-0 animate-fade-up stagger-1">
               {lang === "en"
-                ? "Invest in I-CA.RE: a family-backed private real estate company serving community care"
-                : "Investir dans I-CA.RE : une foncière privée familiale au service de la santé de proximité"}
+                ? <>Invest in <BrandName variant="light" />: a family-backed private real estate company serving community care</>
+                : <>Investir dans <BrandName variant="light" /> : une foncière privée familiale au service de la santé de proximité</>}
             </h1>
             <p className="text-xl md:text-2xl text-background/70 leading-relaxed mb-10 opacity-0 animate-fade-up stagger-2">
               {lang === "en"
@@ -119,8 +120,8 @@ export default function Investissement() {
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto mb-16">
-            <h2 className="section-title mb-6">{t("investment.concept")}</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-6">{t("investment.conceptP1")}</p>
+            <h2 className="section-title mb-6"><InlineBrand>{t("investment.concept")}</InlineBrand></h2>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-6"><InlineBrand>{t("investment.conceptP1")}</InlineBrand></p>
             <p className="text-lg text-muted-foreground leading-relaxed">{t("investment.conceptP2")}</p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -169,7 +170,7 @@ export default function Investissement() {
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="section-title mb-6">{t("investment.forInvestors")}</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-4">{t("investment.forInvestorsP1")}</p>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-4"><InlineBrand>{t("investment.forInvestorsP1")}</InlineBrand></p>
             <p className="text-lg text-muted-foreground leading-relaxed mb-10">{t("investment.forInvestorsP2")}</p>
             <Button variant="hero" asChild>
               <Link to={localePath(lang, "investmentInterest")}>

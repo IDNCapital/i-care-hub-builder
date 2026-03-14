@@ -3,6 +3,7 @@ import { SeoHead } from "@/components/SeoHead";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
+import { BrandName } from "@/components/BrandName";
 
 export default function MentionsLegales() {
   const { i18n } = useTranslation();
@@ -11,8 +12,8 @@ export default function MentionsLegales() {
   return (
     <Layout>
       <SeoHead
-        title={lang === "en" ? "Legal Notice — I-CA.RE" : "Mentions légales — I-CA.RE"}
-        description={lang === "en" ? "Legal notice for the I-CA.RE website: publisher, host and director of publication." : "Mentions légales du site I-CA.RE : éditeur, hébergeur et directeur de publication."}
+        title={lang === "en" ? "Legal Notice — I‑CA.RE" : "Mentions légales — I‑CA.RE"}
+        description={lang === "en" ? "Legal notice for the I‑CA.RE website: publisher, host and director of publication." : "Mentions légales du site I‑CA.RE : éditeur, hébergeur et directeur de publication."}
         path={lang === "fr" ? "/mentions-legales" : "/en/legal"}
         noIndex
       />
@@ -32,7 +33,7 @@ export default function MentionsLegales() {
             {lang === "en" ? "This website is published by:" : "Le présent site est édité par :"}
           </p>
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
-            <li><strong className="text-foreground">I-CA.RE</strong></li>
+            <li><strong className="text-foreground"><BrandName /></strong></li>
             <li><strong className="text-foreground">{lang === "en" ? "Legal form:" : "Forme juridique :"}</strong> {lang === "en" ? "Simplified Joint Stock Company (SAS)" : "Société par Actions Simplifiée (SAS)"}</li>
             <li><strong className="text-foreground">{lang === "en" ? "Share capital:" : "Capital social :"}</strong> 1 000 €</li>
             <li><strong className="text-foreground">{lang === "en" ? "Registered office:" : "Siège social :"}</strong> 106 B rue Bertrand de Goth, 33800 Bordeaux</li>
@@ -51,8 +52,8 @@ export default function MentionsLegales() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "2. Director of Publication" : "2. Directeur de la publication"}</h2>
           <p className="text-muted-foreground leading-relaxed">
             {lang === "en"
-              ? "The director of publication is the legal representative of I-CA.RE."
-              : "Le directeur de la publication est le représentant légal de la société I-CA.RE."}
+              ? <>The director of publication is the legal representative of <BrandName />.</>
+              : <>Le directeur de la publication est le représentant légal de la société <BrandName />.</>}
           </p>
 
           {/* 3. Hébergement */}
@@ -70,16 +71,16 @@ export default function MentionsLegales() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "4. Intellectual Property" : "4. Propriété intellectuelle"}</h2>
           <p className="text-muted-foreground leading-relaxed">
             {lang === "en"
-              ? "All elements composing the website (text, images, graphics, logo, architecture, structure, source code, database) are the exclusive property of I-CA.RE or are subject to a right of use. Any reproduction, representation, modification, publication or adaptation, in whole or in part, of the website elements, by any means or process, is prohibited without prior written authorisation from I-CA.RE."
-              : "L'ensemble des éléments composant le site (textes, images, graphismes, logo, architecture, structure, code source, base de données) est la propriété exclusive de I-CA.RE ou fait l'objet d'un droit d'utilisation. Toute reproduction, représentation, modification, publication ou adaptation, totale ou partielle, des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sans autorisation écrite préalable de I-CA.RE."}
+              ? <>All elements composing the website (text, images, graphics, logo, architecture, structure, source code, database) are the exclusive property of <BrandName /> or are subject to a right of use. Any reproduction, representation, modification, publication or adaptation, in whole or in part, of the website elements, by any means or process, is prohibited without prior written authorisation from <BrandName />.</>
+              : <>L'ensemble des éléments composant le site (textes, images, graphismes, logo, architecture, structure, code source, base de données) est la propriété exclusive de <BrandName /> ou fait l'objet d'un droit d'utilisation. Toute reproduction, représentation, modification, publication ou adaptation, totale ou partielle, des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sans autorisation écrite préalable de <BrandName />.</>}
           </p>
 
           {/* 5. Responsabilité */}
           <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "5. Liability" : "5. Responsabilité"}</h2>
           <p className="text-muted-foreground leading-relaxed">
             {lang === "en"
-              ? "I-CA.RE endeavours to ensure the accuracy and currency of information published on the website. However, the company cannot guarantee the accuracy, precision or completeness of the information provided. The use of the information and content available on the website cannot under any circumstances engage the liability of I-CA.RE."
-              : "I-CA.RE s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur le site. Toutefois, la société ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition. L'utilisation des informations et contenus disponibles sur l'ensemble du site ne saurait en aucun cas engager la responsabilité de I-CA.RE."}
+              ? <><BrandName /> endeavours to ensure the accuracy and currency of information published on the website. However, the company cannot guarantee the accuracy, precision or completeness of the information provided. The use of the information and content available on the website cannot under any circumstances engage the liability of <BrandName />.</>
+              : <><BrandName /> s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur le site. Toutefois, la société ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition. L'utilisation des informations et contenus disponibles sur l'ensemble du site ne saurait en aucun cas engager la responsabilité de <BrandName />.</>}
           </p>
 
           {/* 6. Données personnelles */}

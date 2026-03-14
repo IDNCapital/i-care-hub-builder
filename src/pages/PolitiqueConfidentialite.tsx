@@ -3,6 +3,7 @@ import { SeoHead } from "@/components/SeoHead";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
+import { BrandName } from "@/components/BrandName";
 
 export default function PolitiqueConfidentialite() {
   const { i18n } = useTranslation();
@@ -19,8 +20,8 @@ function FrVersion() {
   return (
     <Layout>
       <SeoHead
-        title="Politique de confidentialité — I-CA.RE"
-        description="Politique de confidentialité et protection des données personnelles d'I-CA.RE, conforme au RGPD."
+        title="Politique de confidentialité — I‑CA.RE"
+        description="Politique de confidentialité et protection des données personnelles d'I‑CA.RE, conforme au RGPD."
         path="/confidentialite"
         noIndex
       />
@@ -36,16 +37,16 @@ function FrVersion() {
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">1. Introduction</h2>
           <p className="text-muted-foreground leading-relaxed">
-            La présente Politique de confidentialité décrit la manière dont la société <strong className="text-foreground">I-CA.RE</strong> collecte, utilise et protège les données personnelles des utilisateurs du site internet.
+            La présente Politique de confidentialité décrit la manière dont la société <strong className="text-foreground"><BrandName /></strong> collecte, utilise et protège les données personnelles des utilisateurs du site internet.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            I-CA.RE accorde une importance particulière à la protection des données personnelles et s'engage à traiter celles-ci conformément au Règlement (UE) 2016/679 du 27 avril 2016 (RGPD) et à la loi Informatique et Libertés.
+            <BrandName /> accorde une importance particulière à la protection des données personnelles et s'engage à traiter celles-ci conformément au Règlement (UE) 2016/679 du 27 avril 2016 (RGPD) et à la loi Informatique et Libertés.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">2. Responsable du traitement</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">Les données personnelles collectées sur le site sont traitées par :</p>
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
-            <li><strong className="text-foreground">I-CA.RE</strong></li>
+            <li><strong className="text-foreground"><BrandName /></strong></li>
             <li>SAS au capital de 1 000 €</li>
             <li>Siège social : 106 B rue Bertrand de Goth, 33800 Bordeaux</li>
             <li>RCS Bordeaux : 942 176 884</li>
@@ -97,7 +98,7 @@ function FrVersion() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">5. Base légale du traitement</h2>
           <ul className="space-y-1 text-muted-foreground">
             <li>• Le consentement de l'utilisateur (formulaires, cookies)</li>
-            <li>• L'intérêt légitime de I-CA.RE pour assurer le suivi des demandes et prospects</li>
+            <li>• L'intérêt légitime de <BrandName /> pour assurer le suivi des demandes et prospects</li>
           </ul>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">6. Durée de conservation</h2>
@@ -115,12 +116,12 @@ function FrVersion() {
             <li>1227 Les Acacias (Genève), Suisse</li>
           </ul>
           <p className="text-muted-foreground leading-relaxed mt-4">
-            I-CA.RE met en œuvre des mesures techniques et organisationnelles appropriées afin d'assurer la sécurité et la confidentialité des données.
+            <BrandName /> met en œuvre des mesures techniques et organisationnelles appropriées afin d'assurer la sécurité et la confidentialité des données.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">8. Destinataires des données</h2>
           <p className="text-muted-foreground leading-relaxed">
-            Les données sont exclusivement destinées à I-CA.RE. Elles peuvent être traitées par des prestataires techniques intervenant dans l'hébergement ou la maintenance du site, agissant en qualité de sous-traitants.
+            Les données sont exclusivement destinées à <BrandName />. Elles peuvent être traitées par des prestataires techniques intervenant dans l'hébergement ou la maintenance du site, agissant en qualité de sous-traitants.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">9. Droits des utilisateurs</h2>
@@ -150,7 +151,7 @@ function FrVersion() {
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">11. Modification de la politique</h2>
           <p className="text-muted-foreground leading-relaxed">
-            I-CA.RE se réserve le droit de modifier la présente Politique de confidentialité à tout moment afin d'assurer sa conformité avec la législation en vigueur. La version en vigueur est celle publiée sur le site.
+            <BrandName /> se réserve le droit de modifier la présente Politique de confidentialité à tout moment afin d'assurer sa conformité avec la législation en vigueur. La version en vigueur est celle publiée sur le site.
           </p>
         </div>
       </section>
@@ -165,8 +166,8 @@ function EnVersion() {
   return (
     <Layout>
       <SeoHead
-        title="Privacy Policy — I-CA.RE"
-        description="I-CA.RE privacy policy and personal data protection, compliant with GDPR."
+        title="Privacy Policy — I‑CA.RE"
+        description="I‑CA.RE privacy policy and personal data protection, compliant with GDPR."
         path="/en/privacy"
         noIndex
       />
@@ -182,16 +183,16 @@ function EnVersion() {
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">1. Introduction</h2>
           <p className="text-muted-foreground leading-relaxed">
-            This Privacy Policy describes how <strong className="text-foreground">I-CA.RE</strong> collects, uses and protects the personal data of website users.
+            This Privacy Policy describes how <strong className="text-foreground"><BrandName /></strong> collects, uses and protects the personal data of website users.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            I-CA.RE attaches particular importance to the protection of personal data and is committed to processing it in accordance with Regulation (EU) 2016/679 of 27 April 2016 (GDPR) and the French Data Protection Act.
+            <BrandName /> attaches particular importance to the protection of personal data and is committed to processing it in accordance with Regulation (EU) 2016/679 of 27 April 2016 (GDPR) and the French Data Protection Act.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">2. Data Controller</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">Personal data collected on the website is processed by:</p>
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
-            <li><strong className="text-foreground">I-CA.RE</strong></li>
+            <li><strong className="text-foreground"><BrandName /></strong></li>
             <li>SAS with share capital of €1,000</li>
             <li>Registered office: 106 B rue Bertrand de Goth, 33800 Bordeaux, France</li>
             <li>RCS Bordeaux: 942 176 884</li>
@@ -243,7 +244,7 @@ function EnVersion() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">5. Legal Basis</h2>
           <ul className="space-y-1 text-muted-foreground">
             <li>• User consent (forms, cookies)</li>
-            <li>• Legitimate interest of I-CA.RE for enquiry and prospect follow-up</li>
+            <li>• Legitimate interest of <BrandName /> for enquiry and prospect follow-up</li>
           </ul>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">6. Data Retention</h2>
@@ -261,12 +262,12 @@ function EnVersion() {
             <li>1227 Les Acacias (Geneva), Switzerland</li>
           </ul>
           <p className="text-muted-foreground leading-relaxed mt-4">
-            I-CA.RE implements appropriate technical and organisational measures to ensure data security and confidentiality.
+            <BrandName /> implements appropriate technical and organisational measures to ensure data security and confidentiality.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">8. Data Recipients</h2>
           <p className="text-muted-foreground leading-relaxed">
-            Data is intended exclusively for I-CA.RE. It may be processed by technical service providers involved in hosting or website maintenance, acting as sub-processors.
+            Data is intended exclusively for <BrandName />. It may be processed by technical service providers involved in hosting or website maintenance, acting as sub-processors.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">9. Your Rights</h2>
@@ -296,7 +297,7 @@ function EnVersion() {
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">11. Policy Updates</h2>
           <p className="text-muted-foreground leading-relaxed">
-            I-CA.RE reserves the right to amend this Privacy Policy at any time to ensure compliance with applicable legislation. The current version is that published on the website.
+            <BrandName /> reserves the right to amend this Privacy Policy at any time to ensure compliance with applicable legislation. The current version is that published on the website.
           </p>
         </div>
       </section>

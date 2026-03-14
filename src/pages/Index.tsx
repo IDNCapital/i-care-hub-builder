@@ -21,6 +21,7 @@ import { getDefaultHero, SECTION_IMAGES } from "@/lib/projectImages";
 import { HeroSlideshow } from "@/components/HeroSlideshow";
 import { TestimonialsSlider } from "@/components/TestimonialsSlider";
 import { FadeImage } from "@/components/FadeImage";
+import { InlineBrand } from "@/components/BrandName";
 
 export default function Index() {
   const { t, i18n } = useTranslation();
@@ -140,8 +141,8 @@ export default function Index() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="section-title mb-6">{t("home.whyChoose")}</h2>
-              <p className="text-lg text-muted-foreground mb-8">{t("home.whyChooseDesc")}</p>
+              <h2 className="section-title mb-6"><InlineBrand>{t("home.whyChoose")}</InlineBrand></h2>
+              <p className="text-lg text-muted-foreground mb-8"><InlineBrand>{t("home.whyChooseDesc")}</InlineBrand></p>
               <div className="grid sm:grid-cols-2 gap-6">
                 {benefits.map((benefit) => (
                   <div key={benefit.title} className="flex gap-4">
@@ -216,7 +217,7 @@ export default function Index() {
             </div>
             <div className="order-1 lg:order-2">
               <h2 className="section-title mb-6">{t("home.localImpact")}</h2>
-              <p className="text-lg text-muted-foreground mb-8">{t("home.localImpactDesc")}</p>
+              <p className="text-lg text-muted-foreground mb-8"><InlineBrand>{t("home.localImpactDesc")}</InlineBrand></p>
               <div className="grid grid-cols-3 gap-6 mb-8">
                 {impacts.map((impact) => (
                   <div key={impact.label} className="text-center">
@@ -248,8 +249,8 @@ export default function Index() {
       <section className="section-padding">
         <div className="container">
           <div className="cta-section text-center">
-            <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4">{t("home.readyToJoin")}</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-4">{t("home.readyToJoinDesc")}</p>
+            <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4"><InlineBrand>{t("home.readyToJoin")}</InlineBrand></h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto mb-4"><InlineBrand>{t("home.readyToJoinDesc")}</InlineBrand></p>
             <p className="text-sm text-muted-foreground mb-2">
               <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">
                 {lang === "fr" ? "Voir tous les cabinets à louer à Bordeaux" : "View all offices for rent in Bordeaux"}

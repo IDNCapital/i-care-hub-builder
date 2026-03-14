@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { Analytics } from "@/lib/analytics";
 import { FileText, ArrowLeft, Mail } from "lucide-react";
+import { InlineBrand } from "@/components/BrandName";
 
 const PROFILE_KEYS = ["family_office", "investisseur_prive", "cgp", "banque", "autre"] as const;
 const TICKET_KEYS = ["<100k", "100-250k", "250-500k", "500k-1M", ">1M"] as const;
@@ -188,7 +189,7 @@ export default function InvestisseurInteret() {
                 {t("interestForm.title")}
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                {t("interestForm.subtitle")}
+                <InlineBrand>{t("interestForm.subtitle")}</InlineBrand>
               </p>
             </div>
 
@@ -258,7 +259,7 @@ export default function InvestisseurInteret() {
                 <div className="flex items-start gap-3">
                   <Checkbox id="consent" checked={consent} onCheckedChange={(checked) => setConsent(checked === true)} className="mt-1" />
                   <Label htmlFor="consent" className="text-sm leading-relaxed cursor-pointer">
-                    {t("interestForm.consent")}{" "}
+                    <InlineBrand>{t("interestForm.consent")}</InlineBrand>{" "}
                     <Link to={localePath(lang, "privacy")} className="text-primary underline" target="_blank">
                       {t("interestForm.privacyLink")}
                     </Link>. *

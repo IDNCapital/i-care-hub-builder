@@ -7,6 +7,7 @@ import { localePath } from "@/lib/routes";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { FadeImage } from "@/components/FadeImage";
 import { getDefaultHero } from "@/lib/projectImages";
+import { BrandName } from "@/components/BrandName";
 
 const ARTICLES = [
   {
@@ -32,15 +33,15 @@ export default function InstallerCabinet() {
 
   const metaDesc =
     lang === "fr"
-      ? "Ressources et conseils I-CA.RE pour aider les praticiens du soin et du bien-être à trouver un cabinet adapté à leur pratique."
-      : "I-CA.RE resources and advice to help care and wellbeing practitioners find the right office for their practice.";
+      ? "Ressources et conseils I‑CA.RE pour aider les praticiens du soin et du bien-être à trouver un cabinet adapté à leur pratique."
+      : "I‑CA.RE resources and advice to help care and wellbeing practitioners find the right office for their practice.";
 
   const heroImage = getDefaultHero("professionnels");
 
   return (
     <Layout>
       <SeoHead
-        title={`${title} | I-CA.RE`}
+        title={`${title} | I‑CA.RE`}
         description={metaDesc}
         path={
           lang === "fr"
@@ -71,8 +72,8 @@ export default function InstallerCabinet() {
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               {lang === "fr"
-                ? "I-CA.RE partage des ressources pour aider les praticiens du soin et du bien-être à trouver un cabinet adapté à leur pratique, partout en France."
-                : "I-CA.RE shares resources to help care and wellbeing practitioners find the right office for their practice, across France."}
+                ? <><BrandName /> partage des ressources pour aider les praticiens du soin et du bien-être à trouver un cabinet adapté à leur pratique, partout en France.</>
+                : <><BrandName /> shares resources to help care and wellbeing practitioners find the right office for their practice, across France.</>}
             </p>
           </div>
         </div>

@@ -19,6 +19,7 @@ import {
   TreePine,
   Volume2,
 } from "lucide-react";
+import { BrandName } from "@/components/BrandName";
 
 export default function LocationCabinetBordeaux() {
   const { t, i18n } = useTranslation();
@@ -230,7 +231,7 @@ export default function LocationCabinetBordeaux() {
               return (
                 <div key={centre.id}>
                   <h3 className="text-xl font-heading font-semibold mb-6 text-center">
-                    I‑CA.RE {centre.name}
+                    <BrandName /> {centre.name}
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {images.gallery.slice(0, 4).map((img, i) => (
