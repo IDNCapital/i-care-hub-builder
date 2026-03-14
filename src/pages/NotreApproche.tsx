@@ -62,7 +62,7 @@ export default function NotreApproche() {
               <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
                 <p>{t("approach.jazminP1")}</p>
                 <p>{t("approach.jazminP2")}</p>
-                <p>{t("approach.jazminP3")}</p>
+                <p><InlineBrand>{t("approach.jazminP3")}</InlineBrand></p>
               </div>
               <Button variant="outline" asChild className="mt-8">
                 <a href="https://jazmincousins.com/" target="_blank" rel="noopener noreferrer">
