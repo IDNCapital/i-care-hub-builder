@@ -33,7 +33,7 @@ export default function MentionsLegales() {
             {lang === "en" ? "This website is published by:" : "Le présent site est édité par :"}
           </p>
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
-            <li><strong className="text-foreground">I-CA.RE</strong></li>
+            <li><strong className="text-foreground"><BrandName /></strong></li>
             <li><strong className="text-foreground">{lang === "en" ? "Legal form:" : "Forme juridique :"}</strong> {lang === "en" ? "Simplified Joint Stock Company (SAS)" : "Société par Actions Simplifiée (SAS)"}</li>
             <li><strong className="text-foreground">{lang === "en" ? "Share capital:" : "Capital social :"}</strong> 1 000 €</li>
             <li><strong className="text-foreground">{lang === "en" ? "Registered office:" : "Siège social :"}</strong> 106 B rue Bertrand de Goth, 33800 Bordeaux</li>
