@@ -14,6 +14,7 @@ import {
   Briefcase,
   UserCheck,
 } from "lucide-react";
+import { BrandName, InlineBrand } from "@/components/BrandName";
 
 type AccessState = "loading" | "granted" | "denied";
 
@@ -118,7 +119,7 @@ const riskMitigation = [
   {
     title: "Gestion locale active",
     description:
-      "I-CA.RE assure directement l'exploitation, la maintenance et la commercialisation des actifs, sans intermédiaire, au plus près du terrain.",
+      "Gestion directe de l'exploitation, la maintenance et la commercialisation des actifs, sans intermédiaire, au plus près du terrain.",
   },
   {
     title: "Demande structurelle",
@@ -139,7 +140,8 @@ const governanceRoles = [
     ],
   },
   {
-    role: "I-CA.RE (sponsor)",
+    role: "sponsor",
+    rolePrefix: true,
     contribution: "Apport en industrie",
     details: [
       "Sourcing et sélection des actifs",
@@ -188,7 +190,7 @@ const investorProfiles = [
     icon: Landmark,
     title: "Family offices",
     description:
-      "Diversification patrimoniale dans un actif tangible à impact sociétal mesurable. L'investisseur apporte 100 % de l'equity ; I-CA.RE apporte l'industrie.",
+      "Diversification patrimoniale dans un actif tangible à impact sociétal mesurable. L'investisseur apporte 100 % de l'equity ; le sponsor apporte l'industrie.",
     features: [
       "100 % de l'equity investisseur",
       "Revenus locatifs stables",
@@ -253,7 +255,7 @@ export default function InvestisseurMemo() {
     return (
       <Layout>
         <Helmet>
-          <title>Note d'investissement — I-CA.RE</title>
+          <title>Note d'investissement — I‑CA.RE</title>
           <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <section className="pt-32 pb-20">
@@ -268,8 +270,8 @@ export default function InvestisseurMemo() {
   return (
     <Layout>
       <Helmet>
-        <title>Note d'investissement — I-CA.RE</title>
-        <meta name="description" content="Note d'investissement I-CA.RE : approche patrimoniale, mutualisation du risque locatif, gouvernance et feuille de route." />
+        <title>Note d'investissement — I‑CA.RE</title>
+        <meta name="description" content="Note d'investissement I‑CA.RE : approche patrimoniale, mutualisation du risque locatif, gouvernance et feuille de route." />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
@@ -378,7 +380,7 @@ export default function InvestisseurMemo() {
             </div>
             <div className="bg-background rounded-xl border border-border p-8 text-center">
               <p className="text-lg text-muted-foreground mb-4">
-                Un actif I-CA.RE nécessite <span className="font-semibold text-foreground">7 à 10 praticiens</span> pour atteindre son remplissage cible.
+                Un actif <BrandName /> nécessite <span className="font-semibold text-foreground">7 à 10 praticiens</span> pour atteindre son remplissage cible.
               </p>
               <p className="text-lg text-muted-foreground mb-6">
                 Sur un bassin de 100 000 habitants, la profondeur de marché représente <span className="text-2xl font-heading font-bold text-primary">20 à 30×</span> nos besoins.
@@ -416,7 +418,7 @@ export default function InvestisseurMemo() {
           <div className="max-w-3xl mx-auto mb-16">
             <h2 className="section-title mb-6 text-center">Gouvernance et répartition des rôles</h2>
             <p className="text-muted-foreground text-center mb-4">
-              Une structure entrepreneuriale claire : l'investisseur apporte le capital, I-CA.RE apporte l'industrie. Le sponsor conserve la majorité en gouvernance pour garantir la discipline d'exécution.
+              Une structure entrepreneuriale claire : l'investisseur apporte le capital, <BrandName /> apporte l'industrie. Le sponsor conserve la majorité en gouvernance pour garantir la discipline d'exécution.
             </p>
             <p className="text-xs text-muted-foreground text-center">
               Il ne s'agit pas d'un fonds institutionnel, mais d'opérations entrepreneuriales structurées projet par projet.
@@ -425,7 +427,9 @@ export default function InvestisseurMemo() {
           <div className="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {governanceRoles.map((item) => (
               <div key={item.role} className="bg-background border border-border rounded-xl p-8">
-                <h3 className="text-xl font-heading font-semibold mb-2">{item.role}</h3>
+                <h3 className="text-xl font-heading font-semibold mb-2">
+                  {(item as any).rolePrefix ? <><BrandName /> (sponsor)</> : item.role}
+                </h3>
                 <p className="text-sm font-semibold text-primary mb-5">{item.contribution}</p>
                 <ul className="space-y-3">
                   {item.details.map((detail) => (
@@ -447,7 +451,7 @@ export default function InvestisseurMemo() {
           <div className="max-w-3xl mx-auto mb-16">
             <h2 className="section-title mb-6 text-center">Mutualisation du risque locatif</h2>
             <p className="text-muted-foreground text-center text-lg">
-              La granularité des actifs I-CA.RE constitue un mécanisme de protection intrinsèque du rendement.
+              La granularité des actifs <BrandName /> constitue un mécanisme de protection intrinsèque du rendement.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -562,7 +566,7 @@ export default function InvestisseurMemo() {
           <div className="max-w-3xl mx-auto mb-16">
             <h2 className="section-title mb-6">Profils d'investisseurs</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              I-CA.RE s'adresse à des investisseurs qui recherchent un actif tangible, à rendement régulier, porteur de sens.
+              <BrandName /> s'adresse à des investisseurs qui recherchent un actif tangible, à rendement régulier, porteur de sens.
             </p>
           </div>
           <div className="grid lg:grid-cols-3 gap-8">
@@ -595,7 +599,7 @@ export default function InvestisseurMemo() {
               Échangeons sur vos objectifs
             </h2>
             <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
-              Planifiez un entretien confidentiel avec notre équipe pour approfondir le modèle I-CA.RE.
+              Planifiez un entretien confidentiel avec notre équipe pour approfondir le modèle <BrandName />.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>

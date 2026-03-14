@@ -264,7 +264,7 @@ export default function ProjetDetail() {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-4">{t("projectDetail.ctaDesc")}</p>
             <p className="text-sm text-muted-foreground mb-8">
               <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">
-                {lang === "fr" ? "Voir tous les cabinets I-CA.RE à Bordeaux" : "View all I-CA.RE offices in Bordeaux"}
+                {lang === "fr" ? <>Voir tous les cabinets <BrandName /> à Bordeaux</> : <>View all <BrandName /> offices in Bordeaux</>}
               </Link>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

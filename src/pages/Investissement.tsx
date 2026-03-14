@@ -90,8 +90,8 @@ export default function Investissement() {
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-background leading-tight mb-6 opacity-0 animate-fade-up stagger-1">
               {lang === "en"
-                ? "Invest in I-CA.RE: a family-backed private real estate company serving community care"
-                : "Investir dans I-CA.RE : une foncière privée familiale au service de la santé de proximité"}
+                ? <>Invest in <BrandName variant="light" />: a family-backed private real estate company serving community care</>
+                : <>Investir dans <BrandName variant="light" /> : une foncière privée familiale au service de la santé de proximité</>}
             </h1>
             <p className="text-xl md:text-2xl text-background/70 leading-relaxed mb-10 opacity-0 animate-fade-up stagger-2">
               {lang === "en"

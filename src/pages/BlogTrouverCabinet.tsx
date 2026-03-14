@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { STATIC_CENTRES } from "@/lib/centres";
 import { ArrowRight, MapPin } from "lucide-react";
+import { BrandName, InlineBrand } from "@/components/BrandName";
 import { FadeImage } from "@/components/FadeImage";
 import {
   Accordion,
