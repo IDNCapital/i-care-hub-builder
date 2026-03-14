@@ -121,7 +121,7 @@ function FrVersion() {
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">8. Destinataires des données</h2>
           <p className="text-muted-foreground leading-relaxed">
-            Les données sont exclusivement destinées à I-CA.RE. Elles peuvent être traitées par des prestataires techniques intervenant dans l'hébergement ou la maintenance du site, agissant en qualité de sous-traitants.
+            Les données sont exclusivement destinées à <BrandName />. Elles peuvent être traitées par des prestataires techniques intervenant dans l'hébergement ou la maintenance du site, agissant en qualité de sous-traitants.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">9. Droits des utilisateurs</h2>
