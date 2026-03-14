@@ -183,10 +183,10 @@ function EnVersion() {
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">1. Introduction</h2>
           <p className="text-muted-foreground leading-relaxed">
-            This Privacy Policy describes how <strong className="text-foreground">I-CA.RE</strong> collects, uses and protects the personal data of website users.
+            This Privacy Policy describes how <strong className="text-foreground"><BrandName /></strong> collects, uses and protects the personal data of website users.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            I-CA.RE attaches particular importance to the protection of personal data and is committed to processing it in accordance with Regulation (EU) 2016/679 of 27 April 2016 (GDPR) and the French Data Protection Act.
+            <BrandName /> attaches particular importance to the protection of personal data and is committed to processing it in accordance with Regulation (EU) 2016/679 of 27 April 2016 (GDPR) and the French Data Protection Act.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">2. Data Controller</h2>
