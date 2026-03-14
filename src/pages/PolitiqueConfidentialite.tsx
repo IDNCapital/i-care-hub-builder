@@ -46,7 +46,7 @@ function FrVersion() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">2. Responsable du traitement</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">Les données personnelles collectées sur le site sont traitées par :</p>
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
-            <li><strong className="text-foreground">I-CA.RE</strong></li>
+            <li><strong className="text-foreground"><BrandName /></strong></li>
             <li>SAS au capital de 1 000 €</li>
             <li>Siège social : 106 B rue Bertrand de Goth, 33800 Bordeaux</li>
             <li>RCS Bordeaux : 942 176 884</li>
