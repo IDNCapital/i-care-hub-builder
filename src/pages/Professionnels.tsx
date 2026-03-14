@@ -373,7 +373,7 @@ export default function Professionnels() {
               <div className="flex items-start gap-3">
                 <Checkbox id="rgpd" checked={rgpdConsent} onCheckedChange={(checked) => setRgpdConsent(checked === true)} className="mt-1 border-white/30 data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-[#1F1F1F]" />
                 <Label htmlFor="rgpd" className="text-[#F6F5F0]/70 text-sm leading-relaxed cursor-pointer">
-                  {t("professionals.formRgpd")}{" "}
+                  <InlineBrand>{t("professionals.formRgpd")}</InlineBrand>{" "}
                   <Link to={localePath(lang, "privacy")} className="underline hover:text-[#F6F5F0]">{t("professionals.formRgpdLink")}</Link>. *
                 </Label>
               </div>
