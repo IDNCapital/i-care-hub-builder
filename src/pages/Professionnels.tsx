@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { getDefaultHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
+import { InlineBrand } from "@/components/BrandName";
 
 export default function Professionnels() {
   const { t, i18n } = useTranslation();
