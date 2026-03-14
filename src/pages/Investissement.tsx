@@ -120,8 +120,8 @@ export default function Investissement() {
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto mb-16">
-            <h2 className="section-title mb-6">{t("investment.concept")}</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-6">{t("investment.conceptP1")}</p>
+            <h2 className="section-title mb-6"><InlineBrand>{t("investment.concept")}</InlineBrand></h2>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-6"><InlineBrand>{t("investment.conceptP1")}</InlineBrand></p>
             <p className="text-lg text-muted-foreground leading-relaxed">{t("investment.conceptP2")}</p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
