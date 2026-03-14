@@ -237,7 +237,7 @@ export default function LocationCabinetBordeaux() {
                       <FadeImage
                         key={i}
                         src={img}
-                        alt={`Cabinet I-CA.RE ${centre.name} – photo ${i + 1}`}
+                        alt={`Cabinet I‑CA.RE ${centre.name} – photo ${i + 1}`}
                         className="w-full h-40 md:h-52 object-cover rounded-lg"
                         fadeDuration={400}
                       />
