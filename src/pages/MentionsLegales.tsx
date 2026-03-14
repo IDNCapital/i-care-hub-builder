@@ -52,8 +52,8 @@ export default function MentionsLegales() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "2. Director of Publication" : "2. Directeur de la publication"}</h2>
           <p className="text-muted-foreground leading-relaxed">
             {lang === "en"
-              ? "The director of publication is the legal representative of I-CA.RE."
-              : "Le directeur de la publication est le représentant légal de la société I-CA.RE."}
+              ? <>The director of publication is the legal representative of <BrandName />.</>
+              : <>Le directeur de la publication est le représentant légal de la société <BrandName />.</>}
           </p>
 
           {/* 3. Hébergement */}
