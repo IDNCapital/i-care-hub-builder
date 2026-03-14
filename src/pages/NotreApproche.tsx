@@ -7,6 +7,7 @@ import { localePath } from "@/lib/routes";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { SECTION_IMAGES } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
+import { InlineBrand } from "@/components/BrandName";
 
 export default function NotreApproche() {
   const { t, i18n } = useTranslation();
