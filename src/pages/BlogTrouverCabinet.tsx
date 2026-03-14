@@ -205,7 +205,7 @@ export default function BlogTrouverCabinet() {
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {lang === "fr"
-                    ? "Pour un cabinet de consultation individuel, une surface de 11 à 15 m² est idéale. Elle permet d'accueillir confortablement votre patient, de disposer votre mobilier et de conserver un espace aéré et apaisant. C'est la surface que proposent les cabinets I-CA.RE."
+                    ? "Pour un cabinet de consultation individuel, une surface de 11 à 15 m² est idéale. Elle permet d'accueillir confortablement votre patient / client, de disposer votre mobilier et de conserver un espace aéré et apaisant. C'est la surface que proposent les cabinets I-CA.RE."
                     : "For an individual consultation office, a surface area of 11 to 15 sqm is ideal. It allows you to comfortably welcome your patient, arrange your furniture and maintain an airy, soothing space. This is the surface offered by I-CA.RE offices."}
                 </p>
               </div>
