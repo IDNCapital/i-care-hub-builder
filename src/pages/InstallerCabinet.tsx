@@ -41,7 +41,7 @@ export default function InstallerCabinet() {
   return (
     <Layout>
       <SeoHead
-        title={`${title} | I-CA.RE`}
+        title={`${title} | I‑CA.RE`}
         description={metaDesc}
         path={
           lang === "fr"
