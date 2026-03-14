@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { InlineBrand } from "./BrandName";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect, useMemo, memo } from "react";
