@@ -107,7 +107,7 @@ export function TestimonialsSlider() {
                     </span>
 
                     <blockquote className="relative z-10 pt-10 md:pt-14 font-body text-base md:text-lg leading-relaxed text-foreground/90 mb-8">
-                      {item.quote}
+                      <InlineBrand>{item.quote}</InlineBrand>
                     </blockquote>
 
                     {/* Separator */}
