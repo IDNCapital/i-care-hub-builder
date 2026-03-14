@@ -53,7 +53,7 @@ export default function BlogTrouverCabinet() {
         },
         {
           q: "Can practitioners share an office?",
-          a: "Yes, office sharing is an increasingly common solution. It allows costs to be shared, space to be used optimally and practitioners to benefit from enriching professional exchanges. At I-CA.RE, each practitioner has their own office within a shared space.",
+          a: "Yes, office sharing is an increasingly common solution. It allows costs to be shared, space to be used optimally and practitioners to benefit from enriching professional exchanges. At I‑CA.RE, each practitioner has their own office within a shared space.",
         },
         {
           q: "How much does an office in Bordeaux cost?",
