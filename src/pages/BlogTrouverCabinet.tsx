@@ -104,7 +104,7 @@ export default function BlogTrouverCabinet() {
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
               {lang === "fr"
-                ? "Trouver un cabinet paramédical à Bordeaux qui réunit confidentialité, confort, accessibilité et loyer maîtrisé est un vrai parcours du combattant. Pourtant, la qualité du lieu d'exercice influence directement la relation thérapeutique et la réussite de votre activité."
+                ? "Trouver un cabinet paramédical à Bordeaux qui réunit confidentialité, confort, accessibilité et loyer maîtrisé peut s'avérer un vrai parcours du combattant. Pourtant, la qualité du lieu d'exercice influence directement la relation thérapeutique et la réussite de votre activité."
                 : "Finding a healthcare office in Bordeaux that combines confidentiality, comfort, accessibility and controlled rent is a real challenge. Yet the quality of your practice space directly influences the therapeutic relationship and the success of your activity."}
             </p>
           </div>
