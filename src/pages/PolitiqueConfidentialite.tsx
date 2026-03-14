@@ -267,7 +267,7 @@ function EnVersion() {
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">8. Data Recipients</h2>
           <p className="text-muted-foreground leading-relaxed">
-            Data is intended exclusively for I-CA.RE. It may be processed by technical service providers involved in hosting or website maintenance, acting as sub-processors.
+            Data is intended exclusively for <BrandName />. It may be processed by technical service providers involved in hosting or website maintenance, acting as sub-processors.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">9. Your Rights</h2>
