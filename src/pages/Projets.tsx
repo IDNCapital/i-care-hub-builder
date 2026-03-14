@@ -11,6 +11,7 @@ import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
 import { STATIC_CENTRES, type CentreStatus } from "@/lib/centres";
+import { InlineBrand } from "@/components/BrandName";
 
 const badgeStyles: Record<CentreStatus, string> = {
   available: "bg-primary/15 text-primary",
@@ -57,7 +58,7 @@ export default function Projets() {
               {t("projects.title")}
             </h1>
             <p className="text-xl text-muted-foreground opacity-0 animate-fade-up stagger-1">
-              {t("projects.subtitle")}
+              <InlineBrand>{t("projects.subtitle")}</InlineBrand>
             </p>
             <p className="text-lg text-muted-foreground/80 mt-4 opacity-0 animate-fade-up stagger-2">
               {t("projects.introAnchor")}
@@ -81,7 +82,7 @@ export default function Projets() {
             {t("projects.mapTitle")}
           </h2>
           <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto text-sm">
-            {t("projects.subtitle")}
+            <InlineBrand>{t("projects.subtitle")}</InlineBrand>
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

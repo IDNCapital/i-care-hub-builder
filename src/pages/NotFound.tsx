@@ -16,7 +16,7 @@ const NotFound = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
       <Helmet>
-        <title>{t("notFound.title")} — I-CA.RE</title>
+        <title>{t("notFound.title")} — I‑CA.RE</title>
         <meta name="description" content={t("notFound.description")} />
         <meta name="robots" content="noindex" />
       </Helmet>

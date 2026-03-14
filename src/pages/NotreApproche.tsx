@@ -7,6 +7,7 @@ import { localePath } from "@/lib/routes";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { SECTION_IMAGES } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
+import { InlineBrand } from "@/components/BrandName";
 
 export default function NotreApproche() {
   const { t, i18n } = useTranslation();
@@ -28,7 +29,7 @@ export default function NotreApproche() {
               {t("approach.heroTitle")}
             </h1>
             <div className="space-y-5 text-lg text-muted-foreground leading-relaxed opacity-0 animate-fade-up stagger-1">
-              <p>{t("approach.heroP1")}</p>
+              <p><InlineBrand>{t("approach.heroP1")}</InlineBrand></p>
               <p>{t("approach.heroP2")}</p>
               <p>{t("approach.heroP3")}</p>
             </div>
@@ -42,7 +43,7 @@ export default function NotreApproche() {
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="section-title mb-6">{t("approach.foundersTitle")}</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              {t("approach.foundersIntro")}
+              <InlineBrand>{t("approach.foundersIntro")}</InlineBrand>
             </p>
           </div>
 
@@ -61,7 +62,7 @@ export default function NotreApproche() {
               <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
                 <p>{t("approach.jazminP1")}</p>
                 <p>{t("approach.jazminP2")}</p>
-                <p>{t("approach.jazminP3")}</p>
+                <p><InlineBrand>{t("approach.jazminP3")}</InlineBrand></p>
               </div>
               <Button variant="outline" asChild className="mt-8">
                 <a href="https://jazmincousins.com/" target="_blank" rel="noopener noreferrer">
@@ -87,7 +88,7 @@ export default function NotreApproche() {
               <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
                 <p>{t("approach.nicolasP1")}</p>
                 <p>{t("approach.nicolasP2")}</p>
-                <p>{t("approach.nicolasP3")}</p>
+                <p><InlineBrand>{t("approach.nicolasP3")}</InlineBrand></p>
                 <p className="font-medium text-foreground italic">{t("approach.nicolasP4")}</p>
               </div>
               <Button variant="outline" asChild className="mt-8">
@@ -106,7 +107,7 @@ export default function NotreApproche() {
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="section-title mb-8">{t("approach.synthesisTitle")}</h2>
-            <p className="text-lg text-muted-foreground mb-6">{t("approach.synthesisP1")}</p>
+            <p className="text-lg text-muted-foreground mb-6"><InlineBrand>{t("approach.synthesisP1")}</InlineBrand></p>
             <ul className="space-y-3 text-lg text-foreground mb-8 inline-block text-left">
               <li className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-primary shrink-0" />

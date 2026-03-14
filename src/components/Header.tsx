@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { InlineBrand } from "./BrandName";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect, useMemo, memo } from "react";
@@ -89,7 +90,7 @@ export const Header = memo(function Header() {
 
             <Button asChild className="whitespace-nowrap">
               <Link to={`${localePath(lang, "professionals")}#candidature`}>
-                {t("nav.joinCta")}
+                <InlineBrand>{t("nav.joinCta")}</InlineBrand>
               </Link>
             </Button>
           </div>
@@ -140,7 +141,7 @@ export const Header = memo(function Header() {
                     to={`${localePath(lang, "professionals")}#candidature`}
                     onClick={() => setIsOpen(false)}
                   >
-                    {t("nav.joinCta")}
+                    <InlineBrand>{t("nav.joinCta")}</InlineBrand>
                   </Link>
                 </Button>
               </div>

@@ -4,6 +4,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { InlineBrand } from "./BrandName";
 
 interface Testimonial {
   quote: string;
@@ -106,7 +107,7 @@ export function TestimonialsSlider() {
                     </span>
 
                     <blockquote className="relative z-10 pt-10 md:pt-14 font-body text-base md:text-lg leading-relaxed text-foreground/90 mb-8">
-                      {item.quote}
+                      <InlineBrand>{item.quote}</InlineBrand>
                     </blockquote>
 
                     {/* Separator */}
@@ -130,7 +131,7 @@ export function TestimonialsSlider() {
 
                     <div className="mt-4 space-y-0.5">
                       <p className="font-body text-sm font-medium text-foreground/80">
-                        {item.location}
+                        <InlineBrand>{item.location}</InlineBrand>
                       </p>
                       <p className="font-body text-xs text-muted-foreground">
                         {item.address}

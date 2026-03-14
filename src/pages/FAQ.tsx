@@ -11,6 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { InlineBrand } from "@/components/BrandName";
 
 export default function FAQ() {
   const { t, i18n } = useTranslation();
@@ -36,7 +37,7 @@ export default function FAQ() {
               {t("faq.title")}
             </h1>
             <p className="text-xl text-muted-foreground opacity-0 animate-fade-up stagger-1">
-              {t("faq.subtitle")}
+              <InlineBrand>{t("faq.subtitle")}</InlineBrand>
             </p>
           </div>
         </div>
@@ -53,10 +54,10 @@ export default function FAQ() {
                   className="bg-secondary rounded-2xl px-6 border-none"
                 >
                   <AccordionTrigger className="text-left text-lg font-semibold hover:no-underline py-5">
-                    {item.q}
+                    <InlineBrand>{item.q}</InlineBrand>
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
-                    {item.a}
+                    <InlineBrand>{item.a}</InlineBrand>
                   </AccordionContent>
                 </AccordionItem>
               ))}
