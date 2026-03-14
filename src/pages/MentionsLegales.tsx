@@ -79,8 +79,8 @@ export default function MentionsLegales() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">{lang === "en" ? "5. Liability" : "5. Responsabilité"}</h2>
           <p className="text-muted-foreground leading-relaxed">
             {lang === "en"
-              ? "I-CA.RE endeavours to ensure the accuracy and currency of information published on the website. However, the company cannot guarantee the accuracy, precision or completeness of the information provided. The use of the information and content available on the website cannot under any circumstances engage the liability of I-CA.RE."
-              : "I-CA.RE s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur le site. Toutefois, la société ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition. L'utilisation des informations et contenus disponibles sur l'ensemble du site ne saurait en aucun cas engager la responsabilité de I-CA.RE."}
+              ? <><BrandName /> endeavours to ensure the accuracy and currency of information published on the website. However, the company cannot guarantee the accuracy, precision or completeness of the information provided. The use of the information and content available on the website cannot under any circumstances engage the liability of <BrandName />.</>
+              : <><BrandName /> s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur le site. Toutefois, la société ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition. L'utilisation des informations et contenus disponibles sur l'ensemble du site ne saurait en aucun cas engager la responsabilité de <BrandName />.</>}
           </p>
 
           {/* 6. Données personnelles */}
