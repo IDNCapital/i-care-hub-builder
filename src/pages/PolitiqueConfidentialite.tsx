@@ -3,6 +3,7 @@ import { SeoHead } from "@/components/SeoHead";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
+import { BrandName } from "@/components/BrandName";
 
 export default function PolitiqueConfidentialite() {
   const { i18n } = useTranslation();
