@@ -343,7 +343,7 @@ export default function BlogTrouverCabinet() {
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
               {lang === "fr"
-                ? "Un lieu de consultation doit être pensé pour la pratique et le bien-être des patients. L'isolation acoustique, la lumière naturelle, l'accessibilité et le cadre général ne sont pas des détails — ce sont les fondations d'une relation thérapeutique de qualité. Choisir un cabinet thérapeute à Bordeaux, c'est aussi choisir l'image que vous renvoyez à vos patients et les conditions dans lesquelles vous exercez au quotidien."
+                ? "Un lieu de consultation doit être pensé pour la pratique et le bien-être du patient / client. L'isolation acoustique, la lumière naturelle, l'accessibilité et le cadre général ne sont pas des détails — ce sont les fondations d'une relation thérapeutique de qualité. Choisir un cabinet thérapeute à Bordeaux, c'est aussi choisir l'image que vous renvoyez à votre patient / client et les conditions dans lesquelles vous exercez au quotidien."
                 : "A consultation space must be designed for practice and patient wellbeing. Acoustic insulation, natural light, accessibility and the overall setting are not details — they are the foundations of a quality therapeutic relationship. Choosing a therapy office in Bordeaux also means choosing the image you project to your patients and the conditions in which you practise daily."}
             </p>
           </section>
