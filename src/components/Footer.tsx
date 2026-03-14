@@ -40,7 +40,7 @@ export function Footer() {
               Des lieux de soin, pensés comme des lieux de vie
             </p>
             <p className="mt-6 text-background/40 text-xs">
-              © {new Date().getFullYear()} I‑CA.RE. {t("footer.rights")}
+              © {new Date().getFullYear()} <BrandName className="text-xs" />. {t("footer.rights")}
             </p>
           </div>
 

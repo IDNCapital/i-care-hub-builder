@@ -54,10 +54,10 @@ export default function FAQ() {
                   className="bg-secondary rounded-2xl px-6 border-none"
                 >
                   <AccordionTrigger className="text-left text-lg font-semibold hover:no-underline py-5">
-                    {item.q}
+                    <InlineBrand>{item.q}</InlineBrand>
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
-                    {item.a}
+                    <InlineBrand>{item.a}</InlineBrand>
                   </AccordionContent>
                 </AccordionItem>
               ))}

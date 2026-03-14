@@ -107,7 +107,7 @@ export default function NotreApproche() {
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="section-title mb-8">{t("approach.synthesisTitle")}</h2>
-            <p className="text-lg text-muted-foreground mb-6">{t("approach.synthesisP1")}</p>
+            <p className="text-lg text-muted-foreground mb-6"><InlineBrand>{t("approach.synthesisP1")}</InlineBrand></p>
             <ul className="space-y-3 text-lg text-foreground mb-8 inline-block text-left">
               <li className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-primary shrink-0" />

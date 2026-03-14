@@ -141,7 +141,7 @@ export const Header = memo(function Header() {
                     to={`${localePath(lang, "professionals")}#candidature`}
                     onClick={() => setIsOpen(false)}
                   >
-                    {t("nav.joinCta")}
+                    <InlineBrand>{t("nav.joinCta")}</InlineBrand>
                   </Link>
                 </Button>
               </div>

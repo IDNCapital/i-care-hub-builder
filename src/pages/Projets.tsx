@@ -82,7 +82,7 @@ export default function Projets() {
             {t("projects.mapTitle")}
           </h2>
           <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto text-sm">
-            {t("projects.subtitle")}
+            <InlineBrand>{t("projects.subtitle")}</InlineBrand>
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

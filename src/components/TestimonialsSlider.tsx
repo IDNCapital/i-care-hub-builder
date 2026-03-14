@@ -131,7 +131,7 @@ export function TestimonialsSlider() {
 
                     <div className="mt-4 space-y-0.5">
                       <p className="font-body text-sm font-medium text-foreground/80">
-                        {item.location}
+                        <InlineBrand>{item.location}</InlineBrand>
                       </p>
                       <p className="font-body text-xs text-muted-foreground">
                         {item.address}
