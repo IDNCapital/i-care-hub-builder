@@ -35,7 +35,7 @@ export default function BlogTrouverCabinet() {
     ? [
         {
           q: "Quelle surface pour un cabinet de consultation ?",
-          a: "Une surface de 11 à 15 m² est idéale pour un cabinet de consultation individuel. Elle permet d'accueillir confortablement le patient, de disposer le mobilier nécessaire et de conserver un espace aéré et apaisant. C'est la surface proposée dans les cabinets I-CA.RE.",
+          a: "Une surface de 11 à 15 m² est idéale pour un cabinet de consultation individuel. Elle permet d'accueillir confortablement le patient / client, de disposer le mobilier nécessaire et de conserver un espace aéré et apaisant. C'est la surface proposée dans les cabinets I-CA.RE.",
         },
         {
           q: "Peut-on partager un cabinet entre praticiens ?",
