@@ -11,6 +11,7 @@ import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
 import { STATIC_CENTRES, type CentreStatus } from "@/lib/centres";
+import { InlineBrand } from "@/components/BrandName";
 
 const badgeStyles: Record<CentreStatus, string> = {
   available: "bg-primary/15 text-primary",
