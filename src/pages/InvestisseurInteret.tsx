@@ -189,7 +189,7 @@ export default function InvestisseurInteret() {
                 {t("interestForm.title")}
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                {t("interestForm.subtitle")}
+                <InlineBrand>{t("interestForm.subtitle")}</InlineBrand>
               </p>
             </div>
 
