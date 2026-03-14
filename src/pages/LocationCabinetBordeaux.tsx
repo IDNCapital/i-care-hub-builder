@@ -161,7 +161,7 @@ export default function LocationCabinetBordeaux() {
                     {heroImg ? (
                       <FadeImage
                         src={heroImg}
-                        alt={`Cabinet I-CA.RE ${centre.name}`}
+                        alt={`Cabinet I‑CA.RE ${centre.name}`}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         fadeDuration={400}
                       />
@@ -230,14 +230,14 @@ export default function LocationCabinetBordeaux() {
               return (
                 <div key={centre.id}>
                   <h3 className="text-xl font-heading font-semibold mb-6 text-center">
-                    I-CA.RE {centre.name}
+                    I‑CA.RE {centre.name}
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {images.gallery.slice(0, 4).map((img, i) => (
                       <FadeImage
                         key={i}
                         src={img}
-                        alt={`Cabinet I-CA.RE ${centre.name} – photo ${i + 1}`}
+                        alt={`Cabinet I‑CA.RE ${centre.name} – photo ${i + 1}`}
                         className="w-full h-40 md:h-52 object-cover rounded-lg"
                         fadeDuration={400}
                       />

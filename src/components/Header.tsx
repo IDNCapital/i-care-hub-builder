@@ -4,16 +4,12 @@ import { Menu, X } from "lucide-react";
 import { useState, useEffect, useMemo, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { getEquivalentPath, localePath } from "@/lib/routes";
+import { BrandName } from "./BrandName";
 
 const Logo = memo(function Logo() {
   return (
     <div className="flex flex-col items-start">
-      <span className="text-2xl font-heading font-bold tracking-tight leading-none whitespace-nowrap">
-        <span className="text-primary">I-</span>
-        <span className="text-foreground">CA</span>
-        <span className="text-primary">.</span>
-        <span className="text-foreground">RE</span>
-      </span>
+      <BrandName className="text-2xl font-heading font-bold tracking-tight leading-none" />
     </div>
   );
 });
@@ -91,7 +87,7 @@ export const Header = memo(function Header() {
               <span className={lang === "en" ? "text-foreground" : "text-muted-foreground"}>EN</span>
             </Link>
 
-            <Button asChild>
+            <Button asChild className="whitespace-nowrap">
               <Link to={`${localePath(lang, "professionals")}#candidature`}>
                 {t("nav.joinCta")}
               </Link>
@@ -139,7 +135,7 @@ export const Header = memo(function Header() {
               </Link>
 
               <div className="pt-4 flex flex-col space-y-2">
-                <Button asChild>
+                <Button asChild className="whitespace-nowrap">
                   <Link
                     to={`${localePath(lang, "professionals")}#candidature`}
                     onClick={() => setIsOpen(false)}

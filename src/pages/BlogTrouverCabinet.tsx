@@ -35,36 +35,36 @@ export default function BlogTrouverCabinet() {
     ? [
         {
           q: "Quelle surface pour un cabinet de consultation ?",
-          a: "Une surface de 11 à 15 m² est idéale pour un cabinet de consultation individuel. Elle permet d'accueillir confortablement le patient / client, de disposer le mobilier nécessaire et de conserver un espace aéré et apaisant. C'est la surface proposée dans les cabinets I-CA.RE.",
+          a: "Une surface de 11 à 15 m² est idéale pour un cabinet de consultation individuel. Elle permet d'accueillir confortablement le patient / client, de disposer le mobilier nécessaire et de conserver un espace aéré et apaisant. C'est la surface proposée dans les cabinets I‑CA.RE.",
         },
         {
           q: "Peut-on partager un cabinet entre praticiens ?",
-          a: "Oui, le partage de cabinet est une solution de plus en plus courante. Cela permet de mutualiser les coûts, d'occuper l'espace de manière optimale et de bénéficier d'échanges professionnels enrichissants. Chez I-CA.RE, chaque praticien dispose de son propre cabinet au sein d'un lieu partagé.",
+          a: "Oui, le partage de cabinet est une solution de plus en plus courante. Cela permet de mutualiser les coûts, d'occuper l'espace de manière optimale et de bénéficier d'échanges professionnels enrichissants. Chez I‑CA.RE, chaque praticien dispose de son propre cabinet au sein d'un lieu partagé.",
         },
         {
           q: "Combien coûte un cabinet à Bordeaux ?",
-          a: "Le coût d'un cabinet à Bordeaux varie selon le quartier, la surface et les prestations incluses. Chez I-CA.RE, les loyers incluent les charges, l'accès à la salle d'attente, l'entretien des espaces communs et l'assurance du lieu, pour un budget maîtrisé et sans surprise.",
+          a: "Le coût d'un cabinet à Bordeaux varie selon le quartier, la surface et les prestations incluses. Chez I‑CA.RE, les loyers incluent les charges, l'accès à la salle d'attente, l'entretien des espaces communs et l'assurance du lieu, pour un budget maîtrisé et sans surprise.",
         },
       ]
     : [
         {
           q: "What surface area for a consultation office?",
-          a: "A surface area of 11 to 15 sqm is ideal for an individual consultation office. It allows you to comfortably welcome patients, arrange necessary furniture and maintain an airy, soothing space. This is the surface offered by I-CA.RE offices.",
+          a: "A surface area of 11 to 15 sqm is ideal for an individual consultation office. It allows you to comfortably welcome patients, arrange necessary furniture and maintain an airy, soothing space. This is the surface offered by I‑CA.RE offices.",
         },
         {
           q: "Can practitioners share an office?",
-          a: "Yes, office sharing is an increasingly common solution. It allows costs to be shared, space to be used optimally and practitioners to benefit from enriching professional exchanges. At I-CA.RE, each practitioner has their own office within a shared space.",
+          a: "Yes, office sharing is an increasingly common solution. It allows costs to be shared, space to be used optimally and practitioners to benefit from enriching professional exchanges. At I‑CA.RE, each practitioner has their own office within a shared space.",
         },
         {
           q: "How much does an office in Bordeaux cost?",
-          a: "The cost of an office in Bordeaux varies depending on the neighbourhood, surface area and included services. At I-CA.RE, rents include utilities, waiting room access, common area maintenance and premises insurance, for a controlled budget with no surprises.",
+          a: "The cost of an office in Bordeaux varies depending on the neighbourhood, surface area and included services. At I‑CA.RE, rents include utilities, waiting room access, common area maintenance and premises insurance, for a controlled budget with no surprises.",
         },
       ];
 
   return (
     <Layout>
       <SeoHead
-        title={`${title} | I-CA.RE`}
+        title={`${title} | I‑CA.RE`}
         description={metaDesc}
         path={
           lang === "fr"
@@ -205,8 +205,8 @@ export default function BlogTrouverCabinet() {
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {lang === "fr"
-                    ? "Pour un cabinet de consultation individuel, une surface de 11 à 15 m² est idéale. Elle permet d'accueillir confortablement votre patient / client, de disposer votre mobilier et de conserver un espace aéré et apaisant. C'est la surface que proposent les cabinets I-CA.RE."
-                    : "For an individual consultation office, a surface area of 11 to 15 sqm is ideal. It allows you to comfortably welcome your patient, arrange your furniture and maintain an airy, soothing space. This is the surface offered by I-CA.RE offices."}
+                    ? "Pour un cabinet de consultation individuel, une surface de 11 à 15 m² est idéale. Elle permet d'accueillir confortablement votre patient / client, de disposer votre mobilier et de conserver un espace aéré et apaisant. C'est la surface que proposent les cabinets I‑CA.RE."
+                    : "For an individual consultation office, a surface area of 11 to 15 sqm is ideal. It allows you to comfortably welcome your patient, arrange your furniture and maintain an airy, soothing space. This is the surface offered by I‑CA.RE offices."}
                 </p>
               </div>
 
@@ -276,8 +276,8 @@ export default function BlogTrouverCabinet() {
           <section className="mb-16">
             <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6">
               {lang === "fr"
-                ? "Les lieux I-CA.RE à Bordeaux"
-                : "I-CA.RE spaces in Bordeaux"}
+                ? "Les lieux I‑CA.RE à Bordeaux"
+                : "I‑CA.RE spaces in Bordeaux"}
             </h2>
 
             {/* Image 2 — I-CA.RE space */}
