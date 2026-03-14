@@ -200,7 +200,7 @@ export default function Professionnels() {
       <section className="section-padding">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="section-title">{t("professionals.whyTitle")}</h2>
+            <h2 className="section-title"><InlineBrand>{t("professionals.whyTitle")}</InlineBrand></h2>
             <p className="section-subtitle mx-auto">{t("professionals.whySubtitle")}</p>
           </div>
           <div className="grid lg:grid-cols-3 gap-8">

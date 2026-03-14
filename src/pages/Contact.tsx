@@ -197,7 +197,7 @@ export default function Contact() {
               <div className="flex items-start gap-3">
                 <Checkbox id="rgpd-contact" checked={rgpdConsent} onCheckedChange={(checked) => setRgpdConsent(checked === true)} className="mt-1" />
                 <Label htmlFor="rgpd-contact" className="text-sm leading-relaxed cursor-pointer text-muted-foreground">
-                  {t("contact.rgpd")}{" "}
+                  <InlineBrand>{t("contact.rgpd")}</InlineBrand>{" "}
                   <Link to={localePath(lang, "privacy")} className="text-primary underline underline-offset-4 hover:text-primary/80">{t("contact.rgpdLink")}</Link>. *
                 </Label>
               </div>

@@ -259,7 +259,7 @@ export default function InvestisseurInteret() {
                 <div className="flex items-start gap-3">
                   <Checkbox id="consent" checked={consent} onCheckedChange={(checked) => setConsent(checked === true)} className="mt-1" />
                   <Label htmlFor="consent" className="text-sm leading-relaxed cursor-pointer">
-                    {t("interestForm.consent")}{" "}
+                    <InlineBrand>{t("interestForm.consent")}</InlineBrand>{" "}
                     <Link to={localePath(lang, "privacy")} className="text-primary underline" target="_blank">
                       {t("interestForm.privacyLink")}
                     </Link>. *
