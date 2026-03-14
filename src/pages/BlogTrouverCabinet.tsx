@@ -216,7 +216,7 @@ export default function BlogTrouverCabinet() {
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {lang === "fr"
-                    ? "Une salle d'attente partagée est un vrai atout pour vos patients. Elle leur offre un espace d'accueil dédié, confortable et rassurant, qui contribue à la qualité perçue de votre pratique."
+                    ? "Une salle d'attente partagée est un vrai atout pour votre patient / client. Elle leur offre un espace d'accueil dédié, confortable et rassurant, qui contribue à la qualité perçue de votre pratique."
                     : "A shared waiting room is a real asset for your patients. It offers them a dedicated, comfortable and reassuring welcome area that contributes to the perceived quality of your practice."}
                 </p>
               </div>
