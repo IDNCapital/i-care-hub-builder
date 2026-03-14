@@ -297,7 +297,7 @@ function EnVersion() {
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">11. Policy Updates</h2>
           <p className="text-muted-foreground leading-relaxed">
-            I-CA.RE reserves the right to amend this Privacy Policy at any time to ensure compliance with applicable legislation. The current version is that published on the website.
+            <BrandName /> reserves the right to amend this Privacy Policy at any time to ensure compliance with applicable legislation. The current version is that published on the website.
           </p>
         </div>
       </section>
