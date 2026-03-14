@@ -7,6 +7,7 @@ import { localePath } from "@/lib/routes";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { FadeImage } from "@/components/FadeImage";
 import { getDefaultHero } from "@/lib/projectImages";
+import { BrandName } from "@/components/BrandName";
 
 const ARTICLES = [
   {
