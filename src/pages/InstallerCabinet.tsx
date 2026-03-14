@@ -33,8 +33,8 @@ export default function InstallerCabinet() {
 
   const metaDesc =
     lang === "fr"
-      ? "Ressources et conseils I-CA.RE pour aider les praticiens du soin et du bien-être à trouver un cabinet adapté à leur pratique."
-      : "I-CA.RE resources and advice to help care and wellbeing practitioners find the right office for their practice.";
+      ? "Ressources et conseils I‑CA.RE pour aider les praticiens du soin et du bien-être à trouver un cabinet adapté à leur pratique."
+      : "I‑CA.RE resources and advice to help care and wellbeing practitioners find the right office for their practice.";
 
   const heroImage = getDefaultHero("professionnels");
 
