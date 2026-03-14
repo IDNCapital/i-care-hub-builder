@@ -9,7 +9,7 @@ const Logo = memo(function Logo() {
   return (
     <div className="flex flex-col items-start">
       <span className="text-2xl font-heading font-bold tracking-tight leading-none whitespace-nowrap">
-        <span className="text-primary">I-</span>
+        <span className="text-primary">I‑</span>
         <span className="text-foreground">CA</span>
         <span className="text-primary">.</span>
         <span className="text-foreground">RE</span>
