@@ -29,7 +29,7 @@ export default function NotreApproche() {
               {t("approach.heroTitle")}
             </h1>
             <div className="space-y-5 text-lg text-muted-foreground leading-relaxed opacity-0 animate-fade-up stagger-1">
-              <p>{t("approach.heroP1")}</p>
+              <p><InlineBrand>{t("approach.heroP1")}</InlineBrand></p>
               <p>{t("approach.heroP2")}</p>
               <p>{t("approach.heroP3")}</p>
             </div>
