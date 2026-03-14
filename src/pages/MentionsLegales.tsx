@@ -12,8 +12,8 @@ export default function MentionsLegales() {
   return (
     <Layout>
       <SeoHead
-        title={lang === "en" ? "Legal Notice — I-CA.RE" : "Mentions légales — I-CA.RE"}
-        description={lang === "en" ? "Legal notice for the I-CA.RE website: publisher, host and director of publication." : "Mentions légales du site I-CA.RE : éditeur, hébergeur et directeur de publication."}
+        title={lang === "en" ? "Legal Notice — I‑CA.RE" : "Mentions légales — I‑CA.RE"}
+        description={lang === "en" ? "Legal notice for the I‑CA.RE website: publisher, host and director of publication." : "Mentions légales du site I‑CA.RE : éditeur, hébergeur et directeur de publication."}
         path={lang === "fr" ? "/mentions-legales" : "/en/legal"}
         noIndex
       />
