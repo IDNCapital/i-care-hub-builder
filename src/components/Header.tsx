@@ -91,7 +91,7 @@ export const Header = memo(function Header() {
               <span className={lang === "en" ? "text-foreground" : "text-muted-foreground"}>EN</span>
             </Link>
 
-            <Button asChild>
+            <Button asChild className="whitespace-nowrap">
               <Link to={`${localePath(lang, "professionals")}#candidature`}>
                 {t("nav.joinCta")}
               </Link>
