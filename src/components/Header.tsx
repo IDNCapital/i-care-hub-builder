@@ -88,7 +88,7 @@ export const Header = memo(function Header() {
               <span className={lang === "en" ? "text-foreground" : "text-muted-foreground"}>EN</span>
             </Link>
 
-            <Button asChild className="whitespace-nowrap">
+            <Button variant="gold" asChild className="whitespace-nowrap">
               <Link to={`${localePath(lang, "professionals")}#candidature`}>
                 <InlineBrand>{t("nav.joinCta")}</InlineBrand>
               </Link>
@@ -136,7 +136,7 @@ export const Header = memo(function Header() {
               </Link>
 
               <div className="pt-4 flex flex-col space-y-2">
-                <Button asChild className="whitespace-nowrap">
+                <Button variant="gold" asChild className="whitespace-nowrap">
                   <Link
                     to={`${localePath(lang, "professionals")}#candidature`}
                     onClick={() => setIsOpen(false)}
