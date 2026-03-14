@@ -64,7 +64,7 @@ export default function BlogTrouverCabinet() {
   return (
     <Layout>
       <SeoHead
-        title={`${title} | I-CA.RE`}
+        title={`${title} | I‑CA.RE`}
         description={metaDesc}
         path={
           lang === "fr"
