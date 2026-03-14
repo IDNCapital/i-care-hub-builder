@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { Analytics } from "@/lib/analytics";
 import { FileText, ArrowLeft, Mail } from "lucide-react";
+import { InlineBrand } from "@/components/BrandName";
 
 const PROFILE_KEYS = ["family_office", "investisseur_prive", "cgp", "banque", "autre"] as const;
 const TICKET_KEYS = ["<100k", "100-250k", "250-500k", "500k-1M", ">1M"] as const;
