@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { getDefaultHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
-import { BrandName } from "@/components/BrandName";
+import { BrandName, InlineBrand } from "@/components/BrandName";
 
 export default function Investissement() {
   const { t, i18n } = useTranslation();
