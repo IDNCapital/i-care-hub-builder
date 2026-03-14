@@ -39,7 +39,7 @@ export default function BlogTrouverCabinet() {
         },
         {
           q: "Peut-on partager un cabinet entre praticiens ?",
-          a: "Oui, le partage de cabinet est une solution de plus en plus courante. Cela permet de mutualiser les coûts, d'occuper l'espace de manière optimale et de bénéficier d'échanges professionnels enrichissants. Chez I-CA.RE, chaque praticien dispose de son propre cabinet au sein d'un lieu partagé.",
+          a: "Oui, le partage de cabinet est une solution de plus en plus courante. Cela permet de mutualiser les coûts, d'occuper l'espace de manière optimale et de bénéficier d'échanges professionnels enrichissants. Chez I‑CA.RE, chaque praticien dispose de son propre cabinet au sein d'un lieu partagé.",
         },
         {
           q: "Combien coûte un cabinet à Bordeaux ?",
