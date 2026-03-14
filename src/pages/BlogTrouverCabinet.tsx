@@ -296,8 +296,8 @@ export default function BlogTrouverCabinet() {
 
             <p className="text-muted-foreground leading-relaxed mb-8">
               {lang === "fr"
-                ? "I-CA.RE propose aujourd'hui six lieux de soin dans la métropole bordelaise, chacun avec son identité propre. Nos cabinets de consultation à Bordeaux sont conçus pour répondre aux exigences des praticiens du soin et du bien-être."
-                : "I-CA.RE currently offers six care spaces across the Bordeaux metropolitan area, each with its own identity. Our consultation offices in Bordeaux are designed to meet the requirements of care and wellbeing practitioners."}
+                ? <><BrandName /> propose aujourd'hui six lieux de soin dans la métropole bordelaise, chacun avec son identité propre. Nos cabinets de consultation à Bordeaux sont conçus pour répondre aux exigences des praticiens du soin et du bien-être.</>
+                : <><BrandName /> currently offers six care spaces across the Bordeaux metropolitan area, each with its own identity. Our consultation offices in Bordeaux are designed to meet the requirements of care and wellbeing practitioners.</>}
             </p>
             <div className="grid sm:grid-cols-2 gap-4 mb-8">
               {STATIC_CENTRES.map((centre) => (

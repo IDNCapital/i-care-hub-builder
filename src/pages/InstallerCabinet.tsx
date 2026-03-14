@@ -72,8 +72,8 @@ export default function InstallerCabinet() {
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               {lang === "fr"
-                ? "I-CA.RE partage des ressources pour aider les praticiens du soin et du bien-être à trouver un cabinet adapté à leur pratique, partout en France."
-                : "I-CA.RE shares resources to help care and wellbeing practitioners find the right office for their practice, across France."}
+                ? <><BrandName /> partage des ressources pour aider les praticiens du soin et du bien-être à trouver un cabinet adapté à leur pratique, partout en France.</>
+                : <><BrandName /> shares resources to help care and wellbeing practitioners find the right office for their practice, across France.</>}
             </p>
           </div>
         </div>
