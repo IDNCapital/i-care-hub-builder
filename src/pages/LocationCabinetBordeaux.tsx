@@ -19,6 +19,7 @@ import {
   TreePine,
   Volume2,
 } from "lucide-react";
+import { BrandName } from "@/components/BrandName";
 
 export default function LocationCabinetBordeaux() {
   const { t, i18n } = useTranslation();
