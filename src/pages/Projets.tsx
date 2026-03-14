@@ -58,7 +58,7 @@ export default function Projets() {
               {t("projects.title")}
             </h1>
             <p className="text-xl text-muted-foreground opacity-0 animate-fade-up stagger-1">
-              {t("projects.subtitle")}
+              <InlineBrand>{t("projects.subtitle")}</InlineBrand>
             </p>
             <p className="text-lg text-muted-foreground/80 mt-4 opacity-0 animate-fade-up stagger-2">
               {t("projects.introAnchor")}
