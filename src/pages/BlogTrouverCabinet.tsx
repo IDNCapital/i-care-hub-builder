@@ -277,8 +277,8 @@ export default function BlogTrouverCabinet() {
           <section className="mb-16">
             <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6">
               {lang === "fr"
-                ? "Les lieux I‑CA.RE à Bordeaux"
-                : "I‑CA.RE spaces in Bordeaux"}
+                ? <>Les lieux <BrandName /> à Bordeaux</>
+                : <><BrandName /> spaces in Bordeaux</>}
             </h2>
 
             {/* Image 2 — I-CA.RE space */}
