@@ -116,7 +116,7 @@ function FrVersion() {
             <li>1227 Les Acacias (Genève), Suisse</li>
           </ul>
           <p className="text-muted-foreground leading-relaxed mt-4">
-            I-CA.RE met en œuvre des mesures techniques et organisationnelles appropriées afin d'assurer la sécurité et la confidentialité des données.
+            <BrandName /> met en œuvre des mesures techniques et organisationnelles appropriées afin d'assurer la sécurité et la confidentialité des données.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">8. Destinataires des données</h2>
