@@ -139,7 +139,7 @@ export const Header = memo(function Header() {
               </Link>
 
               <div className="pt-4 flex flex-col space-y-2">
-                <Button asChild>
+                <Button asChild className="whitespace-nowrap">
                   <Link
                     to={`${localePath(lang, "professionals")}#candidature`}
                     onClick={() => setIsOpen(false)}
