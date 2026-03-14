@@ -170,7 +170,7 @@ export default function Investissement() {
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="section-title mb-6">{t("investment.forInvestors")}</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-4">{t("investment.forInvestorsP1")}</p>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-4"><InlineBrand>{t("investment.forInvestorsP1")}</InlineBrand></p>
             <p className="text-lg text-muted-foreground leading-relaxed mb-10">{t("investment.forInvestorsP2")}</p>
             <Button variant="hero" asChild>
               <Link to={localePath(lang, "investmentInterest")}>

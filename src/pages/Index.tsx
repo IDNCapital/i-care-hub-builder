@@ -249,8 +249,8 @@ export default function Index() {
       <section className="section-padding">
         <div className="container">
           <div className="cta-section text-center">
-            <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4">{t("home.readyToJoin")}</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-4">{t("home.readyToJoinDesc")}</p>
+            <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4"><InlineBrand>{t("home.readyToJoin")}</InlineBrand></h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto mb-4"><InlineBrand>{t("home.readyToJoinDesc")}</InlineBrand></p>
             <p className="text-sm text-muted-foreground mb-2">
               <Link to={localePath(lang, "locationBordeaux")} className="text-primary underline underline-offset-4 hover:text-primary/80">
                 {lang === "fr" ? "Voir tous les cabinets à louer à Bordeaux" : "View all offices for rent in Bordeaux"}
