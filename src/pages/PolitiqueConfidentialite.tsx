@@ -37,10 +37,10 @@ function FrVersion() {
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">1. Introduction</h2>
           <p className="text-muted-foreground leading-relaxed">
-            La présente Politique de confidentialité décrit la manière dont la société <strong className="text-foreground">I-CA.RE</strong> collecte, utilise et protège les données personnelles des utilisateurs du site internet.
+            La présente Politique de confidentialité décrit la manière dont la société <strong className="text-foreground"><BrandName /></strong> collecte, utilise et protège les données personnelles des utilisateurs du site internet.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            I-CA.RE accorde une importance particulière à la protection des données personnelles et s'engage à traiter celles-ci conformément au Règlement (UE) 2016/679 du 27 avril 2016 (RGPD) et à la loi Informatique et Libertés.
+            <BrandName /> accorde une importance particulière à la protection des données personnelles et s'engage à traiter celles-ci conformément au Règlement (UE) 2016/679 du 27 avril 2016 (RGPD) et à la loi Informatique et Libertés.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">2. Responsable du traitement</h2>
