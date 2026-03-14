@@ -166,8 +166,8 @@ function EnVersion() {
   return (
     <Layout>
       <SeoHead
-        title="Privacy Policy — I-CA.RE"
-        description="I-CA.RE privacy policy and personal data protection, compliant with GDPR."
+        title="Privacy Policy — I‑CA.RE"
+        description="I‑CA.RE privacy policy and personal data protection, compliant with GDPR."
         path="/en/privacy"
         noIndex
       />
