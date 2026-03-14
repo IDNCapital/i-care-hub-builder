@@ -57,7 +57,7 @@ export default function BlogTrouverCabinet() {
         },
         {
           q: "How much does an office in Bordeaux cost?",
-          a: "The cost of an office in Bordeaux varies depending on the neighbourhood, surface area and included services. At I-CA.RE, rents include utilities, waiting room access, common area maintenance and premises insurance, for a controlled budget with no surprises.",
+          a: "The cost of an office in Bordeaux varies depending on the neighbourhood, surface area and included services. At I‑CA.RE, rents include utilities, waiting room access, common area maintenance and premises insurance, for a controlled budget with no surprises.",
         },
       ];
 
