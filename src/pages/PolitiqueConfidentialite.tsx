@@ -262,7 +262,7 @@ function EnVersion() {
             <li>1227 Les Acacias (Geneva), Switzerland</li>
           </ul>
           <p className="text-muted-foreground leading-relaxed mt-4">
-            I-CA.RE implements appropriate technical and organisational measures to ensure data security and confidentiality.
+            <BrandName /> implements appropriate technical and organisational measures to ensure data security and confidentiality.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">8. Data Recipients</h2>
