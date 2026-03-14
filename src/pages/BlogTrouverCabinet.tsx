@@ -43,7 +43,7 @@ export default function BlogTrouverCabinet() {
         },
         {
           q: "Combien coûte un cabinet à Bordeaux ?",
-          a: "Le coût d'un cabinet à Bordeaux varie selon le quartier, la surface et les prestations incluses. Chez I-CA.RE, les loyers incluent les charges, l'accès à la salle d'attente, l'entretien des espaces communs et l'assurance du lieu, pour un budget maîtrisé et sans surprise.",
+          a: "Le coût d'un cabinet à Bordeaux varie selon le quartier, la surface et les prestations incluses. Chez I‑CA.RE, les loyers incluent les charges, l'accès à la salle d'attente, l'entretien des espaces communs et l'assurance du lieu, pour un budget maîtrisé et sans surprise.",
         },
       ]
     : [
