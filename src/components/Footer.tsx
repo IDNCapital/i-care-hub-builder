@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
+import { BrandName } from "./BrandName";
 
 export function Footer() {
   const { t, i18n } = useTranslation();
@@ -33,12 +34,7 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link to={localePath(lang, "home")} className="inline-block">
-            <span className="text-2xl font-heading font-bold tracking-tight whitespace-nowrap">
-                <span className="text-primary">I‑</span>
-                <span className="text-background">CA</span>
-                <span className="text-primary">.</span>
-                <span className="text-background">RE</span>
-              </span>
+              <BrandName variant="light" className="text-2xl font-heading font-bold tracking-tight" />
             </Link>
             <p className="mt-2 text-background/60 text-sm font-heading italic">
               Des lieux de soin, pensés comme des lieux de vie
