@@ -21,6 +21,7 @@ import {
   Briefcase,
   Loader2,
 } from "lucide-react";
+import { InlineBrand } from "@/components/BrandName";
 
 function getUtmParams() {
   const params = new URLSearchParams(window.location.search);
