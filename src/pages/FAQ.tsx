@@ -11,6 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { InlineBrand } from "@/components/BrandName";
 
 export default function FAQ() {
   const { t, i18n } = useTranslation();
