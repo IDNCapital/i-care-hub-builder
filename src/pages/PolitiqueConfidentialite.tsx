@@ -192,7 +192,7 @@ function EnVersion() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">2. Data Controller</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">Personal data collected on the website is processed by:</p>
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
-            <li><strong className="text-foreground">I-CA.RE</strong></li>
+            <li><strong className="text-foreground"><BrandName /></strong></li>
             <li>SAS with share capital of €1,000</li>
             <li>Registered office: 106 B rue Bertrand de Goth, 33800 Bordeaux, France</li>
             <li>RCS Bordeaux: 942 176 884</li>
