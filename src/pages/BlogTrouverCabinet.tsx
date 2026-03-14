@@ -35,7 +35,7 @@ export default function BlogTrouverCabinet() {
     ? [
         {
           q: "Quelle surface pour un cabinet de consultation ?",
-          a: "Une surface de 11 à 15 m² est idéale pour un cabinet de consultation individuel. Elle permet d'accueillir confortablement le patient, de disposer le mobilier nécessaire et de conserver un espace aéré et apaisant. C'est la surface proposée dans les cabinets I-CA.RE.",
+          a: "Une surface de 11 à 15 m² est idéale pour un cabinet de consultation individuel. Elle permet d'accueillir confortablement le patient / client, de disposer le mobilier nécessaire et de conserver un espace aéré et apaisant. C'est la surface proposée dans les cabinets I-CA.RE.",
         },
         {
           q: "Peut-on partager un cabinet entre praticiens ?",
@@ -194,7 +194,7 @@ export default function BlogTrouverCabinet() {
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {lang === "fr"
-                    ? "Un bon cabinet consultation à Bordeaux se situe dans un quartier vivant mais calme, bien desservi par les transports en commun et facilement accessible pour vos patients. Les quartiers centraux comme les Chartrons, Nansouty, Pey-Berland ou Jardin Public offrent cet équilibre idéal."
+                    ? "Un bon cabinet consultation à Bordeaux se situe dans un quartier vivant mais calme, bien desservi par les transports en commun et facilement accessible pour votre patient / client. Les quartiers centraux comme les Chartrons, Nansouty, Pey-Berland ou Jardin Public offrent cet équilibre idéal."
                     : "A good consultation office in Bordeaux is located in a vibrant yet calm neighbourhood, well served by public transport and easily accessible for your patients. Central neighbourhoods like Chartrons, Nansouty, Pey-Berland or Jardin Public offer this ideal balance."}
                 </p>
               </div>
@@ -205,7 +205,7 @@ export default function BlogTrouverCabinet() {
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {lang === "fr"
-                    ? "Pour un cabinet de consultation individuel, une surface de 11 à 15 m² est idéale. Elle permet d'accueillir confortablement votre patient, de disposer votre mobilier et de conserver un espace aéré et apaisant. C'est la surface que proposent les cabinets I-CA.RE."
+                    ? "Pour un cabinet de consultation individuel, une surface de 11 à 15 m² est idéale. Elle permet d'accueillir confortablement votre patient / client, de disposer votre mobilier et de conserver un espace aéré et apaisant. C'est la surface que proposent les cabinets I-CA.RE."
                     : "For an individual consultation office, a surface area of 11 to 15 sqm is ideal. It allows you to comfortably welcome your patient, arrange your furniture and maintain an airy, soothing space. This is the surface offered by I-CA.RE offices."}
                 </p>
               </div>
@@ -216,7 +216,7 @@ export default function BlogTrouverCabinet() {
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {lang === "fr"
-                    ? "Une salle d'attente partagée est un vrai atout pour vos patients. Elle leur offre un espace d'accueil dédié, confortable et rassurant, qui contribue à la qualité perçue de votre pratique."
+                    ? "Une salle d'attente partagée est un vrai atout pour votre patient / client. Elle leur offre un espace d'accueil dédié, confortable et rassurant, qui contribue à la qualité perçue de votre pratique."
                     : "A shared waiting room is a real asset for your patients. It offers them a dedicated, comfortable and reassuring welcome area that contributes to the perceived quality of your practice."}
                 </p>
               </div>
@@ -343,7 +343,7 @@ export default function BlogTrouverCabinet() {
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
               {lang === "fr"
-                ? "Un lieu de consultation doit être pensé pour la pratique et le bien-être des patients. L'isolation acoustique, la lumière naturelle, l'accessibilité et le cadre général ne sont pas des détails — ce sont les fondations d'une relation thérapeutique de qualité. Choisir un cabinet thérapeute à Bordeaux, c'est aussi choisir l'image que vous renvoyez à vos patients et les conditions dans lesquelles vous exercez au quotidien."
+                ? "Un lieu de consultation doit être pensé pour la pratique et le bien-être du patient / client. L'isolation acoustique, la lumière naturelle, l'accessibilité et le cadre général ne sont pas des détails — ce sont les fondations d'une relation thérapeutique de qualité. Choisir un cabinet thérapeute à Bordeaux, c'est aussi choisir l'image que vous renvoyez à votre patient / client et les conditions dans lesquelles vous exercez au quotidien."
                 : "A consultation space must be designed for practice and patient wellbeing. Acoustic insulation, natural light, accessibility and the overall setting are not details — they are the foundations of a quality therapeutic relationship. Choosing a therapy office in Bordeaux also means choosing the image you project to your patients and the conditions in which you practise daily."}
             </p>
           </section>
