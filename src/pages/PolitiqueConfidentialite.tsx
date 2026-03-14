@@ -151,7 +151,7 @@ function FrVersion() {
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">11. Modification de la politique</h2>
           <p className="text-muted-foreground leading-relaxed">
-            I-CA.RE se réserve le droit de modifier la présente Politique de confidentialité à tout moment afin d'assurer sa conformité avec la législation en vigueur. La version en vigueur est celle publiée sur le site.
+            <BrandName /> se réserve le droit de modifier la présente Politique de confidentialité à tout moment afin d'assurer sa conformité avec la législation en vigueur. La version en vigueur est celle publiée sur le site.
           </p>
         </div>
       </section>
