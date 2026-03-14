@@ -230,7 +230,7 @@ export default function LocationCabinetBordeaux() {
               return (
                 <div key={centre.id}>
                   <h3 className="text-xl font-heading font-semibold mb-6 text-center">
-                    I-CA.RE {centre.name}
+                    I‑CA.RE {centre.name}
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {images.gallery.slice(0, 4).map((img, i) => (
