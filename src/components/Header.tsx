@@ -90,7 +90,7 @@ export const Header = memo(function Header() {
 
             <Button asChild className="whitespace-nowrap">
               <Link to={`${localePath(lang, "professionals")}#candidature`}>
-                {t("nav.joinCta")}
+                <InlineBrand>{t("nav.joinCta")}</InlineBrand>
               </Link>
             </Button>
           </div>
