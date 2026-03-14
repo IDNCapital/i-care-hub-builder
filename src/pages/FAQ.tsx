@@ -37,7 +37,7 @@ export default function FAQ() {
               {t("faq.title")}
             </h1>
             <p className="text-xl text-muted-foreground opacity-0 animate-fade-up stagger-1">
-              {t("faq.subtitle")}
+              <InlineBrand>{t("faq.subtitle")}</InlineBrand>
             </p>
           </div>
         </div>
