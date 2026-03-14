@@ -141,8 +141,8 @@ export default function Index() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="section-title mb-6">{t("home.whyChoose")}</h2>
-              <p className="text-lg text-muted-foreground mb-8">{t("home.whyChooseDesc")}</p>
+              <h2 className="section-title mb-6"><InlineBrand>{t("home.whyChoose")}</InlineBrand></h2>
+              <p className="text-lg text-muted-foreground mb-8"><InlineBrand>{t("home.whyChooseDesc")}</InlineBrand></p>
               <div className="grid sm:grid-cols-2 gap-6">
                 {benefits.map((benefit) => (
                   <div key={benefit.title} className="flex gap-4">
