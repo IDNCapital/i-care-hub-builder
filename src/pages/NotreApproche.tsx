@@ -88,7 +88,7 @@ export default function NotreApproche() {
               <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
                 <p>{t("approach.nicolasP1")}</p>
                 <p>{t("approach.nicolasP2")}</p>
-                <p>{t("approach.nicolasP3")}</p>
+                <p><InlineBrand>{t("approach.nicolasP3")}</InlineBrand></p>
                 <p className="font-medium text-foreground italic">{t("approach.nicolasP4")}</p>
               </div>
               <Button variant="outline" asChild className="mt-8">
