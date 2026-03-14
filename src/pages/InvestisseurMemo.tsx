@@ -113,7 +113,7 @@ const riskMitigation = [
   {
     title: "Diversification sectorielle",
     description:
-      "Les locataires exercent des professions variées (psychologues, kinésithérapeutes, ostéopathes, médecins…), réduisant la corrélation de vacance.",
+      "Les locataires exercent des professions variées (psychologues, ostéopathes, sophrologues, diététiciens…), réduisant la corrélation de vacance.",
   },
   {
     title: "Gestion locale active",
