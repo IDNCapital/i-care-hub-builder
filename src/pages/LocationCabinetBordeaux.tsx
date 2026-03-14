@@ -161,7 +161,7 @@ export default function LocationCabinetBordeaux() {
                     {heroImg ? (
                       <FadeImage
                         src={heroImg}
-                        alt={`Cabinet I-CA.RE ${centre.name}`}
+                        alt={`Cabinet I‑CA.RE ${centre.name}`}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         fadeDuration={400}
                       />
