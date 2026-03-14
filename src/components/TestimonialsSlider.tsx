@@ -4,6 +4,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { InlineBrand } from "./BrandName";
 
 interface Testimonial {
   quote: string;
