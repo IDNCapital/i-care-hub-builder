@@ -20,8 +20,8 @@ function FrVersion() {
   return (
     <Layout>
       <SeoHead
-        title="Politique de confidentialité — I-CA.RE"
-        description="Politique de confidentialité et protection des données personnelles d'I-CA.RE, conforme au RGPD."
+        title="Politique de confidentialité — I‑CA.RE"
+        description="Politique de confidentialité et protection des données personnelles d'I‑CA.RE, conforme au RGPD."
         path="/confidentialite"
         noIndex
       />
