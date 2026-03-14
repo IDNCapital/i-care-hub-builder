@@ -49,7 +49,7 @@ export default function BlogTrouverCabinet() {
     : [
         {
           q: "What surface area for a consultation office?",
-          a: "A surface area of 11 to 15 sqm is ideal for an individual consultation office. It allows you to comfortably welcome patients, arrange necessary furniture and maintain an airy, soothing space. This is the surface offered by I-CA.RE offices.",
+          a: "A surface area of 11 to 15 sqm is ideal for an individual consultation office. It allows you to comfortably welcome patients, arrange necessary furniture and maintain an airy, soothing space. This is the surface offered by I‑CA.RE offices.",
         },
         {
           q: "Can practitioners share an office?",
