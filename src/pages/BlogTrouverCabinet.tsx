@@ -255,8 +255,8 @@ export default function BlogTrouverCabinet() {
               <ul className="space-y-3 pl-5 list-disc marker:text-primary">
                 <li>
                   {lang === "fr"
-                    ? "Échanges entre praticiens de disciplines complémentaires (psychologues, ostéopathes, kinésithérapeutes, sophrologues…)"
-                    : "Exchanges between practitioners of complementary disciplines (psychologists, osteopaths, physiotherapists, sophrologists…)"}
+                    ? "Échanges entre praticiens de disciplines complémentaires (psychologues, ostéopathes, sophrologues, diététiciens…)"
+                    : "Exchanges between practitioners of complementary disciplines (psychologists, osteopaths, sophrologists, dietitians…)"}
                 </li>
                 <li>
                   {lang === "fr"
