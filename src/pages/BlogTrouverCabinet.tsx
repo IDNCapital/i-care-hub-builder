@@ -195,7 +195,7 @@ export default function BlogTrouverCabinet() {
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {lang === "fr"
-                    ? "Un bon cabinet consultation à Bordeaux se situe dans un quartier vivant mais calme, bien desservi par les transports en commun et facilement accessible pour votre patient / client. Les quartiers centraux comme les Chartrons, Nansouty, Pey-Berland ou Jardin Public offrent cet équilibre idéal."
+                    ? "Un bon cabinet consultation à Bordeaux se situe dans un quartier vivant mais calme, bien desservi par les transports en commun et facilement accessible pour votre patient / client. Les quartiers centraux comme les Chartrons, Nansouty, Pey-Berland ou Jardin Public offrent cet équilibre."
                     : "A good consultation office in Bordeaux is located in a vibrant yet calm neighbourhood, well served by public transport and easily accessible for your patients. Central neighbourhoods like Chartrons, Nansouty, Pey-Berland or Jardin Public offer this ideal balance."}
                 </p>
               </div>
