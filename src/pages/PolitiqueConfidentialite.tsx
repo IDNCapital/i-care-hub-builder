@@ -98,7 +98,7 @@ function FrVersion() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">5. Base légale du traitement</h2>
           <ul className="space-y-1 text-muted-foreground">
             <li>• Le consentement de l'utilisateur (formulaires, cookies)</li>
-            <li>• L'intérêt légitime de I-CA.RE pour assurer le suivi des demandes et prospects</li>
+            <li>• L'intérêt légitime de <BrandName /> pour assurer le suivi des demandes et prospects</li>
           </ul>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">6. Durée de conservation</h2>
