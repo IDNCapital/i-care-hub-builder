@@ -130,6 +130,7 @@ const App = () => (
                 <Route path="/questions-frequentes" element={<FAQ />} />
                 <Route path="/blog/trouver-cabinet-bordeaux-praticien" element={<BlogTrouverCabinet />} />
                 <Route path="/installer-cabinet-praticien" element={<InstallerCabinet />} />
+                <Route path="/trouver-cabinet-medical-bordeaux" element={<TrouverCabinetMedicalBordeaux />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
             </Routes>
