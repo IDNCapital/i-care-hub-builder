@@ -17,9 +17,14 @@ export function Footer() {
 
   const companyLinks = [
     { name: t("nav.approach"), href: localePath(lang, "approach") },
-    { name: "Insights", href: localePath(lang, "insights") },
     { name: lang === "fr" ? "Questions fréquentes" : "FAQ", href: localePath(lang, "faq") },
     { name: t("nav.contact"), href: localePath(lang, "contact") },
+  ];
+
+  const resourceLinks = [
+    { name: lang === "fr" ? "Guides pratiques" : "Practical guides", href: localePath(lang, "insights") },
+    { name: lang === "fr" ? "S'installer comme praticien" : "Setting up as a practitioner", href: localePath(lang, "installerCabinet") },
+    { name: lang === "fr" ? "Cabinet à louer Bordeaux" : "Office Rental Bordeaux", href: localePath(lang, "locationBordeaux") },
   ];
 
   const legalLinks = [
