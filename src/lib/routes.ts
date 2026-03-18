@@ -40,6 +40,7 @@ const routeMap: Record<string, Record<string, string>> = {
     blogTrouverCabinet: "blog/finding-office-bordeaux-practitioner",
     installerCabinet: "setting-up-practice",
     trouverCabinetMedical: "finding-medical-office-bordeaux",
+    insightsCabinetMedical: "insights/medical-office-bordeaux",
   },
 };
 
