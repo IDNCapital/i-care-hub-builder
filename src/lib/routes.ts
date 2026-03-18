@@ -19,6 +19,7 @@ const routeMap: Record<string, Record<string, string>> = {
     blogTrouverCabinet: "blog/trouver-cabinet-bordeaux-praticien",
     installerCabinet: "installer-cabinet-praticien",
     trouverCabinetMedical: "trouver-cabinet-medical-bordeaux",
+    insightsCabinetMedical: "insights/cabinet-medical-bordeaux",
   },
   en: {
     home: "",
