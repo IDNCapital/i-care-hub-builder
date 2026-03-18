@@ -146,6 +146,12 @@ const App = () => (
                 <Route path="/installer-cabinet-praticien" element={<InstallerCabinet />} />
                 <Route path="/trouver-cabinet-medical-bordeaux" element={<TrouverCabinetMedicalBordeaux />} />
                 <Route path="/insights/cabinet-medical-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
+                <Route path="/insights" element={<InsightsIndex />} />
+                <Route path="/insights/budget-cabinet-bordeaux" element={<InsightsBudget />} />
+                <Route path="/insights/surface-cabinet-medical" element={<InsightsSurface />} />
+                <Route path="/insights/transformer-local-en-cabinet" element={<InsightsTransformer />} />
+                <Route path="/insights/professions-partage-cabinet" element={<InsightsProfessions />} />
+                <Route path="/insights/louer-ou-acheter-cabinet" element={<InsightsLouerAcheter />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
             </Routes>
