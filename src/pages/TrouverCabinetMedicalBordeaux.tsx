@@ -108,6 +108,22 @@ export default function TrouverCabinetMedicalBordeaux() {
             </p>
           </div>
 
+          {/* Résumé structuré */}
+          <section className="mb-16 p-8 bg-secondary rounded-2xl">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6">
+              {lang === "fr"
+                ? "Ce qu'il faut retenir pour trouver un cabinet médical à Bordeaux"
+                : "Key takeaways for finding a medical office in Bordeaux"}
+            </h2>
+            <ul className="space-y-3 pl-5 list-disc marker:text-primary text-muted-foreground leading-relaxed">
+              <li>{lang === "fr" ? "Privilégier des surfaces entre 12 et 20 m² adaptées à votre activité" : "Favour spaces between 12 and 20 sqm suited to your practice"}</li>
+              <li>{lang === "fr" ? "Choisir un emplacement cohérent avec votre patientèle plutôt qu'un emplacement premium" : "Choose a location consistent with your patient base rather than a premium location"}</li>
+              <li>{lang === "fr" ? "Anticiper les contraintes réglementaires (ERP, accessibilité)" : "Anticipate regulatory constraints (ERP, accessibility)"}</li>
+              <li>{lang === "fr" ? "Intégrer le coût des travaux dans votre budget global" : "Factor renovation costs into your overall budget"}</li>
+              <li>{lang === "fr" ? "Envisager des lieux mutualisés pour optimiser votre installation" : "Consider shared spaces to optimise your setup"}</li>
+            </ul>
+          </section>
+
           {/* Pourquoi est-il difficile */}
           <section className="mb-16">
             <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6">
