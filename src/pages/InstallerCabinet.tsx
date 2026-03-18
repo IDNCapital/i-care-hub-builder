@@ -163,6 +163,11 @@ export default function InstallerCabinet() {
                 </Link>
               </Button>
             </div>
+            <p className="mt-6 text-sm text-muted-foreground">
+              <Link to={localePath(lang, "insights")} className="text-primary underline underline-offset-4 hover:text-primary/80">
+                {lang === "fr" ? "Consulter nos guides pratiques" : "Browse our practical guides"}
+              </Link>
+            </p>
           </div>
         </div>
       </section>
