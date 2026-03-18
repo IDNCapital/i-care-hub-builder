@@ -108,6 +108,22 @@ export default function TrouverCabinetMedicalBordeaux() {
             </p>
           </div>
 
+          {/* Résumé structuré */}
+          <section className="mb-16 p-8 bg-secondary rounded-2xl">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6">
+              {lang === "fr"
+                ? "Ce qu'il faut retenir pour trouver un cabinet médical à Bordeaux"
+                : "Key takeaways for finding a medical office in Bordeaux"}
+            </h2>
+            <ul className="space-y-3 pl-5 list-disc marker:text-primary text-muted-foreground leading-relaxed">
+              <li>{lang === "fr" ? "Privilégier des surfaces entre 12 et 20 m² adaptées à votre activité" : "Favour spaces between 12 and 20 sqm suited to your practice"}</li>
+              <li>{lang === "fr" ? "Choisir un emplacement cohérent avec votre patientèle plutôt qu'un emplacement premium" : "Choose a location consistent with your patient base rather than a premium location"}</li>
+              <li>{lang === "fr" ? "Anticiper les contraintes réglementaires (ERP, accessibilité)" : "Anticipate regulatory constraints (ERP, accessibility)"}</li>
+              <li>{lang === "fr" ? "Intégrer le coût des travaux dans votre budget global" : "Factor renovation costs into your overall budget"}</li>
+              <li>{lang === "fr" ? "Envisager des lieux mutualisés pour optimiser votre installation" : "Consider shared spaces to optimise your setup"}</li>
+            </ul>
+          </section>
+
           {/* Pourquoi est-il difficile */}
           <section className="mb-16">
             <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6">
@@ -336,6 +352,26 @@ export default function TrouverCabinetMedicalBordeaux() {
             </p>
           </section>
 
+          {/* Données concrètes */}
+          <section className="mb-16">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6">
+              {lang === "fr"
+                ? "Ordres de grandeur observés à Bordeaux pour un cabinet paramédical"
+                : "Typical figures observed in Bordeaux for a paramedical office"}
+            </h2>
+            <ul className="space-y-3 pl-5 list-disc marker:text-primary text-muted-foreground leading-relaxed mb-6">
+              <li>{lang === "fr" ? "Surface moyenne : 12 à 18 m²" : "Average surface area: 12 to 18 sqm"}</li>
+              <li>{lang === "fr" ? "Loyer mensuel : 400 à 900 € selon emplacement et qualité" : "Monthly rent: €400 to €900 depending on location and quality"}</li>
+              <li>{lang === "fr" ? "Coût de travaux : 500 à 1 500 €/m² selon état initial" : "Renovation cost: €500 to €1,500/sqm depending on initial condition"}</li>
+              <li>{lang === "fr" ? "Taux d'occupation cible : supérieur à 80 %" : "Target occupancy rate: above 80%"}</li>
+            </ul>
+            <p className="text-muted-foreground leading-relaxed">
+              {lang === "fr"
+                ? "Ces données peuvent varier selon le quartier et la nature du projet, mais elles permettent de cadrer une première approche réaliste."
+                : "These figures may vary depending on the neighbourhood and the nature of the project, but they help frame a realistic initial approach."}
+            </p>
+          </section>
+
           {/* CTA */}
           <div className="text-center py-8 mb-16">
             <Button variant="gold" size="lg" asChild>
@@ -363,6 +399,19 @@ export default function TrouverCabinetMedicalBordeaux() {
                 </AccordionItem>
               ))}
             </Accordion>
+          </section>
+          {/* Conclusion expert */}
+          <section className="mt-16 pt-10 border-t border-border">
+            <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+              {lang === "fr"
+                ? "Trouver un cabinet médical à Bordeaux ne se résume pas à une recherche immobilière classique. C'est un équilibre entre emplacement, contraintes techniques et modèle économique."
+                : "Finding a medical office in Bordeaux is not simply a standard property search. It is a balance between location, technical constraints and business model."}
+            </p>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              {lang === "fr"
+                ? "Une approche structurée permet d'éviter les erreurs fréquentes et de sécuriser son installation sur le long terme."
+                : "A structured approach helps avoid common mistakes and secure your setup for the long term."}
+            </p>
           </section>
         </div>
       </article>
