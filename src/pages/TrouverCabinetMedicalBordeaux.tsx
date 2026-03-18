@@ -352,6 +352,26 @@ export default function TrouverCabinetMedicalBordeaux() {
             </p>
           </section>
 
+          {/* Données concrètes */}
+          <section className="mb-16">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6">
+              {lang === "fr"
+                ? "Ordres de grandeur observés à Bordeaux pour un cabinet paramédical"
+                : "Typical figures observed in Bordeaux for a paramedical office"}
+            </h2>
+            <ul className="space-y-3 pl-5 list-disc marker:text-primary text-muted-foreground leading-relaxed mb-6">
+              <li>{lang === "fr" ? "Surface moyenne : 12 à 18 m²" : "Average surface area: 12 to 18 sqm"}</li>
+              <li>{lang === "fr" ? "Loyer mensuel : 400 à 900 € selon emplacement et qualité" : "Monthly rent: €400 to €900 depending on location and quality"}</li>
+              <li>{lang === "fr" ? "Coût de travaux : 500 à 1 500 €/m² selon état initial" : "Renovation cost: €500 to €1,500/sqm depending on initial condition"}</li>
+              <li>{lang === "fr" ? "Taux d'occupation cible : supérieur à 80 %" : "Target occupancy rate: above 80%"}</li>
+            </ul>
+            <p className="text-muted-foreground leading-relaxed">
+              {lang === "fr"
+                ? "Ces données peuvent varier selon le quartier et la nature du projet, mais elles permettent de cadrer une première approche réaliste."
+                : "These figures may vary depending on the neighbourhood and the nature of the project, but they help frame a realistic initial approach."}
+            </p>
+          </section>
+
           {/* CTA */}
           <div className="text-center py-8 mb-16">
             <Button variant="gold" size="lg" asChild>
