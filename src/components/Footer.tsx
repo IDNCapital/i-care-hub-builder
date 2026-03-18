@@ -86,6 +86,22 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+
+            <h3 className="font-sans font-bold text-xs uppercase tracking-[0.1em] text-background/50 mb-3 mt-8">
+              {lang === "fr" ? "Ressources praticiens" : "Practitioner resources"}
+            </h3>
+            <ul className="space-y-3">
+              {resourceLinks.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.href}
+                    className="text-background/70 hover:text-background transition-colors duration-300 text-sm"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Contact */}
