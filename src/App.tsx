@@ -25,6 +25,7 @@ import FAQ from "./pages/FAQ";
 import BlogTrouverCabinet from "./pages/BlogTrouverCabinet";
 import InstallerCabinet from "./pages/InstallerCabinet";
 import TrouverCabinetMedicalBordeaux from "./pages/TrouverCabinetMedicalBordeaux";
+import InsightsCabinetMedicalBordeaux from "./pages/InsightsCabinetMedicalBordeaux";
 import { CookieBanner } from "./components/CookieBanner";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { useAnalytics } from "./hooks/useAnalytics";
