@@ -400,6 +400,19 @@ export default function TrouverCabinetMedicalBordeaux() {
               ))}
             </Accordion>
           </section>
+          {/* Conclusion expert */}
+          <section className="mt-16 pt-10 border-t border-border">
+            <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+              {lang === "fr"
+                ? "Trouver un cabinet médical à Bordeaux ne se résume pas à une recherche immobilière classique. C'est un équilibre entre emplacement, contraintes techniques et modèle économique."
+                : "Finding a medical office in Bordeaux is not simply a standard property search. It is a balance between location, technical constraints and business model."}
+            </p>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              {lang === "fr"
+                ? "Une approche structurée permet d'éviter les erreurs fréquentes et de sécuriser son installation sur le long terme."
+                : "A structured approach helps avoid common mistakes and secure your setup for the long term."}
+            </p>
+          </section>
         </div>
       </article>
     </Layout>
