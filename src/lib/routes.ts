@@ -19,7 +19,13 @@ const routeMap: Record<string, Record<string, string>> = {
     blogTrouverCabinet: "blog/trouver-cabinet-bordeaux-praticien",
     installerCabinet: "installer-cabinet-praticien",
     trouverCabinetMedical: "trouver-cabinet-medical-bordeaux",
+    insights: "insights",
     insightsCabinetMedical: "insights/cabinet-medical-bordeaux",
+    insightsBudget: "insights/budget-cabinet-bordeaux",
+    insightsSurface: "insights/surface-cabinet-medical",
+    insightsTransformer: "insights/transformer-local-en-cabinet",
+    insightsProfessions: "insights/professions-partage-cabinet",
+    insightsLouerAcheter: "insights/louer-ou-acheter-cabinet",
   },
   en: {
     home: "",
@@ -40,7 +46,13 @@ const routeMap: Record<string, Record<string, string>> = {
     blogTrouverCabinet: "blog/finding-office-bordeaux-practitioner",
     installerCabinet: "setting-up-practice",
     trouverCabinetMedical: "finding-medical-office-bordeaux",
+    insights: "insights",
     insightsCabinetMedical: "insights/medical-office-bordeaux",
+    insightsBudget: "insights/office-budget-bordeaux",
+    insightsSurface: "insights/medical-office-size",
+    insightsTransformer: "insights/converting-commercial-space",
+    insightsProfessions: "insights/professions-sharing-office",
+    insightsLouerAcheter: "insights/rent-or-buy-office",
   },
 };
 

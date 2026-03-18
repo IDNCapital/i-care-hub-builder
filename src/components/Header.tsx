@@ -28,6 +28,7 @@ export const Header = memo(function Header() {
     { name: t("nav.projects"), href: localePath(lang, "projects") },
     { name: t("nav.professionals"), href: localePath(lang, "professionals") },
     { name: lang === "fr" ? "S'installer" : "Setting up", href: localePath(lang, "installerCabinet") },
+    { name: "Insights", href: localePath(lang, "insights") },
     { name: t("nav.investment"), href: localePath(lang, "investment") },
     { name: t("nav.approach"), href: localePath(lang, "approach") },
     { name: t("nav.contact"), href: localePath(lang, "contact") },
