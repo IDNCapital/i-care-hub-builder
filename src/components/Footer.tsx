@@ -12,14 +12,18 @@ export function Footer() {
     { name: t("nav.projects"), href: localePath(lang, "projects") },
     { name: t("nav.professionals"), href: localePath(lang, "professionals") },
     { name: t("nav.investment"), href: localePath(lang, "investment") },
-    { name: lang === "fr" ? "Cabinet à louer Bordeaux" : "Office Rental Bordeaux", href: localePath(lang, "locationBordeaux") },
   ];
 
   const companyLinks = [
     { name: t("nav.approach"), href: localePath(lang, "approach") },
-    { name: "Insights", href: localePath(lang, "insights") },
     { name: lang === "fr" ? "Questions fréquentes" : "FAQ", href: localePath(lang, "faq") },
     { name: t("nav.contact"), href: localePath(lang, "contact") },
+  ];
+
+  const resourceLinks = [
+    { name: lang === "fr" ? "Guides pratiques" : "Practical guides", href: localePath(lang, "insights") },
+    { name: lang === "fr" ? "S'installer comme praticien" : "Setting up as a practitioner", href: localePath(lang, "installerCabinet") },
+    { name: lang === "fr" ? "Cabinet à louer Bordeaux" : "Office Rental Bordeaux", href: localePath(lang, "locationBordeaux") },
   ];
 
   const legalLinks = [
@@ -71,6 +75,22 @@ export function Footer() {
             </h3>
             <ul className="space-y-3">
               {companyLinks.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.href}
+                    className="text-background/70 hover:text-background transition-colors duration-300 text-sm"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="font-sans font-bold text-xs uppercase tracking-[0.1em] text-background/50 mb-3 mt-8">
+              {lang === "fr" ? "Ressources praticiens" : "Practitioner resources"}
+            </h3>
+            <ul className="space-y-3">
+              {resourceLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}

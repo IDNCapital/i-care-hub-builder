@@ -406,6 +406,10 @@ export default function Professionnels() {
               <Link to={localePath(lang, "faq")} className="text-primary underline underline-offset-4 hover:text-primary/80">
                 {lang === "fr" ? "Questions fréquentes" : "FAQ"}
               </Link>
+              <span className="mx-2">·</span>
+              <Link to={localePath(lang, "insights")} className="text-primary underline underline-offset-4 hover:text-primary/80">
+                {lang === "fr" ? "Guides pratiques" : "Practical guides"}
+              </Link>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>
