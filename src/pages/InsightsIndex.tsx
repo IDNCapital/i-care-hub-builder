@@ -9,43 +9,43 @@ const articles = [
     routeKey: "insightsCabinetMedical",
     titleFr: "Comment trouver un cabinet médical ou paramédical à Bordeaux",
     titleEn: "How to find a medical or paramedical office in Bordeaux",
-    descFr: "Emplacement, surface, budget, accessibilité : les critères essentiels pour trouver un cabinet adapté à votre activité à Bordeaux.",
-    descEn: "Location, size, budget, accessibility: the essential criteria for finding an office suited to your practice in Bordeaux.",
+    descFr: "Emplacement, surface, budget, accessibilité, lieux mutualisés : les critères essentiels pour trouver un cabinet adapté à votre activité à Bordeaux.",
+    descEn: "Location, size, budget, accessibility, shared spaces: the essential criteria for finding an office suited to your practice in Bordeaux.",
   },
   {
     routeKey: "insightsBudget",
     titleFr: "Quel budget prévoir pour ouvrir un cabinet à Bordeaux",
     titleEn: "What budget to plan for opening an office in Bordeaux",
-    descFr: "Loyer, travaux, charges, mobilier, assurances : un tour d'horizon réaliste des coûts à anticiper pour s'installer.",
-    descEn: "Rent, renovations, charges, furniture, insurance: a realistic overview of costs to plan for when setting up.",
+    descFr: "Loyer, dépôt de garantie, travaux, mobilier, assurances, trésorerie : un tour d'horizon réaliste des coûts à anticiper, poste par poste.",
+    descEn: "Rent, deposit, renovations, furniture, insurance, cash reserve: a realistic breakdown of costs to anticipate, item by item.",
   },
   {
     routeKey: "insightsSurface",
     titleFr: "Quelle surface faut-il pour un cabinet médical ou paramédical",
     titleEn: "What size do you need for a medical or paramedical office",
-    descFr: "Surface minimale, optimisation de l'espace, parties communes : comment dimensionner votre cabinet sans surdimensionner vos coûts.",
-    descEn: "Minimum area, space optimisation, shared areas: how to size your office without oversizing your costs.",
+    descFr: "De 11 à 18 m² selon votre métier : surfaces minimales réalistes, rôle des parties communes, erreurs de surdimensionnement à éviter.",
+    descEn: "From 11 to 18 sqm depending on your profession: realistic minimum areas, the role of shared spaces, and oversizing mistakes to avoid.",
   },
   {
     routeKey: "insightsTransformer",
     titleFr: "Peut-on transformer un local commercial en cabinet médical ou paramédical",
     titleEn: "Can you convert a commercial space into a medical office",
-    descFr: "Urbanisme, normes ERP, copropriété, coût des travaux : ce qu'il faut savoir avant de transformer un local.",
-    descEn: "Planning rules, ERP standards, co-ownership, renovation costs: what you need to know before converting a space.",
+    descFr: "Urbanisme, destination du local, normes ERP, copropriété, acoustique, coût des travaux : les étapes et points de vigilance avant de se lancer.",
+    descEn: "Planning rules, designated use, ERP standards, co-ownership, acoustics, renovation costs: the steps and checkpoints before starting.",
   },
   {
     routeKey: "insightsProfessions",
     titleFr: "Quelles professions peuvent partager un cabinet ou un espace de soins",
     titleEn: "Which professions can share an office or care space",
-    descFr: "Complémentarité, rythmes, confidentialité : les métiers compatibles avec un exercice mutualisé dans des cabinets de 11 à 18 m².",
-    descEn: "Complementarity, schedules, confidentiality: professions compatible with shared practice in 11–18 sqm offices.",
+    descFr: "Psychologues, ostéopathes, diététiciens, sophrologues, naturopathes… Complémentarité, rythmes et confidentialité dans un cadre partagé.",
+    descEn: "Psychologists, osteopaths, dietitians, sophrologists, naturopaths… Complementarity, schedules and confidentiality in a shared setting.",
   },
   {
     routeKey: "insightsLouerAcheter",
     titleFr: "Faut-il louer ou acheter son cabinet médical ou paramédical",
     titleEn: "Should you rent or buy your medical office",
-    descFr: "Souplesse, patrimoine, visibilité à long terme : les critères pour faire le bon choix selon votre situation professionnelle.",
-    descEn: "Flexibility, wealth building, long-term visibility: the criteria for making the right choice for your situation.",
+    descFr: "Souplesse, patrimoine, maturité professionnelle : les critères concrets pour choisir l'option la plus adaptée à votre situation.",
+    descEn: "Flexibility, equity, professional maturity: the concrete criteria for choosing the option best suited to your situation.",
   },
 ];
 
@@ -56,10 +56,10 @@ export default function InsightsIndex() {
   return (
     <Layout>
       <SeoHead
-        title={lang === "fr" ? "Insights — S'installer comme praticien | I‑CA.RE" : "Insights — Setting up as a practitioner | I‑CA.RE"}
+        title={lang === "fr" ? "Guides pratiques pour s'installer | I‑CA.RE" : "Practical guides for setting up | I‑CA.RE"}
         description={lang === "fr"
-          ? "Guides pratiques pour les praticiens : trouver un cabinet, comprendre les coûts, choisir la bonne surface et s'installer sereinement."
-          : "Practical guides for practitioners: finding an office, understanding costs, choosing the right size and setting up with confidence."}
+          ? "Guides concrets pour les praticiens du soin, du paramédical et du bien-être : trouver un cabinet, comprendre les coûts, choisir la bonne surface et préparer sereinement son installation."
+          : "Practical guides for care, allied health and wellbeing practitioners: finding an office, understanding costs, choosing the right size and setting up with confidence."}
         path={lang === "fr" ? "/insights" : "/en/insights"}
       />
 
@@ -73,14 +73,20 @@ export default function InsightsIndex() {
 
           <p className="text-lg text-muted-foreground leading-relaxed mb-4">
             {lang === "fr"
-              ? "Vous êtes praticien du soin, du paramédical ou du bien-être et vous cherchez à vous installer ? Cette section regroupe des ressources concrètes pour vous aider à comprendre le marché, anticiper les coûts et faire les bons choix."
-              : "Are you a care, allied health or wellbeing practitioner looking to set up? This section gathers practical resources to help you understand the market, anticipate costs and make the right decisions."}
+              ? "Vous êtes praticien du soin, du paramédical ou du bien-être et vous préparez votre installation ? Trouver le bon local, anticiper les coûts, comprendre les normes, choisir entre location et achat : chaque étape soulève des questions concrètes auxquelles il n'est pas toujours facile de répondre seul."
+              : "Are you a care, allied health or wellbeing practitioner preparing to set up? Finding the right space, anticipating costs, understanding regulations, choosing between renting and buying: each step raises practical questions that are not always easy to answer alone."}
           </p>
 
-          <p className="text-muted-foreground leading-relaxed mb-12">
+          <p className="text-muted-foreground leading-relaxed mb-4">
             {lang === "fr"
-              ? "Chaque article traite d'une question précise, avec des informations factuelles et des repères concrets."
-              : "Each article addresses a specific question, with factual information and concrete benchmarks."}
+              ? "Cette section regroupe des guides pratiques, rédigés pour vous aider à y voir plus clair. Chaque article traite d'une question précise, avec des informations factuelles, des repères concrets et des conseils issus de l'expérience terrain."
+              : "This section gathers practical guides written to help you see more clearly. Each article addresses a specific question, with factual information, concrete benchmarks and advice drawn from real-world experience."}
+          </p>
+
+          <p className="text-sm text-muted-foreground leading-relaxed mb-12 italic">
+            {lang === "fr"
+              ? "Ces guides s'adressent en priorité aux praticiens qui préparent leur installation dans un cabinet individuel ou un espace de soins partagé, notamment à Bordeaux et en Nouvelle-Aquitaine."
+              : "These guides are primarily intended for practitioners preparing to set up in a private office or shared care space, particularly in Bordeaux and Nouvelle-Aquitaine."}
           </p>
 
           <div className="grid gap-6">
