@@ -102,8 +102,8 @@ const App = () => (
                 <Route path="/practitioners" element={<Professionnels />} />
                 <Route path="/office-rental-bordeaux" element={<LocationCabinetBordeaux />} />
                 <Route path="/faq" element={<FAQ />} />
-                <Route path="/blog/finding-office-bordeaux-practitioner" element={<BlogTrouverCabinet />} />
-                <Route path="/blog/consultation-office-cost-bordeaux" element={<BlogCoutCabinetBordeaux />} />
+                <Route path="/blog/finding-office-bordeaux-practitioner" element={<Navigate to="/en/insights/medical-office-bordeaux" replace />} />
+                <Route path="/blog/consultation-office-cost-bordeaux" element={<Navigate to="/en/insights/office-budget-bordeaux" replace />} />
                 <Route path="/setting-up-practice" element={<InstallerCabinet />} />
                 <Route path="/finding-medical-office-bordeaux" element={<TrouverCabinetMedicalBordeaux />} />
                 <Route path="/insights/medical-office-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
@@ -127,6 +127,11 @@ const App = () => (
               <Route path="/methode" element={<Navigate to="/notre-approche" replace />} />
               <Route path="/praticiens" element={<Navigate to="/professionnels" replace />} />
 
+              {/* Blog → Insights 301 redirects */}
+              <Route path="/blog/trouver-cabinet-bordeaux-praticien" element={<Navigate to="/insights/cabinet-medical-bordeaux" replace />} />
+              <Route path="/blog/combien-coute-cabinet-consultation-bordeaux" element={<Navigate to="/insights/budget-cabinet-bordeaux" replace />} />
+              <Route path="/blog" element={<Navigate to="/insights" replace />} />
+
               {/* FR routes (root, no prefix) */}
               <Route path="/*" element={<LangSync lang="fr"><Routes>
                 <Route path="/" element={<Index />} />
@@ -144,8 +149,6 @@ const App = () => (
                 <Route path="/cookies" element={<PolitiqueCookies />} />
                 <Route path="/location-cabinet-bordeaux" element={<LocationCabinetBordeaux />} />
                 <Route path="/questions-frequentes" element={<FAQ />} />
-                <Route path="/blog/trouver-cabinet-bordeaux-praticien" element={<BlogTrouverCabinet />} />
-                <Route path="/blog/combien-coute-cabinet-consultation-bordeaux" element={<BlogCoutCabinetBordeaux />} />
                 <Route path="/installer-cabinet-praticien" element={<InstallerCabinet />} />
                 <Route path="/trouver-cabinet-medical-bordeaux" element={<TrouverCabinetMedicalBordeaux />} />
                 <Route path="/insights/cabinet-medical-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
