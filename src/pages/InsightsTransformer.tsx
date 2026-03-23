@@ -1,233 +1,263 @@
-import { InsightLayout } from "@/components/InsightLayout";
+import { InsightArticleTemplate } from "@/components/InsightArticleTemplate";
 import { useTranslation } from "react-i18next";
+import chartronsFacade from "@/assets/chartrons/facade.webp";
 
 export default function InsightsTransformer() {
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
-  const relatedLinks = [
-    { routeKey: "insightsBudget", labelFr: "Quel budget pour un cabinet à Bordeaux", labelEn: "What budget for an office in Bordeaux" },
-    { routeKey: "insightsSurface", labelFr: "Quelle surface pour un cabinet", labelEn: "What size for an office" },
-    { routeKey: "insightsCabinetMedical", labelFr: "Trouver un cabinet médical à Bordeaux", labelEn: "Finding a medical office in Bordeaux" },
-  ];
+  const relatedGuides =
+    lang === "fr"
+      ? [
+          { routeKey: "insightsBudget", title: "Quel budget pour un cabinet à Bordeaux", description: "Loyer, dépôt, travaux, mobilier : tour d'horizon détaillé des coûts." },
+          { routeKey: "insightsSurface", title: "Quelle surface pour un cabinet", description: "De 11 à 18 m² selon votre métier." },
+          { routeKey: "insightsCabinetMedical", title: "Trouver un cabinet médical à Bordeaux", description: "Emplacement, surface, normes : guide complet." },
+        ]
+      : [
+          { routeKey: "insightsBudget", title: "What budget for an office in Bordeaux", description: "Rent, deposit, renovations: detailed cost breakdown." },
+          { routeKey: "insightsSurface", title: "What size for an office", description: "From 11 to 18 sqm by profession." },
+          { routeKey: "insightsCabinetMedical", title: "Finding a medical office in Bordeaux", description: "Location, size, standards: a complete guide." },
+        ];
+
+  const keyFigures =
+    lang === "fr"
+      ? [
+          { label: "Adaptation légère", value: "500–800 €/m²" },
+          { label: "Transformation standard", value: "800–1 200 €/m²" },
+          { label: "Rénovation complète", value: "1 200–1 500+ €/m²" },
+          { label: "Délai total", value: "2 à 6 mois" },
+          { label: "Hauteur sous plafond min.", value: "2,50 m" },
+          { label: "Largeur de porte ERP", value: "90 cm minimum" },
+        ]
+      : [
+          { label: "Light adaptation", value: "€500–800/sqm" },
+          { label: "Standard conversion", value: "€800–1,200/sqm" },
+          { label: "Full renovation", value: "€1,200–1,500+/sqm" },
+          { label: "Total timeline", value: "2 to 6 months" },
+          { label: "Min. ceiling height", value: "2.50m" },
+          { label: "ERP door width", value: "90cm minimum" },
+        ];
+
+  const faq =
+    lang === "fr"
+      ? [
+          { question: "Faut-il un permis pour transformer un commerce en cabinet\u00a0?", answer: "Cela dépend de la destination actuelle. Un changement de destination nécessite généralement une déclaration préalable ou un permis auprès de la mairie." },
+          { question: "Combien de temps dure une transformation\u00a0?", answer: "Généralement 2 à 6 mois, incluant les démarches administratives (1–3 mois) et les travaux (1–3 mois)." },
+          { question: "Tout local commercial peut-il être transformé\u00a0?", answer: "Non. Des contraintes physiques, juridiques et normatives peuvent rendre certains locaux inadaptés." },
+          { question: "Quels sont les coûts cachés les plus fréquents\u00a0?", answer: "Les mises aux normes ERP, l'isolation acoustique et la plomberie sont les postes les plus souvent sous-estimés." },
+          { question: "Est-il plus simple de rejoindre un espace mutualisé\u00a0?", answer: "Souvent, oui. Les espaces mutualisés sont déjà aménagés, conformes et prêts à l'usage." },
+        ]
+      : [
+          { question: "Do I need a permit to convert a shop?", answer: "It depends on the current designated use. A change of use typically requires a prior declaration or planning permit from the local authority." },
+          { question: "How long does a conversion take?", answer: "Typically 2 to 6 months, including administrative steps (1–3 months) and renovation work (1–3 months)." },
+          { question: "Can any commercial space be converted?", answer: "No. Physical, legal and regulatory constraints may make some spaces unsuitable." },
+          { question: "What are the biggest hidden costs?", answer: "ERP accessibility upgrades, acoustic insulation and plumbing are the most commonly underestimated items." },
+          { question: "Is it simpler to join a shared space?", answer: "Often, yes. Shared spaces are already fitted out, compliant and ready to use." },
+        ];
 
   if (lang === "en") {
     return (
-      <InsightLayout
+      <InsightArticleTemplate
         title="Converting a commercial space into a medical office | I‑CA.RE"
         description="Planning rules, designated use, ERP standards, co-ownership, acoustics, costs and timelines: a step-by-step guide for practitioners considering space conversion."
         path="/en/insights/converting-commercial-space"
-        relatedLinks={relatedLinks}
+        heroImage={chartronsFacade}
+        heroImageAlt="Heritage commercial building for conversion – I-CA.RE Chartrons Bordeaux"
+        articleTitle="Can you convert a commercial space into a medical or paramedical office"
+        intro="You've found a well-located commercial space and you're wondering whether it could become your consulting room. The short answer is often yes — but the path involves regulatory checks, technical adaptations and a realistic budget. Understanding each step before committing protects you from costly mistakes."
+        takeaways={[
+          "Always check the designated use of the premises before signing",
+          "Verify co-ownership rules — healthcare use may be restricted",
+          "ERP accessibility standards are mandatory and can be costly",
+          "Acoustic insulation, ventilation and privacy require specific treatment",
+          "Conversion costs: €500 to €1,500/sqm — more for complex cases",
+          "Allow 2 to 6 months for the full process",
+        ]}
+        toc={[
+          { id: "suitability", label: "Is your space suitable for conversion?" },
+          { id: "destination", label: "Step 1: Check the designated use" },
+          { id: "co-ownership", label: "Step 2: Verify co-ownership rules" },
+          { id: "erp", label: "Step 3: Assess ERP accessibility" },
+          { id: "acoustics", label: "Step 4: Acoustics, ventilation and privacy" },
+          { id: "costs", label: "What will it cost?" },
+          { id: "timeline", label: "How long does it take?" },
+          { id: "mistakes", label: "Common mistakes to avoid" },
+        ]}
+        keyFigures={keyFigures}
+        faq={faq}
+        ctaPrimaryRoute="locationBordeaux"
+        ctaPrimaryLabel="Find an office"
+        ctaSecondaryRoute="contact"
+        ctaSecondaryLabel="Get in touch"
+        relatedGuides={relatedGuides}
       >
-        <h1 className="text-3xl md:text-4xl font-heading font-bold mb-6">Can you convert a commercial space into a medical or paramedical office</h1>
-        <p className="text-lg text-muted-foreground leading-relaxed mb-4">You've found a well-located commercial space and you're wondering whether it could become your consulting room. The short answer is often yes — but the path from commercial space to healthcare office involves regulatory checks, technical adaptations and a realistic budget. Understanding each step before committing protects you from costly mistakes.</p>
-
-        <section className="mb-12">
-          <h2 className="text-xl font-heading font-bold mb-4">Key takeaways</h2>
-          <ul className="list-disc pl-5 space-y-2 text-muted-foreground leading-relaxed">
-            <li>Always check the designated use (destination) of the premises before signing anything</li>
-            <li>Verify co-ownership rules — healthcare use may be restricted or require approval</li>
-            <li>ERP accessibility standards are mandatory and can represent a significant cost</li>
-            <li>Acoustic insulation, ventilation and patient privacy require specific treatment</li>
-            <li>Conversion costs typically range from €500 to €1,500/sqm — more for complex cases</li>
-            <li>Allow 2 to 6 months for the full process including administrative steps</li>
-          </ul>
-        </section>
-
-        <section className="mb-10">
+        <section id="suitability">
           <h2 className="text-xl font-heading font-bold mb-3">Is your space suitable for conversion?</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">Not every commercial space is a good candidate. The best options are typically ground-floor units with street access, adequate ceiling height (at least 2.50m), natural light and a layout that can accommodate a consultation room, entrance and — if not shared — a small waiting area.</p>
-          <p className="text-muted-foreground leading-relaxed mb-3">Spaces in basements, units without direct access, or very narrow configurations are generally unsuitable. Load-bearing walls, column positions and window placements also constrain the possible layout.</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">The best candidates are ground-floor units with street access, adequate ceiling height (at least 2.50m), natural light and a suitable layout.</p>
+          <p className="text-muted-foreground leading-relaxed">Basements, units without direct access, or very narrow spaces are generally unsuitable.</p>
         </section>
 
-        <section className="mb-10">
-          <h2 className="text-xl font-heading font-bold mb-3">Step 1: Check the designated use (destination)</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">French planning law classifies premises by designated use. Converting from "commercial" to "healthcare" may require a prior declaration (déclaration préalable) or, in some cases, a planning permit (permis de construire). The local planning department (service d'urbanisme) at the town hall can confirm the current classification and the steps required.</p>
-          <p className="text-muted-foreground leading-relaxed mb-3">Tip: request this information in writing before signing any lease or purchase agreement. A verbal confirmation is not sufficient to protect you.</p>
+        <section id="destination">
+          <h2 className="text-xl font-heading font-bold mb-3">Step 1: Check the designated use</h2>
+          <p className="text-muted-foreground leading-relaxed mb-3">Converting from "commercial" to "healthcare" may require a prior declaration or planning permit. The local planning department can confirm requirements.</p>
+          <p className="text-muted-foreground leading-relaxed">Request this information in writing before signing any lease or purchase agreement.</p>
         </section>
 
-        <section className="mb-10">
+        <section id="co-ownership">
           <h2 className="text-xl font-heading font-bold mb-3">Step 2: Verify co-ownership rules</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">If the premises are part of a co-owned building, the building rules (règlement de copropriété) may restrict certain activities or require general assembly approval. Check specifically for restrictions on healthcare use, signage, hours of operation and patient access (particularly if shared hallways or lifts are involved).</p>
+          <p className="text-muted-foreground leading-relaxed">Building rules may restrict healthcare activities or require general assembly approval. Check specifically for restrictions on healthcare use, signage and patient access.</p>
         </section>
 
-        <section className="mb-10">
+        <section id="erp">
           <h2 className="text-xl font-heading font-bold mb-3">Step 3: Assess ERP accessibility compliance</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">Any premises receiving the public must comply with ERP (Établissement Recevant du Public) accessibility standards. This includes wheelchair access, compliant door widths (minimum 90cm), adapted facilities, appropriate signage and potentially a ramp or lift.</p>
-          <p className="text-muted-foreground leading-relaxed mb-3">For existing buildings, derogations (Ad'AP — Agenda d'Accessibilité Programmée) may be available, but the application process takes time and approval is not guaranteed. Budget for full compliance as a default and treat any derogation as a bonus.</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">ERP standards include wheelchair access, compliant door widths (min 90cm), adapted facilities and appropriate signage.</p>
+          <p className="text-muted-foreground leading-relaxed">Budget for full compliance as a default and treat any derogation as a bonus.</p>
         </section>
 
-        <section className="mb-10">
+        <section id="acoustics">
           <h2 className="text-xl font-heading font-bold mb-3">Step 4: Address acoustics, ventilation and privacy</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">Consultation rooms require specific attention to:</p>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-            <li><strong>Acoustic insulation:</strong> conversations must remain private. Partition walls, ceiling treatment and door seals are key</li>
-            <li><strong>Ventilation:</strong> commercial spaces may lack adequate air renewal for a consultation room. Mechanical ventilation may be needed</li>
-            <li><strong>Visual privacy:</strong> ground-floor windows may require frosting, curtains or repositioned layouts to protect patient dignity</li>
+            <li><strong>Acoustic insulation:</strong> conversations must remain private</li>
+            <li><strong>Ventilation:</strong> commercial spaces may lack adequate air renewal</li>
+            <li><strong>Visual privacy:</strong> ground-floor windows may require frosting</li>
           </ul>
-          <p className="text-muted-foreground leading-relaxed mb-3">These elements are often underestimated but directly affect patient / client comfort and regulatory compliance.</p>
         </section>
 
-        <section className="mb-10">
+        <section id="costs">
           <h2 className="text-xl font-heading font-bold mb-3">What will it cost?</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">Conversion costs depend heavily on the initial condition of the space and the scope of work required:</p>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-            <li><strong>Light adaptation</strong> (cosmetic work, minor partitioning): €500–800/sqm</li>
-            <li><strong>Standard conversion</strong> (partitioning, plumbing, acoustics, basic ERP): €800–1,200/sqm</li>
-            <li><strong>Full renovation</strong> (structural changes, full ERP compliance, high-quality finishes): €1,200–1,500+/sqm</li>
+            <li><strong>Light adaptation:</strong> €500–800/sqm</li>
+            <li><strong>Standard conversion:</strong> €800–1,200/sqm</li>
+            <li><strong>Full renovation:</strong> €1,200–1,500+/sqm</li>
           </ul>
-          <p className="text-muted-foreground leading-relaxed mb-3">Key cost drivers: plumbing (adding a water point), acoustic treatment, accessibility upgrades, electrical rewiring and finish quality. Always add a 10–15% contingency margin.</p>
+          <p className="text-muted-foreground leading-relaxed">Always add a 10–15% contingency margin.</p>
         </section>
 
-        <section className="mb-10">
+        <section id="timeline">
           <h2 className="text-xl font-heading font-bold mb-3">How long does it take?</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">A typical conversion timeline:</p>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-            <li>Administrative checks and approvals: 1 to 3 months</li>
-            <li>Design and contractor selection: 2 to 4 weeks</li>
-            <li>Renovation work: 4 to 12 weeks depending on scope</li>
-            <li>Final inspections and compliance verification: 1 to 2 weeks</li>
+            <li>Administrative checks: 1 to 3 months</li>
+            <li>Design and contractors: 2 to 4 weeks</li>
+            <li>Renovation work: 4 to 12 weeks</li>
+            <li>Final inspections: 1 to 2 weeks</li>
           </ul>
-          <p className="text-muted-foreground leading-relaxed mb-3">Total: 2 to 6 months from initial decision to opening. The administrative steps are often the longest part — start them early.</p>
+          <p className="text-muted-foreground leading-relaxed">Total: 2 to 6 months. Start administrative steps early.</p>
         </section>
 
-        <section className="mb-10">
+        <section id="mistakes">
           <h2 className="text-xl font-heading font-bold mb-3">Common mistakes to avoid</h2>
           <ul className="list-disc pl-5 space-y-2 text-muted-foreground leading-relaxed">
-            <li>Signing a lease before checking the designated use and co-ownership rules</li>
-            <li>Underestimating ERP compliance costs — accessibility upgrades alone can reach €5,000–15,000</li>
-            <li>Ignoring acoustic insulation — patient confidentiality is non-negotiable</li>
-            <li>Starting work before obtaining all necessary approvals</li>
-            <li>Not budgeting for a contingency margin (10–15% of total works)</li>
-            <li>Assuming all ground-floor commercial spaces are automatically suitable</li>
+            <li>Signing a lease before checking designated use and co-ownership rules</li>
+            <li>Underestimating ERP compliance costs (€5,000–15,000 for accessibility alone)</li>
+            <li>Ignoring acoustic insulation — confidentiality is non-negotiable</li>
+            <li>Starting work before obtaining all approvals</li>
+            <li>Not budgeting a contingency margin (10–15%)</li>
+            <li>Assuming all ground-floor spaces are suitable</li>
           </ul>
         </section>
-
-        <section className="mb-10">
-          <h2 className="text-xl font-heading font-bold mb-3">Frequently asked questions</h2>
-          <div className="space-y-6">
-            <div><p className="font-semibold mb-1">Do I need a permit to convert a shop into a healthcare office?</p><p className="text-muted-foreground leading-relaxed">It depends on the current designated use. A change of use typically requires a prior declaration or planning permit from the local authority. Check with the town hall before committing.</p></div>
-            <div><p className="font-semibold mb-1">How long does a conversion take?</p><p className="text-muted-foreground leading-relaxed">Typically 2 to 6 months, including administrative steps (1–3 months) and renovation work (1–3 months). Complex projects may take longer.</p></div>
-            <div><p className="font-semibold mb-1">Can any commercial space be converted?</p><p className="text-muted-foreground leading-relaxed">No. Physical constraints (ceiling height, access, load-bearing walls, natural light), legal restrictions (planning rules, co-ownership) and accessibility requirements may make some spaces unsuitable.</p></div>
-            <div><p className="font-semibold mb-1">What are the biggest hidden costs?</p><p className="text-muted-foreground leading-relaxed">ERP accessibility upgrades, acoustic insulation and plumbing (adding water points) are the most commonly underestimated items. Always get detailed quotes before committing.</p></div>
-            <div><p className="font-semibold mb-1">Is it simpler to join a shared space instead?</p><p className="text-muted-foreground leading-relaxed">Often, yes. Shared spaces are already fitted out, compliant and ready to use. For practitioners who want to avoid the complexity and cost of conversion, they offer a practical alternative.</p></div>
-          </div>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-heading font-bold mb-3">Conclusion</h2>
-          <p className="text-muted-foreground leading-relaxed">Converting a commercial space into a healthcare office is a viable path to a well-located practice, provided you check all regulatory, technical and financial aspects methodically. If the complexity or cost seems disproportionate, shared care spaces offer a ready-made alternative that lets you focus on your practice rather than on construction management.</p>
-        </section>
-      </InsightLayout>
+      </InsightArticleTemplate>
     );
   }
 
   return (
-    <InsightLayout
+    <InsightArticleTemplate
       title="Transformer un local commercial en cabinet médical | I‑CA.RE"
-      description="Urbanisme, destination, ERP, copropriété, acoustique, coûts et délais : guide étape par étape pour transformer un local commercial en cabinet médical ou paramédical."
+      description="Urbanisme, destination, ERP, copropriété, acoustique, coûts et délais : guide étape par étape pour transformer un local commercial en cabinet."
       path="/insights/transformer-local-en-cabinet"
-      relatedLinks={relatedLinks}
+      heroImage={chartronsFacade}
+      heroImageAlt="Immeuble des Chartrons – transformation en espace de soins I-CA.RE Bordeaux"
+      articleTitle="Peut-on transformer un local commercial en cabinet médical ou paramédical"
+      intro={<>Vous avez repéré un local commercial bien situé et vous vous demandez s'il pourrait devenir votre cabinet. La réponse est souvent oui — mais le chemin passe par des vérifications réglementaires, des adaptations techniques et un budget réaliste. Comprendre chaque étape avant de s'engager protège contre les erreurs coûteuses.</>}
+      takeaways={[
+        "Toujours vérifier la destination du local avant de signer quoi que ce soit",
+        "Consulter le règlement de copropriété — l'usage santé peut être restreint",
+        "Les normes ERP d'accessibilité sont obligatoires et peuvent coûter cher",
+        "Acoustique, ventilation et intimité nécessitent un traitement spécifique",
+        "Coûts de transformation\u00a0: 500 à 1\u00a0500\u00a0€/m² en général",
+        "Prévoir 2 à 6 mois pour l'ensemble du processus",
+      ]}
+      toc={[
+        { id: "aptitude", label: "Votre local est-il adapté ?" },
+        { id: "destination", label: "Étape 1 : vérifier la destination du local" },
+        { id: "copropriete", label: "Étape 2 : consulter le règlement de copropriété" },
+        { id: "erp", label: "Étape 3 : évaluer la conformité ERP" },
+        { id: "acoustique", label: "Étape 4 : acoustique, ventilation et intimité" },
+        { id: "couts", label: "Combien ça coûte ?" },
+        { id: "delais", label: "Combien de temps faut-il ?" },
+        { id: "erreurs", label: "Les erreurs fréquentes à éviter" },
+      ]}
+      keyFigures={keyFigures}
+      faq={faq}
+      ctaPrimaryRoute="locationBordeaux"
+      ctaPrimaryLabel="Trouver un cabinet"
+      ctaSecondaryRoute="contact"
+      ctaSecondaryLabel="Nous contacter"
+      relatedGuides={relatedGuides}
     >
-      <h1 className="text-3xl md:text-4xl font-heading font-bold mb-6">Peut-on transformer un local commercial en cabinet médical ou paramédical</h1>
-      <p className="text-lg text-muted-foreground leading-relaxed mb-4">Vous avez repéré un local commercial bien situé et vous vous demandez s'il pourrait devenir votre cabinet. La réponse est souvent oui — mais le chemin entre local commercial et cabinet de soins passe par des vérifications réglementaires, des adaptations techniques et un budget réaliste. Comprendre chaque étape avant de s'engager protège contre les erreurs coûteuses.</p>
-
-      <section className="mb-12">
-        <h2 className="text-xl font-heading font-bold mb-4">Ce qu'il faut retenir</h2>
-        <ul className="list-disc pl-5 space-y-2 text-muted-foreground leading-relaxed">
-          <li>Toujours vérifier la destination du local (usage autorisé) avant de signer quoi que ce soit</li>
-          <li>Consulter le règlement de copropriété — l'usage santé peut être restreint ou soumis à approbation</li>
-          <li>Les normes ERP d'accessibilité sont obligatoires et peuvent représenter un coût significatif</li>
-          <li>L'isolation acoustique, la ventilation et l'intimité du patient / client nécessitent un traitement spécifique</li>
-          <li>Coûts de transformation&nbsp;: 500 à 1&nbsp;500&nbsp;€/m² en général — davantage pour les cas complexes</li>
-          <li>Prévoir 2 à 6 mois pour l'ensemble du processus, démarches administratives incluses</li>
-        </ul>
-      </section>
-
-      <section className="mb-10">
+      <section id="aptitude">
         <h2 className="text-xl font-heading font-bold mb-3">Votre local est-il adapté à une transformation&nbsp;?</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Tous les locaux commerciaux ne sont pas de bons candidats. Les meilleurs sont généralement des rez-de-chaussée avec accès direct sur rue, une hauteur sous plafond suffisante (au moins 2,50&nbsp;m), de la lumière naturelle et une configuration permettant d'aménager un cabinet de consultation, une entrée et — si le local n'est pas en espace partagé — un petit espace d'attente.</p>
-        <p className="text-muted-foreground leading-relaxed mb-3">Les locaux en sous-sol, sans accès direct ou en configuration très étroite sont généralement inadaptés. Les murs porteurs, les poteaux et les positions de fenêtres contraignent aussi l'agencement possible.</p>
+        <p className="text-muted-foreground leading-relaxed mb-3">Les meilleurs candidats sont des rez-de-chaussée avec accès direct, une hauteur sous plafond d'au moins 2,50&nbsp;m, de la lumière naturelle et une configuration adaptée.</p>
+        <p className="text-muted-foreground leading-relaxed">Les sous-sols, les locaux sans accès direct ou en configuration très étroite sont généralement inadaptés.</p>
       </section>
 
-      <section className="mb-10">
+      <section id="destination">
         <h2 className="text-xl font-heading font-bold mb-3">Étape 1&nbsp;: vérifier la destination du local</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Le droit de l'urbanisme classe les locaux par destination. Le passage de «&nbsp;commercial&nbsp;» à «&nbsp;santé&nbsp;» peut nécessiter une déclaration préalable ou, dans certains cas, un permis de construire. Le service d'urbanisme de la mairie peut confirmer la classification actuelle et les démarches requises.</p>
-        <p className="text-muted-foreground leading-relaxed mb-3">Conseil&nbsp;: demandez cette information par écrit avant de signer tout bail ou compromis d'achat. Une confirmation orale ne vous protège pas.</p>
+        <p className="text-muted-foreground leading-relaxed mb-3">Le passage de «&nbsp;commercial&nbsp;» à «&nbsp;santé&nbsp;» peut nécessiter une déclaration préalable ou un permis de construire. Consultez le service d'urbanisme de la mairie.</p>
+        <p className="text-muted-foreground leading-relaxed">Demandez cette information par écrit avant de signer tout bail ou compromis.</p>
       </section>
 
-      <section className="mb-10">
+      <section id="copropriete">
         <h2 className="text-xl font-heading font-bold mb-3">Étape 2&nbsp;: consulter le règlement de copropriété</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Si le local fait partie d'une copropriété, le règlement peut restreindre certaines activités ou exiger l'approbation de l'assemblée générale. Vérifiez spécifiquement les restrictions sur l'usage santé, la signalétique, les horaires d'ouverture et l'accès des patient / clients (notamment si des couloirs ou ascenseurs communs sont impliqués).</p>
+        <p className="text-muted-foreground leading-relaxed">Le règlement peut restreindre certaines activités ou exiger l'approbation de l'assemblée générale. Vérifiez les restrictions sur l'usage santé, la signalétique et l'accès des patients.</p>
       </section>
 
-      <section className="mb-10">
+      <section id="erp">
         <h2 className="text-xl font-heading font-bold mb-3">Étape 3&nbsp;: évaluer la conformité ERP</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Tout local recevant du public doit respecter les normes ERP d'accessibilité. Cela inclut l'accès pour les personnes à mobilité réduite, des largeurs de portes conformes (minimum 90&nbsp;cm), des sanitaires adaptés, une signalétique appropriée et éventuellement une rampe ou un ascenseur.</p>
-        <p className="text-muted-foreground leading-relaxed mb-3">Pour les bâtiments existants, des dérogations (Ad'AP — Agenda d'Accessibilité Programmée) sont possibles, mais la procédure prend du temps et l'approbation n'est pas garantie. Budgétisez la mise aux normes complète par défaut et considérez toute dérogation comme un bonus.</p>
+        <p className="text-muted-foreground leading-relaxed mb-3">Normes ERP&nbsp;: accès PMR, largeurs de portes conformes (min 90&nbsp;cm), sanitaires adaptés, signalétique appropriée.</p>
+        <p className="text-muted-foreground leading-relaxed">Budgétisez la mise aux normes complète par défaut.</p>
       </section>
 
-      <section className="mb-10">
+      <section id="acoustique">
         <h2 className="text-xl font-heading font-bold mb-3">Étape 4&nbsp;: traiter l'acoustique, la ventilation et l'intimité</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Les cabinets de consultation nécessitent une attention particulière&nbsp;:</p>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-          <li><strong>Isolation acoustique&nbsp;:</strong> les conversations doivent rester confidentielles. Cloisons, traitement du plafond et joints de portes sont essentiels</li>
-          <li><strong>Ventilation&nbsp;:</strong> un local commercial peut manquer de renouvellement d'air adapté à un cabinet. Une ventilation mécanique peut être nécessaire</li>
-          <li><strong>Intimité visuelle&nbsp;:</strong> les vitrines en rez-de-chaussée peuvent nécessiter un vitrage opaque, des rideaux ou un réagencement pour protéger la dignité du patient / client</li>
+          <li><strong>Isolation acoustique&nbsp;:</strong> confidentialité des conversations</li>
+          <li><strong>Ventilation&nbsp;:</strong> renouvellement d'air adapté</li>
+          <li><strong>Intimité visuelle&nbsp;:</strong> vitrines en rez-de-chaussée à traiter</li>
         </ul>
-        <p className="text-muted-foreground leading-relaxed mb-3">Ces éléments sont souvent sous-estimés mais affectent directement le confort du patient / client et la conformité réglementaire.</p>
       </section>
 
-      <section className="mb-10">
+      <section id="couts">
         <h2 className="text-xl font-heading font-bold mb-3">Combien ça coûte&nbsp;?</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Le coût de transformation dépend fortement de l'état initial du local et de l'ampleur des travaux&nbsp;:</p>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-          <li><strong>Adaptation légère</strong> (travaux esthétiques, cloisonnement mineur)&nbsp;: 500–800&nbsp;€/m²</li>
-          <li><strong>Transformation standard</strong> (cloisonnement, plomberie, acoustique, ERP basique)&nbsp;: 800–1&nbsp;200&nbsp;€/m²</li>
-          <li><strong>Rénovation complète</strong> (modifications structurelles, conformité ERP totale, finitions haut de gamme)&nbsp;: 1&nbsp;200–1&nbsp;500+&nbsp;€/m²</li>
+          <li><strong>Adaptation légère&nbsp;:</strong> 500–800&nbsp;€/m²</li>
+          <li><strong>Transformation standard&nbsp;:</strong> 800–1&nbsp;200&nbsp;€/m²</li>
+          <li><strong>Rénovation complète&nbsp;:</strong> 1&nbsp;200–1&nbsp;500+&nbsp;€/m²</li>
         </ul>
-        <p className="text-muted-foreground leading-relaxed mb-3">Postes principaux&nbsp;: plomberie (ajout d'un point d'eau), traitement acoustique, mises aux normes d'accessibilité, mise à niveau électrique et qualité des finitions. Prévoyez toujours une marge de 10 à 15&nbsp;%.</p>
+        <p className="text-muted-foreground leading-relaxed">Prévoyez toujours une marge de 10 à 15&nbsp;%.</p>
       </section>
 
-      <section className="mb-10">
+      <section id="delais">
         <h2 className="text-xl font-heading font-bold mb-3">Combien de temps faut-il&nbsp;?</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Calendrier type d'une transformation&nbsp;:</p>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-          <li>Vérifications et autorisations administratives&nbsp;: 1 à 3 mois</li>
-          <li>Conception et choix des entreprises&nbsp;: 2 à 4 semaines</li>
-          <li>Travaux de rénovation&nbsp;: 4 à 12 semaines selon l'ampleur</li>
-          <li>Réceptions et vérifications de conformité&nbsp;: 1 à 2 semaines</li>
+          <li>Vérifications administratives&nbsp;: 1 à 3 mois</li>
+          <li>Conception et entreprises&nbsp;: 2 à 4 semaines</li>
+          <li>Travaux&nbsp;: 4 à 12 semaines</li>
+          <li>Réceptions et conformité&nbsp;: 1 à 2 semaines</li>
         </ul>
-        <p className="text-muted-foreground leading-relaxed mb-3">Total&nbsp;: 2 à 6 mois de la décision initiale à l'ouverture. Les étapes administratives sont souvent les plus longues — lancez-les en premier.</p>
+        <p className="text-muted-foreground leading-relaxed">Total&nbsp;: 2 à 6 mois. Lancez les démarches administratives en premier.</p>
       </section>
 
-      <section className="mb-10">
+      <section id="erreurs">
         <h2 className="text-xl font-heading font-bold mb-3">Les erreurs fréquentes à éviter</h2>
         <ul className="list-disc pl-5 space-y-2 text-muted-foreground leading-relaxed">
-          <li>Signer un bail avant d'avoir vérifié la destination et le règlement de copropriété</li>
-          <li>Sous-estimer les coûts de mise aux normes ERP — les seules adaptations d'accessibilité peuvent atteindre 5&nbsp;000 à 15&nbsp;000&nbsp;€</li>
-          <li>Ignorer l'isolation acoustique — la confidentialité du patient / client est non négociable</li>
-          <li>Démarrer les travaux avant d'avoir obtenu toutes les autorisations nécessaires</li>
-          <li>Ne pas budgétiser de marge pour imprévus (10 à 15&nbsp;% du total des travaux)</li>
-          <li>Supposer que tout local commercial en rez-de-chaussée est automatiquement transformable</li>
+          <li>Signer un bail avant d'avoir vérifié la destination et la copropriété</li>
+          <li>Sous-estimer les coûts ERP — les adaptations d'accessibilité seules peuvent atteindre 5&nbsp;000 à 15&nbsp;000&nbsp;€</li>
+          <li>Ignorer l'isolation acoustique — la confidentialité est non négociable</li>
+          <li>Démarrer les travaux avant d'avoir toutes les autorisations</li>
+          <li>Ne pas budgétiser de marge pour imprévus (10–15&nbsp;%)</li>
+          <li>Supposer que tout rez-de-chaussée commercial est automatiquement transformable</li>
         </ul>
       </section>
-
-      <section className="mb-10">
-        <h2 className="text-xl font-heading font-bold mb-3">Questions fréquentes</h2>
-        <div className="space-y-6">
-          <div><p className="font-semibold mb-1">Faut-il un permis pour transformer un commerce en cabinet&nbsp;?</p><p className="text-muted-foreground leading-relaxed">Cela dépend de la destination actuelle. Un changement de destination nécessite généralement une déclaration préalable ou un permis auprès de la mairie. Consultez le service d'urbanisme avant de vous engager.</p></div>
-          <div><p className="font-semibold mb-1">Combien de temps dure une transformation&nbsp;?</p><p className="text-muted-foreground leading-relaxed">Généralement 2 à 6 mois, incluant les démarches administratives (1–3 mois) et les travaux (1–3 mois). Les projets complexes peuvent être plus longs.</p></div>
-          <div><p className="font-semibold mb-1">Tout local commercial peut-il être transformé&nbsp;?</p><p className="text-muted-foreground leading-relaxed">Non. Des contraintes physiques (hauteur sous plafond, accès, murs porteurs, lumière naturelle), juridiques (urbanisme, copropriété) et normatives (accessibilité) peuvent rendre certains locaux inadaptés.</p></div>
-          <div><p className="font-semibold mb-1">Quels sont les coûts cachés les plus fréquents&nbsp;?</p><p className="text-muted-foreground leading-relaxed">Les mises aux normes ERP, l'isolation acoustique et la plomberie (ajout de points d'eau) sont les postes les plus souvent sous-estimés. Demandez toujours des devis détaillés avant de vous engager.</p></div>
-          <div><p className="font-semibold mb-1">Est-il plus simple de rejoindre un espace mutualisé&nbsp;?</p><p className="text-muted-foreground leading-relaxed">Souvent, oui. Les espaces mutualisés sont déjà aménagés, conformes et prêts à l'usage. Pour les praticiens qui veulent éviter la complexité et le coût d'une transformation, ils offrent une alternative concrète.</p></div>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-xl font-heading font-bold mb-3">Conclusion</h2>
-        <p className="text-muted-foreground leading-relaxed">Transformer un local commercial en cabinet de soins est une voie viable vers un exercice bien situé, à condition de vérifier méthodiquement tous les aspects réglementaires, techniques et financiers. Si la complexité ou le coût semble disproportionné, les espaces de soins mutualisés offrent une alternative clé en main qui vous permet de vous concentrer sur votre pratique plutôt que sur la gestion de travaux.</p>
-      </section>
-    </InsightLayout>
+    </InsightArticleTemplate>
   );
 }
