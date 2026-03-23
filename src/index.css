@@ -79,7 +79,24 @@
 
 @layer components {
   .section-padding {
-    @apply py-20 md:py-28 lg:py-32;
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  /* Editorial body styling for insight articles */
+  .insight-body h2 {
+    @apply text-xl font-heading font-bold mb-2.5 mt-0;
+  }
+  .insight-body h3 {
+    @apply text-base font-heading font-semibold mb-2 mt-4;
+  }
+  .insight-body p {
+    @apply text-muted-foreground leading-relaxed mb-2.5;
+  }
+  .insight-body ul, .insight-body ol {
+    @apply pl-5 space-y-1 text-muted-foreground mb-2.5;
+  }
+  .insight-body section {
+    @apply scroll-mt-20;
   }
 
   .container-tight {

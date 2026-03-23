@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
+import { Helmet } from "react-helmet-async";
 
 /* ── Types ─────────────────────────────────────────────── */
 
@@ -98,6 +99,8 @@ export function InsightArticleTemplate({
           cta: "Vous cherchez un cabinet à Bordeaux\u00a0?",
           ctaText:
             "Découvrez les espaces I‑CA.RE et échangeons sur votre projet d'installation.",
+          ctaTransition:
+            "Chaque projet d'installation dépend de votre activité, de votre budget et du niveau de mutualisation recherché. Le plus simple est souvent de confronter votre besoin à un lieu déjà adapté.",
         }
       : {
           home: "Home",
@@ -114,15 +117,34 @@ export function InsightArticleTemplate({
           cta: "Looking for an office in Bordeaux?",
           ctaText:
             "Discover I‑CA.RE spaces and let's discuss your project.",
+          ctaTransition:
+            "Every set-up project depends on your activity, budget and how much you want to share. The simplest step is often to compare your needs with a space that's already designed for care.",
         };
+
+  /* ── FAQ JSON-LD ──────────────────────────────────────── */
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((item) => ({
+      "@type": "Question",
+      name: typeof item.question === "string" ? item.question : "",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: typeof item.answer === "string" ? item.answer : "",
+      },
+    })),
+  };
 
   return (
     <Layout>
       <SeoHead title={title} description={description} path={path} />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
+      </Helmet>
 
       <article>
         {/* ── Hero ──────────────────────────────────── */}
-        <header className="relative h-[240px] md:h-[320px] overflow-hidden">
+        <header className="relative h-[220px] md:h-[280px] overflow-hidden">
           <FadeImage
             src={heroImage}
             alt={heroImageAlt}
@@ -131,11 +153,11 @@ export function InsightArticleTemplate({
             fadeDuration={300}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/75 via-foreground/40 to-foreground/15" />
-          <div className="relative h-full container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl flex flex-col justify-end pb-7">
+          <div className="relative h-full container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl flex flex-col justify-end pb-6">
             {/* Breadcrumb */}
             <nav
               aria-label="fil d'Ariane"
-              className="text-xs sm:text-sm text-primary-foreground/70 mb-3"
+              className="text-xs sm:text-sm text-primary-foreground/70 mb-2"
             >
               <Link
                 to={localePath(lang, "home")}
@@ -157,18 +179,18 @@ export function InsightArticleTemplate({
           </div>
         </header>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl pt-8 pb-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl pt-6 pb-12">
           {/* ── Intro ────────────────────────────────── */}
-          <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+          <p className="text-lg text-muted-foreground leading-relaxed mb-6">
             {intro}
           </p>
 
           {/* ── Takeaways ────────────────────────────── */}
-          <aside className="bg-secondary border border-border rounded-lg p-5 sm:p-6 mb-10">
-            <h2 className="text-base sm:text-lg font-heading font-bold mb-3">
+          <aside className="bg-secondary border border-border rounded-lg p-5 sm:p-6 mb-8">
+            <h2 className="text-base sm:text-lg font-heading font-bold mb-2.5">
               {l.takeaways}
             </h2>
-            <ul className="space-y-2 text-sm sm:text-base text-muted-foreground">
+            <ul className="space-y-1.5 text-sm sm:text-base text-muted-foreground">
               {takeaways.map((t, i) => (
                 <li key={i} className="flex gap-2.5 items-start">
                   <span className="text-primary mt-0.5 shrink-0">✓</span>
@@ -179,11 +201,11 @@ export function InsightArticleTemplate({
           </aside>
 
           {/* ── TOC ──────────────────────────────────── */}
-          <nav className="border border-border rounded-lg p-4 sm:p-5 mb-10">
-            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
+          <nav className="border border-border rounded-lg p-4 sm:p-5 mb-8">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
               {l.toc}
             </p>
-            <ol className="space-y-1.5 text-sm">
+            <ol className="space-y-1 text-sm">
               {toc.map((item, i) => (
                 <li key={item.id}>
                   <a
@@ -198,15 +220,15 @@ export function InsightArticleTemplate({
           </nav>
 
           {/* ── Body ─────────────────────────────────── */}
-          <div className="insight-body space-y-8">{children}</div>
+          <div className="insight-body space-y-6">{children}</div>
 
           {/* ── Key figures ───────────────────────────── */}
           {keyFigures && keyFigures.length > 0 && (
-            <aside className="bg-muted/60 border border-border rounded-lg p-5 sm:p-6 mt-10">
-              <h2 className="text-base sm:text-lg font-heading font-bold mb-4">
+            <aside className="bg-muted/60 border border-border rounded-lg p-5 sm:p-6 mt-8">
+              <h2 className="text-base sm:text-lg font-heading font-bold mb-3">
                 {l.figures}
               </h2>
-              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+              <dl className="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-2.5">
                 {keyFigures.map((fig, i) => (
                   <div key={i}>
                     <dt className="text-xs text-muted-foreground uppercase tracking-wide">
@@ -222,8 +244,8 @@ export function InsightArticleTemplate({
           )}
 
           {/* ── FAQ ──────────────────────────────────── */}
-          <section id="faq" className="mt-12 pt-8 border-t border-border">
-            <h2 className="text-lg sm:text-xl font-heading font-bold mb-5">
+          <section id="faq" className="mt-10 pt-6 border-t border-border">
+            <h2 className="text-lg sm:text-xl font-heading font-bold mb-4">
               {l.faq}
             </h2>
             <Accordion type="multiple">
@@ -242,38 +264,43 @@ export function InsightArticleTemplate({
             </Accordion>
           </section>
 
-          {/* ── CTA ──────────────────────────────────── */}
-          <section className="mt-12 bg-foreground rounded-lg p-6 sm:p-8 text-center">
-            <h2 className="text-lg sm:text-xl font-heading font-bold text-primary-foreground mb-2">
-              {l.cta}
-            </h2>
-            <p className="text-primary-foreground/75 text-sm sm:text-base mb-5 max-w-md mx-auto">
-              {l.ctaText}
+          {/* ── CTA transition + block ───────────────── */}
+          <section className="mt-10">
+            <p className="text-sm text-muted-foreground leading-relaxed italic mb-5">
+              {l.ctaTransition}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button asChild variant="gold" size="lg">
-                <Link to={localePath(lang, ctaPrimaryRoute)}>
-                  {ctaPrimaryLabel}
-                </Link>
-              </Button>
-              {ctaSecondaryRoute && ctaSecondaryLabel && (
-                <Button
-                  asChild
-                  variant="outline"
-                  size="lg"
-                  className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
-                >
-                  <Link to={localePath(lang, ctaSecondaryRoute)}>
-                    {ctaSecondaryLabel}
+            <div className="bg-foreground rounded-lg p-6 sm:p-8 text-center">
+              <h2 className="text-lg sm:text-xl font-heading font-bold text-primary-foreground mb-2">
+                {l.cta}
+              </h2>
+              <p className="text-primary-foreground/75 text-sm sm:text-base mb-4 max-w-md mx-auto">
+                {l.ctaText}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button asChild variant="gold" size="lg">
+                  <Link to={localePath(lang, ctaPrimaryRoute)}>
+                    {ctaPrimaryLabel}
                   </Link>
                 </Button>
-              )}
+                {ctaSecondaryRoute && ctaSecondaryLabel && (
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+                  >
+                    <Link to={localePath(lang, ctaSecondaryRoute)}>
+                      {ctaSecondaryLabel}
+                    </Link>
+                  </Button>
+                )}
+              </div>
             </div>
           </section>
 
           {/* ── I‑CA.RE approach ──────────────────────── */}
-          <section className="mt-12 pt-8 border-t border-border">
-            <h2 className="text-base sm:text-lg font-heading font-bold mb-3">
+          <section className="mt-8 pt-6 border-t border-border">
+            <h2 className="text-base sm:text-lg font-heading font-bold mb-2">
               {l.approach}
             </h2>
             <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
@@ -282,21 +309,21 @@ export function InsightArticleTemplate({
           </section>
 
           {/* ── Related guides ────────────────────────── */}
-          <nav className="mt-10 pt-8 border-t border-border">
-            <h2 className="text-base sm:text-lg font-heading font-bold mb-4">
+          <nav className="mt-8 pt-6 border-t border-border">
+            <h2 className="text-base sm:text-lg font-heading font-bold mb-3">
               {l.related}
             </h2>
-            <div className="grid gap-3">
+            <div className="grid gap-2.5">
               {relatedGuides.map((guide) => (
                 <Link
                   key={guide.routeKey}
                   to={localePath(lang, guide.routeKey)}
-                  className="block p-4 border border-border rounded-lg hover:bg-secondary/60 transition-colors"
+                  className="block p-3.5 border border-border rounded-lg hover:bg-secondary/60 transition-colors"
                 >
                   <p className="font-semibold text-sm text-foreground">
                     {guide.title}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     {guide.description}
                   </p>
                 </Link>
@@ -305,7 +332,7 @@ export function InsightArticleTemplate({
           </nav>
 
           {/* ── Back ─────────────────────────────────── */}
-          <div className="mt-8">
+          <div className="mt-6">
             <Link
               to={localePath(lang, "insights")}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
