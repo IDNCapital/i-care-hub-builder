@@ -102,8 +102,8 @@ const App = () => (
                 <Route path="/practitioners" element={<Professionnels />} />
                 <Route path="/office-rental-bordeaux" element={<LocationCabinetBordeaux />} />
                 <Route path="/faq" element={<FAQ />} />
-                <Route path="/blog/finding-office-bordeaux-practitioner" element={<BlogTrouverCabinet />} />
-                <Route path="/blog/consultation-office-cost-bordeaux" element={<BlogCoutCabinetBordeaux />} />
+                <Route path="/blog/finding-office-bordeaux-practitioner" element={<Navigate to="/en/insights/medical-office-bordeaux" replace />} />
+                <Route path="/blog/consultation-office-cost-bordeaux" element={<Navigate to="/en/insights/office-budget-bordeaux" replace />} />
                 <Route path="/setting-up-practice" element={<InstallerCabinet />} />
                 <Route path="/finding-medical-office-bordeaux" element={<TrouverCabinetMedicalBordeaux />} />
                 <Route path="/insights/medical-office-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
