@@ -145,6 +145,7 @@ const App = () => (
                 <Route path="/location-cabinet-bordeaux" element={<LocationCabinetBordeaux />} />
                 <Route path="/questions-frequentes" element={<FAQ />} />
                 <Route path="/blog/trouver-cabinet-bordeaux-praticien" element={<BlogTrouverCabinet />} />
+                <Route path="/blog/combien-coute-cabinet-consultation-bordeaux" element={<BlogCoutCabinetBordeaux />} />
                 <Route path="/installer-cabinet-praticien" element={<InstallerCabinet />} />
                 <Route path="/trouver-cabinet-medical-bordeaux" element={<TrouverCabinetMedicalBordeaux />} />
                 <Route path="/insights/cabinet-medical-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
