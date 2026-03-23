@@ -6,6 +6,7 @@ import { localePath } from "@/lib/routes";
 import { ArrowRight, MapPin, Euro, Ruler, Building2, Users, KeyRound } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BrandName } from "@/components/BrandName";
+import { Helmet } from "react-helmet-async";
 
 interface GuideLink {
   routeKey: string;
@@ -114,6 +115,17 @@ export default function InsightsIndex() {
 
   const faqItems = FAQ_ITEMS[lang];
 
+  /* FAQ JSON-LD */
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+
   return (
     <Layout>
       <SeoHead
@@ -123,28 +135,31 @@ export default function InsightsIndex() {
           : "Practical guides for care, allied health and wellbeing practitioners: finding an office, understanding costs, choosing the right size and setting up with confidence."}
         path={lang === "fr" ? "/insights" : "/en/insights"}
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
+      </Helmet>
 
-      <div className="pt-32 pb-20">
+      <div className="pt-28 pb-14">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <h1 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+          <h1 className="text-3xl md:text-4xl font-heading font-bold mb-4">
             {lang === "fr"
               ? "Guides pratiques pour s'installer comme praticien"
               : "Practical guides for setting up as a practitioner"}
           </h1>
 
-          <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+          <p className="text-lg text-muted-foreground leading-relaxed mb-3">
             {lang === "fr"
               ? "Vous êtes praticien du soin, du paramédical ou du bien-être et vous préparez votre installation ? Trouver le bon local, anticiper les coûts, comprendre les normes, choisir entre location et achat : chaque étape soulève des questions concrètes auxquelles il n'est pas toujours facile de répondre seul."
               : "Are you a care, allied health or wellbeing practitioner preparing to set up? Finding the right space, anticipating costs, understanding regulations, choosing between renting and buying: each step raises practical questions that are not always easy to answer alone."}
           </p>
 
-          <p className="text-muted-foreground leading-relaxed mb-4">
+          <p className="text-muted-foreground leading-relaxed mb-3">
             {lang === "fr"
               ? "Cette section regroupe des guides pratiques, rédigés pour vous aider à y voir plus clair. Chaque article traite d'une question précise, avec des informations factuelles, des repères concrets et des conseils issus de l'expérience terrain."
               : "This section gathers practical guides written to help you see more clearly. Each article addresses a specific question, with factual information, concrete benchmarks and advice drawn from real-world experience."}
           </p>
 
-          <p className="text-sm text-muted-foreground leading-relaxed mb-16 italic">
+          <p className="text-sm text-muted-foreground leading-relaxed mb-10 italic">
             {lang === "fr"
               ? "Ces guides s'adressent en priorité aux praticiens qui préparent leur installation dans un cabinet individuel ou un espace de soins partagé, notamment à Bordeaux et en Nouvelle-Aquitaine."
               : "These guides are primarily intended for practitioners preparing to set up in a private office or shared care space, particularly in Bordeaux and Nouvelle-Aquitaine."}
@@ -152,27 +167,27 @@ export default function InsightsIndex() {
 
           {/* Sections with H2 */}
           {SECTIONS.map((section, idx) => (
-            <div key={idx} className="mb-14">
-              <h2 className="text-2xl font-heading font-bold mb-6 pb-2 border-b border-border">
+            <div key={idx} className="mb-10">
+              <h2 className="text-2xl font-heading font-bold mb-4 pb-2 border-b border-border">
                 {lang === "fr" ? section.titleFr : section.titleEn}
               </h2>
-              <div className="grid gap-5">
+              <div className="grid gap-4">
                 {section.guides.map((guide) => {
                   const Icon = guide.icon;
                   return (
                     <Link
                       key={guide.routeKey}
                       to={localePath(lang, guide.routeKey)}
-                      className="group flex items-start gap-4 p-5 rounded-xl border border-border bg-card hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+                      className="group flex items-start gap-3.5 p-4 rounded-xl border border-border bg-card hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
                     >
-                      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mt-0.5">
-                        <Icon className="w-5 h-5 text-primary" />
+                      <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mt-0.5">
+                        <Icon className="w-4.5 h-4.5 text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-heading font-semibold mb-1.5 group-hover:text-primary transition-colors leading-snug">
+                        <h3 className="text-base font-heading font-semibold mb-1 group-hover:text-primary transition-colors leading-snug">
                           {lang === "fr" ? guide.titleFr : guide.titleEn}
                         </h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+                        <p className="text-sm text-muted-foreground leading-relaxed mb-1.5">
                           {lang === "fr" ? guide.descFr : guide.descEn}
                         </p>
                         <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:gap-2 transition-all">
@@ -188,17 +203,17 @@ export default function InsightsIndex() {
           ))}
 
           {/* FAQ */}
-          <div className="mt-16">
-            <h2 className="text-2xl font-heading font-bold mb-6 pb-2 border-b border-border">
+          <div className="mt-10">
+            <h2 className="text-2xl font-heading font-bold mb-4 pb-2 border-b border-border">
               {lang === "fr" ? "Questions fréquentes" : "Frequently asked questions"}
             </h2>
             <Accordion type="single" collapsible className="w-full">
               {faqItems.map((item, idx) => (
                 <AccordionItem key={idx} value={`faq-${idx}`}>
-                  <AccordionTrigger className="text-left font-heading font-semibold">
+                  <AccordionTrigger className="text-left text-sm sm:text-base font-heading font-semibold">
                     {item.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                  <AccordionContent className="text-muted-foreground leading-relaxed text-sm sm:text-base">
                     {item.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -206,9 +221,9 @@ export default function InsightsIndex() {
             </Accordion>
           </div>
 
-          {/* CTA discret */}
-          <div className="mt-16 text-center">
-            <p className="text-muted-foreground mb-4">
+          {/* CTA */}
+          <div className="mt-10 text-center">
+            <p className="text-muted-foreground mb-3">
               {lang === "fr"
                 ? "Vous cherchez un cabinet adapté à votre pratique à Bordeaux ?"
                 : "Looking for an office suited to your practice in Bordeaux?"}
