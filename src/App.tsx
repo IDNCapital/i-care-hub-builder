@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import LocationCabinetBordeaux from "./pages/LocationCabinetBordeaux";
 import FAQ from "./pages/FAQ";
 import BlogTrouverCabinet from "./pages/BlogTrouverCabinet";
+import BlogCoutCabinetBordeaux from "./pages/BlogCoutCabinetBordeaux";
 import InstallerCabinet from "./pages/InstallerCabinet";
 import TrouverCabinetMedicalBordeaux from "./pages/TrouverCabinetMedicalBordeaux";
 import InsightsCabinetMedicalBordeaux from "./pages/InsightsCabinetMedicalBordeaux";
@@ -102,6 +103,7 @@ const App = () => (
                 <Route path="/office-rental-bordeaux" element={<LocationCabinetBordeaux />} />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/blog/finding-office-bordeaux-practitioner" element={<BlogTrouverCabinet />} />
+                <Route path="/blog/consultation-office-cost-bordeaux" element={<BlogCoutCabinetBordeaux />} />
                 <Route path="/setting-up-practice" element={<InstallerCabinet />} />
                 <Route path="/finding-medical-office-bordeaux" element={<TrouverCabinetMedicalBordeaux />} />
                 <Route path="/insights/medical-office-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
@@ -143,6 +145,7 @@ const App = () => (
                 <Route path="/location-cabinet-bordeaux" element={<LocationCabinetBordeaux />} />
                 <Route path="/questions-frequentes" element={<FAQ />} />
                 <Route path="/blog/trouver-cabinet-bordeaux-praticien" element={<BlogTrouverCabinet />} />
+                <Route path="/blog/combien-coute-cabinet-consultation-bordeaux" element={<BlogCoutCabinetBordeaux />} />
                 <Route path="/installer-cabinet-praticien" element={<InstallerCabinet />} />
                 <Route path="/trouver-cabinet-medical-bordeaux" element={<TrouverCabinetMedicalBordeaux />} />
                 <Route path="/insights/cabinet-medical-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
