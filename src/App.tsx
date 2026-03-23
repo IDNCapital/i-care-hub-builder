@@ -127,6 +127,11 @@ const App = () => (
               <Route path="/methode" element={<Navigate to="/notre-approche" replace />} />
               <Route path="/praticiens" element={<Navigate to="/professionnels" replace />} />
 
+              {/* Blog → Insights 301 redirects */}
+              <Route path="/blog/trouver-cabinet-bordeaux-praticien" element={<Navigate to="/insights/cabinet-medical-bordeaux" replace />} />
+              <Route path="/blog/combien-coute-cabinet-consultation-bordeaux" element={<Navigate to="/insights/budget-cabinet-bordeaux" replace />} />
+              <Route path="/blog" element={<Navigate to="/insights" replace />} />
+
               {/* FR routes (root, no prefix) */}
               <Route path="/*" element={<LangSync lang="fr"><Routes>
                 <Route path="/" element={<Index />} />
