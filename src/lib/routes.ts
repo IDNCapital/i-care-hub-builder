@@ -45,6 +45,7 @@ const routeMap: Record<string, Record<string, string>> = {
     locationBordeaux: "office-rental-bordeaux",
     faq: "faq",
     blogTrouverCabinet: "blog/finding-office-bordeaux-practitioner",
+    blogCoutCabinet: "blog/consultation-office-cost-bordeaux",
     installerCabinet: "setting-up-practice",
     trouverCabinetMedical: "finding-medical-office-bordeaux",
     insights: "insights",
