@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import LocationCabinetBordeaux from "./pages/LocationCabinetBordeaux";
 import FAQ from "./pages/FAQ";
 import BlogTrouverCabinet from "./pages/BlogTrouverCabinet";
+import BlogCoutCabinetBordeaux from "./pages/BlogCoutCabinetBordeaux";
 import InstallerCabinet from "./pages/InstallerCabinet";
 import TrouverCabinetMedicalBordeaux from "./pages/TrouverCabinetMedicalBordeaux";
 import InsightsCabinetMedicalBordeaux from "./pages/InsightsCabinetMedicalBordeaux";
