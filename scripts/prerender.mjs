@@ -404,9 +404,21 @@ async function main() {
     `\n[prerender] Done: ${total} prerendered, ${fail} failed out of ${ROUTES.length} routes.`
   );
 
-  if (fail > 0 && !OPTIONAL) {
+  // Fail on critical SEO issues on strategic pages (even if prerender succeeded)
+  if (criticalFails.length > 0 && !OPTIONAL) {
+    console.error(`\n[prerender] BUILD FAILED: ${criticalFails.length} strategic page(s) missing critical SEO elements.`);
     process.exit(1);
   }
+
+  if (fail > 0 && !OPTIONAL) {
+    console.error(`\n[prerender] BUILD FAILED: ${fail} route(s) failed to prerender.`);
+    process.exit(1);
+  }
+
+  if (fail > 0 || criticalFails.length > 0) {
+    console.warn(`\n[prerender] PRERENDER_OPTIONAL=true → continuing despite ${fail} failures and ${criticalFails.length} critical issues.`);
+  }
+
   process.exit(0);
 }
 
