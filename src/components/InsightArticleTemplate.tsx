@@ -56,6 +56,9 @@ export interface InsightArticleTemplateProps {
   ctaSecondaryLabel?: string;
   /* Related */
   relatedGuides: RelatedGuide[];
+  /* JSON-LD dates (optional) */
+  datePublished?: string;
+  dateModified?: string;
 }
 
 /* ── Component ─────────────────────────────────────────── */
@@ -78,9 +81,15 @@ export function InsightArticleTemplate({
   ctaSecondaryRoute,
   ctaSecondaryLabel,
   relatedGuides,
+  datePublished,
+  dateModified,
 }: InsightArticleTemplateProps) {
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
+
+  const BASE_URL = "https://i-ca.re";
+  const canonical = `${BASE_URL}${path}`;
+  const insightsPath = lang === "fr" ? "/insights" : "/en/insights";
 
   const l =
     lang === "fr"
@@ -135,11 +144,58 @@ export function InsightArticleTemplate({
     })),
   };
 
+  /* ── Article JSON-LD ─────────────────────────────────── */
+  const articleJsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: articleTitle,
+    description,
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+    url: canonical,
+    ...(heroImage ? { image: heroImage } : {}),
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
+    author: { "@type": "Organization", name: "I-CA.RE", url: BASE_URL },
+    publisher: {
+      "@type": "Organization",
+      name: "I-CA.RE",
+      url: BASE_URL,
+    },
+  };
+
+  /* ── BreadcrumbList JSON-LD ──────────────────────────── */
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: l.home,
+        item: BASE_URL + (lang === "fr" ? "/" : "/en/"),
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: l.guides,
+        item: `${BASE_URL}${insightsPath}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: articleTitle,
+        item: canonical,
+      },
+    ],
+  };
+
   return (
     <Layout>
       <SeoHead title={title} description={description} path={path} />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
       </Helmet>
 
       <article>
