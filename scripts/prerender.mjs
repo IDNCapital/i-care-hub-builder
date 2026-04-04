@@ -375,6 +375,17 @@ async function main() {
   await browser.close();
   server.close();
 
+  // Create 404.html for GitHub Pages SPA fallback (copy root index.html)
+  const rootIndex = join(DIST, "index.html");
+  const fallback404 = join(DIST, "404.html");
+  try {
+    const rootHtml = await readFile(rootIndex, "utf-8");
+    await writeFile(fallback404, rootHtml, "utf-8");
+    console.log(`[prerender] ✓ Created 404.html (SPA fallback for GitHub Pages)`);
+  } catch (err) {
+    console.warn(`[prerender] ⚠ Could not create 404.html: ${err.message}`);
+  }
+
   // Print validation report
   console.log("\n══════════════════════════════════════════════════════════════");
   console.log("PRERENDER VALIDATION REPORT");
