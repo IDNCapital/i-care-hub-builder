@@ -44,7 +44,7 @@ jobs:
         run: npx puppeteer browsers install chrome
 
       - name: Build + Prerender (strict mode)
-        run: bun run build
+        run: bun run build:ci
         env:
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY || secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
