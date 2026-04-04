@@ -56,6 +56,9 @@ export interface InsightArticleTemplateProps {
   ctaSecondaryLabel?: string;
   /* Related */
   relatedGuides: RelatedGuide[];
+  /* JSON-LD dates (optional) */
+  datePublished?: string;
+  dateModified?: string;
 }
 
 /* ── Component ─────────────────────────────────────────── */
