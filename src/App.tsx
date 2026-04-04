@@ -126,6 +126,8 @@ const App = () => (
               <Route path="/investisseurs" element={<Navigate to="/investissement" replace />} />
               <Route path="/methode" element={<Navigate to="/notre-approche" replace />} />
               <Route path="/praticiens" element={<Navigate to="/professionnels" replace />} />
+              <Route path="/realisations" element={<Navigate to="/projets" replace />} />
+              <Route path="/nos-offres" element={<Navigate to="/professionnels" replace />} />
 
               {/* Blog → Insights 301 redirects */}
               <Route path="/blog/trouver-cabinet-bordeaux-praticien" element={<Navigate to="/insights/cabinet-medical-bordeaux" replace />} />
