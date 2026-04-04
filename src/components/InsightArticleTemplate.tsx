@@ -81,9 +81,15 @@ export function InsightArticleTemplate({
   ctaSecondaryRoute,
   ctaSecondaryLabel,
   relatedGuides,
+  datePublished,
+  dateModified,
 }: InsightArticleTemplateProps) {
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
+
+  const BASE_URL = "https://i-ca.re";
+  const canonical = `${BASE_URL}${path}`;
+  const insightsPath = lang === "fr" ? "/insights" : "/en/insights";
 
   const l =
     lang === "fr"
