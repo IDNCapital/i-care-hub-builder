@@ -311,6 +311,27 @@ export default function LocationCabinetBordeaux() {
           </div>
         </div>
       </section>
+
+      {/* Cross-link to Toulouse */}
+      <section className="py-8 border-t border-border">
+        <div className="container">
+          <p className="text-center text-sm text-muted-foreground">
+            {lang === "fr" ? (
+              <>Nous sommes aussi à Toulouse →{" "}
+                <Link to={localePath(lang, "locationToulouse")} className="text-primary underline underline-offset-4 hover:text-primary/80">
+                  Cabinet à louer à Toulouse
+                </Link>
+              </>
+            ) : (
+              <>We are also in Toulouse →{" "}
+                <Link to={localePath(lang, "locationToulouse")} className="text-primary underline underline-offset-4 hover:text-primary/80">
+                  Office for rent in Toulouse
+                </Link>
+              </>
+            )}
+          </p>
+        </div>
+      </section>
     </Layout>
   );
 }

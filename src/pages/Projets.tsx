@@ -90,6 +90,19 @@ export default function Projets() {
                 <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto text-sm">
                   <InlineBrand>{t("projects.subtitle")}</InlineBrand>
                 </p>
+                {region === "toulouse" && (
+                  <p className="text-center text-sm mb-8">
+                    <Link
+                      to={localePath(lang, "locationToulouse")}
+                      className="text-primary underline underline-offset-4 hover:text-primary/80 inline-flex items-center gap-1"
+                    >
+                      {lang === "fr"
+                        ? "Voir tous les cabinets à louer à Toulouse"
+                        : "See all offices for rent in Toulouse"}
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </p>
+                )}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {centres.map((centre) => {
               const project = getProject(centre.slug);
