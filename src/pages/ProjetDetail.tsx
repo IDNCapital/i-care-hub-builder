@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import {
@@ -97,6 +98,22 @@ export default function ProjetDetail() {
         description={shortDesc}
         path={lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Place",
+          "name": project.name,
+          "description": shortDesc,
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": project.show_address ? project.address : undefined,
+            "addressLocality": project.city,
+            "addressCountry": "FR",
+          },
+          "url": `https://i-ca.re${lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}`,
+          "image": getProjectHero(project.slug, project.hero_image_url) ? `https://i-ca.re${getProjectHero(project.slug, project.hero_image_url)}` : undefined,
+        })}</script>
+      </Helmet>
 
       <section className="relative h-[60vh] min-h-[400px]">
         {(() => {

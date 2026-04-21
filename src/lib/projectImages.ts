@@ -22,6 +22,12 @@ import peyBerlandFacade from "@/assets/pey-berland/facade.webp";
 import chartronsFacade from "@/assets/chartrons/facade.webp";
 import chartronsPlan from "@/assets/chartrons/plan.webp";
 
+// Toulouse Capitole
+import toulouseCapitoleFacade from "@/assets/toulouse-capitole/facade.png";
+
+// Floirac
+import floiracFacade from "@/assets/floirac/facade.png";
+
 // Portrait
 import portraitJazmin from "@/assets/portrait-jazmin.webp";
 import portraitNicolas from "@/assets/portrait-nicolas.jpg";
@@ -67,6 +73,14 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
   "i-ca-re-chartrons": {
     hero: chartronsFacade,
     gallery: [chartronsFacade, chartronsPlan],
+  },
+  "i-ca-re-toulouse-capitole": {
+    hero: toulouseCapitoleFacade,
+    gallery: [toulouseCapitoleFacade],
+  },
+  "i-ca-re-floirac": {
+    hero: floiracFacade,
+    gallery: [floiracFacade],
   },
 };
 
