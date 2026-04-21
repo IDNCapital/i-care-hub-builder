@@ -189,6 +189,12 @@ export default function Professionnels() {
           </p>
           <p className="text-center text-muted-foreground mt-2">
             {lang === "fr"
+              ? <>Ou un <Link to={localePath(lang, "locationToulouse")} className="text-primary underline underline-offset-4 hover:text-primary/80">cabinet paramédical à louer à Toulouse</Link> ? Première ouverture Q4 2026.</>
+              : <>Or a <Link to={localePath(lang, "locationToulouse")} className="text-primary underline underline-offset-4 hover:text-primary/80">professional office to rent in Toulouse</Link>? First opening Q4 2026.</>
+            }
+          </p>
+          <p className="text-center text-muted-foreground mt-2">
+            {lang === "fr"
               ? <>Consultez nos <Link to={localePath(lang, "installerCabinet")} className="text-primary underline underline-offset-4 hover:text-primary/80">ressources pour s'installer comme praticien</Link>.</>
               : <>Browse our <Link to={localePath(lang, "installerCabinet")} className="text-primary underline underline-offset-4 hover:text-primary/80">resources for setting up as a practitioner</Link>.</>
             }
