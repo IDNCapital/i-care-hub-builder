@@ -128,36 +128,46 @@ export function TestimonialsSlider() {
                       <p className="font-body text-sm text-muted-foreground">
                         {item.speciality}
                       </p>
-                      <p className="font-body text-sm text-muted-foreground">
-                        {item.affiliation}
-                      </p>
+                      {item.affiliation && (
+                        <p className="font-body text-sm text-muted-foreground">
+                          {item.affiliation}
+                        </p>
+                      )}
                     </div>
 
-                    <div className="mt-4 space-y-0.5">
-                      <p className="font-body text-sm font-medium text-foreground/80">
-                        <InlineBrand>{item.location}</InlineBrand>
-                      </p>
-                      <p className="font-body text-xs text-muted-foreground">
-                        {item.address}
-                      </p>
-                    </div>
+                    {(item.location || item.address) && (
+                      <div className="mt-4 space-y-0.5">
+                        {item.location && (
+                          <p className="font-body text-sm font-medium text-foreground/80">
+                            <InlineBrand>{item.location}</InlineBrand>
+                          </p>
+                        )}
+                        {item.address && (
+                          <p className="font-body text-xs text-muted-foreground">
+                            {item.address}
+                          </p>
+                        )}
+                      </div>
+                    )}
 
                     <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground/70">
-                      <span>{item.phone}</span>
+                      {item.phone && <span>{item.phone}</span>}
                       <a
                         href={`mailto:${item.email}`}
                         className="hover:text-primary transition-colors"
                       >
                         {item.email}
                       </a>
-                      <a
-                        href={`https://${item.website}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-primary transition-colors"
-                      >
-                        {item.website}
-                      </a>
+                      {item.website && (
+                        <a
+                          href={`https://${item.website}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-primary transition-colors"
+                        >
+                          {item.website}
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
