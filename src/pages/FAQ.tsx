@@ -71,7 +71,10 @@ export default function FAQ() {
                   <AccordionTrigger className="text-left text-lg font-semibold hover:no-underline py-5">
                     <InlineBrand>{item.q}</InlineBrand>
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
+                  <AccordionContent
+                    forceMount
+                    className="text-muted-foreground leading-relaxed pb-5 data-[state=closed]:hidden"
+                  >
                     <InlineBrand>{item.a}</InlineBrand>
                   </AccordionContent>
                 </AccordionItem>
