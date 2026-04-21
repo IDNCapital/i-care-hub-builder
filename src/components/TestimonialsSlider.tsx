@@ -22,20 +22,24 @@ interface Testimonial {
 export function TestimonialsSlider() {
   const { t } = useTranslation();
 
-  const testimonials: Testimonial[] = [
-    {
-      quote: t("testimonials.items.0.quote"),
-      name: t("testimonials.items.0.name"),
-      title: t("testimonials.items.0.title"),
-      speciality: t("testimonials.items.0.speciality"),
-      affiliation: t("testimonials.items.0.affiliation"),
-      location: t("testimonials.items.0.location"),
-      address: t("testimonials.items.0.address"),
-      phone: t("testimonials.items.0.phone"),
-      email: t("testimonials.items.0.email"),
-      website: t("testimonials.items.0.website"),
-    },
-  ];
+  // Build testimonials array dynamically from all available items
+  const testimonials: Testimonial[] = [];
+  let index = 0;
+  while (t(`testimonials.items.${index}.quote`, { defaultValue: "" })) {
+    testimonials.push({
+      quote: t(`testimonials.items.${index}.quote`),
+      name: t(`testimonials.items.${index}.name`),
+      title: t(`testimonials.items.${index}.title`),
+      speciality: t(`testimonials.items.${index}.speciality`),
+      affiliation: t(`testimonials.items.${index}.affiliation`),
+      location: t(`testimonials.items.${index}.location`),
+      address: t(`testimonials.items.${index}.address`),
+      phone: t(`testimonials.items.${index}.phone`),
+      email: t(`testimonials.items.${index}.email`),
+      website: t(`testimonials.items.${index}.website`),
+    });
+    index++;
+  }
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "center" },
