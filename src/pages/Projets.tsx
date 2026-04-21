@@ -75,18 +75,23 @@ export default function Projets() {
         </div>
       </section>
 
-      {/* Centre Cards */}
+      {/* Centre Cards — by region */}
       <section className="section-padding bg-background">
-        <div className="container">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-4">
-            {t("projects.mapTitle")}
-          </h2>
-          <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto text-sm">
-            <InlineBrand>{t("projects.subtitle")}</InlineBrand>
-          </p>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {STATIC_CENTRES.map((centre) => {
+        <div className="container space-y-16">
+          {(["bordeaux", "toulouse"] as const).map((region) => {
+            const centres = STATIC_CENTRES.filter((c) => c.region === region);
+            if (centres.length === 0) return null;
+            const heading = region === "bordeaux"
+              ? (lang === "fr" ? "Nos implantations à Bordeaux Métropole" : "Our locations in Bordeaux Métropole")
+              : (lang === "fr" ? "Nos implantations à Toulouse" : "Our locations in Toulouse");
+            return (
+              <div key={region}>
+                <h2 className="text-2xl md:text-3xl font-semibold text-center mb-4">{heading}</h2>
+                <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto text-sm">
+                  <InlineBrand>{t("projects.subtitle")}</InlineBrand>
+                </p>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {centres.map((centre) => {
               const project = getProject(centre.slug);
               const heroSrc = centre.slug ? getProjectHero(centre.slug, project?.hero_image_url) : null;
 
@@ -109,7 +114,7 @@ export default function Projets() {
                     {/* Badge */}
                     <div className="absolute top-4 left-4">
                       <span className={`text-sm font-medium px-3 py-1.5 rounded-full ${badgeStyles[centre.status]}`}>
-                        {badgeLabel(centre.status)}
+                        {badgeLabel(centre.status)}{centre.status === "coming_soon" && centre.openingLabel ? ` — ${centre.openingLabel}` : ""}
                       </span>
                     </div>
                   </Link>
@@ -192,7 +197,10 @@ export default function Projets() {
                 </div>
               );
             })}
-          </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
       <section className="section-padding">
