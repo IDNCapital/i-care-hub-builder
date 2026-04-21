@@ -12,6 +12,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { InlineBrand } from "@/components/BrandName";
+import { Helmet } from "react-helmet-async";
 
 export default function FAQ() {
   const { t, i18n } = useTranslation();
@@ -22,6 +23,17 @@ export default function FAQ() {
     a: t(`faq.a${i + 1}`),
   }));
 
+  /* FAQ JSON-LD for SEO (rendered server-side via prerender) */
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: questions.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+
   return (
     <Layout>
       <SeoHead
@@ -29,6 +41,9 @@ export default function FAQ() {
         description={t("seo.faqDesc")}
         path={lang === "fr" ? "/questions-frequentes" : "/en/faq"}
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
+      </Helmet>
 
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container">
