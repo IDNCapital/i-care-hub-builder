@@ -100,20 +100,53 @@ export default function ProjetDetail() {
         path={lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}
       />
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Place",
-          "name": project.name,
-          "description": shortDesc,
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": project.show_address ? project.address : undefined,
-            "addressLocality": project.city,
-            "addressCountry": "FR",
-          },
-          "url": `https://i-ca.re${lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}`,
-          "image": getProjectHero(project.slug, project.hero_image_url) ? `https://i-ca.re${getProjectHero(project.slug, project.hero_image_url)}` : undefined,
-        })}</script>
+        <script type="application/ld+json">{JSON.stringify((() => {
+          const canonicalUrl = `https://i-ca.re${lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}`;
+          const heroPath = getProjectHero(project.slug, project.hero_image_url);
+          const heroUrl = heroPath ? `https://i-ca.re${heroPath}` : undefined;
+          const lb = slug ? getLocalBusinessData(slug) : undefined;
+          if (lb) {
+            return {
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "name": lb.name,
+              "description": lb.description,
+              "url": canonicalUrl,
+              "image": heroUrl,
+              "email": "contact@i-ca.re",
+              "priceRange": "€€",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": lb.streetAddress,
+                "postalCode": lb.postalCode,
+                "addressLocality": lb.addressLocality,
+                "addressRegion": "Nouvelle-Aquitaine",
+                "addressCountry": "FR",
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": lb.latitude,
+                "longitude": lb.longitude,
+              },
+              "areaServed": { "@type": "City", "name": "Bordeaux" },
+              "openingHours": "Mo-Fr 08:00-20:00",
+            };
+          }
+          return {
+            "@context": "https://schema.org",
+            "@type": "Place",
+            "name": project.name,
+            "description": shortDesc,
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": project.show_address ? project.address : undefined,
+              "addressLocality": project.city,
+              "addressCountry": "FR",
+            },
+            "url": canonicalUrl,
+            "image": heroUrl,
+          };
+        })())}</script>
       </Helmet>
 
       <section className="relative h-[60vh] min-h-[400px]">
