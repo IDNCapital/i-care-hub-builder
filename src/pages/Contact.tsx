@@ -22,6 +22,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { InlineBrand } from "@/components/BrandName";
+import { LinkedInLink } from "@/components/LinkedInLink";
 
 function getUtmParams() {
   const params = new URLSearchParams(window.location.search);
@@ -145,6 +146,9 @@ export default function Contact() {
               <div>
                 <h3 className="font-semibold mb-1">{t("contact.phone")}</h3>
                 <a href="tel:+33649808097" className="text-muted-foreground hover:text-foreground transition-colors">06 49 80 80 97</a>
+                <div className="mt-3">
+                  <LinkedInLink showLabel className="-ml-2" />
+                </div>
               </div>
             </div>
           </div>

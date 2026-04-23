@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { BrandName } from "./BrandName";
+import { LinkedInLink } from "./LinkedInLink";
 
 export function Footer() {
   const { t, i18n } = useTranslation();
@@ -122,6 +123,12 @@ export function Footer() {
               >
                 06 49 80 80 97
               </a>
+            </div>
+            <div className="mt-6">
+              <h4 className="font-sans font-bold text-xs uppercase tracking-[0.1em] text-background/40 mb-2">
+                {lang === "fr" ? "Suivre I-CA.RE" : "Follow I-CA.RE"}
+              </h4>
+              <LinkedInLink showLabel labelTone="light" className="-ml-2" />
             </div>
             <div className="mt-6">
               <h4 className="font-sans font-bold text-xs uppercase tracking-[0.1em] text-background/40 mb-2">
