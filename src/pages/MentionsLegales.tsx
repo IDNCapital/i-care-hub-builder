@@ -36,7 +36,7 @@ export default function MentionsLegales() {
             <li><strong className="text-foreground"><BrandName /></strong></li>
             <li><strong className="text-foreground">{lang === "en" ? "Legal form:" : "Forme juridique :"}</strong> {lang === "en" ? "Simplified Joint Stock Company (SAS)" : "Société par Actions Simplifiée (SAS)"}</li>
             <li><strong className="text-foreground">{lang === "en" ? "Share capital:" : "Capital social :"}</strong> 1 000 €</li>
-            <li><strong className="text-foreground">{lang === "en" ? "Registered office:" : "Siège social :"}</strong> 106 B rue Bertrand de Goth, 33800 Bordeaux</li>
+            <li><strong className="text-foreground">{lang === "en" ? "Registered office:" : "Siège social :"}</strong> 106 Bis rue Bertrand de Goth, 33800 Bordeaux</li>
             <li><strong className="text-foreground">RCS Bordeaux :</strong> 942 176 884</li>
             <li><strong className="text-foreground">{lang === "en" ? "EU VAT number:" : "Numéro de TVA intracommunautaire :"}</strong> FR37942176884</li>
             <li><strong className="text-foreground">Code APE :</strong> 68.20B — {lang === "en" ? "Leasing of land and other real property" : "Location de terrains et autres biens immobiliers"}</li>
