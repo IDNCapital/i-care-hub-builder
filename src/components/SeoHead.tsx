@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { getEquivalentPath } from "@/lib/routes";
 
 const BASE_URL = "https://i-ca.re";
-const DEFAULT_OG_IMAGE = `${BASE_URL}/og-default.jpg`;
+const DEFAULT_OG_IMAGE = `${BASE_URL}/og-i-ca-re.png`;
 
 interface SeoHeadProps {
   title: string;
