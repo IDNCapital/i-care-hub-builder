@@ -48,7 +48,7 @@ function FrVersion() {
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
             <li><strong className="text-foreground"><BrandName /></strong></li>
             <li>SAS au capital de 1 000 €</li>
-            <li>Siège social : 106 B rue Bertrand de Goth, 33800 Bordeaux</li>
+            <li>Siège social : 106 Bis rue Bertrand de Goth, 33800 Bordeaux</li>
             <li>RCS Bordeaux : 942 176 884</li>
             <li>Email : <a href="mailto:contact@i-ca.re" className="text-primary hover:underline">contact@i-ca.re</a></li>
             <li>Téléphone : <a href="tel:+33649808097" className="text-primary hover:underline">06 49 80 80 97</a></li>
@@ -194,7 +194,7 @@ function EnVersion() {
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
             <li><strong className="text-foreground"><BrandName /></strong></li>
             <li>SAS with share capital of €1,000</li>
-            <li>Registered office: 106 B rue Bertrand de Goth, 33800 Bordeaux, France</li>
+            <li>Registered office: 106 Bis rue Bertrand de Goth, 33800 Bordeaux, France</li>
             <li>RCS Bordeaux: 942 176 884</li>
             <li>Email: <a href="mailto:contact@i-ca.re" className="text-primary hover:underline">contact@i-ca.re</a></li>
             <li>Phone: <a href="tel:+33649808097" className="text-primary hover:underline">+33 6 49 80 80 97</a></li>
