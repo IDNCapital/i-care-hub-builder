@@ -47,11 +47,11 @@ export default function TemoignagesPraticiens() {
     };
   }, []);
 
-  // Pick a fallback "view all reviews on Google" link from the first review with one
+  // "Voir tous les avis" — DB-provided link if any, else Pey-Berland GBP placeholder.
   const allReviewsLink =
     reviews.find((r) => r.lien_fiche_gbp)?.lien_fiche_gbp ??
     reviews.find((r) => r.lien_avis_google)?.lien_avis_google ??
-    null;
+    "https://www.google.com/maps/place/I-CA.RE+Pey-Berland";
 
   // Video placeholder backgrounds (real cabinet images, no fakes)
   const videoPlaceholders = [
