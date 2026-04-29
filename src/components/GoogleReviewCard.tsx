@@ -1,4 +1,4 @@
-import { ExternalLink, Star } from "lucide-react";
+import { Star } from "lucide-react";
 
 export interface GoogleReviewCardData {
   id: string;
@@ -107,17 +107,23 @@ export function GoogleReviewCard({
 
       {/* Footer link */}
       {externalUrl && (
-        <a
-          href={externalUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 font-body text-primary hover:text-primary/80 transition-colors self-start"
-          style={{ fontSize: "0.85rem" }}
-          aria-label={`${labelSeeOnGoogle} — ${authorName}`}
+        <div
+          className="mt-4 pt-4 flex justify-end"
+          style={{ borderTop: "1px solid #BFBFBF" }}
         >
-          {labelSeeOnGoogle}
-          <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-        </a>
+          <a
+            href={externalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 font-body transition-colors"
+            style={{ fontSize: "0.85rem", color: "#9EB8A5" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#B89B6F")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#9EB8A5")}
+            aria-label={`${labelSeeOnGoogle} — ${authorName}`}
+          >
+            {labelSeeOnGoogle} →
+          </a>
+        </div>
       )}
     </article>
   );
