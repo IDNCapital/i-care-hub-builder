@@ -111,7 +111,8 @@ export function GoogleReviewCard({
           href={externalUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm text-foreground/70 hover:text-foreground transition-colors self-start"
+          className="inline-flex items-center gap-1.5 font-body text-primary hover:text-primary/80 transition-colors self-start"
+          style={{ fontSize: "0.85rem" }}
           aria-label={`${labelSeeOnGoogle} — ${authorName}`}
         >
           {labelSeeOnGoogle}
