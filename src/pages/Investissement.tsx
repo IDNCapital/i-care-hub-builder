@@ -205,7 +205,9 @@ export default function Investissement() {
                 </p>
                 {c.openingLabel && (
                   <p className="text-xs font-body text-primary mt-3 font-bold uppercase tracking-wider">
-                    {lang === "en" ? "Opening " : "Ouverture "}{c.openingLabel}
+                    {lang === "en"
+                      ? `Opening ${c.openingLabel}`
+                      : `Ouverture ${c.openingLabel.replace(/^Q(\d)/, "T$1")}`}
                   </p>
                 )}
               </div>
