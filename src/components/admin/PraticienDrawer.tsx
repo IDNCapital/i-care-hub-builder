@@ -564,17 +564,7 @@ export function PraticienDrawer({
           </p>
 
           {/* d) Bouton refresh désactivé */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span tabIndex={0} className="inline-block mt-2">
-                <Button type="button" variant="outline" size="sm" disabled>
-                  <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
-                  Rafraîchir maintenant
-                </Button>
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>Edge Function refresh-google-reviews à venir</TooltipContent>
-          </Tooltip>
+          <RefreshGoogleButton placeId={form.google_place_id.trim()} />
         </div>
 
         <div>
