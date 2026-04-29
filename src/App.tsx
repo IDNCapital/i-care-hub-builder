@@ -43,6 +43,7 @@ import { useAnalytics } from "./hooks/useAnalytics";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminPraticiens from "./pages/admin/AdminPraticiens";
 import { AdminGuard } from "./components/AdminGuard";
+import PreviewPraticien from "./pages/PreviewPraticien";
 
 const queryClient = new QueryClient();
 
@@ -108,6 +109,9 @@ const App = () => (
         <BrowserRouter>
           <AnalyticsProvider>
             <Routes>
+              {/* Preview privée praticien (langue-agnostique, hors i18n) */}
+              <Route path="/preview/:slug/:token" element={<PreviewPraticien />} />
+
               {/* Admin routes (hors i18n) */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route
