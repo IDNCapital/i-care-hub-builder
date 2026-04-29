@@ -113,29 +113,66 @@ export default function PreviewPraticien() {
         </title>
       </Helmet>
 
-      {/* Bandeau sticky */}
-      <div
-        className="sticky top-0 z-50 w-full"
-        style={{
-          backgroundColor: "#C2A46C",
-          color: "#2C2C2C",
-          padding: "12px 24px",
-          fontSize: "0.875rem",
-          lineHeight: 1.4,
-          boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
-        }}
-        role="status"
-      >
-        <div className="max-w-6xl mx-auto">
-          <strong>🔍 APERÇU PRIVÉ</strong> — Cette fiche n'est pas publique.
-          Pour valider ou demander des modifications, répondez au message reçu
-          par email.
-        </div>
-      </div>
+      {/* Bandeau sticky — variantes selon statut_validation */}
+      {(() => {
+        const statut = praticien.statut_validation;
+        let bg = "#C2A46C";
+        let fg = "#2C2C2C";
+        let content: ReactNode = (
+          <>
+            <strong>🔍 APERÇU PRIVÉ</strong> — Cette fiche n'est pas publique.
+            Pour valider ou demander des modifications, répondez au message
+            reçu par email.
+          </>
+        );
+        if (statut === "validee") {
+          bg = "#9EB8A5";
+          fg = "#FFFFFF";
+          content = (
+            <>
+              <strong>✓ FICHE VALIDÉE</strong> — Cette version a été validée
+              et est prête pour la publication. Le lien reste à votre
+              disposition pour consultation.
+            </>
+          );
+        } else if (
+          statut === "refusee" ||
+          statut === "non_repondeuse" ||
+          statut === "en_attente_infos" ||
+          statut === "en_attente_resolution"
+        ) {
+          bg = "#6B6B6B";
+          fg = "#FFFFFF";
+          content = (
+            <>
+              <strong>📄 APERÇU NON PUBLIÉ</strong> — Cette fiche existe en
+              interne mais n'est pas en circulation publique.
+            </>
+          );
+        }
+        return (
+          <div
+            className="sticky top-0 z-50 w-full"
+            style={{
+              backgroundColor: bg,
+              color: fg,
+              padding: "12px 24px",
+              fontSize: "0.875rem",
+              lineHeight: 1.4,
+              boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+            }}
+            role="status"
+          >
+            <div className="max-w-6xl mx-auto">{content}</div>
+          </div>
+        );
+      })()}
 
       <FichePraticien praticien={praticien} isPreview />
 
-      {/* Footer "Que faire ensuite ?" */}
+      {/* Carte d'action — uniquement pour brouillon / preview_envoyee */}
+      {(praticien.statut_validation === "brouillon" ||
+        praticien.statut_validation === "preview_envoyee") && (
       <section style={{ backgroundColor: "#F6F5F0", paddingBottom: 64 }}>
         <div className="max-w-3xl mx-auto px-5 md:px-8">
           <div
@@ -172,6 +209,7 @@ export default function PreviewPraticien() {
           </div>
         </div>
       </section>
+      )}
     </>
   );
 }
