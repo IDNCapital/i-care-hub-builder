@@ -140,18 +140,15 @@ export default function TemoignagesPraticiens() {
       {/* ─── Section 1 — Hero ────────────────────────── */}
       <section className="bg-background pt-32 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
-          <p className="text-xs uppercase tracking-[0.25em] text-foreground/60 font-light mb-6">
-            {lang === "fr" ? "— Témoignages praticiens —" : "— Practitioner testimonials —"}
+          <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-6">
+            {lang === "fr" ? "Témoignages praticiens" : "Practitioner testimonials"}
           </p>
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 text-balance">
-            <span className="font-bold not-italic block">
-              {lang === "fr" ? "Ce que les praticiens disent" : "What practitioners say"}
-            </span>
-            <span className="italic font-medium block mt-2">
-              {lang === "fr" ? "de I‑CA.RE." : "about I‑CA.RE."}
-            </span>
+          <h1 className="font-heading font-normal text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 text-balance leading-[1.15]">
+            {lang === "fr"
+              ? "Ce que les praticiens disent de I‑CA.RE."
+              : "What practitioners say about I‑CA.RE."}
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-[600px] mx-auto">
+          <p className="font-heading italic text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-[640px] mx-auto">
             {lang === "fr"
               ? "Nos locataires partagent leur expérience de leur cabinet et de la communauté I-CA.RE. Témoignages institutionnels et avis Google publics."
               : "Our tenants share their experience of their office and the I-CA.RE community. Institutional testimonials and public Google reviews."}
@@ -163,10 +160,13 @@ export default function TemoignagesPraticiens() {
       <section className="bg-background py-16 md:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="font-heading italic text-2xl md:text-3xl text-foreground mb-4">
+            <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-4">
+              {lang === "fr" ? "Paroles de locataires" : "In our tenants' words"}
+            </p>
+            <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-4">
               {lang === "fr" ? "Paroles de locataires" : "In our tenants' words"}
             </h2>
-            <div className="w-[60px] h-px bg-accent mx-auto" aria-hidden="true" />
+            <div className="w-[60px] h-px bg-primary/40 mx-auto" aria-hidden="true" />
           </div>
 
           {loading ? (
@@ -194,7 +194,10 @@ export default function TemoignagesPraticiens() {
       <section className="bg-muted/30 py-16 md:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <div className="text-center mb-10">
-            <h2 className="font-heading italic text-2xl md:text-3xl text-foreground mb-3">
+            <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-4">
+              {lang === "fr" ? "Avis Google récents" : "Recent Google reviews"}
+            </p>
+            <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-3">
               {lang === "fr" ? "Avis Google récents" : "Recent Google reviews"}
             </h2>
             <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
@@ -232,9 +235,14 @@ export default function TemoignagesPraticiens() {
       {/* ─── Section 4 — Video placeholders ──────────── */}
       <section className="bg-background py-12 md:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
-          <h2 className="font-heading italic text-2xl md:text-3xl text-center text-foreground mb-8">
+          <div className="text-center mb-8">
+            <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-3">
+              {lang === "fr" ? "Bientôt en vidéo" : "Coming soon in video"}
+            </p>
+            <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground">
             {lang === "fr" ? "Bientôt en vidéo" : "Coming soon in video"}
           </h2>
+          </div>
           <div className="grid md:grid-cols-2 gap-6">
             {videoPlaceholders.map((v) => (
               <div
@@ -253,7 +261,7 @@ export default function TemoignagesPraticiens() {
                 <div className="absolute inset-0 bg-foreground/30" aria-hidden="true" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-background">
                   <PlayCircle className="h-16 w-16 mb-3 opacity-90" aria-hidden="true" />
-                  <p className="text-sm uppercase tracking-[0.18em] font-light">
+                  <p className="font-body text-sm uppercase tracking-[0.15em] font-bold">
                     {lang === "fr" ? "Disponible prochainement" : "Available soon"}
                   </p>
                   <p className="text-xs text-background/80 mt-2">{v.label}</p>
@@ -264,16 +272,13 @@ export default function TemoignagesPraticiens() {
         </div>
       </section>
 
-      {/* ─── Section 5 — Final CTA (forest) ──────────── */}
-      <section className="py-20 md:py-24" style={{ backgroundColor: "#1E392B" }}>
+      {/* ─── Section 5 — Final CTA (sage) ────────────── */}
+      <section className="py-20 md:py-24 bg-primary">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
-          <p
-            className="text-xs uppercase tracking-[0.25em] font-light mb-6"
-            style={{ color: "#C2A46C" }}
-          >
-            {lang === "fr" ? "— Rejoindre le réseau —" : "— Join the network —"}
+          <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-background mb-6">
+            {lang === "fr" ? "Rejoindre le réseau" : "Join the network"}
           </p>
-          <h2 className="font-heading italic text-3xl md:text-4xl lg:text-5xl text-background mb-10 text-balance">
+          <h2 className="font-heading font-normal text-3xl md:text-4xl lg:text-5xl text-background mb-10 text-balance leading-[1.2]">
             {lang === "fr"
               ? "Et si vous étiez le prochain locataire ?"
               : "What if you were the next tenant?"}
@@ -282,8 +287,7 @@ export default function TemoignagesPraticiens() {
             <Button
               asChild
               size="lg"
-              className="text-[#1E392B] hover:opacity-90 border-0"
-              style={{ backgroundColor: "#C2A46C" }}
+              className="bg-foreground text-background hover:bg-foreground/90 border-0 font-body font-bold uppercase tracking-[0.1em]"
             >
               <Link to={localePath(lang, "projects")}>
                 {lang === "fr" ? "Visiter un cabinet" : "Visit an office"}
@@ -293,8 +297,7 @@ export default function TemoignagesPraticiens() {
               asChild
               size="lg"
               variant="outline"
-              className="bg-transparent hover:bg-transparent"
-              style={{ borderColor: "#C2A46C", color: "#C2A46C" }}
+              className="bg-transparent hover:bg-background/10 border-background text-background hover:text-background font-body font-bold uppercase tracking-[0.1em]"
             >
               <Link to={localePath(lang, "contact")}>
                 {lang === "fr" ? "Découvrir l'opportunité" : "Discover the opportunity"}
