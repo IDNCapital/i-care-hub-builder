@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /preview/
+Disallow: /admin/
 
 Sitemap: https://i-ca.re/sitemap.xml
