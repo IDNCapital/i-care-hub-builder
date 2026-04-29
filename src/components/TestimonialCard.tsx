@@ -49,32 +49,32 @@ export function TestimonialCard({
         )}
       </div>
 
-      {/* Name */}
-      <h3 className="text-[1.2rem] font-bold text-foreground mb-1 leading-tight">
+      {/* Name — Playfair Regular */}
+      <h3 className="font-heading font-normal text-2xl text-foreground mb-1 leading-tight">
         {testimonial.praticien_nom}
       </h3>
 
-      {/* Profession */}
+      {/* Profession — Lato */}
       {testimonial.praticien_profession && (
-        <p className="text-[0.9rem] text-foreground/70 mb-5">
+        <p className="font-body text-sm text-muted-foreground mb-5">
           {testimonial.praticien_profession}
         </p>
       )}
 
-      {/* Gold rule */}
-      <div className="w-12 h-px bg-accent mb-5" aria-hidden="true" />
+      {/* Sage rule */}
+      <div className="w-12 h-px bg-primary/40 mb-5" aria-hidden="true" />
 
-      {/* Quote */}
-      <blockquote className="text-[1.05rem] md:text-[1.1rem] text-foreground/85 leading-[1.7] italic mb-6">
+      {/* Quote — Playfair Italic */}
+      <blockquote className="font-heading italic text-lg md:text-xl text-foreground/85 leading-[1.7] mb-6">
         « {testimonial.citation_longue} »
       </blockquote>
 
-      {/* Cabinet link */}
-      <p className="font-heading italic text-base text-foreground/80">
+      {/* Cabinet link — Playfair Italic */}
+      <p className="font-heading italic text-base text-muted-foreground">
         {lang === "fr" ? "Locataire à " : "Tenant at "}
         <Link
           to={projectPath}
-          className="text-foreground hover:text-foreground/70 underline-offset-4 hover:underline transition-colors"
+          className="text-foreground hover:text-primary underline-offset-4 hover:underline transition-colors"
         >
           {testimonial.cabinet_nom_affichage}
         </Link>
