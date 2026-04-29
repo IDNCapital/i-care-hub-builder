@@ -277,8 +277,23 @@ export function FichePraticien({
     if (!cabinet) return "";
     const parts: string[] = [];
     if (cabinet.show_address && cabinet.address) parts.push(cabinet.address);
-    parts.push(cabinet.city);
     return parts.filter(Boolean).join(" · ");
+  }, [cabinet]);
+
+  /**
+   * "Quartier" derived from the cabinet name by stripping the I-CA.RE brand prefix.
+   * Examples:
+   *  - "I-CA.RE Pey Berland"  -> "Pey-Berland"
+   *  - "I‑CA.RE Saint-Michel" -> "Saint-Michel"
+   * If nothing remains after stripping the brand, returns "".
+   */
+  const quartier = useMemo(() => {
+    if (!cabinet?.name) return "";
+    const cleaned = cabinet.name
+      .replace(/I[\u2010-\u2015\-]?CA\.?RE/i, "")
+      .trim()
+      .replace(/\s+/g, "-");
+    return cleaned;
   }, [cabinet]);
 
   const showReviewsBlock =
@@ -397,8 +412,10 @@ export function FichePraticien({
               >
                 <MapPin style={{ width: 16, height: 16, marginTop: 4, color: COLORS.green }} />
                 <span>
-                  {adresseLigne}
-                  {cabinet.name ? <> · <span style={{ color: COLORS.textMuted }}>{cabinet.name}</span></> : null}
+                  {[adresseLigne, quartier, cabinet.city]
+                    .map((s) => (s ?? "").trim())
+                    .filter((s) => s.length > 0)
+                    .join(" · ")}
                 </span>
               </div>
             )}
