@@ -1,0 +1,2 @@
+ALTER TABLE public.projets ADD COLUMN IF NOT EXISTS google_place_id text;
+COMMENT ON COLUMN public.projets.google_place_id IS 'Google Business Profile Place ID (format ChIJ... ou 0x...:0x...) pour ouverture directe de la fiche GBP avec onglet avis.';
