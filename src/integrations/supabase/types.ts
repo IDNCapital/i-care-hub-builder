@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      avis_google_cache: {
+        Row: {
+          google_display_name: string | null
+          google_url: string | null
+          last_error: string | null
+          last_error_at: string | null
+          last_updated_at: string
+          place_id: string
+          rating: number | null
+          reviews: Json
+          user_ratings_total: number | null
+        }
+        Insert: {
+          google_display_name?: string | null
+          google_url?: string | null
+          last_error?: string | null
+          last_error_at?: string | null
+          last_updated_at?: string
+          place_id: string
+          rating?: number | null
+          reviews?: Json
+          user_ratings_total?: number | null
+        }
+        Update: {
+          google_display_name?: string | null
+          google_url?: string | null
+          last_error?: string | null
+          last_error_at?: string | null
+          last_updated_at?: string
+          place_id?: string
+          rating?: number | null
+          reviews?: Json
+          user_ratings_total?: number | null
+        }
+        Relationships: []
+      }
       avis_google_mis_en_avant: {
         Row: {
           actif: boolean
@@ -335,6 +371,96 @@ export type Database = {
         }
         Relationships: []
       }
+      praticiens: {
+        Row: {
+          actif: boolean
+          bio_courte: string | null
+          bio_courte_en: string | null
+          bio_longue: string | null
+          bio_longue_en: string | null
+          cabinet_slug: string
+          created_at: string
+          date_envoi_preview: string | null
+          date_validation: string | null
+          genre: string | null
+          google_cid: string | null
+          google_kgmid: string | null
+          google_place_id: string | null
+          id: string
+          lien_rdv: string | null
+          nom: string
+          notes_internes: string | null
+          ordre_affichage: number
+          photo_url: string | null
+          prenom: string
+          preview_token: string
+          problematiques: string[]
+          profession: string
+          slug: string
+          specialites: string[]
+          statut_validation: string
+          updated_at: string
+        }
+        Insert: {
+          actif?: boolean
+          bio_courte?: string | null
+          bio_courte_en?: string | null
+          bio_longue?: string | null
+          bio_longue_en?: string | null
+          cabinet_slug: string
+          created_at?: string
+          date_envoi_preview?: string | null
+          date_validation?: string | null
+          genre?: string | null
+          google_cid?: string | null
+          google_kgmid?: string | null
+          google_place_id?: string | null
+          id?: string
+          lien_rdv?: string | null
+          nom: string
+          notes_internes?: string | null
+          ordre_affichage?: number
+          photo_url?: string | null
+          prenom: string
+          preview_token?: string
+          problematiques?: string[]
+          profession: string
+          slug: string
+          specialites?: string[]
+          statut_validation?: string
+          updated_at?: string
+        }
+        Update: {
+          actif?: boolean
+          bio_courte?: string | null
+          bio_courte_en?: string | null
+          bio_longue?: string | null
+          bio_longue_en?: string | null
+          cabinet_slug?: string
+          created_at?: string
+          date_envoi_preview?: string | null
+          date_validation?: string | null
+          genre?: string | null
+          google_cid?: string | null
+          google_kgmid?: string | null
+          google_place_id?: string | null
+          id?: string
+          lien_rdv?: string | null
+          nom?: string
+          notes_internes?: string | null
+          ordre_affichage?: number
+          photo_url?: string | null
+          prenom?: string
+          preview_token?: string
+          problematiques?: string[]
+          profession?: string
+          slug?: string
+          specialites?: string[]
+          statut_validation?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       projets: {
         Row: {
           address: string | null
@@ -457,7 +583,44 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_praticien_preview: {
+        Args: { p_slug: string; p_token: string }
+        Returns: {
+          actif: boolean
+          bio_courte: string | null
+          bio_courte_en: string | null
+          bio_longue: string | null
+          bio_longue_en: string | null
+          cabinet_slug: string
+          created_at: string
+          date_envoi_preview: string | null
+          date_validation: string | null
+          genre: string | null
+          google_cid: string | null
+          google_kgmid: string | null
+          google_place_id: string | null
+          id: string
+          lien_rdv: string | null
+          nom: string
+          notes_internes: string | null
+          ordre_affichage: number
+          photo_url: string | null
+          prenom: string
+          preview_token: string
+          problematiques: string[]
+          profession: string
+          slug: string
+          specialites: string[]
+          statut_validation: string
+          updated_at: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "praticiens"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
     }
     Enums: {
       investor_lead_status: "new" | "contacted" | "qualified" | "not_interested"
