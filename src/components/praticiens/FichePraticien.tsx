@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ExternalLink, MapPin, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -80,9 +80,9 @@ function formatDateShortFr(iso: string): string {
 }
 
 /** Tiny markdown renderer: paragraphs, **bold**, "- item" lists. */
-function renderMarkdown(text: string): React.ReactNode {
+function renderMarkdown(text: string): ReactNode {
   const lines = text.replace(/\r\n/g, "\n").split("\n");
-  const blocks: React.ReactNode[] = [];
+  const blocks: ReactNode[] = [];
   let para: string[] = [];
   let list: string[] = [];
   let key = 0;
@@ -129,7 +129,7 @@ function renderMarkdown(text: string): React.ReactNode {
   return blocks;
 }
 
-function renderInline(s: string): React.ReactNode {
+function renderInline(s: string): ReactNode {
   const parts = s.split(/(\*\*[^*]+\*\*)/g);
   return parts.map((p, i) => {
     if (p.startsWith("**") && p.endsWith("**")) {
