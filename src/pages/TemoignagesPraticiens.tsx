@@ -246,8 +246,8 @@ export default function TemoignagesPraticiens() {
               {lang === "fr" ? "Bientôt en vidéo" : "Coming soon in video"}
             </p>
             <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground">
-            {lang === "fr" ? "Bientôt en vidéo" : "Coming soon in video"}
-          </h2>
+              {lang === "fr" ? "Témoignages en images" : "Testimonials in pictures"}
+            </h2>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             {videoPlaceholders.map((v) => (
