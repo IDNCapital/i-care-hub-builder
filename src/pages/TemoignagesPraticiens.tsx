@@ -215,20 +215,26 @@ export default function TemoignagesPraticiens() {
             </div>
           )}
 
-          {allReviewsLink && (
-            <div className="text-center mt-10">
-              <a
-                href={allReviewsLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
-                className="inline-block font-body font-bold uppercase tracking-[0.10em] text-sm px-8 py-3.5 rounded-md border bg-transparent transition-colors"
-                style={{ borderColor: "#D9C7A1", color: "#B89B6F" }}
-              >
-                {lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
-              </a>
-            </div>
-          )}
+          <div className="text-center mt-10">
+            <a
+              href={allReviewsLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
+              className="inline-block font-body font-bold uppercase tracking-[0.10em] text-sm px-8 py-3.5 rounded-md border bg-transparent transition-colors hover:text-foreground"
+              style={{ borderColor: "#D9C7A1", color: "#B89B6F" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#D9C7A1";
+                e.currentTarget.style.color = "#2B2B2B";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.color = "#B89B6F";
+              }}
+            >
+              {lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
+            </a>
+          </div>
         </div>
       </section>
 
