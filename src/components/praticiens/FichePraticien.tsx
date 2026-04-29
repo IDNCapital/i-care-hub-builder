@@ -299,7 +299,7 @@ export function FichePraticien({
 
   return (
     <article
-      className="font-body"
+      className="font-sans"
       style={{ backgroundColor: COLORS.cream, color: COLORS.anthracite }}
     >
       <div className="max-w-6xl mx-auto px-5 md:px-8 py-10 md:py-16">
@@ -324,7 +324,7 @@ export function FichePraticien({
                     style={{ backgroundColor: COLORS.forest }}
                   >
                     <span
-                      className="font-display text-white"
+                      className="font-heading text-white"
                       style={{ fontSize: "4rem" }}
                     >
                       {initiales(praticien.prenom, praticien.nom)}
@@ -371,7 +371,7 @@ export function FichePraticien({
           {/* RIGHT */}
           <div className="flex-1 mt-8 md:mt-0 min-w-0">
             <div
-              className="font-body font-bold uppercase"
+              className="font-sans font-bold uppercase"
               style={{
                 color: COLORS.green,
                 fontSize: "0.8rem",
@@ -381,7 +381,7 @@ export function FichePraticien({
               {surtitre}
             </div>
             <h1
-              className="font-display mt-2"
+              className="font-heading mt-2"
               style={{ fontSize: "3rem", lineHeight: 1.1, color: COLORS.anthracite }}
             >
               {praticien.prenom} {praticien.nom}
@@ -414,7 +414,7 @@ export function FichePraticien({
             {showReviewsBlock && cache && (
               <section className="mt-12">
                 <h2
-                  className="font-display"
+                  className="font-heading"
                   style={{ fontSize: "1.5rem", color: COLORS.anthracite }}
                 >
                   Avis Google
@@ -422,7 +422,7 @@ export function FichePraticien({
                 <div className="mt-4 flex items-center gap-3">
                   <StarsRow value={cache.rating ?? 0} size={18} />
                   <span
-                    className="font-display"
+                    className="font-heading"
                     style={{ fontSize: "2rem", color: COLORS.anthracite, lineHeight: 1 }}
                   >
                     {(cache.rating ?? 0).toFixed(1).replace(".", ",")}
@@ -477,7 +477,7 @@ export function FichePraticien({
             {/* Cabinet */}
             <section className="mt-12 pt-8" style={{ borderTop: `1px solid rgba(144, 169, 151, 0.25)` }}>
               <h2
-                className="font-display"
+                className="font-heading"
                 style={{ fontSize: "1.5rem", color: COLORS.anthracite }}
               >
                 Cabinet
