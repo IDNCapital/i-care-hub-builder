@@ -164,7 +164,7 @@ export default function TemoignagesPraticiens() {
               {lang === "fr" ? "Paroles de locataires" : "In our tenants' words"}
             </p>
             <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-4">
-              {lang === "fr" ? "Paroles de locataires" : "In our tenants' words"}
+              {lang === "fr" ? "Locataires actuels du réseau" : "Current tenants of the network"}
             </h2>
             <div className="w-[60px] h-px bg-primary/40 mx-auto" aria-hidden="true" />
           </div>
@@ -198,7 +198,7 @@ export default function TemoignagesPraticiens() {
               {lang === "fr" ? "Avis Google récents" : "Recent Google reviews"}
             </p>
             <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-3">
-              {lang === "fr" ? "Avis Google récents" : "Recent Google reviews"}
+              {lang === "fr" ? "Avis publics des locataires" : "Public reviews from our tenants"}
             </h2>
             <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
               {lang === "fr"
@@ -217,16 +217,16 @@ export default function TemoignagesPraticiens() {
 
           {allReviewsLink && (
             <div className="text-center mt-10">
-              <Button variant="outline" asChild>
-                <a
-                  href={allReviewsLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
-                >
-                  {lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
-                </a>
-              </Button>
+              <a
+                href={allReviewsLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
+                className="inline-block font-body font-bold uppercase tracking-[0.10em] text-sm px-8 py-3.5 rounded-md border bg-transparent transition-colors"
+                style={{ borderColor: "#D9C7A1", color: "#B89B6F" }}
+              >
+                {lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
+              </a>
             </div>
           )}
         </div>
