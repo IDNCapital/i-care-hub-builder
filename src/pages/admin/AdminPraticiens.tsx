@@ -168,7 +168,7 @@ export default function AdminPraticiens() {
     const { data: projetsRows } = await supabase
       .from("projets")
       .select("slug,name,city,status")
-      .in("status", ["exploite", "en_construction"]);
+      .in("status", ["en_exploitation", "en_travaux"]);
     setCabinets((projetsRows ?? []) as Cabinet[]);
 
     setLoading(false);
