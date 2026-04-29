@@ -137,6 +137,51 @@ export type Database = {
         }
         Relationships: []
       }
+      declarations_parrainage: {
+        Row: {
+          consentement_rgpd: boolean
+          contexte: string | null
+          created_at: string
+          filleul_email: string | null
+          filleul_nom: string
+          filleul_profession: string
+          filleul_telephone: string | null
+          id: string
+          parrain_cabinet_slug: string | null
+          parrain_email: string
+          parrain_nom: string
+          statut: string
+        }
+        Insert: {
+          consentement_rgpd?: boolean
+          contexte?: string | null
+          created_at?: string
+          filleul_email?: string | null
+          filleul_nom: string
+          filleul_profession: string
+          filleul_telephone?: string | null
+          id?: string
+          parrain_cabinet_slug?: string | null
+          parrain_email: string
+          parrain_nom: string
+          statut?: string
+        }
+        Update: {
+          consentement_rgpd?: boolean
+          contexte?: string | null
+          created_at?: string
+          filleul_email?: string | null
+          filleul_nom?: string
+          filleul_profession?: string
+          filleul_telephone?: string | null
+          id?: string
+          parrain_cabinet_slug?: string | null
+          parrain_email?: string
+          parrain_nom?: string
+          statut?: string
+        }
+        Relationships: []
+      }
       investor_leads: {
         Row: {
           access_token_expires_at: string | null
