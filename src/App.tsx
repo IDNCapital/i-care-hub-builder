@@ -36,6 +36,7 @@ import InsightsProfessions from "./pages/InsightsProfessions";
 import InsightsLouerAcheter from "./pages/InsightsLouerAcheter";
 import Patients from "./pages/Patients";
 import Parrainage from "./pages/Parrainage";
+import TemoignagesPraticiens from "./pages/TemoignagesPraticiens";
 import { CookieBanner } from "./components/CookieBanner";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { useAnalytics } from "./hooks/useAnalytics";
@@ -136,6 +137,7 @@ const App = () => (
                 <Route path="/insights/rent-or-buy-office" element={<InsightsLouerAcheter />} />
                 <Route path="/patients" element={<Patients />} />
                 <Route path="/referral" element={<Parrainage />} />
+                <Route path="/practitioner-testimonials" element={<TemoignagesPraticiens />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
 
@@ -186,6 +188,7 @@ const App = () => (
                 <Route path="/insights/louer-ou-acheter-cabinet" element={<InsightsLouerAcheter />} />
                 <Route path="/patients" element={<Patients />} />
                 <Route path="/parrainage" element={<Parrainage />} />
+                <Route path="/temoignages-praticiens" element={<TemoignagesPraticiens />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
             </Routes>
