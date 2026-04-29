@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      avis_google_mis_en_avant: {
+        Row: {
+          actif: boolean
+          auteur_initiale_nom: string | null
+          auteur_prenom: string
+          cabinet_nom_affichage: string
+          cabinet_slug: string
+          created_at: string
+          date_publication: string
+          id: string
+          lien_avis_google: string | null
+          lien_fiche_gbp: string | null
+          note: number
+          ordre_affichage: number
+          texte_avis: string
+        }
+        Insert: {
+          actif?: boolean
+          auteur_initiale_nom?: string | null
+          auteur_prenom: string
+          cabinet_nom_affichage: string
+          cabinet_slug: string
+          created_at?: string
+          date_publication: string
+          id?: string
+          lien_avis_google?: string | null
+          lien_fiche_gbp?: string | null
+          note?: number
+          ordre_affichage?: number
+          texte_avis: string
+        }
+        Update: {
+          actif?: boolean
+          auteur_initiale_nom?: string | null
+          auteur_prenom?: string
+          cabinet_nom_affichage?: string
+          cabinet_slug?: string
+          created_at?: string
+          date_publication?: string
+          id?: string
+          lien_avis_google?: string | null
+          lien_fiche_gbp?: string | null
+          note?: number
+          ordre_affichage?: number
+          texte_avis?: string
+        }
+        Relationships: []
+      }
       contact_leads: {
         Row: {
           city: string | null
@@ -311,6 +359,45 @@ export type Database = {
           typology?: Database["public"]["Enums"]["project_typology"]
           units_count?: number
           updated_at?: string
+        }
+        Relationships: []
+      }
+      temoignages_praticiens: {
+        Row: {
+          actif: boolean
+          cabinet_nom_affichage: string
+          cabinet_slug: string
+          citation_longue: string
+          created_at: string
+          id: string
+          ordre_affichage: number
+          photo_url: string | null
+          praticien_nom: string
+          praticien_profession: string | null
+        }
+        Insert: {
+          actif?: boolean
+          cabinet_nom_affichage: string
+          cabinet_slug: string
+          citation_longue: string
+          created_at?: string
+          id?: string
+          ordre_affichage?: number
+          photo_url?: string | null
+          praticien_nom: string
+          praticien_profession?: string | null
+        }
+        Update: {
+          actif?: boolean
+          cabinet_nom_affichage?: string
+          cabinet_slug?: string
+          citation_longue?: string
+          created_at?: string
+          id?: string
+          ordre_affichage?: number
+          photo_url?: string | null
+          praticien_nom?: string
+          praticien_profession?: string | null
         }
         Relationships: []
       }
