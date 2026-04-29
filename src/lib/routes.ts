@@ -28,6 +28,9 @@ const routeMap: Record<string, Record<string, string>> = {
     insightsTransformer: "insights/transformer-local-en-cabinet",
     insightsProfessions: "insights/professions-partage-cabinet",
     insightsLouerAcheter: "insights/louer-ou-acheter-cabinet",
+    temoignages: "temoignages-praticiens",
+    parrainage: "parrainage",
+    patients: "patients",
   },
   en: {
     home: "",
@@ -57,6 +60,9 @@ const routeMap: Record<string, Record<string, string>> = {
     insightsTransformer: "insights/converting-commercial-space",
     insightsProfessions: "insights/professions-sharing-office",
     insightsLouerAcheter: "insights/rent-or-buy-office",
+    temoignages: "practitioner-testimonials",
+    parrainage: "referral",
+    patients: "patients",
   },
 };
 
