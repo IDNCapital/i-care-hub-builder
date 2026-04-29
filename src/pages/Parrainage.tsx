@@ -8,7 +8,6 @@ import {
   BadgeCheck,
   PenLine,
   MapPin,
-  ChevronDown,
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
