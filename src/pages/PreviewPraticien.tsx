@@ -130,9 +130,29 @@ export default function PreviewPraticien() {
           fg = "#FFFFFF";
           content = (
             <>
-              <strong>✓ FICHE VALIDÉE</strong> — Cette version a été validée
-              et est prête pour la publication. Le lien reste à votre
-              disposition pour consultation.
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <span>
+                  <strong>✓ FICHE VALIDÉE</strong> — Lien public disponible :{" "}
+                  <span style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
+                    i-ca.re/praticien/{praticien.slug}
+                  </span>
+                </span>
+                <a
+                  href={`/praticien/${praticien.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 whitespace-nowrap underline-offset-2 hover:underline"
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.18)",
+                    color: "#FFFFFF",
+                    padding: "6px 12px",
+                    borderRadius: 6,
+                    fontWeight: 600,
+                  }}
+                >
+                  Voir la version publique →
+                </a>
+              </div>
             </>
           );
         } else if (
