@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
@@ -19,12 +19,15 @@ export default function TemoignagesPraticiens() {
 
   const [testimonials, setTestimonials] = useState<TestimonialCardData[]>([]);
   const [reviews, setReviews] = useState<GoogleReviewCardData[]>([]);
+  const [projects, setProjects] = useState<
+    Array<{ slug: string; name: string; google_kgmid: string | null; google_place_id: string | null }>
+  >([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const [tRes, rRes] = await Promise.all([
+      const [tRes, rRes, pRes] = await Promise.all([
         supabase
           .from("temoignages_praticiens")
           .select("*")
@@ -36,10 +39,14 @@ export default function TemoignagesPraticiens() {
           .eq("actif", true)
           .order("ordre_affichage", { ascending: true })
           .order("date_publication", { ascending: false }),
+        supabase
+          .from("projets")
+          .select("slug,name,google_kgmid,google_place_id"),
       ]);
       if (cancelled) return;
       setTestimonials((tRes.data ?? []) as TestimonialCardData[]);
       setReviews((rRes.data ?? []) as GoogleReviewCardData[]);
+      setProjects((pRes.data ?? []) as typeof projects);
       setLoading(false);
     })();
     return () => {
@@ -47,11 +54,31 @@ export default function TemoignagesPraticiens() {
     };
   }, []);
 
-  // "Voir tous les avis" — DB-provided link if any, else Pey-Berland GBP placeholder.
-  const allReviewsLink =
-    reviews.find((r) => r.lien_fiche_gbp)?.lien_fiche_gbp ??
-    reviews.find((r) => r.lien_avis_google)?.lien_avis_google ??
-    "https://www.google.com/maps/place/I-CA.RE+Pey-Berland";
+  // Group displayed reviews by cabinet → one Google link per cabinet.
+  const cabinetsAvecAvis = useMemo(() => {
+    const seen = new Set<string>();
+    const out: Array<{ slug: string; shortName: string; url: string }> = [];
+    for (const r of reviews) {
+      const slug = r.cabinet_slug;
+      if (!slug || seen.has(slug)) continue;
+      const proj = projects.find((p) => p.slug === slug);
+      if (!proj) continue;
+      let url: string | null = null;
+      if (proj.google_kgmid) {
+        url = `https://www.google.com/maps?cid=${proj.google_kgmid}`;
+      } else if (proj.google_place_id) {
+        url = `https://www.google.com/maps/place/?q=place_id:${proj.google_place_id}`;
+      }
+      if (!url) continue;
+      seen.add(slug);
+      out.push({
+        slug,
+        shortName: proj.name.replace(/^I[\u2010-\u2015\-]?CA\.?RE\s*/i, "").trim() || proj.name,
+        url,
+      });
+    }
+    return out;
+  }, [reviews, projects]);
 
   // Video placeholder backgrounds (real cabinet images, no fakes)
   const videoPlaceholders = [
