@@ -47,11 +47,11 @@ export default function TemoignagesPraticiens() {
     };
   }, []);
 
-  // Pick a fallback "view all reviews on Google" link from the first review with one
+  // "Voir tous les avis" — DB-provided link if any, else Pey-Berland GBP placeholder.
   const allReviewsLink =
     reviews.find((r) => r.lien_fiche_gbp)?.lien_fiche_gbp ??
     reviews.find((r) => r.lien_avis_google)?.lien_avis_google ??
-    null;
+    "https://www.google.com/maps/place/I-CA.RE+Pey-Berland";
 
   // Video placeholder backgrounds (real cabinet images, no fakes)
   const videoPlaceholders = [
@@ -215,20 +215,26 @@ export default function TemoignagesPraticiens() {
             </div>
           )}
 
-          {allReviewsLink && (
-            <div className="text-center mt-10">
-              <a
-                href={allReviewsLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
-                className="inline-block font-body font-bold uppercase tracking-[0.10em] text-sm px-8 py-3.5 rounded-md border bg-transparent transition-colors"
-                style={{ borderColor: "#D9C7A1", color: "#B89B6F" }}
-              >
-                {lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
-              </a>
-            </div>
-          )}
+          <div className="text-center mt-10">
+            <a
+              href={allReviewsLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
+              className="inline-block font-body font-bold uppercase tracking-[0.10em] text-sm px-8 py-3.5 rounded-md border bg-transparent transition-colors hover:text-foreground"
+              style={{ borderColor: "#D9C7A1", color: "#B89B6F" }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#D9C7A1";
+                e.currentTarget.style.color = "#2B2B2B";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.color = "#B89B6F";
+              }}
+            >
+              {lang === "fr" ? "Voir tous les avis sur Google" : "See all reviews on Google"}
+            </a>
+          </div>
         </div>
       </section>
 
@@ -240,8 +246,8 @@ export default function TemoignagesPraticiens() {
               {lang === "fr" ? "Bientôt en vidéo" : "Coming soon in video"}
             </p>
             <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground">
-            {lang === "fr" ? "Bientôt en vidéo" : "Coming soon in video"}
-          </h2>
+              {lang === "fr" ? "Témoignages en images" : "Testimonials in pictures"}
+            </h2>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             {videoPlaceholders.map((v) => (
