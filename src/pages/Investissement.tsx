@@ -62,7 +62,10 @@ export default function Investissement() {
 
   const parc = STATIC_CENTRES.filter((c) => ["chartrons", "nansouty", "jardin-public", "pey-berland"].includes(c.id));
 
-  const idnBrands = ["I‑CA.RE", "IDN Promotion", "IDN Construction", "IDN Patrimoine", "IDN Capital"];
+  // Source: Charte graphique Groupe IDN édition 2026 — Cartographie de l'écosystème.
+  // IDN Capital = marque centrale ; les 5 autres sont les marques affiliées.
+  const idnCentral = "IDN Capital";
+  const idnAffiliates = ["Rivage", "IDNéa", "I‑CA.RE", "INside BAT", "co-liv.ing"];
 
   const statusLabel = (s: string) =>
     s === "available"
@@ -269,21 +272,27 @@ export default function Investissement() {
             </div>
             <div className="bg-[hsl(var(--cream))] border border-[hsl(var(--gold)/0.4)] rounded-xl p-8 md:p-10">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <Network className="w-5 h-5 text-accent-foreground" />
+                <Network className="w-5 h-5 text-accent-foreground" aria-hidden="true" />
                 <p className="text-xs font-body font-bold uppercase tracking-[0.15em] text-accent-foreground">
                   {lang === "en" ? "Group brands" : "Marques du Groupe"}
                 </p>
               </div>
-              <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-                {idnBrands.map((b) => (
-                  <li
-                    key={b}
-                    className="font-heading font-normal text-base md:text-lg text-foreground"
-                  >
-                    {b}
-                  </li>
-                ))}
-              </ul>
+              <div className="flex flex-col items-center gap-5">
+                <p className="font-body font-bold text-lg md:text-xl text-foreground tracking-wide">
+                  {idnCentral}
+                </p>
+                <div className="w-10 h-px bg-[hsl(var(--gold)/0.5)]" aria-hidden="true" />
+                <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+                  {idnAffiliates.map((b) => (
+                    <li
+                      key={b}
+                      className="font-body font-normal text-base md:text-lg text-foreground"
+                    >
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
