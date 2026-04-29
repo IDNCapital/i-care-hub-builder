@@ -1,4 +1,4 @@
-import { ExternalLink, Star } from "lucide-react";
+import { Star } from "lucide-react";
 
 export interface GoogleReviewCardData {
   id: string;
