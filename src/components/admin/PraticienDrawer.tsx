@@ -564,17 +564,7 @@ export function PraticienDrawer({
           </p>
 
           {/* d) Bouton refresh désactivé */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span tabIndex={0} className="inline-block mt-2">
-                <Button type="button" variant="outline" size="sm" disabled>
-                  <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
-                  Rafraîchir maintenant
-                </Button>
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>Edge Function refresh-google-reviews à venir</TooltipContent>
-          </Tooltip>
+          <RefreshGoogleButton placeId={form.google_place_id.trim()} />
         </div>
 
         <div>
@@ -689,4 +679,64 @@ export function PraticienDrawer({
       </div>
     </div>
   );
+}
+
+function RefreshGoogleButton({ placeId }: { placeId: string }) {
+  const [loading, setLoading] = useState(false);
+  const disabled = !placeId;
+
+  const onClick = async () => {
+    if (!placeId) return;
+    setLoading(true);
+    try {
+      const res = await callAdminFunction<{
+        success?: boolean;
+        summary?: { refreshed: number; errors: number };
+        details?: Array<{ status: string; error?: string; rating?: number; count?: number }>;
+      }>("refresh-google-reviews", { place_id: placeId });
+      const d = res.details?.[0];
+      if (d?.status === "refreshed") {
+        toast.success(
+          `Avis rafraîchis ✓${d.rating ? ` — ${d.rating.toFixed(1)} ★ · ${d.count ?? 0} avis` : ""}`,
+        );
+      } else if (d?.status === "error") {
+        toast.error(`Erreur Google : ${d.error ?? "inconnue"}`);
+      } else {
+        toast.message("Aucune mise à jour effectuée");
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur inconnue");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const button = (
+    <Button
+      type="button"
+      variant="outline"
+      size="sm"
+      disabled={disabled || loading}
+      onClick={onClick}
+    >
+      {loading ? (
+        <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+      ) : (
+        <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
+      )}
+      Rafraîchir maintenant
+    </Button>
+  );
+
+  if (disabled) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span tabIndex={0} className="inline-block mt-2">{button}</span>
+        </TooltipTrigger>
+        <TooltipContent>Renseigne d'abord un google_place_id</TooltipContent>
+      </Tooltip>
+    );
+  }
+  return <div className="inline-block mt-2">{button}</div>;
 }
