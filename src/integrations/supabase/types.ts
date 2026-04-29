@@ -341,6 +341,7 @@ export type Database = {
           city: string
           created_at: string
           delivery_date: string | null
+          google_kgmid: string | null
           google_place_id: string | null
           hero_image_url: string | null
           id: string
@@ -365,6 +366,7 @@ export type Database = {
           city: string
           created_at?: string
           delivery_date?: string | null
+          google_kgmid?: string | null
           google_place_id?: string | null
           hero_image_url?: string | null
           id?: string
@@ -389,6 +391,7 @@ export type Database = {
           city?: string
           created_at?: string
           delivery_date?: string | null
+          google_kgmid?: string | null
           google_place_id?: string | null
           hero_image_url?: string | null
           id?: string
