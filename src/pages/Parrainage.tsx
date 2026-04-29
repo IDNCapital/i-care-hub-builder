@@ -73,7 +73,7 @@ const referralSchema = z.object({
     .optional()
     .or(z.literal("")),
   consentement_rgpd: z.literal(true, {
-    errorMap: () => ({ message: "Le consentement est requis" }),
+    message: "Le consentement est requis",
   }),
 });
 
