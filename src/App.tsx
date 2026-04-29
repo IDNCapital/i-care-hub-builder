@@ -40,6 +40,9 @@ import TemoignagesPraticiens from "./pages/TemoignagesPraticiens";
 import { CookieBanner } from "./components/CookieBanner";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { useAnalytics } from "./hooks/useAnalytics";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminPraticiens from "./pages/admin/AdminPraticiens";
+import { AdminGuard } from "./components/AdminGuard";
 
 const queryClient = new QueryClient();
 
@@ -105,6 +108,18 @@ const App = () => (
         <BrowserRouter>
           <AnalyticsProvider>
             <Routes>
+              {/* Admin routes (hors i18n) */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route
+                path="/admin/praticiens"
+                element={
+                  <AdminGuard>
+                    <AdminPraticiens />
+                  </AdminGuard>
+                }
+              />
+              <Route path="/admin" element={<Navigate to="/admin/praticiens" replace />} />
+
               {/* EN routes (prefixed) */}
               <Route path="/en/*" element={<LangSync lang="en"><Routes>
                 <Route path="/" element={<Index />} />
