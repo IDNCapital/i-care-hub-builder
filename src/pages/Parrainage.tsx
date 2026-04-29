@@ -1,50 +1,792 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
+import {
+  UserCircle2,
+  Star,
+  LayoutDashboard,
+  BadgeCheck,
+  PenLine,
+  MapPin,
+} from "lucide-react";
 import { Layout } from "@/components/Layout";
-import { Button } from "@/components/ui/button";
 import { SeoHead } from "@/components/SeoHead";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { supabase } from "@/integrations/supabase/client";
 import { localePath } from "@/lib/routes";
+import { z } from "zod";
 
+// ─────────────────────────────────────────────
+// Validation
+// ─────────────────────────────────────────────
+const referralSchema = z.object({
+  parrain_nom: z
+    .string()
+    .trim()
+    .min(1, "Votre nom est requis")
+    .max(200, "Maximum 200 caractères"),
+  parrain_email: z
+    .string()
+    .trim()
+    .email("Email invalide")
+    .max(255, "Maximum 255 caractères"),
+  parrain_cabinet_slug: z.string().max(100).optional().nullable(),
+  filleul_nom: z
+    .string()
+    .trim()
+    .min(1, "Le nom du confrère est requis")
+    .max(200, "Maximum 200 caractères"),
+  filleul_profession: z
+    .string()
+    .trim()
+    .min(1, "La profession est requise")
+    .max(100, "Maximum 100 caractères"),
+  filleul_email: z
+    .string()
+    .trim()
+    .email("Email invalide")
+    .max(255)
+    .optional()
+    .or(z.literal("")),
+  filleul_telephone: z
+    .string()
+    .trim()
+    .max(30, "Maximum 30 caractères")
+    .optional()
+    .or(z.literal("")),
+  contexte: z
+    .string()
+    .trim()
+    .max(500, "Maximum 500 caractères")
+    .optional()
+    .or(z.literal("")),
+  consentement_rgpd: z.literal(true, {
+    message: "Le consentement est requis",
+  }),
+});
+
+type FormState = {
+  parrain_nom: string;
+  parrain_email: string;
+  parrain_cabinet_slug: string;
+  filleul_nom: string;
+  filleul_profession: string;
+  filleul_email: string;
+  filleul_telephone: string;
+  contexte: string;
+  consentement_rgpd: boolean;
+};
+
+const initialState: FormState = {
+  parrain_nom: "",
+  parrain_email: "",
+  parrain_cabinet_slug: "",
+  filleul_nom: "",
+  filleul_profession: "",
+  filleul_email: "",
+  filleul_telephone: "",
+  contexte: "",
+  consentement_rgpd: false,
+};
+
+// ─────────────────────────────────────────────
+// Reward cards data
+// ─────────────────────────────────────────────
+const rewardCards = [
+  {
+    icon: UserCircle2,
+    title: "Profil enrichi",
+    desc: "Galerie photo, vidéo de présentation, FAQ, problématiques traitées.",
+  },
+  {
+    icon: Star,
+    title: "Avis patients",
+    desc: "Avis sur la fiche, modérés par I-CA.RE.",
+  },
+  {
+    icon: LayoutDashboard,
+    title: "Tableau de bord",
+    desc: "Vues, clics téléphone, clics RDV, demandes patient.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Mention recommandée",
+    desc: "Encart visuel distinctif « Praticien recommandé ».",
+  },
+  {
+    icon: PenLine,
+    title: "Article de blog",
+    desc: "Article co-rédigé sur i-ca.re mentionnant le parrain.",
+  },
+  {
+    icon: MapPin,
+    title: "Optimisation Google",
+    desc: "Optimisation de la fiche Google Business Profile par l'équipe I-CA.RE.",
+  },
+];
+
+const conditions = [
+  "Le filleul signe un bail d'au moins 12 mois dans un cabinet I-CA.RE.",
+  "La déclaration de parrainage est faite avant ou pendant le processus de signature.",
+  "Le décompte des 3 mois commence à la signature du bail filleul.",
+  "En cas de résiliation anticipée du bail filleul (avant 6 mois), la récompense est suspendue.",
+  "Cumulable : un parrain peut déclarer plusieurs filleuls.",
+];
+
+const faq = [
+  {
+    q: "Qui peut parrainer ?",
+    r: "Tout praticien actuellement locataire d'un cabinet I-CA.RE peut parrainer un confrère.",
+  },
+  {
+    q: "Quand est versée la récompense ?",
+    r: "Les services premium sont activés dès la signature effective du bail par le filleul, pour une durée de 3 mois consécutifs.",
+  },
+  {
+    q: "Que se passe-t-il si le filleul résilie son bail avant 6 mois ?",
+    r: "La récompense est suspendue. Si la résiliation intervient après 6 mois, la récompense est définitivement acquise.",
+  },
+  {
+    q: "Le palier Confort n'est pas encore ouvert publiquement, comment ça marche ?",
+    r: "En tant que parrain, vous bénéficiez d'un accès anticipé au palier Confort en mode bêta-testeur. Cet accès est acquis dès la signature du bail filleul. À l'ouverture officielle du palier (Q1 2027), vous aurez déjà 3 mois d'expérience produit et pourrez décider de continuer.",
+  },
+  {
+    q: "Le filleul est-il informé du parrainage ?",
+    r: "Oui, en toute transparence. Lors de l'onboarding, nous mentionnons au filleul que sa venue active une récompense pour son parrain.",
+  },
+];
+
+const cabinetOptions = [
+  { value: "i-ca-re-nansouty", label: "Nansouty" },
+  { value: "i-ca-re-pey-berland", label: "Pey-Berland" },
+  { value: "i-ca-re-jardin-public", label: "Jardin Public" },
+  { value: "autre", label: "Autre" },
+];
+
+// ─────────────────────────────────────────────
+// Component
+// ─────────────────────────────────────────────
 export default function Parrainage() {
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const path = localePath(lang, "parrainage");
 
-  const t = lang === "fr"
-    ? {
-        title: "Parrainage — Bientôt en ligne",
-        seoTitle: "Parrainage — I-CA.RE",
-        seoDesc: "Le programme de parrainage I-CA.RE arrive prochainement.",
-        sub: "Recommandez un confrère, partagez l'aventure.",
-        body: "Notre programme de parrainage est en cours de finalisation. Il permettra à nos locataires de recommander un confrère ou une consœur en quelques clics. Vous souhaitez en savoir plus dès maintenant ? Contactez notre équipe.",
-        cta: "Nous contacter",
+  const [form, setForm] = useState<FormState>(initialState);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [submittedFilleulNom, setSubmittedFilleulNom] = useState("");
+
+  const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
+    setForm((f) => ({ ...f, [key]: value }));
+    setErrors((e) => {
+      const { [key]: _, ...rest } = e;
+      return rest;
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrors({});
+
+    const parsed = referralSchema.safeParse(form);
+    if (!parsed.success) {
+      const fieldErrors: Record<string, string> = {};
+      for (const issue of parsed.error.issues) {
+        const key = String(issue.path[0] ?? "form");
+        if (!fieldErrors[key]) fieldErrors[key] = issue.message;
       }
-    : {
-        title: "Referral Programme — Coming Soon",
-        seoTitle: "Referral Programme — I-CA.RE",
-        seoDesc: "The I-CA.RE referral programme is launching soon.",
-        sub: "Recommend a colleague, share the journey.",
-        body: "Our referral programme is being finalised. It will let our tenants recommend a colleague in a few clicks. Want to know more today? Get in touch with our team.",
-        cta: "Contact us",
-      };
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setSubmitting(true);
+    const payload = {
+      parrain_nom: form.parrain_nom.trim(),
+      parrain_email: form.parrain_email.trim().toLowerCase(),
+      parrain_cabinet_slug: form.parrain_cabinet_slug || null,
+      filleul_nom: form.filleul_nom.trim(),
+      filleul_profession: form.filleul_profession.trim(),
+      filleul_email: form.filleul_email.trim() || null,
+      filleul_telephone: form.filleul_telephone.trim() || null,
+      contexte: form.contexte.trim() || null,
+      statut: "declare",
+      consentement_rgpd: true,
+    };
+
+    const { error } = await supabase
+      .from("declarations_parrainage")
+      .insert(payload);
+
+    setSubmitting(false);
+
+    if (error) {
+      setErrors({
+        form:
+          "Un problème est survenu lors de l'envoi. Merci de réessayer dans un instant.",
+      });
+      return;
+    }
+
+    // TODO: Lovable Emails — send internal notification to nicolas@i-ca.re
+    // and acknowledgement email to the sponsor (parrain_email).
+    setSubmittedFilleulNom(payload.filleul_nom);
+    setSuccess(true);
+  };
+
+  // ─── JSON-LD ──────────────────────────────
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Programme de parrainage praticien I-CA.RE",
+    description:
+      "Recommandez un confrère qui signe un bail dans un cabinet I-CA.RE et bénéficiez de 3 mois de services Espace Patients premium offerts.",
+    url: `https://i-ca.re${path}`,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "I-CA.RE",
+      url: "https://i-ca.re",
+    },
+  };
+
+  // Shared input class — I-CA.RE charter
+  const inputClass =
+    "w-full px-4 py-3 bg-background border border-[#BFBFBF] rounded-md font-body text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors";
 
   return (
     <Layout>
-      <SeoHead title={t.seoTitle} description={t.seoDesc} path={path} noIndex />
-      <section className="pt-32 pb-24 bg-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
-          <h1 className="font-heading text-4xl md:text-5xl font-semibold text-foreground mb-6 text-balance">
-            {t.title}
+      <SeoHead
+        title="Parrainage — Recommandez un confrère et recevez 3 mois offerts | I-CA.RE"
+        description="Parrainez un praticien qui signe un bail dans un cabinet I-CA.RE et bénéficiez de 3 mois de services Espace Patients premium offerts."
+        path={path}
+      />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(webPageJsonLd)}</script>
+      </Helmet>
+
+      {/* ── Section 1 — Hero ───────────────────── */}
+      <section className="bg-background pt-24 pb-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
+          <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-6">
+            Programme de parrainage
+          </p>
+          <h1 className="font-heading font-normal text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 text-balance leading-[1.15]">
+            Recommandez un confrère, et bénéficiez de 3&nbsp;mois offerts.
           </h1>
-          <p className="font-heading italic text-2xl md:text-3xl text-foreground/80 mb-8 text-balance">
-            {t.sub}
+          <p className="font-heading italic text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-[700px] mx-auto mb-10">
+            Parrainez un praticien qui signe un bail dans un cabinet I-CA.RE et
+            recevez 3&nbsp;mois d'accès aux services Espace Patients premium.
           </p>
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
-            {t.body}
+          <a
+            href="#formulaire"
+            className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground font-body font-bold uppercase tracking-[0.1em] text-sm md:text-base px-8 py-4 rounded-md transition-colors"
+            aria-label="Aller au formulaire de recommandation"
+          >
+            Recommander un confrère
+          </a>
+        </div>
+      </section>
+
+      {/* ── Section 2 — Mécanique en une phrase ── */}
+      <section className="py-20" style={{ backgroundColor: "#E2EAE5" }}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
+          <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-6">
+            Le principe
           </p>
-          <Button variant="gold" size="lg" asChild>
-            <Link to={localePath(lang, "contact")}>{t.cta}</Link>
-          </Button>
+          <p className="font-heading italic text-xl md:text-2xl text-foreground leading-[1.5]">
+            Si un praticien locataire I-CA.RE parraine un confrère qui signe un
+            bail d'au moins 12&nbsp;mois dans un de nos cabinets, le parrain
+            reçoit l'équivalent de 3&nbsp;mois de palier Confort de l'Espace
+            Patients (valeur 147&nbsp;€), à activer dès la signature du bail
+            filleul.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Section 3 — Récompense détaillée ───── */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+          <div className="text-center mb-12">
+            <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-4">
+              Ce que comprend la récompense
+            </p>
+            <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-5">
+              Trois mois de services premium offerts
+            </h2>
+            <div
+              className="w-[60px] h-px mx-auto"
+              style={{ backgroundColor: "#C5D4CA" }}
+              aria-hidden="true"
+            />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {rewardCards.map(({ icon: Icon, title, desc }) => (
+              <article
+                key={title}
+                className="rounded-2xl p-8 flex gap-5 items-start"
+                style={{ backgroundColor: "#E2EAE5" }}
+              >
+                <div
+                  className="flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center"
+                  style={{ backgroundColor: "rgba(158, 184, 165, 0.25)" }}
+                >
+                  <Icon
+                    className="w-7 h-7 text-primary"
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                  />
+                </div>
+                <div>
+                  <h3 className="font-body font-bold text-[1.05rem] text-foreground mb-2 leading-tight">
+                    {title}
+                  </h3>
+                  <p className="font-body text-[0.95rem] text-muted-foreground leading-[1.55]">
+                    {desc}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Section 4 — Conditions précises ────── */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+          <div className="text-center mb-10">
+            <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-4">
+              Conditions
+            </p>
+            <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground">
+              Comment ça marche
+            </h2>
+          </div>
+          <ul className="space-y-4 list-none">
+            {conditions.map((c) => (
+              <li
+                key={c}
+                className="flex gap-4 items-start font-body text-base md:text-[1.05rem] text-foreground leading-[1.6]"
+              >
+                <span
+                  className="flex-shrink-0 w-2 h-2 rounded-full mt-[0.7rem] bg-primary"
+                  aria-hidden="true"
+                />
+                <span>{c}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ── Section 5 — FAQ ─────────────────────── */}
+      <section className="py-20" style={{ backgroundColor: "#E2EAE5" }}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+          <div className="text-center mb-10">
+            <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-4">
+              Questions fréquentes
+            </p>
+            <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground">
+              Vos questions
+            </h2>
+          </div>
+
+          <Accordion type="single" collapsible className="w-full">
+            {faq.map((item, idx) => (
+              <AccordionItem
+                key={item.q}
+                value={`item-${idx}`}
+                className="border-b"
+                style={{ borderColor: "#BFBFBF" }}
+              >
+                <AccordionTrigger className="font-body font-bold text-base md:text-[1.05rem] text-foreground hover:no-underline py-5 text-left [&>svg]:text-primary [&>svg]:h-5 [&>svg]:w-5">
+                  {item.q}
+                </AccordionTrigger>
+                <AccordionContent className="font-body text-base text-muted-foreground leading-[1.65] pb-5">
+                  {item.r}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
+      {/* ── Section 6 — Formulaire ──────────────── */}
+      <section id="formulaire" className="py-20 bg-primary">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
+          <div className="bg-background rounded-xl p-8 md:p-12 shadow-elevated">
+            {success ? (
+              <div className="text-center py-8">
+                <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-4">
+                  Recommandation enregistrée
+                </p>
+                <h2 className="font-heading italic text-3xl md:text-4xl text-foreground mb-6">
+                  Merci&nbsp;!
+                </h2>
+                <p className="font-body text-base md:text-lg text-foreground leading-[1.6] max-w-xl mx-auto">
+                  Votre recommandation a bien été enregistrée. Nous contacterons{" "}
+                  <span className="font-bold">{submittedFilleulNom}</span> dans
+                  les prochains jours et vous tiendrons informé de la suite.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="text-center mb-8">
+                  <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-3">
+                    Déclaration de parrainage
+                  </p>
+                  <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-3">
+                    Recommander un confrère
+                  </h2>
+                  <p className="font-heading italic text-lg text-muted-foreground">
+                    Quelques informations pour qu'on puisse contacter votre
+                    filleul.
+                  </p>
+                </div>
+
+                <form onSubmit={handleSubmit} noValidate className="space-y-8">
+                  {/* ── VOUS ── */}
+                  <div>
+                    <div
+                      className="border-b pb-2 mb-5"
+                      style={{ borderColor: "#C5D4CA" }}
+                    >
+                      <p className="font-body font-bold uppercase tracking-[0.15em] text-xs text-primary">
+                        Vous
+                      </p>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label
+                          htmlFor="parrain_nom"
+                          className="block font-body font-bold text-sm text-foreground mb-2"
+                        >
+                          Votre nom complet *
+                        </label>
+                        <input
+                          id="parrain_nom"
+                          type="text"
+                          required
+                          value={form.parrain_nom}
+                          onChange={(e) => update("parrain_nom", e.target.value)}
+                          className={inputClass}
+                          maxLength={200}
+                          aria-invalid={!!errors.parrain_nom}
+                          aria-describedby={
+                            errors.parrain_nom ? "err-parrain_nom" : undefined
+                          }
+                        />
+                        {errors.parrain_nom && (
+                          <p
+                            id="err-parrain_nom"
+                            className="mt-1.5 text-sm font-body"
+                            style={{ color: "#B89B6F" }}
+                          >
+                            {errors.parrain_nom}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="parrain_email"
+                          className="block font-body font-bold text-sm text-foreground mb-2"
+                        >
+                          Votre email *
+                        </label>
+                        <input
+                          id="parrain_email"
+                          type="email"
+                          required
+                          value={form.parrain_email}
+                          onChange={(e) =>
+                            update("parrain_email", e.target.value)
+                          }
+                          className={inputClass}
+                          maxLength={255}
+                          aria-invalid={!!errors.parrain_email}
+                          aria-describedby={
+                            errors.parrain_email ? "err-parrain_email" : undefined
+                          }
+                        />
+                        {errors.parrain_email && (
+                          <p
+                            id="err-parrain_email"
+                            className="mt-1.5 text-sm font-body"
+                            style={{ color: "#B89B6F" }}
+                          >
+                            {errors.parrain_email}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="parrain_cabinet_slug"
+                          className="block font-body font-bold text-sm text-foreground mb-2"
+                        >
+                          Votre cabinet I-CA.RE
+                        </label>
+                        <Select
+                          value={form.parrain_cabinet_slug}
+                          onValueChange={(v) =>
+                            update("parrain_cabinet_slug", v)
+                          }
+                        >
+                          <SelectTrigger
+                            id="parrain_cabinet_slug"
+                            className="w-full px-4 py-3 h-auto bg-background border border-[#BFBFBF] rounded-md font-body text-base text-foreground"
+                          >
+                            <SelectValue placeholder="Sélectionner…" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {cabinetOptions.map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ── VOTRE FILLEUL ── */}
+                  <div>
+                    <div
+                      className="border-b pb-2 mb-5"
+                      style={{ borderColor: "#C5D4CA" }}
+                    >
+                      <p className="font-body font-bold uppercase tracking-[0.15em] text-xs text-primary">
+                        Votre filleul
+                      </p>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label
+                          htmlFor="filleul_nom"
+                          className="block font-body font-bold text-sm text-foreground mb-2"
+                        >
+                          Nom complet du confrère *
+                        </label>
+                        <input
+                          id="filleul_nom"
+                          type="text"
+                          required
+                          value={form.filleul_nom}
+                          onChange={(e) => update("filleul_nom", e.target.value)}
+                          className={inputClass}
+                          maxLength={200}
+                          aria-invalid={!!errors.filleul_nom}
+                          aria-describedby={
+                            errors.filleul_nom ? "err-filleul_nom" : undefined
+                          }
+                        />
+                        {errors.filleul_nom && (
+                          <p
+                            id="err-filleul_nom"
+                            className="mt-1.5 text-sm font-body"
+                            style={{ color: "#B89B6F" }}
+                          >
+                            {errors.filleul_nom}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="filleul_profession"
+                          className="block font-body font-bold text-sm text-foreground mb-2"
+                        >
+                          Sa profession *
+                        </label>
+                        <input
+                          id="filleul_profession"
+                          type="text"
+                          required
+                          placeholder="Psychologue, Ostéopathe…"
+                          value={form.filleul_profession}
+                          onChange={(e) =>
+                            update("filleul_profession", e.target.value)
+                          }
+                          className={inputClass}
+                          maxLength={100}
+                          aria-invalid={!!errors.filleul_profession}
+                          aria-describedby={
+                            errors.filleul_profession
+                              ? "err-filleul_profession"
+                              : undefined
+                          }
+                        />
+                        {errors.filleul_profession && (
+                          <p
+                            id="err-filleul_profession"
+                            className="mt-1.5 text-sm font-body"
+                            style={{ color: "#B89B6F" }}
+                          >
+                            {errors.filleul_profession}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="filleul_email"
+                          className="block font-body font-bold text-sm text-foreground mb-2"
+                        >
+                          Son email (si vous l'avez)
+                        </label>
+                        <input
+                          id="filleul_email"
+                          type="email"
+                          value={form.filleul_email}
+                          onChange={(e) =>
+                            update("filleul_email", e.target.value)
+                          }
+                          className={inputClass}
+                          maxLength={255}
+                          aria-invalid={!!errors.filleul_email}
+                          aria-describedby={
+                            errors.filleul_email ? "err-filleul_email" : undefined
+                          }
+                        />
+                        {errors.filleul_email && (
+                          <p
+                            id="err-filleul_email"
+                            className="mt-1.5 text-sm font-body"
+                            style={{ color: "#B89B6F" }}
+                          >
+                            {errors.filleul_email}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="filleul_telephone"
+                          className="block font-body font-bold text-sm text-foreground mb-2"
+                        >
+                          Son téléphone (si vous l'avez)
+                        </label>
+                        <input
+                          id="filleul_telephone"
+                          type="tel"
+                          value={form.filleul_telephone}
+                          onChange={(e) =>
+                            update("filleul_telephone", e.target.value)
+                          }
+                          className={inputClass}
+                          maxLength={30}
+                        />
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="contexte"
+                          className="block font-body font-bold text-sm text-foreground mb-2"
+                        >
+                          Comment vous connaissez-vous&nbsp;?
+                        </label>
+                        <textarea
+                          id="contexte"
+                          rows={4}
+                          maxLength={500}
+                          placeholder="Quelques mots de contexte nous aident à personnaliser la prise de contact"
+                          value={form.contexte}
+                          onChange={(e) => update("contexte", e.target.value)}
+                          className={inputClass + " resize-y"}
+                          aria-invalid={!!errors.contexte}
+                          aria-describedby={
+                            errors.contexte ? "err-contexte" : undefined
+                          }
+                        />
+                        {errors.contexte && (
+                          <p
+                            id="err-contexte"
+                            className="mt-1.5 text-sm font-body"
+                            style={{ color: "#B89B6F" }}
+                          >
+                            {errors.contexte}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ── Consent ── */}
+                  <div>
+                    <label className="flex gap-3 items-start cursor-pointer">
+                      <input
+                        type="checkbox"
+                        required
+                        checked={form.consentement_rgpd}
+                        onChange={(e) =>
+                          update("consentement_rgpd", e.target.checked)
+                        }
+                        className="mt-1 w-4 h-4 accent-primary flex-shrink-0"
+                        aria-invalid={!!errors.consentement_rgpd}
+                        aria-describedby={
+                          errors.consentement_rgpd
+                            ? "err-consent"
+                            : undefined
+                        }
+                      />
+                      <span className="font-body text-sm text-foreground leading-[1.55]">
+                        Je confirme avoir informé mon filleul que je transmets
+                        ses coordonnées à I-CA.RE pour une prise de contact
+                        dans le cadre de ce programme de parrainage.
+                      </span>
+                    </label>
+                    {errors.consentement_rgpd && (
+                      <p
+                        id="err-consent"
+                        className="mt-1.5 text-sm font-body"
+                        style={{ color: "#B89B6F" }}
+                      >
+                        {errors.consentement_rgpd}
+                      </p>
+                    )}
+                  </div>
+
+                  {errors.form && (
+                    <p
+                      role="alert"
+                      className="text-sm font-body text-center"
+                      style={{ color: "#B89B6F" }}
+                    >
+                      {errors.form}
+                    </p>
+                  )}
+
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="w-full bg-foreground hover:bg-foreground/90 text-background font-body font-bold uppercase tracking-[0.1em] text-sm md:text-base px-8 py-4 rounded-md transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                      {submitting
+                        ? "Envoi en cours…"
+                        : "Envoyer ma recommandation"}
+                    </button>
+                  </div>
+                </form>
+              </>
+            )}
+          </div>
         </div>
       </section>
     </Layout>
