@@ -1,55 +1,63 @@
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Loader2 } from "lucide-react";
 import { Layout } from "@/components/Layout";
-import { Button } from "@/components/ui/button";
 import { SeoHead } from "@/components/SeoHead";
 import { localePath } from "@/lib/routes";
 import { CarteCabinetsSection } from "@/components/CarteCabinetsSection";
+import { usePraticiensPublics } from "@/hooks/usePraticiensPublics";
+import {
+  resolvePatientsIndexMode,
+  SEUIL_OUVERTURE_INDEX_PATIENTS,
+} from "@/config/patientsIndex";
+import { PatientsAmorcage } from "@/components/patients/PatientsAmorcage";
+import { PatientsOuvert } from "@/components/patients/PatientsOuvert";
 
+/**
+ * Index public /patients.
+ *
+ * Deux modes pré-rendus selon le seuil défini dans
+ * `src/config/patientsIndex.ts` :
+ *   - amorçage  → noindex,nofollow + page d'attente compteur N/8
+ *   - ouvert    → index,follow + annuaire complet recherchable
+ *
+ * Override QA : variable d'env `VITE_FORCE_PATIENTS_INDEX_OPEN=true`.
+ */
 export default function Patients() {
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const path = localePath(lang, "patients");
+  const { data: praticiens, loading } = usePraticiensPublics();
+  const mode = resolvePatientsIndexMode(praticiens.length);
 
-  const t = lang === "fr"
-    ? {
-        title: "Espace Patients — Bientôt en ligne",
-        seoTitle: "Espace Patients — I-CA.RE",
-        seoDesc: "Notre annuaire qualitatif des spécialistes du soin et du bien-être ouvre prochainement.",
-        sub: "Trouvez votre praticienne ou votre praticien à Bordeaux.",
-        body: "Notre annuaire qualitatif des spécialistes du soin et du bien-être ouvre prochainement. Vous souhaitez prendre rendez-vous avec une praticienne ou un praticien I-CA.RE dès maintenant ? Découvrez nos cabinets et leurs locataires.",
-        cta: "Voir nos cabinets",
-      }
-    : {
-        title: "Patient Area — Coming Soon",
-        seoTitle: "Patient Area — I-CA.RE",
-        seoDesc: "Our curated directory of care and wellbeing practitioners is opening soon.",
-        sub: "Find your practitioner in Bordeaux.",
-        body: "Our curated directory of care and wellbeing practitioners is opening soon. Want to book an appointment with an I-CA.RE practitioner today? Explore our spaces and their tenants.",
-        cta: "View our spaces",
-      };
+  const seoTitle =
+    mode === "ouvert"
+      ? "Annuaire des praticiennes et praticiens I-CA.RE — Bordeaux"
+      : "Espace Patients I-CA.RE — En cours de lancement";
+
+  const seoDesc =
+    mode === "ouvert"
+      ? "Trouvez une praticienne ou un praticien du soin, paramédical et bien-être à Bordeaux. Annuaire qualitatif I-CA.RE."
+      : `L'annuaire I-CA.RE ouvre publiquement quand ${SEUIL_OUVERTURE_INDEX_PATIENTS} spécialistes ont validé leur fiche. Découvrez les premières fiches déjà publiées.`;
 
   return (
     <Layout>
-      <SeoHead title={t.seoTitle} description={t.seoDesc} path={path} noIndex />
-      <section className="pt-32 pb-24 bg-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
-          <h1 className="font-heading text-4xl md:text-5xl font-semibold text-foreground mb-6 text-balance">
-            {t.title}
-          </h1>
-          <p className="font-heading italic text-2xl md:text-3xl text-foreground/80 mb-8 text-balance">
-            {t.sub}
-          </p>
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
-            {t.body}
-          </p>
-          <Button variant="gold" size="lg" asChild>
-            <Link to={localePath(lang, "projects")}>{t.cta}</Link>
-          </Button>
+      <SeoHead
+        title={seoTitle}
+        description={seoDesc}
+        path={path}
+        noIndex={mode === "amorcage"}
+      />
+      {loading ? (
+        <div className="pt-40 pb-40 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
         </div>
-      </section>
+      ) : mode === "ouvert" ? (
+        <PatientsOuvert praticiens={praticiens} />
+      ) : (
+        <PatientsAmorcage praticiens={praticiens} />
+      )}
 
-      {/* Carte interactive des cabinets */}
+      {/* Carte interactive des cabinets — conservée dans les deux modes */}
       <CarteCabinetsSection
         background="secondary"
         title={lang === "fr" ? "Trouver un cabinet près de chez vous" : "Find an office near you"}
