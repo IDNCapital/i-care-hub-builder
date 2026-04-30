@@ -78,7 +78,7 @@ function LogoRivage() {
       src={rivageLogo}
       alt="RIVAGE"
       className="block w-auto"
-      style={{ height: "24px" }}
+      style={{ height: "30px" }}
       loading="lazy"
     />
   );
