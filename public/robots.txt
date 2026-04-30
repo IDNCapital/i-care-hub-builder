@@ -3,5 +3,6 @@ Allow: /
 Disallow: /preview/
 Disallow: /admin/
 Disallow: /preview-footer-idn
+Disallow: /preview-footer-idn-v3
 
 Sitemap: https://i-ca.re/sitemap.xml
