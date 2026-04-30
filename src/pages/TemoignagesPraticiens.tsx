@@ -11,6 +11,7 @@ import { GoogleReviewCard, type GoogleReviewCardData } from "@/components/Google
 import { supabase } from "@/integrations/supabase/client";
 import { localePath } from "@/lib/routes";
 import { PROJECT_IMAGES } from "@/lib/projectImages";
+import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
 
 export default function TemoignagesPraticiens() {
   const { i18n } = useTranslation();
