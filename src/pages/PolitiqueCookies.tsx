@@ -35,7 +35,7 @@ export default function PolitiqueCookies() {
 
           <h3 className="text-xl font-semibold mt-8 mb-3">Cookies analytiques / de performance</h3>
           <p className="text-muted-foreground leading-relaxed">
-            Ces cookies nous permettent de compter les visites et les sources de trafic afin de mesurer et d'améliorer les performances de notre site. Ils nous aident à savoir quelles pages sont les plus et les moins populaires et à voir comment les visiteurs se déplacent sur le site. Toutes les informations collectées par ces cookies sont agrégées et donc anonymisées.
+            Ces cookies nous permettent de compter les visites et les sources de trafic afin de mesurer et d'améliorer les performances de notre site. Ils nous aident à savoir quelles pages sont les plus et les moins populaires et à voir comment l'audience se déplace sur le site. Toutes les informations collectées par ces cookies sont agrégées et donc anonymisées.
           </p>
 
           <h3 className="text-xl font-semibold mt-8 mb-3">Cookies de fonctionnalité</h3>

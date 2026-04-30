@@ -14,9 +14,9 @@ export default function Patients() {
     ? {
         title: "Espace Patients — Bientôt en ligne",
         seoTitle: "Espace Patients — I-CA.RE",
-        seoDesc: "Notre annuaire qualitatif des praticiens du soin et du bien-être ouvre prochainement.",
-        sub: "Trouvez votre praticien à Bordeaux.",
-        body: "Notre annuaire qualitatif des praticiens du soin et du bien-être ouvre prochainement. Vous souhaitez prendre rendez-vous avec un praticien I-CA.RE dès maintenant ? Découvrez nos cabinets et leurs locataires.",
+        seoDesc: "Notre annuaire qualitatif des spécialistes du soin et du bien-être ouvre prochainement.",
+        sub: "Trouvez votre praticienne ou votre praticien à Bordeaux.",
+        body: "Notre annuaire qualitatif des spécialistes du soin et du bien-être ouvre prochainement. Vous souhaitez prendre rendez-vous avec une praticienne ou un praticien I-CA.RE dès maintenant ? Découvrez nos cabinets et leurs locataires.",
         cta: "Voir nos cabinets",
       }
     : {

@@ -311,7 +311,7 @@ export function FichePraticien({
       .slice(0, 3);
   }, [cache]);
 
-  const ctaLabel = praticien.lien_rdv ? "PRENDRE RENDEZ-VOUS" : "CONTACTER LE PRATICIEN";
+  const ctaLabel = praticien.lien_rdv ? "PRENDRE RENDEZ-VOUS" : "PRENDRE CONTACT";
 
   return (
     <article
