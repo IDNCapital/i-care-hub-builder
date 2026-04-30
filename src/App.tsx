@@ -47,6 +47,7 @@ import PreviewPraticien from "./pages/PreviewPraticien";
 import PraticienPublic from "./pages/PraticienPublic";
 import PreviewFooterIdn from "./pages/PreviewFooterIdn";
 import PreviewFooterIdnV3 from "./pages/PreviewFooterIdnV3";
+import PreviewCarteCabinets from "./pages/PreviewCarteCabinets";
 
 const queryClient = new QueryClient();
 
