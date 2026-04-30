@@ -457,7 +457,7 @@ export function CarteCabinets({
 
       {/* Sidebar */}
       {showSidebar && (
-        <aside className="lg:col-span-1">
+        <aside className="lg:col-span-1 flex flex-col" style={{ maxHeight: mapHeight }}>
           <h2 className="font-heading text-xl text-foreground mb-3">Nos cabinets</h2>
 
           {/* Filtres ville */}
@@ -481,7 +481,7 @@ export function CarteCabinets({
             ))}
           </div>
 
-          <ul className="space-y-2 list-none p-0 m-0">
+          <ul className="space-y-2 list-none p-0 m-0 overflow-y-auto pr-1 flex-1 min-h-0">
             {filtered.map((c) => {
               const active = isActive(c.status);
               const isSelected = selected === c.slug;
