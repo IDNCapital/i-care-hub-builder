@@ -79,7 +79,7 @@ export function PatientsAmorcage({ praticiens }: Props) {
             vers la praticienne ou le praticien I-CA.RE le plus adapté, sans
             engagement et en toute confidentialité.
           </p>
-          <Button variant="sage" size="lg" asChild>
+          <Button variant="gold" size="lg" asChild>
             <Link to="/patients/decrire-mon-besoin">Décrire mon besoin</Link>
           </Button>
         </div>
