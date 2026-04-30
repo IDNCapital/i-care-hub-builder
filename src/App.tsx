@@ -35,6 +35,7 @@ import InsightsTransformer from "./pages/InsightsTransformer";
 import InsightsProfessions from "./pages/InsightsProfessions";
 import InsightsLouerAcheter from "./pages/InsightsLouerAcheter";
 import Patients from "./pages/Patients";
+import DecrireMonBesoin from "./pages/DecrireMonBesoin";
 import Parrainage from "./pages/Parrainage";
 import TemoignagesPraticiens from "./pages/TemoignagesPraticiens";
 import { CookieBanner } from "./components/CookieBanner";
@@ -42,6 +43,7 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { useAnalytics } from "./hooks/useAnalytics";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminPraticiens from "./pages/admin/AdminPraticiens";
+import AdminDemandes from "./pages/admin/AdminDemandes";
 import { AdminGuard } from "./components/AdminGuard";
 import PreviewPraticien from "./pages/PreviewPraticien";
 import PraticienPublic from "./pages/PraticienPublic";
@@ -138,6 +140,14 @@ const App = () => (
                   </AdminGuard>
                 }
               />
+              <Route
+                path="/admin/demandes"
+                element={
+                  <AdminGuard>
+                    <AdminDemandes />
+                  </AdminGuard>
+                }
+              />
               <Route path="/admin" element={<Navigate to="/admin/praticiens" replace />} />
 
               {/* EN routes (prefixed) */}
@@ -171,6 +181,7 @@ const App = () => (
                 <Route path="/insights/professions-sharing-office" element={<InsightsProfessions />} />
                 <Route path="/insights/rent-or-buy-office" element={<InsightsLouerAcheter />} />
                 <Route path="/patients" element={<Patients />} />
+                <Route path="/patients/decrire-mon-besoin" element={<DecrireMonBesoin />} />
                 <Route path="/referral" element={<Parrainage />} />
                 <Route path="/practitioner-testimonials" element={<TemoignagesPraticiens />} />
                 <Route path="*" element={<NotFound />} />
@@ -222,6 +233,7 @@ const App = () => (
                 <Route path="/insights/professions-partage-cabinet" element={<InsightsProfessions />} />
                 <Route path="/insights/louer-ou-acheter-cabinet" element={<InsightsLouerAcheter />} />
                 <Route path="/patients" element={<Patients />} />
+                <Route path="/patients/decrire-mon-besoin" element={<DecrireMonBesoin />} />
                 <Route path="/parrainage" element={<Parrainage />} />
                 <Route path="/temoignages-praticiens" element={<TemoignagesPraticiens />} />
                 <Route path="*" element={<NotFound />} />
