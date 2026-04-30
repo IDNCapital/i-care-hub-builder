@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useParams, Link } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { Loader2, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { FichePraticien } from "@/components/praticiens/FichePraticien";
 import type { Praticien } from "@/pages/admin/AdminPraticiens";
@@ -15,10 +15,22 @@ type CabinetForLd = {
 
 export default function PraticienPublic() {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [praticien, setPraticien] = useState<Praticien | null>(null);
   const [cabinet, setCabinet] = useState<CabinetForLd | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const handleBack = () => {
+    // Si l'utilisateur a un historique dans l'app, on revient en arrière.
+    // Sinon (arrivée directe via Google), on retombe sur la fiche cabinet ou l'accueil.
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else if (praticien?.cabinet_slug) {
+      navigate(`/projets/${praticien.cabinet_slug}`);
+    } else {
+      navigate("/");
+    }
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -153,6 +165,23 @@ export default function PraticienPublic() {
         <meta name="twitter:image" content={image} />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
+      <div
+        className="w-full"
+        style={{ backgroundColor: "#F6F5F0", borderBottom: "1px solid #E2EAE5" }}
+      >
+        <div className="max-w-5xl mx-auto px-6 py-4">
+          <button
+            type="button"
+            onClick={handleBack}
+            aria-label="Revenir à la page précédente"
+            className="inline-flex items-center gap-2 text-sm font-medium hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#90A997] rounded"
+            style={{ color: "#2C2C2C" }}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Retour
+          </button>
+        </div>
+      </div>
       <FichePraticien praticien={praticien} isPreview={false} />
     </>
   );
