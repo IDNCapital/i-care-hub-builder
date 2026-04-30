@@ -45,6 +45,7 @@ import AdminPraticiens from "./pages/admin/AdminPraticiens";
 import { AdminGuard } from "./components/AdminGuard";
 import PreviewPraticien from "./pages/PreviewPraticien";
 import PraticienPublic from "./pages/PraticienPublic";
+import PreviewFooterIdn from "./pages/PreviewFooterIdn";
 
 const queryClient = new QueryClient();
 
@@ -115,6 +116,9 @@ const App = () => (
 
               {/* Fiche publique praticien (langue-agnostique pour V1) */}
               <Route path="/praticien/:slug" element={<PraticienPublic />} />
+
+              {/* Preview interne footer Famille IDN — sprint 7 (noindex,nofollow) */}
+              <Route path="/preview-footer-idn" element={<PreviewFooterIdn />} />
 
               {/* Admin routes (hors i18n) */}
               <Route path="/admin/login" element={<AdminLogin />} />
