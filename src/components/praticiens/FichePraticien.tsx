@@ -3,6 +3,7 @@ import { ExternalLink, MapPin, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Praticien } from "@/pages/admin/AdminPraticiens";
+import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
 
 type Cabinet = {
   slug: string;
@@ -478,15 +479,23 @@ export function FichePraticien({
                     <em>{cache.google_display_name ?? "—"}</em> · Mis à jour le{" "}
                     {formatDateShortFr(cache.last_updated_at)}
                   </span>
-                  <a
-                    href={`https://www.google.com/maps/place/?q=place_id:${praticien.google_place_id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline"
-                    style={{ color: COLORS.green }}
-                  >
-                    Voir tous les avis sur Google →
-                  </a>
+                  {(() => {
+                    const mapsUrl = googleMapsPlaceUrl(
+                      cache.google_display_name || `${praticien.prenom} ${praticien.nom}`,
+                      praticien.google_place_id,
+                    );
+                    return mapsUrl ? (
+                      <a
+                        href={mapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                        style={{ color: COLORS.green }}
+                      >
+                        Voir tous les avis sur Google →
+                      </a>
+                    ) : null;
+                  })()}
                 </div>
               </section>
             )}
