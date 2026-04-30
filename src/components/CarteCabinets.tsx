@@ -45,6 +45,18 @@ const OPENING_FORECAST: Record<string, string> = {
   "i-ca-re-toulouse-capitole": "Ouverture à venir",
 };
 
+/** Mapping ville -> métropole. */
+const CITY_TO_METRO: Record<string, string> = {
+  Bordeaux: "Bordeaux Métropole",
+  Floirac: "Bordeaux Métropole",
+  Lormont: "Bordeaux Métropole",
+  Toulouse: "Toulouse Métropole",
+};
+
+function metroOf(city: string): string {
+  return CITY_TO_METRO[city] ?? city;
+}
+
 /** Build a Leaflet DivIcon from inline SVG using charte colors. */
 function buildIcon(active: boolean, highlighted = false): L.DivIcon {
   const fill = active ? SAGE : GOLD_PALE;
@@ -189,7 +201,7 @@ export function CarteCabinets({
       if (slugParam) {
         const found = rows.find((r) => r.slug === slugParam);
         if (found) {
-          setCityFilter(found.city);
+          setCityFilter(metroOf(found.city));
           setSelected(found.slug);
         }
       }
@@ -200,17 +212,20 @@ export function CarteCabinets({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // City counts
-  const cities = useMemo(() => {
+  // Metro counts
+  const metros = useMemo(() => {
     const map = new Map<string, number>();
-    cabinets.forEach((c) => map.set(c.city, (map.get(c.city) ?? 0) + 1));
+    cabinets.forEach((c) => {
+      const m = metroOf(c.city);
+      map.set(m, (map.get(m) ?? 0) + 1);
+    });
     return Array.from(map.entries()).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   }, [cabinets]);
 
   // Filtered cabinets
   const filtered = useMemo(() => {
     if (cityFilter === "all") return cabinets;
-    return cabinets.filter((c) => c.city === cityFilter);
+    return cabinets.filter((c) => metroOf(c.city) === cityFilter);
   }, [cabinets, cityFilter]);
 
   const isActive = (status: string) => status === "en_exploitation";
@@ -463,7 +478,7 @@ export function CarteCabinets({
           {/* Filtres ville */}
           <div
             role="radiogroup"
-            aria-label="Filtrer les cabinets par ville"
+            aria-label="Filtrer les cabinets par métropole"
             className="flex flex-wrap gap-2 mb-4"
           >
             <FilterPill
@@ -471,12 +486,12 @@ export function CarteCabinets({
               active={cityFilter === "all"}
               onClick={() => handleFilterChange("all")}
             />
-            {cities.map(([city, count]) => (
+            {metros.map(([metro, count]) => (
               <FilterPill
-                key={city}
-                label={`${city} (${count})`}
-                active={cityFilter === city}
-                onClick={() => handleFilterChange(city)}
+                key={metro}
+                label={`${metro} (${count})`}
+                active={cityFilter === metro}
+                onClick={() => handleFilterChange(metro)}
               />
             ))}
           </div>
