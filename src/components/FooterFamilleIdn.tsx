@@ -163,18 +163,71 @@ function LogoColiving() {
 /* ─────────────────────────────────────────────────────────────────
  * Liens marques (TODO : confirmer URLs avant déploiement sprint 7)
  * ───────────────────────────────────────────────────────────────── */
-const AFFILIATED_BRANDS: Array<{
+type AffiliatedBrand = {
   key: string;
   Logo: () => ReactElement;
   href: string;
   external: boolean;
   label: string;
-}> = [
-  { key: "rivage", Logo: LogoRivage, href: "#", external: true, label: "RIVAGE" },
-  { key: "idnea", Logo: LogoIdnea, href: "#", external: true, label: "IDNéa" },
-  { key: "icare", Logo: LogoIcare, href: "/", external: false, label: "I-CA.RE" },
-  { key: "insidebat", Logo: LogoInsideBat, href: "#", external: true, label: "INside BAT" },
-  { key: "coliving", Logo: LogoColiving, href: "#", external: true, label: "co-liv.ing" },
+  tagline: string;
+  /** Position desktop dans la grille 3×3 (col / row, 1-indexé). */
+  desktop: { col: number; row: number };
+};
+
+const AFFILIATED_BRANDS: Record<string, AffiliatedBrand> = {
+  rivage: {
+    key: "rivage",
+    Logo: LogoRivage,
+    href: "#",
+    external: true,
+    label: "RIVAGE",
+    tagline: "Ingénierie immobilière complexe et réhabilitation",
+    desktop: { col: 1, row: 1 },
+  },
+  idnea: {
+    key: "idnea",
+    Logo: LogoIdnea,
+    href: "#",
+    external: true,
+    label: "IDNéa",
+    tagline: "Conseil stratégique et accompagnement de la maîtrise d'ouvrage",
+    desktop: { col: 3, row: 1 },
+  },
+  icare: {
+    key: "icare",
+    Logo: LogoIcare,
+    href: "/",
+    external: false,
+    label: "I-CA.RE",
+    tagline: "Immobilier santé et bien-être",
+    desktop: { col: 1, row: 3 },
+  },
+  insidebat: {
+    key: "insidebat",
+    Logo: LogoInsideBat,
+    href: "#",
+    external: true,
+    label: "INside BAT",
+    tagline: "Construction intérieure et second œuvre",
+    desktop: { col: 2, row: 3 },
+  },
+  coliving: {
+    key: "coliving",
+    Logo: LogoColiving,
+    href: "#",
+    external: true,
+    label: "co-liv.ing",
+    tagline: "Plateforme de logement partagé",
+    desktop: { col: 3, row: 3 },
+  },
+};
+
+const AFFILIATED_ORDER: Array<keyof typeof AFFILIATED_BRANDS> = [
+  "rivage",
+  "idnea",
+  "icare",
+  "insidebat",
+  "coliving",
 ];
 
 const IDN_CAPITAL_HREF = "#";
