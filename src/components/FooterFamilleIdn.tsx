@@ -38,11 +38,10 @@ const COLORS = {
  * Hauteur visuelle cible : ~22px desktop / 18px mobile
  * ───────────────────────────────────────────────────────────────── */
 
-/** ID<sub>N</sub> Capital — central (28-32px) ou inline (22px) */
+/** ID<sub>N</sub> Capital — central (52px) ou inline (1.05rem) ou onDark */
 function LogoIdnCapital({ variant = "inline" }: { variant?: "inline" | "central" | "onDark" }) {
-  const fontSize = variant === "central" ? "1.75rem" : "1.05rem";
-  const nColor =
-    variant === "onDark" ? COLORS.sage : COLORS.forest;
+  const fontSize = variant === "central" ? "3.25rem" : "1.05rem";
+  const nColor = variant === "onDark" ? COLORS.sage : COLORS.forest;
   const baseColor = variant === "onDark" ? COLORS.cream : COLORS.anthracite;
   return (
     <span
@@ -53,7 +52,7 @@ function LogoIdnCapital({ variant = "inline" }: { variant?: "inline" | "central"
       <sub
         style={{
           color: nColor,
-          fontSize: "0.65em",
+          fontSize: "0.62em",
           lineHeight: 1,
           marginLeft: "0.01em",
           marginRight: "0.15em",
@@ -65,19 +64,19 @@ function LogoIdnCapital({ variant = "inline" }: { variant?: "inline" | "central"
       >
         N
       </sub>
-      <span style={{ fontWeight: 500, marginLeft: "0.15em" }}>Capital</span>
+      <span style={{ fontWeight: 600, marginLeft: "0.15em" }}>Capital</span>
     </span>
   );
 }
 
-/** RIVAGE — PNG officiel, hauteur fixe pour respecter proportions */
+/** RIVAGE — PNG officiel, hauteur uniformisée aux affiliées */
 function LogoRivage() {
   return (
     <img
       src={rivageLogo}
       alt="RIVAGE"
-      className="block w-auto"
-      style={{ height: "20px" }}
+      className="block w-auto mx-auto"
+      style={{ height: "26px" }}
     />
   );
 }
@@ -87,7 +86,7 @@ function LogoIdnea() {
   return (
     <span
       className="font-sans inline-flex items-baseline"
-      style={{ color: COLORS.anthracite, fontSize: "1.05rem", lineHeight: 1, fontWeight: 600, letterSpacing: "0.01em" }}
+      style={{ color: COLORS.anthracite, fontSize: "1.5rem", lineHeight: 1, fontWeight: 700, letterSpacing: "0.01em" }}
     >
       IDN
       <span style={{ color: COLORS.gold, fontStyle: "italic", fontWeight: 500 }}>éa</span>
@@ -101,7 +100,7 @@ function LogoIcare() {
     <span
       className="font-sans"
       style={{
-        fontSize: "0.95rem",
+        fontSize: "1.35rem",
         fontWeight: 700,
         letterSpacing: "0.08em",
         lineHeight: 1,
@@ -142,7 +141,7 @@ function LogoInsideBat() {
   return (
     <span
       className="font-sans"
-      style={{ color: COLORS.anthracite, fontSize: "0.95rem", fontWeight: 700, letterSpacing: "0.04em", lineHeight: 1 }}
+      style={{ color: COLORS.anthracite, fontSize: "1.35rem", fontWeight: 700, letterSpacing: "0.04em", lineHeight: 1 }}
     >
       INside <span style={{ color: COLORS.gold }}>BAT</span>
     </span>
@@ -154,7 +153,7 @@ function LogoColiving() {
   return (
     <span
       className="font-sans"
-      style={{ color: COLORS.anthracite, fontSize: "1rem", fontWeight: 600, letterSpacing: "0.02em", lineHeight: 1 }}
+      style={{ color: COLORS.anthracite, fontSize: "1.4rem", fontWeight: 600, letterSpacing: "0.02em", lineHeight: 1 }}
     >
       co<span style={{ color: COLORS.gold }}>-</span>liv<span style={{ color: COLORS.gold }}>.</span>ing
     </span>
