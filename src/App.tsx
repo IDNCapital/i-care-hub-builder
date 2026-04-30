@@ -125,6 +125,9 @@ const App = () => (
               {/* Preview v3 footer compact unifié — sprint 7 (noindex,nofollow) */}
               <Route path="/preview-footer-idn-v3" element={<PreviewFooterIdnV3 />} />
 
+              {/* Preview interne carte des cabinets — sprint 6 (noindex,nofollow) */}
+              <Route path="/preview-carte-cabinets" element={<PreviewCarteCabinets />} />
+
               {/* Admin routes (hors i18n) */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route
