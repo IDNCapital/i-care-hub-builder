@@ -46,7 +46,7 @@ const referralSchema = z.object({
   filleul_nom: z
     .string()
     .trim()
-    .min(1, "Le nom du confrère est requis")
+    .min(1, "Le nom de la personne recommandée est requis")
     .max(200, "Maximum 200 caractères"),
   filleul_profession: z
     .string()
@@ -123,12 +123,12 @@ const rewardCards = [
   {
     icon: BadgeCheck,
     title: "Mention recommandée",
-    desc: "Encart visuel distinctif « Praticien recommandé ».",
+    desc: "Encart visuel distinctif « Recommandation I-CA.RE ».",
   },
   {
     icon: PenLine,
     title: "Article de blog",
-    desc: "Article co-rédigé sur i-ca.re mentionnant le parrain.",
+    desc: "Article co-rédigé sur i-ca.re mentionnant la personne qui recommande.",
   },
   {
     icon: MapPin,
@@ -138,33 +138,33 @@ const rewardCards = [
 ];
 
 const conditions = [
-  "Le filleul signe un bail d'au moins 12 mois dans un cabinet I-CA.RE.",
+  "La personne recommandée signe un bail d'au moins 12 mois dans un cabinet I-CA.RE.",
   "La déclaration de parrainage est faite avant ou pendant le processus de signature.",
-  "Le décompte des 3 mois commence à la signature du bail filleul.",
-  "En cas de résiliation anticipée du bail filleul (avant 6 mois), la récompense est suspendue.",
-  "Cumulable : un parrain peut déclarer plusieurs filleuls.",
+  "Le décompte des 3 mois commence à la signature du bail.",
+  "En cas de résiliation anticipée du bail (avant 6 mois), la récompense est suspendue.",
+  "Cumulable : une même personne peut déclarer plusieurs recommandations.",
 ];
 
 const faq = [
   {
     q: "Qui peut parrainer ?",
-    r: "Tout praticien actuellement locataire d'un cabinet I-CA.RE peut parrainer un confrère.",
+    r: "Toute praticienne ou tout praticien actuellement locataire d'un cabinet I-CA.RE peut recommander une consœur ou un confrère.",
   },
   {
     q: "Quand est versée la récompense ?",
-    r: "Les services premium sont activés dès la signature effective du bail par le filleul, pour une durée de 3 mois consécutifs.",
+    r: "Les services premium sont activés dès la signature effective du bail par la personne recommandée, pour une durée de 3 mois consécutifs.",
   },
   {
-    q: "Que se passe-t-il si le filleul résilie son bail avant 6 mois ?",
+    q: "Que se passe-t-il si la personne recommandée résilie son bail avant 6 mois ?",
     r: "La récompense est suspendue. Si la résiliation intervient après 6 mois, la récompense est définitivement acquise.",
   },
   {
     q: "Le palier Confort n'est pas encore ouvert publiquement, comment ça marche ?",
-    r: "En tant que parrain, vous bénéficiez d'un accès anticipé au palier Confort en mode bêta-testeur. Cet accès est acquis dès la signature du bail filleul. À l'ouverture officielle du palier (Q1 2027), vous aurez déjà 3 mois d'expérience produit et pourrez décider de continuer.",
+    r: "Vous bénéficiez d'un accès anticipé au palier Confort en mode bêta-testeur. Cet accès est acquis dès la signature du bail de la personne recommandée. À l'ouverture officielle du palier (Q1 2027), vous aurez déjà 3 mois d'expérience produit et pourrez décider de continuer.",
   },
   {
-    q: "Le filleul est-il informé du parrainage ?",
-    r: "Oui, en toute transparence. Lors de l'onboarding, nous mentionnons au filleul que sa venue active une récompense pour son parrain.",
+    q: "La personne recommandée est-elle informée du parrainage ?",
+    r: "Oui, en toute transparence. Lors de l'onboarding, nous mentionnons à la personne recommandée que sa venue active une récompense pour la personne qui l'a recommandée.",
   },
 ];
 
@@ -250,9 +250,9 @@ export default function Parrainage() {
   const webPageJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Programme de parrainage praticien I-CA.RE",
+    name: "Programme de parrainage I-CA.RE",
     description:
-      "Recommandez un confrère qui signe un bail dans un cabinet I-CA.RE et bénéficiez de 3 mois de services Espace Patients premium offerts.",
+      "Recommandez une consœur ou un confrère qui signe un bail dans un cabinet I-CA.RE et bénéficiez de 3 mois de services Espace Patients premium offerts.",
     url: `https://i-ca.re${path}`,
     isPartOf: {
       "@type": "WebSite",
@@ -268,8 +268,8 @@ export default function Parrainage() {
   return (
     <Layout>
       <SeoHead
-        title="Parrainage — Recommandez un confrère et recevez 3 mois offerts | I-CA.RE"
-        description="Parrainez un praticien qui signe un bail dans un cabinet I-CA.RE et bénéficiez de 3 mois de services Espace Patients premium offerts."
+        title="Parrainage — Recommandez une consœur ou un confrère et recevez 3 mois offerts | I-CA.RE"
+        description="Recommandez une praticienne ou un praticien qui signe un bail dans un cabinet I-CA.RE et bénéficiez de 3 mois de services Espace Patients premium offerts."
         path={path}
       />
       <Helmet>
@@ -283,18 +283,19 @@ export default function Parrainage() {
             Programme de parrainage
           </p>
           <h1 className="font-heading font-normal text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 text-balance leading-[1.15]">
-            Recommandez un confrère, et bénéficiez de 3&nbsp;mois offerts.
+            Recommandez quelqu'un, et bénéficiez de 3&nbsp;mois offerts.
           </h1>
           <p className="font-heading italic text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-[700px] mx-auto mb-10">
-            Parrainez un praticien qui signe un bail dans un cabinet I-CA.RE et
-            recevez 3&nbsp;mois d'accès aux services Espace Patients premium.
+            Recommandez une praticienne ou un praticien qui signe un bail dans
+            un cabinet I-CA.RE et recevez 3&nbsp;mois d'accès aux services
+            Espace Patients premium.
           </p>
           <a
             href="#formulaire"
             className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground font-body font-bold uppercase tracking-[0.1em] text-sm md:text-base px-8 py-4 rounded-md transition-colors"
             aria-label="Aller au formulaire de recommandation"
           >
-            Recommander un confrère
+            Recommander quelqu'un
           </a>
         </div>
       </section>
@@ -306,11 +307,11 @@ export default function Parrainage() {
             Le principe
           </p>
           <p className="font-heading italic text-xl md:text-2xl text-foreground leading-[1.5]">
-            Si un praticien locataire I-CA.RE parraine un confrère qui signe un
-            bail d'au moins 12&nbsp;mois dans un de nos cabinets, le parrain
+            Si une praticienne ou un praticien locataire I-CA.RE recommande
+            une consœur ou un confrère qui signe un bail d'au moins
+            12&nbsp;mois dans un de nos cabinets, la personne qui recommande
             reçoit l'équivalent de 3&nbsp;mois de palier Confort de l'Espace
-            Patients (valeur 147&nbsp;€), à activer dès la signature du bail
-            filleul.
+            Patients (valeur 147&nbsp;€), à activer dès la signature du bail.
           </p>
         </div>
       </section>
@@ -438,7 +439,7 @@ export default function Parrainage() {
                 <p className="font-body text-base md:text-lg text-foreground leading-[1.6] max-w-xl mx-auto">
                   Votre recommandation a bien été enregistrée. Nous contacterons{" "}
                   <span className="font-bold">{submittedFilleulNom}</span> dans
-                  les prochains jours et vous tiendrons informé de la suite.
+                  les prochains jours et reviendrons vers vous prochainement.
                 </p>
               </div>
             ) : (
@@ -448,11 +449,11 @@ export default function Parrainage() {
                     Déclaration de parrainage
                   </p>
                   <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-3">
-                    Recommander un confrère
+                    Recommander quelqu'un
                   </h2>
                   <p className="font-heading italic text-lg text-muted-foreground">
                     Quelques informations pour qu'on puisse contacter votre
-                    filleul.
+                    recommandation.
                   </p>
                 </div>
 
@@ -571,7 +572,7 @@ export default function Parrainage() {
                       style={{ borderColor: "#C5D4CA" }}
                     >
                       <p className="font-body font-bold uppercase tracking-[0.15em] text-xs text-primary">
-                        Votre filleul
+                        Votre recommandation
                       </p>
                     </div>
 
@@ -581,7 +582,7 @@ export default function Parrainage() {
                           htmlFor="filleul_nom"
                           className="block font-body font-bold text-sm text-foreground mb-2"
                         >
-                          Nom complet du confrère *
+                          Nom complet de la personne recommandée *
                         </label>
                         <input
                           id="filleul_nom"
@@ -746,9 +747,9 @@ export default function Parrainage() {
                         }
                       />
                       <span className="font-body text-sm text-foreground leading-[1.55]">
-                        Je confirme avoir informé mon filleul que je transmets
-                        ses coordonnées à I-CA.RE pour une prise de contact
-                        dans le cadre de ce programme de parrainage.
+                        Je confirme avoir informé la personne recommandée que
+                        je transmets ses coordonnées à I-CA.RE pour une prise
+                        de contact dans le cadre de ce programme de parrainage.
                       </span>
                     </label>
                     {errors.consentement_rgpd && (
