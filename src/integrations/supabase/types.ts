@@ -474,6 +474,8 @@ export type Database = {
           image_gallery: string[] | null
           key_features: string[] | null
           key_features_en: string[] | null
+          lat: number | null
+          lng: number | null
           long_description: string | null
           long_description_en: string | null
           name: string
@@ -499,6 +501,8 @@ export type Database = {
           image_gallery?: string[] | null
           key_features?: string[] | null
           key_features_en?: string[] | null
+          lat?: number | null
+          lng?: number | null
           long_description?: string | null
           long_description_en?: string | null
           name: string
@@ -524,6 +528,8 @@ export type Database = {
           image_gallery?: string[] | null
           key_features?: string[] | null
           key_features_en?: string[] | null
+          lat?: number | null
+          lng?: number | null
           long_description?: string | null
           long_description_en?: string | null
           name?: string
