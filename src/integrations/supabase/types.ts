@@ -218,6 +218,75 @@ export type Database = {
         }
         Relationships: []
       }
+      demandes_conciergerie: {
+        Row: {
+          cabinet_prefere: string | null
+          consentement_rgpd: boolean
+          created_at: string
+          email: string
+          id: string
+          ip_hash: string | null
+          message: string
+          nom: string
+          notes_internes: string | null
+          prenom: string
+          problematiques_pressenties: string[]
+          source: string | null
+          statut: string
+          telephone: string | null
+          updated_at: string
+          user_agent: string | null
+          webhook_attempts: number
+          webhook_last_attempt_at: string | null
+          webhook_last_error: string | null
+          webhook_status: string | null
+        }
+        Insert: {
+          cabinet_prefere?: string | null
+          consentement_rgpd?: boolean
+          created_at?: string
+          email: string
+          id?: string
+          ip_hash?: string | null
+          message: string
+          nom: string
+          notes_internes?: string | null
+          prenom: string
+          problematiques_pressenties?: string[]
+          source?: string | null
+          statut?: string
+          telephone?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          webhook_attempts?: number
+          webhook_last_attempt_at?: string | null
+          webhook_last_error?: string | null
+          webhook_status?: string | null
+        }
+        Update: {
+          cabinet_prefere?: string | null
+          consentement_rgpd?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          ip_hash?: string | null
+          message?: string
+          nom?: string
+          notes_internes?: string | null
+          prenom?: string
+          problematiques_pressenties?: string[]
+          source?: string | null
+          statut?: string
+          telephone?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          webhook_attempts?: number
+          webhook_last_attempt_at?: string | null
+          webhook_last_error?: string | null
+          webhook_status?: string | null
+        }
+        Relationships: []
+      }
       investor_leads: {
         Row: {
           access_token_expires_at: string | null
