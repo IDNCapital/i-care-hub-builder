@@ -64,9 +64,7 @@ export default function TemoignagesPraticiens() {
       const proj = projects.find((p) => p.slug === slug);
       if (!proj) continue;
       let url: string | null = null;
-      if (proj.google_place_id) {
-        url = `https://www.google.com/maps/place/?q=place_id:${proj.google_place_id}`;
-      }
+      url = googleMapsPlaceUrl(proj.name, proj.google_place_id);
       if (!url) continue;
       seen.add(slug);
       out.push({
