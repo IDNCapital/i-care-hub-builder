@@ -336,13 +336,9 @@ Deno.serve(async (req) => {
       dispatchWebhook({ webhookUrl, payload, supabase, demandeId }).catch((e) =>
         console.error("[submit-demande-conciergerie] webhook dispatcher crashed:", e),
       );
-    } else {
-      // marque explicitement comme skipé pour traçabilité admin
-      await supabase
-        .from("demandes_conciergerie")
-        .update({ webhook_status: "skipped" })
-        .eq("id", demandeId);
     }
+    // Si CONCIERGERIE_WEBHOOK_URL absent : on ne touche pas à webhook_status
+    // (= reste 'pending' par défaut, comme attendu par le brief).
 
     return json(200, { ok: true, id: demandeId });
   } catch (error) {
