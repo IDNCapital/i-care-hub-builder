@@ -246,6 +246,9 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Carte interactive des cabinets */}
+      <CarteCabinetsSection />
+
       {/* CTA Section */}
       <section className="section-padding">
         <div className="container">
