@@ -78,7 +78,7 @@ function LogoRivage() {
       src={rivageLogo}
       alt="RIVAGE"
       className="block w-auto"
-      style={{ height: "20px" }}
+      style={{ height: "24px" }}
       loading="lazy"
     />
   );
@@ -150,11 +150,11 @@ type Brand = {
   tagline: string;
 };
 
-const IDN_CAPITAL_HREF = "#";
+const IDN_CAPITAL_HREF = "https://www.idn-capital.fr";
 
 const BRANDS_INLINE: Brand[] = [
-  { key: "rivage", Logo: LogoRivage, href: "#", external: true, label: "RIVAGE", tagline: "Ingénierie immobilière complexe et réhabilitation" },
-  { key: "idnea", Logo: LogoIdnea, href: "#", external: true, label: "IDNéa", tagline: "Conseil stratégique et accompagnement de la maîtrise d'ouvrage" },
+  { key: "rivage", Logo: LogoRivage, href: "https://rivage-ic.fr", external: true, label: "RIVAGE", tagline: "Ingénierie immobilière complexe et réhabilitation" },
+  { key: "idnea", Logo: LogoIdnea, href: "https://idnea.fr", external: true, label: "IDNéa", tagline: "Conseil stratégique et accompagnement de la maîtrise d'ouvrage" },
   {
     key: "icare",
     // I-CA.RE utilise le composant centralisé BrandName (variant default = sur fond clair)
@@ -169,8 +169,8 @@ const BRANDS_INLINE: Brand[] = [
     label: "I-CA.RE",
     tagline: "Immobilier de soin, paramédical et bien-être",
   },
-  { key: "insidebat", Logo: LogoInsideBat, href: "#", external: true, label: "INside BAT", tagline: "Construction intérieure et second œuvre" },
-  { key: "coliving", Logo: LogoColiving, href: "#", external: true, label: "co-liv.ing", tagline: "Plateforme de logement partagé" },
+  { key: "insidebat", Logo: LogoInsideBat, href: "https://insidebat.fr", external: true, label: "INside BAT", tagline: "Construction intérieure et second œuvre" },
+  { key: "coliving", Logo: LogoColiving, href: "https://co-liv.ing", external: true, label: "co-liv.ing", tagline: "Plateforme de logement partagé" },
 ];
 
 /* ─────────────── Composant principal ─────────────── */
