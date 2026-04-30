@@ -294,3 +294,13 @@ button[data-state]:focus-visible {
     transform: translate3d(-0.2%, -0.2%, 0) scale(1.15);
   }
 }
+
+/* Carte cabinets — harmonisation des tuiles OSM avec la charte (sauge/crème) */
+.i-care-tiles {
+  /* Désature les tuiles, ajoute une teinte chaude et adoucit le contraste
+     pour rester cohérent avec la palette sauge/crème du site. */
+  filter: grayscale(0.55) saturate(0.65) brightness(1.05) contrast(0.92) sepia(0.12);
+}
+.leaflet-container {
+  background: #F6F5F0; /* CREAM, évite les bords blancs lors des flyTo */
+}
