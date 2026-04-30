@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /preview/
 Disallow: /admin/
+Disallow: /preview-footer-idn
 
 Sitemap: https://i-ca.re/sitemap.xml
