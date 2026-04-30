@@ -4,5 +4,6 @@ Disallow: /preview/
 Disallow: /admin/
 Disallow: /preview-footer-idn
 Disallow: /preview-footer-idn-v3
+Disallow: /preview-carte-cabinets
 
 Sitemap: https://i-ca.re/sitemap.xml

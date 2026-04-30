@@ -47,6 +47,7 @@ import PreviewPraticien from "./pages/PreviewPraticien";
 import PraticienPublic from "./pages/PraticienPublic";
 import PreviewFooterIdn from "./pages/PreviewFooterIdn";
 import PreviewFooterIdnV3 from "./pages/PreviewFooterIdnV3";
+import PreviewCarteCabinets from "./pages/PreviewCarteCabinets";
 
 const queryClient = new QueryClient();
 
@@ -123,6 +124,9 @@ const App = () => (
 
               {/* Preview v3 footer compact unifié — sprint 7 (noindex,nofollow) */}
               <Route path="/preview-footer-idn-v3" element={<PreviewFooterIdnV3 />} />
+
+              {/* Preview interne carte des cabinets — sprint 6 (noindex,nofollow) */}
+              <Route path="/preview-carte-cabinets" element={<PreviewCarteCabinets />} />
 
               {/* Admin routes (hors i18n) */}
               <Route path="/admin/login" element={<AdminLogin />} />
