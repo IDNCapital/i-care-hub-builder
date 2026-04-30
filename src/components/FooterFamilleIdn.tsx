@@ -245,11 +245,14 @@ export function FooterFamilleIdn() {
       className="font-sans"
       style={{ backgroundColor: COLORS.cream, color: COLORS.anthracite }}
     >
-      {/* ── Bandeau 1 — Famille IDN (compact) ─────────────────── */}
-      <section className="px-6 md:px-10 lg:px-16 pt-8 md:pt-12 pb-8 md:pb-12">
-        <div className="max-w-6xl mx-auto">
+      {/* ── Bandeau 1 — Famille IDN (constellation) ───────────── */}
+      <section
+        className="px-6 md:px-10 lg:px-16"
+        style={{ paddingTop: "clamp(56px, 6vw, 80px)", paddingBottom: "clamp(56px, 6vw, 80px)" }}
+      >
+        <div className="mx-auto" style={{ maxWidth: "1100px" }}>
           {/* Intro centrée */}
-          <div className="text-center mb-8 md:mb-10">
+          <div className="text-center" style={{ marginBottom: "clamp(40px, 5vw, 64px)" }}>
             <p
               className="font-sans uppercase font-bold mb-3"
               style={{
@@ -264,14 +267,14 @@ export function FooterFamilleIdn() {
               className="font-heading mx-auto"
               style={{
                 color: COLORS.anthracite,
-                fontSize: "clamp(1.125rem, 1.6vw, 1.5rem)",
+                fontSize: "clamp(1.25rem, 2vw, 1.75rem)",
                 fontWeight: 400,
-                lineHeight: 1.35,
-                maxWidth: "44ch",
+                lineHeight: 1.3,
+                maxWidth: "720px",
               }}
             >
-              Une famille de marques au service du soin, du logement et de
-              l'investissement durable.
+              Un écosystème entrepreneurial au service du soin, du logement et
+              de l'investissement durable.
             </h2>
             <p
               className="font-sans mx-auto"
@@ -279,27 +282,24 @@ export function FooterFamilleIdn() {
                 color: COLORS.greyMid,
                 fontSize: "0.875rem",
                 lineHeight: 1.5,
-                marginTop: "1rem",
+                marginTop: "18px",
               }}
             >
               I-CA.RE est une marque affiliée du Groupe IDN.
             </p>
           </div>
 
-          {/* Marque centrale + affiliées */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 md:gap-10">
+          {/* Constellation : grille responsive */}
+          <ul
+            className="constellation list-none p-0 m-0"
+            style={{
+              display: "grid",
+              justifyItems: "center",
+              alignItems: "center",
+            }}
+          >
             {/* Marque centrale */}
-            <div className="flex flex-col items-center md:items-start shrink-0">
-              <p
-                className="font-sans uppercase font-bold mb-2"
-                style={{
-                  color: COLORS.greyMid,
-                  fontSize: "0.6875rem",
-                  letterSpacing: "0.2em",
-                }}
-              >
-                Marque centrale
-              </p>
+            <li className="constellation-center flex flex-col items-center text-center">
               <a
                 href={IDN_CAPITAL_HREF}
                 {...linkProps(true)}
@@ -308,37 +308,85 @@ export function FooterFamilleIdn() {
               >
                 <LogoIdnCapital variant="central" />
               </a>
-            </div>
+            </li>
 
-            {/* Affiliées */}
-            <div className="flex-1 w-full">
-              <p
-                className="font-sans uppercase font-bold mb-3 text-center md:text-left"
-                style={{
-                  color: COLORS.greyMid,
-                  fontSize: "0.6875rem",
-                  letterSpacing: "0.2em",
-                }}
-              >
-                Marques affiliées
-              </p>
-              <ul className="flex flex-wrap items-center justify-center md:justify-start gap-x-6 gap-y-4 list-none p-0 m-0">
-                {AFFILIATED_BRANDS.map(({ key, Logo, href, external, label }) => (
-                  <li key={key} className="flex items-center" style={{ minHeight: 24 }}>
-                    <a
-                      href={href}
-                      {...linkProps(external)}
-                      className="inline-flex items-center transition-opacity hover:opacity-70"
-                      aria-label={`${label}${external ? " — site externe" : ""}`}
-                    >
-                      <Logo />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+            {AFFILIATED_ORDER.map((key) => {
+              const brand = AFFILIATED_BRANDS[key];
+              const { Logo, href, external, label, tagline } = brand;
+              return (
+                <li
+                  key={key}
+                  className={`constellation-cell constellation-${key} flex flex-col items-center text-center`}
+                >
+                  <a
+                    href={href}
+                    {...linkProps(external)}
+                    className="inline-flex items-center justify-center transition-opacity hover:opacity-70"
+                    aria-label={`${label}${external ? " — site externe" : ""}`}
+                    style={{ minHeight: 30 }}
+                  >
+                    <Logo />
+                  </a>
+                  <p
+                    className="font-sans"
+                    style={{
+                      color: COLORS.greyMid,
+                      fontSize: "0.8125rem",
+                      lineHeight: 1.4,
+                      marginTop: "16px",
+                      maxWidth: "26ch",
+                    }}
+                  >
+                    {tagline}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
         </div>
+
+        {/* Styles responsive grid (scoped) */}
+        <style>{`
+          .constellation {
+            grid-template-columns: 1fr;
+            row-gap: 40px;
+          }
+          .constellation-center { order: -1; }
+          @media (min-width: 768px) and (max-width: 1023px) {
+            .constellation {
+              grid-template-columns: 1fr 1fr;
+              column-gap: 56px;
+              row-gap: 48px;
+            }
+            .constellation-center {
+              order: 0;
+              grid-column: 1 / span 2;
+              grid-row: 2;
+            }
+            .constellation-rivage    { grid-column: 1; grid-row: 1; }
+            .constellation-idnea     { grid-column: 2; grid-row: 1; }
+            .constellation-icare     { grid-column: 1; grid-row: 3; }
+            .constellation-insidebat { grid-column: 2; grid-row: 3; }
+            .constellation-coliving  { grid-column: 1 / span 2; grid-row: 4; }
+          }
+          @media (min-width: 1024px) {
+            .constellation {
+              grid-template-columns: 1fr 1fr 1fr;
+              column-gap: 96px;
+              row-gap: 56px;
+            }
+            .constellation-center {
+              order: 0;
+              grid-column: 2;
+              grid-row: 2;
+            }
+            .constellation-rivage    { grid-column: 1; grid-row: 1; }
+            .constellation-idnea     { grid-column: 3; grid-row: 1; }
+            .constellation-icare     { grid-column: 1; grid-row: 3; }
+            .constellation-insidebat { grid-column: 2; grid-row: 3; }
+            .constellation-coliving  { grid-column: 3; grid-row: 3; }
+          }
+        `}</style>
       </section>
 
       {/* ── Bandeau 2 — Signature anthracite ──────────────────── */}
