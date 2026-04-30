@@ -12,6 +12,7 @@ import { getProjectHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
 import { STATIC_CENTRES, type CentreStatus } from "@/lib/centres";
 import { InlineBrand } from "@/components/BrandName";
+import { CarteCabinetsSection } from "@/components/CarteCabinetsSection";
 
 const badgeStyles: Record<CentreStatus, string> = {
   available: "bg-primary/15 text-primary",
@@ -74,6 +75,17 @@ export default function Projets() {
           </div>
         </div>
       </section>
+
+      {/* Carte interactive des cabinets */}
+      <CarteCabinetsSection
+        background="secondary"
+        title={lang === "fr" ? "Localiser nos cabinets" : "Locate our offices"}
+        subtitle={
+          lang === "fr"
+            ? "Filtrez par ville, cliquez sur un marker pour voir le détail."
+            : "Filter by city, click a marker to see details."
+        }
+      />
 
       {/* Centre Cards — by region */}
       <section className="section-padding bg-background">

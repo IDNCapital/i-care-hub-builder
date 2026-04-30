@@ -22,6 +22,7 @@ import { HeroSlideshow } from "@/components/HeroSlideshow";
 import { TestimonialsSlider } from "@/components/TestimonialsSlider";
 import { FadeImage } from "@/components/FadeImage";
 import { InlineBrand } from "@/components/BrandName";
+import { CarteCabinetsSection } from "@/components/CarteCabinetsSection";
 
 export default function Index() {
   const { t, i18n } = useTranslation();
@@ -244,6 +245,9 @@ export default function Index() {
           </div>
         </div>
       </section>
+
+      {/* Carte interactive des cabinets */}
+      <CarteCabinetsSection />
 
       {/* CTA Section */}
       <section className="section-padding">
