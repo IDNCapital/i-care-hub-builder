@@ -413,7 +413,10 @@ export function FichePraticien({
               >
                 <MapPin style={{ width: 16, height: 16, marginTop: 4, color: COLORS.green }} />
                 <span>
-                  {[adresseLigne, quartier, cabinet.city]
+                  {[
+                    adresseLigne,
+                    quartier ? `Cabinet I-CA.RE ${quartier}` : "",
+                  ]
                     .map((s) => (s ?? "").trim())
                     .filter((s) => s.length > 0)
                     .join(" · ")}
