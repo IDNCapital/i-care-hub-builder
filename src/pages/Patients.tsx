@@ -4,6 +4,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { SeoHead } from "@/components/SeoHead";
 import { localePath } from "@/lib/routes";
+import { CarteCabinetsSection } from "@/components/CarteCabinetsSection";
 
 export default function Patients() {
   const { i18n } = useTranslation();
@@ -47,6 +48,17 @@ export default function Patients() {
           </Button>
         </div>
       </section>
+
+      {/* Carte interactive des cabinets */}
+      <CarteCabinetsSection
+        background="secondary"
+        title={lang === "fr" ? "Trouver un cabinet près de chez vous" : "Find an office near you"}
+        subtitle={
+          lang === "fr"
+            ? "Découvrez l'emplacement de nos cabinets de soin, paramédical et bien-être."
+            : "Discover the location of our care, paramedical and wellbeing offices."
+        }
+      />
     </Layout>
   );
 }
