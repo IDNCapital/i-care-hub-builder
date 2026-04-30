@@ -289,6 +289,7 @@ export function CarteCabinets({
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          className="i-care-tiles"
         />
         <MapController cabinets={filtered} selected={selected} fitTrigger={fitTrigger} />
         {filtered.map((c) => {
