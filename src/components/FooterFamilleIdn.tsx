@@ -28,6 +28,7 @@
  * Aucune image lourde n'est requise : tous les logos affiliés sont composés en CSS,
  * sauf RIVAGE qui peut, à terme, être remplacé par un SVG importé depuis /assets/.
  */
+import type { ReactElement } from "react";
 
 const COLORS = {
   cream: "#F6F5F0",
@@ -180,7 +181,7 @@ function LogoColiving() {
  * ───────────────────────────────────────────────────────────────── */
 const AFFILIATED_BRANDS: Array<{
   key: string;
-  Logo: () => JSX.Element;
+  Logo: () => ReactElement;
   href: string;
   external: boolean;
   label: string;
