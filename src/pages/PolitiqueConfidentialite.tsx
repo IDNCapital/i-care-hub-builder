@@ -98,12 +98,12 @@ function FrVersion() {
 
           <h3 className="text-xl font-semibold mt-8 mb-3">e) Fiches praticien</h3>
           <p className="text-muted-foreground leading-relaxed">
-            Les fiches des praticiens locataires des cabinets <BrandName /> sont publiées exclusivement après validation explicite et écrite du praticien concerné. Elles peuvent contenir : prénom, nom, photographie professionnelle, spécialité, biographie rédigée par le praticien ou validée par lui, problématiques traitées, lien externe de prise de rendez-vous (Doctolib, Crénolibre ou site personnel du praticien). Le praticien peut à tout moment demander le retrait de sa fiche par simple email à <a href="mailto:contact@i-ca.re" className="text-primary hover:underline">contact@i-ca.re</a> ; le retrait est effectif sous 30 jours maximum.
+            Les fiches des praticiennes et praticiens locataires des cabinets <BrandName /> sont publiées exclusivement après validation explicite et écrite de la personne concernée. Elles peuvent contenir : prénom, nom, photographie professionnelle, spécialité, biographie rédigée par la praticienne ou le praticien, ou validée par cette personne, problématiques traitées, lien externe de prise de rendez-vous (Doctolib, Crénolibre ou site personnel de la praticienne ou du praticien). Toute praticienne ou tout praticien peut à tout moment demander le retrait de sa fiche par simple email à <a href="mailto:contact@i-ca.re" className="text-primary hover:underline">contact@i-ca.re</a> ; le retrait est effectif sous 30 jours maximum.
           </p>
 
           <h3 className="text-xl font-semibold mt-8 mb-3">f) Avis Google</h3>
           <p className="text-muted-foreground leading-relaxed">
-            Pour les praticiens disposant d'une fiche Google Business Profile publique et l'ayant signalé à <BrandName />, leur fiche Espace Patients peut afficher la note moyenne et les derniers avis publics récupérés depuis l'API Google Places. Ces avis sont la propriété de leurs auteurs et de Google ; ils sont reproduits avec mention de la source, lien direct vers la fiche Google originale, et date de dernière synchronisation. Aucune modération ni filtrage n'est opéré par <BrandName /> sur ces avis.
+            Pour les praticiennes et praticiens disposant d'une fiche Google Business Profile publique et l'ayant signalé à <BrandName />, leur fiche Espace Patients peut afficher la note moyenne et les derniers avis publics récupérés depuis l'API Google Places. Ces avis sont la propriété de leurs auteurs et de Google ; ils sont reproduits avec mention de la source, lien direct vers la fiche Google originale, et date de dernière synchronisation. Aucune modération ni filtrage n'est opéré par <BrandName /> sur ces avis.
           </p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">4. Finalités du traitement</h2>
@@ -113,19 +113,19 @@ function FrVersion() {
             <li>• Assurer le suivi des prospects investisseurs</li>
             <li>• Améliorer le fonctionnement du site</li>
             <li>• Produire des statistiques de fréquentation (si consentement)</li>
-            <li>• Mettre en relation les patients qui le souhaitent avec un praticien du réseau <BrandName /> adapté à leur besoin</li>
-            <li>• Présenter publiquement les praticiens locataires des cabinets <BrandName /> ayant validé leur fiche</li>
-            <li>• Afficher les avis Google publics des praticiens concernés, à titre d'information vérifiable par le patient</li>
+            <li>• Mettre en relation les personnes qui le souhaitent avec une praticienne ou un praticien du réseau <BrandName /> adapté à leur besoin</li>
+            <li>• Présenter publiquement les praticiennes et praticiens locataires des cabinets <BrandName /> ayant validé leur fiche</li>
+            <li>• Afficher les avis Google publics des praticiennes et praticiens concernés, à titre d'information vérifiable par la personne reçue</li>
           </ul>
           <p className="text-muted-foreground leading-relaxed mt-4">Aucune donnée personnelle n'est vendue ni cédée à des tiers.</p>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">5. Base légale du traitement</h2>
           <ul className="space-y-1 text-muted-foreground">
-            <li>• Le consentement de l'utilisateur (formulaires, cookies)</li>
+            <li>• Le consentement de la personne utilisatrice (formulaires, cookies)</li>
             <li>• L'intérêt légitime de <BrandName /> pour assurer le suivi des demandes et prospects</li>
-            <li>• Le consentement explicite du praticien pour la publication de sa fiche</li>
-            <li>• Le consentement du patient pour la transmission de sa demande à un ou plusieurs praticiens du réseau (formulaire « Décrire mon besoin »)</li>
-            <li>• L'intérêt légitime de <BrandName /> pour la mise en relation patient-praticien et pour la présentation du réseau de praticiens locataires</li>
+            <li>• Le consentement explicite de la praticienne ou du praticien pour la publication de sa fiche</li>
+            <li>• Le consentement de la personne reçue pour la transmission de sa demande à une ou plusieurs praticiennes ou praticiens du réseau (formulaire « Décrire mon besoin »)</li>
+            <li>• L'intérêt légitime de <BrandName /> pour la mise en relation entre patientèle et réseau, et pour la présentation du réseau de locataires</li>
           </ul>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">6. Durée de conservation</h2>
@@ -134,8 +134,8 @@ function FrVersion() {
             <li><strong className="text-foreground">Prospects investisseurs :</strong> 5 ans à compter du dernier contact</li>
             <li><strong className="text-foreground">Données de navigation :</strong> selon la durée légale applicable aux cookies</li>
             <li><strong className="text-foreground">Demandes via le formulaire « Décrire mon besoin » :</strong> 2 ans à compter du dernier échange, ou suppression sur simple demande</li>
-            <li><strong className="text-foreground">Fiches praticien :</strong> maintenues tant que le praticien est locataire d'un cabinet <BrandName /> et qu'il n'a pas demandé le retrait</li>
-            <li><strong className="text-foreground">Cache local des avis Google :</strong> rafraîchi automatiquement chaque semaine, archivé 30 jours après le départ d'un praticien puis supprimé</li>
+            <li><strong className="text-foreground">Fiches praticien :</strong> maintenues tant que la personne est locataire d'un cabinet <BrandName /> et qu'elle n'a pas demandé le retrait</li>
+            <li><strong className="text-foreground">Cache local des avis Google :</strong> rafraîchi automatiquement chaque semaine, archivé 30 jours après le départ de la personne locataire puis supprimé</li>
           </ul>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">7. Hébergement et sécurité</h2>

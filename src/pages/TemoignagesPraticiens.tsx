@@ -101,7 +101,7 @@ export default function TemoignagesPraticiens() {
         : "I-CA.RE practitioner tenant testimonials",
     description:
       lang === "fr"
-        ? "Ce que les praticiens locataires disent de leur cabinet I-CA.RE à Bordeaux."
+        ? "Ce que le réseau de locataires dit de son cabinet I-CA.RE à Bordeaux."
         : "What I-CA.RE tenant practitioners say about their care offices in Bordeaux.",
     url: `https://i-ca.re${path}`,
   };
@@ -142,12 +142,12 @@ export default function TemoignagesPraticiens() {
       <SeoHead
         title={
           lang === "fr"
-            ? "Témoignages — Ce que les praticiens disent de I-CA.RE"
+            ? "Témoignages — Ce que le réseau dit de I-CA.RE"
             : "Testimonials — What practitioners say about I-CA.RE"
         }
         description={
           lang === "fr"
-            ? "Témoignages institutionnels et avis Google publics des praticiens locataires de cabinets I-CA.RE à Bordeaux."
+            ? "Témoignages institutionnels et avis Google publics des praticiennes et praticiens locataires de cabinets I-CA.RE à Bordeaux."
             : "Institutional testimonials and public Google reviews from practitioner tenants of I-CA.RE offices in Bordeaux."
         }
         path={path}
@@ -169,7 +169,7 @@ export default function TemoignagesPraticiens() {
           </p>
           <h1 className="font-heading font-normal text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 text-balance leading-[1.15]">
             {lang === "fr"
-              ? "Ce que les praticiens disent de I‑CA.RE."
+              ? "Ce que le réseau dit de I‑CA.RE."
               : "What practitioners say about I‑CA.RE."}
           </h1>
           <p className="font-heading italic text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-[640px] mx-auto">
