@@ -24,6 +24,7 @@ import { FadeImage } from "@/components/FadeImage";
 import { getCentreBySlug } from "@/lib/centres";
 import { getLocalBusinessData } from "@/lib/projectSchema";
 import { BrandName } from "@/components/BrandName";
+import { SectionPraticiensDuCabinet } from "@/components/SectionPraticiensDuCabinet";
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -329,6 +330,14 @@ export default function ProjetDetail() {
           </div>
         </div>
       </section>
+
+      {slug && (
+        <SectionPraticiensDuCabinet
+          cabinetSlug={slug}
+          cabinetNomCourt={project.name.replace(/^Cabinet I[‑-]CA\.RE\s*/i, "").trim() || project.name}
+          cabinetUrl={`https://i-ca.re${lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}`}
+        />
+      )}
     </Layout>
   );
 }
