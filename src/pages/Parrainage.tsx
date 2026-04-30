@@ -572,7 +572,7 @@ export default function Parrainage() {
                       style={{ borderColor: "#C5D4CA" }}
                     >
                       <p className="font-body font-bold uppercase tracking-[0.15em] text-xs text-primary">
-                        Votre filleul
+                        Votre recommandation
                       </p>
                     </div>
 
@@ -747,9 +747,9 @@ export default function Parrainage() {
                         }
                       />
                       <span className="font-body text-sm text-foreground leading-[1.55]">
-                        Je confirme avoir informé mon filleul que je transmets
-                        ses coordonnées à I-CA.RE pour une prise de contact
-                        dans le cadre de ce programme de parrainage.
+                        Je confirme avoir informé la personne recommandée que
+                        je transmets ses coordonnées à I-CA.RE pour une prise
+                        de contact dans le cadre de ce programme de parrainage.
                       </span>
                     </label>
                     {errors.consentement_rgpd && (
