@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { callAdminFunction } from "@/lib/adminAuth";
 import type { AvisCache, Cabinet, Praticien } from "@/pages/admin/AdminPraticiens";
+import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
 import {
   Tooltip,
   TooltipContent,
@@ -545,16 +546,22 @@ export function PraticienDrawer({
           </div>
 
           {/* b) Lien vérification fiche Google */}
-          {form.google_place_id && (
-            <a
-              href={`https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(form.google_place_id)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-1.5"
-            >
-              Vérifier la fiche Google <ExternalLink className="w-3 h-3" />
-            </a>
-          )}
+          {(() => {
+            const verifyUrl = googleMapsPlaceUrl(
+              `${form.prenom} ${form.nom} ${form.profession}`.trim(),
+              form.google_place_id,
+            );
+            return verifyUrl ? (
+              <a
+                href={verifyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-1.5"
+              >
+                Vérifier la fiche Google <ExternalLink className="w-3 h-3" />
+              </a>
+            ) : null;
+          })()}
 
           {/* c) Note d'aide */}
           <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
