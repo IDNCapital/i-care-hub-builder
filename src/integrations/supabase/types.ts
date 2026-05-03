@@ -470,6 +470,41 @@ export type Database = {
         }
         Relationships: []
       }
+      praticien_revisions: {
+        Row: {
+          changes: Json
+          created_at: string
+          id: string
+          modified_at: string
+          modified_by_external: string
+          praticien_id: string
+        }
+        Insert: {
+          changes?: Json
+          created_at?: string
+          id?: string
+          modified_at?: string
+          modified_by_external?: string
+          praticien_id: string
+        }
+        Update: {
+          changes?: Json
+          created_at?: string
+          id?: string
+          modified_at?: string
+          modified_by_external?: string
+          praticien_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "praticien_revisions_praticien_id_fkey"
+            columns: ["praticien_id"]
+            isOneToOne: false
+            referencedRelation: "praticiens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       praticiens: {
         Row: {
           actif: boolean
