@@ -1,0 +1,1 @@
+ALTER TABLE public.icare_idnos_audit_log DROP CONSTRAINT icare_idnos_audit_log_event_type_check;
