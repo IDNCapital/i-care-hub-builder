@@ -1,0 +1,1 @@
+DELETE FROM public.demandes_conciergerie WHERE email LIKE '%@idn-capital.fr';
