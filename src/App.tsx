@@ -44,6 +44,7 @@ import { useAnalytics } from "./hooks/useAnalytics";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminPraticiens from "./pages/admin/AdminPraticiens";
 import AdminDemandes from "./pages/admin/AdminDemandes";
+import AdminWebhooks from "./pages/admin/AdminWebhooks";
 import { AdminGuard } from "./components/AdminGuard";
 import PreviewPraticien from "./pages/PreviewPraticien";
 import PraticienPublic from "./pages/PraticienPublic";
@@ -145,6 +146,14 @@ const App = () => (
                 element={
                   <AdminGuard>
                     <AdminDemandes />
+                  </AdminGuard>
+                }
+              />
+              <Route
+                path="/admin/idn-os-webhooks"
+                element={
+                  <AdminGuard>
+                    <AdminWebhooks />
                   </AdminGuard>
                 }
               />
