@@ -1,0 +1,1 @@
+CREATE POLICY "Audit log publicly readable" ON public.icare_idnos_audit_log FOR SELECT TO anon, authenticated USING (true);
