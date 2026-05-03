@@ -287,6 +287,36 @@ export type Database = {
         }
         Relationships: []
       }
+      icare_idnos_audit_log: {
+        Row: {
+          created_at: string
+          description: string
+          event_type: string
+          function_name: string | null
+          id: string
+          payload_json: Json | null
+          triggered_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          event_type: string
+          function_name?: string | null
+          id?: string
+          payload_json?: Json | null
+          triggered_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          event_type?: string
+          function_name?: string | null
+          id?: string
+          payload_json?: Json | null
+          triggered_by?: string | null
+        }
+        Relationships: []
+      }
       investor_leads: {
         Row: {
           access_token_expires_at: string | null
