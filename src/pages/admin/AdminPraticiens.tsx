@@ -31,6 +31,7 @@ import {
   Plus,
   Search,
   Star,
+  Webhook,
 } from "lucide-react";
 import { toast } from "sonner";
 import { adminLogout, callAdminFunction, getAdminToken } from "@/lib/adminAuth";
@@ -267,6 +268,9 @@ export default function AdminPraticiens() {
               <div className="flex items-center gap-2">
                 <Button onClick={() => openEdit(null)} size="sm">
                   <Plus className="w-4 h-4 mr-1.5" /> Nouveau praticien
+                </Button>
+                <Button onClick={() => navigate("/admin/idn-os-webhooks")} variant="outline" size="sm">
+                  <Webhook className="w-4 h-4 mr-1.5" /> Webhooks IDN OS
                 </Button>
                 <Button onClick={handleLogout} variant="ghost" size="sm">
                   <LogOut className="w-4 h-4 mr-1.5" /> Se déconnecter

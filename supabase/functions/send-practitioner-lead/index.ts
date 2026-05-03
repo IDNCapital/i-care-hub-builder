@@ -1,6 +1,75 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import nodemailer from "npm:nodemailer@6.9.16";
 
+// ═══ IDN OS Webhook — IC-05 added 2026-05-03 ═══
+// See docs/icare-connect/snapshot-pre-icare-connect-2026-05.md for rollback
+async function notifyIdnOs(
+  supabase: ReturnType<typeof createClient>,
+  functionName: string,
+  eventType: string,
+  sourceTable: string,
+  sourceId: string,
+  payload: Record<string, unknown>,
+): Promise<void> {
+  try {
+    const enabled = Deno.env.get("IDN_OS_WEBHOOK_ENABLED");
+    if (enabled === "false" || enabled === "FALSE") {
+      console.log("[idnos-webhook] disabled, skipping");
+      return;
+    }
+    const webhookUrl = Deno.env.get("IDN_OS_WEBHOOK_URL");
+    const webhookSecret = Deno.env.get("IDN_OS_WEBHOOK_SECRET");
+    if (!webhookUrl || !webhookSecret) {
+      console.warn("[idnos-webhook] missing URL or SECRET, logging and skipping");
+      try {
+        await supabase.from("icare_idnos_audit_log").insert({
+          event_type: "webhook_config_missing",
+          function_name: functionName,
+          description: `Missing ${!webhookUrl ? "IDN_OS_WEBHOOK_URL" : ""} ${!webhookSecret ? "IDN_OS_WEBHOOK_SECRET" : ""}`.trim(),
+        });
+      } catch (_) { /* swallow */ }
+      return;
+    }
+    const body = JSON.stringify({
+      event_type: eventType,
+      source_table: sourceTable,
+      source_id: sourceId,
+      payload,
+      sent_at: new Date().toISOString(),
+    });
+    const keyData = new TextEncoder().encode(webhookSecret);
+    const key = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+    const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body));
+    const hmacHex = [...new Uint8Array(sig)].map(b => b.toString(16).padStart(2, "0")).join("");
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000);
+    const start = Date.now();
+    try {
+      const resp = await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Icare-Signature": hmacHex },
+        body,
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+      const durationMs = Date.now() - start;
+      if (resp.ok) {
+        try { await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_sent", function_name: functionName, description: `Webhook sent to IDN OS`, payload_json: { response_status: resp.status, duration_ms: durationMs } }); } catch (_) { /* swallow */ }
+      } else {
+        const respText = await resp.text().catch(() => "");
+        try { await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_failed", function_name: functionName, description: `HTTP ${resp.status}`, payload_json: { error_message: respText.slice(0, 500), attempted_url: webhookUrl, response_status: resp.status } }); } catch (_) { /* swallow */ }
+      }
+    } catch (fetchErr) {
+      clearTimeout(timeout);
+      const errMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+      try { await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_failed", function_name: functionName, description: errMsg.slice(0, 200), payload_json: { error_message: errMsg, attempted_url: webhookUrl, response_status: null } }); } catch (_) { /* swallow */ }
+    }
+  } catch (_globalErr) {
+    console.error("[idnos-webhook] unexpected error swallowed:", _globalErr);
+  }
+}
+// ═══ End IDN OS Webhook helper ═══
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -125,6 +194,16 @@ Deno.serve(async (req) => {
       throw insertError;
     }
 
+    // Retrieve the inserted row ID for webhook
+    const { data: insertedRow } = await supabase
+      .from("practitioner_leads")
+      .select("id")
+      .eq("email", cleanEmail)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single();
+    const leadId = insertedRow?.id || "unknown";
+
     // Setup SMTP
     const smtpHost = requireEnv("INFOMANIAK_SMTP_HOST");
     const smtpPort = Number(requireEnv("INFOMANIAK_SMTP_PORT"));
@@ -239,6 +318,20 @@ Deno.serve(async (req) => {
       subject: ackSubject,
       html: ackHtml,
     });
+
+    // IDN OS webhook added 2026-05-03 — see docs/icare-connect/snapshot-pre-icare-connect-2026-05.md for rollback
+    try {
+      await notifyIdnOs(
+        supabase,
+        "send-practitioner-lead",
+        "lead_created",
+        "practitioner_leads",
+        leadId,
+        { first_name: cleanFirstName, last_name: cleanLastName, email: cleanEmail, phone: cleanPhone, profession, city: cleanCity },
+      );
+    } catch (e) {
+      console.error("[send-practitioner-lead] webhook error swallowed:", e);
+    }
 
     return new Response(
       JSON.stringify({ status: "ok" }),
