@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Loader2, LogOut, Search } from "lucide-react";
+import { Loader2, LogOut, Search, Webhook } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -116,6 +117,9 @@ export default function AdminDemandes() {
             <h1 className="font-heading text-2xl font-normal text-foreground">Demandes conciergerie</h1>
             <p className="text-sm text-muted-foreground">{filtered.length} / {demandes.length} demandes</p>
           </div>
+          <Button variant="outline" size="sm" onClick={() => { window.location.href = "/admin/idn-os-webhooks"; }}>
+            <Webhook className="w-4 h-4 mr-1.5" /> Webhooks IDN OS
+          </Button>
           <Button variant="ghost" size="sm" onClick={async () => { await adminLogout(); window.location.href = "/admin/login"; }}>
             <LogOut className="w-4 h-4 mr-2" /> Déconnexion
           </Button>
