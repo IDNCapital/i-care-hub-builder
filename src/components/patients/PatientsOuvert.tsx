@@ -312,9 +312,13 @@ export function PatientsOuvert({ praticiens }: Props) {
       // Bloc Cabinet (OR interne)
       if (cabinets.size && !cabinets.has(p.cabinet_slug)) return false;
       // Bloc Type de soin — match si AU MOINS UNE specialité du praticien
-      // appartient à AU MOINS UN groupe sélectionné (parcourt tout l'array).
+      // appartient à AU MOINS UN groupe sélectionné. Source = specialites_derivees
+      // (extraites par IA depuis la bio), avec fallback sur l'array brut.
       if (selectedTypes.length) {
-        const specs = p.specialites ?? [];
+        const specs =
+          (p.specialites_derivees && p.specialites_derivees.length > 0
+            ? p.specialites_derivees
+            : p.specialites) ?? [];
         const ok = specs.some((spe) =>
           selectedTypes.some((group) =>
             (SPECIALITY_GROUPS[group] ?? []).map(norm).includes(norm(spe)),
@@ -322,9 +326,12 @@ export function PatientsOuvert({ praticiens }: Props) {
         );
         if (!ok) return false;
       }
-      // Bloc Besoin — même logique sur l'array `problematiques`.
+      // Bloc Besoin — même logique sur problematiques_derivees (fallback brut).
       if (selectedBesoins.length) {
-        const pbs = p.problematiques ?? [];
+        const pbs =
+          (p.problematiques_derivees && p.problematiques_derivees.length > 0
+            ? p.problematiques_derivees
+            : p.problematiques) ?? [];
         const ok = pbs.some((pb) =>
           selectedBesoins.some((group) =>
             (PROBLEMATIQUE_GROUPS[group] ?? []).map(norm).includes(norm(pb)),
