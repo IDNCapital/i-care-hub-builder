@@ -749,3 +749,114 @@ function RefreshGoogleButton({ placeId }: { placeId: string }) {
   }
   return <div className="inline-block mt-2">{button}</div>;
 }
+
+function statusColor(status: string): string {
+  switch (status) {
+    case "success":
+      return "bg-[#9EB8A5]/20 text-[#2B2B2B] border-[#9EB8A5]";
+    case "review":
+      return "bg-[#D9C7A1]/30 text-[#2B2B2B] border-[#B89B6F]";
+    case "error":
+      return "bg-destructive/15 text-destructive border-destructive/40";
+    default:
+      return "bg-muted text-muted-foreground border-border";
+  }
+}
+
+function DerivedTagsBlock({
+  praticien,
+  onRefreshed,
+}: {
+  praticien: Praticien | null;
+  onRefreshed: () => void;
+}) {
+  const [loading, setLoading] = useState(false);
+  if (!praticien) {
+    return (
+      <p className="text-xs text-muted-foreground italic">
+        Tags dérivés disponibles après la première sauvegarde.
+      </p>
+    );
+  }
+  const status = praticien.tags_extraction_status ?? "pending";
+  const extractedAt = praticien.tags_extracted_at
+    ? new Date(praticien.tags_extracted_at).toLocaleString("fr-FR")
+    : "—";
+  const onClick = async () => {
+    setLoading(true);
+    try {
+      const res = await callAdminFunction<{
+        status?: string;
+        specialites?: string[];
+        problematiques?: string[];
+      }>("admin-reextract-tags", { praticien_id: praticien.id });
+      const ns = res.specialites?.length ?? 0;
+      const np = res.problematiques?.length ?? 0;
+      toast.success(
+        `Extraction ${res.status} · ${ns} spécialités · ${np} problématiques`,
+      );
+      onRefreshed();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur d'extraction");
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <div className="rounded-md border border-border bg-muted/30 p-3 space-y-2">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          Tags dérivés (filtre /patients)
+        </span>
+        <span
+          className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] border ${statusColor(status)}`}
+        >
+          {status}
+        </span>
+      </div>
+      <div className="space-y-1.5">
+        <div className="text-[11px] text-muted-foreground">Spécialités dérivées</div>
+        <div className="flex flex-wrap gap-1">
+          {(praticien.specialites_derivees ?? []).length === 0 ? (
+            <span className="text-xs italic text-muted-foreground">aucune</span>
+          ) : (
+            (praticien.specialites_derivees ?? []).map((t) => (
+              <Badge key={t} variant="outline" className="text-xs">{t}</Badge>
+            ))
+          )}
+        </div>
+      </div>
+      <div className="space-y-1.5">
+        <div className="text-[11px] text-muted-foreground">Problématiques dérivées</div>
+        <div className="flex flex-wrap gap-1">
+          {(praticien.problematiques_derivees ?? []).length === 0 ? (
+            <span className="text-xs italic text-muted-foreground">aucune</span>
+          ) : (
+            (praticien.problematiques_derivees ?? []).map((t) => (
+              <Badge key={t} variant="outline" className="text-xs">{t}</Badge>
+            ))
+          )}
+        </div>
+      </div>
+      <div className="flex items-center justify-between pt-1">
+        <span className="text-[11px] text-muted-foreground">
+          Dernière extraction : {extractedAt}
+        </span>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={loading}
+          onClick={onClick}
+        >
+          {loading ? (
+            <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+          ) : (
+            <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+          )}
+          Réextraire les tags
+        </Button>
+      </div>
+    </div>
+  );
+}
