@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Loader2, RefreshCw, ArrowLeft, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { Helmet as _H } from "react-helmet-async";
 import { callAdminFunction, getAdminToken } from "@/lib/adminAuth";
 import type { Praticien } from "./AdminPraticiens";
 
