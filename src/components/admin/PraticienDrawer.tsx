@@ -23,6 +23,7 @@ import {
   Upload,
   X,
   AlertCircle,
+  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -397,6 +398,7 @@ export function PraticienDrawer({
             ))}
           </div>
         </div>
+        <DerivedTagsBlock praticien={praticien} onRefreshed={onSaved} />
       </section>
 
       <Separator />
