@@ -529,10 +529,16 @@ export type Database = {
           prenom: string
           preview_token: string
           problematiques: string[]
+          problematiques_derivees: string[]
           profession: string
           slug: string
           specialites: string[]
+          specialites_derivees: string[]
           statut_validation: string
+          tags_bio_hash: string | null
+          tags_extracted_at: string | null
+          tags_extraction_log: Json
+          tags_extraction_status: string
           updated_at: string
         }
         Insert: {
@@ -558,10 +564,16 @@ export type Database = {
           prenom: string
           preview_token?: string
           problematiques?: string[]
+          problematiques_derivees?: string[]
           profession: string
           slug: string
           specialites?: string[]
+          specialites_derivees?: string[]
           statut_validation?: string
+          tags_bio_hash?: string | null
+          tags_extracted_at?: string | null
+          tags_extraction_log?: Json
+          tags_extraction_status?: string
           updated_at?: string
         }
         Update: {
@@ -587,10 +599,16 @@ export type Database = {
           prenom?: string
           preview_token?: string
           problematiques?: string[]
+          problematiques_derivees?: string[]
           profession?: string
           slug?: string
           specialites?: string[]
+          specialites_derivees?: string[]
           statut_validation?: string
+          tags_bio_hash?: string | null
+          tags_extracted_at?: string | null
+          tags_extraction_log?: Json
+          tags_extraction_status?: string
           updated_at?: string
         }
         Relationships: []
@@ -748,10 +766,16 @@ export type Database = {
           prenom: string
           preview_token: string
           problematiques: string[]
+          problematiques_derivees: string[]
           profession: string
           slug: string
           specialites: string[]
+          specialites_derivees: string[]
           statut_validation: string
+          tags_bio_hash: string | null
+          tags_extracted_at: string | null
+          tags_extraction_log: Json
+          tags_extraction_status: string
           updated_at: string
         }[]
         SetofOptions: {
@@ -761,6 +785,7 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      unaccent: { Args: { "": string }; Returns: string }
     }
     Enums: {
       investor_lead_status: "new" | "contacted" | "qualified" | "not_interested"
