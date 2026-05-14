@@ -202,6 +202,32 @@ Deno.serve(async (req) => {
     );
   }
 
+  // Fire-and-forget : extraction automatique des tags si la fiche est dans
+  // un statut où l'extraction a du sens. Idempotent côté extracteur (hash bio).
+  try {
+    const praticienId = result.data?.id;
+    const cronSecret = Deno.env.get("CRON_TOKEN");
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    if (
+      praticienId &&
+      cronSecret &&
+      supabaseUrl &&
+      ["brouillon", "preview_envoyee", "validee"].includes(statut_validation)
+    ) {
+      // Pas de await : ne bloque pas la réponse admin
+      fetch(`${supabaseUrl}/functions/v1/extract-praticien-tags`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-cron-token": cronSecret,
+        },
+        body: JSON.stringify({ praticien_id: praticienId, force: false }),
+      }).catch((err) => console.error("extract-praticien-tags fire-and-forget", err));
+    }
+  } catch (e) {
+    console.error("extract trigger error", e);
+  }
+
   return new Response(JSON.stringify({ data: result.data }), {
     status: 200,
     headers: { ...corsHeaders, "Content-Type": "application/json" },

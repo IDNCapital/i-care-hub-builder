@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +32,7 @@ import {
   Search,
   Star,
   Webhook,
+  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
 import { adminLogout, callAdminFunction, getAdminToken } from "@/lib/adminAuth";
@@ -47,6 +48,11 @@ export type Praticien = {
   profession: string;
   specialites: string[];
   problematiques: string[];
+  specialites_derivees: string[];
+  problematiques_derivees: string[];
+  tags_extraction_status: string;
+  tags_extracted_at: string | null;
+  tags_bio_hash: string | null;
   bio_courte: string | null;
   bio_courte_en: string | null;
   bio_longue: string | null;
@@ -125,6 +131,7 @@ function isIncomplete(p: Praticien): { incomplete: boolean; reasons: string[] } 
 
 export default function AdminPraticiens() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [praticiens, setPraticiens] = useState<Praticien[]>([]);
   const [cache, setCache] = useState<Map<string, AvisCache>>(new Map());
@@ -134,6 +141,8 @@ export default function AdminPraticiens() {
   const [cabinetFilter, setCabinetFilter] = useState<string>("all");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editing, setEditing] = useState<Praticien | null>(null);
+  const [batchExtracting, setBatchExtracting] = useState(false);
+  const tagsReviewFilter = searchParams.get("filter") === "tags-review";
 
   const fetchAll = async () => {
     setLoading(true);
@@ -183,6 +192,11 @@ export default function AdminPraticiens() {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     let arr = [...praticiens];
+    if (tagsReviewFilter) {
+      arr = arr.filter((p) =>
+        ["review", "error"].includes(p.tags_extraction_status),
+      );
+    }
     if (q) {
       arr = arr.filter(
         (p) =>
@@ -204,7 +218,7 @@ export default function AdminPraticiens() {
       return `${a.nom} ${a.prenom}`.localeCompare(`${b.nom} ${b.prenom}`);
     });
     return arr;
-  }, [praticiens, search, statutFilter, cabinetFilter]);
+  }, [praticiens, search, statutFilter, cabinetFilter, tagsReviewFilter]);
 
   const counts = useMemo(() => {
     const total = praticiens.length;
@@ -221,6 +235,31 @@ export default function AdminPraticiens() {
     await adminLogout();
     toast.success("Déconnecté");
     navigate("/admin/login");
+  };
+
+  const handleBatchExtract = async () => {
+    const targets = praticiens.filter(
+      (p) => p.statut_validation === "validee" && p.actif,
+    );
+    if (!targets.length) {
+      toast.message("Aucune fiche validée à traiter");
+      return;
+    }
+    setBatchExtracting(true);
+    let ok = 0;
+    let ko = 0;
+    for (const p of targets) {
+      try {
+        await callAdminFunction("admin-reextract-tags", { praticien_id: p.id });
+        ok += 1;
+      } catch (e) {
+        console.error("backfill", p.slug, e);
+        ko += 1;
+      }
+    }
+    setBatchExtracting(false);
+    toast.success(`Backfill terminé · ${ok} OK · ${ko} erreurs`);
+    await fetchAll();
   };
 
   const openEdit = (p: Praticien | null) => {
@@ -263,11 +302,37 @@ export default function AdminPraticiens() {
                 <h1 className="text-xl font-semibold">Praticiens</h1>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   {counts.total} fiches · {counts.validees} validées · {counts.enAttente} en attente de retour
+                  {tagsReviewFilter && (
+                    <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-[11px] bg-[#D9C7A1]/30 text-anthracite">
+                      Vue : tags à vérifier
+                      <button
+                        type="button"
+                        onClick={() => setSearchParams({})}
+                        className="ml-1.5 underline hover:no-underline"
+                      >
+                        retirer
+                      </button>
+                    </span>
+                  )}
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <Button onClick={() => openEdit(null)} size="sm">
                   <Plus className="w-4 h-4 mr-1.5" /> Nouveau praticien
+                </Button>
+                <Button
+                  onClick={handleBatchExtract}
+                  variant="outline"
+                  size="sm"
+                  disabled={batchExtracting}
+                  title="Réextrait les tags depuis la bio pour toutes les fiches validées"
+                >
+                  {batchExtracting ? (
+                    <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+                  ) : (
+                    <Sparkles className="w-4 h-4 mr-1.5" />
+                  )}
+                  Réextraire les tags
                 </Button>
                 <Button onClick={() => navigate("/admin/idn-os-webhooks")} variant="outline" size="sm">
                   <Webhook className="w-4 h-4 mr-1.5" /> Webhooks IDN OS
