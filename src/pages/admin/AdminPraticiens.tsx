@@ -302,11 +302,37 @@ export default function AdminPraticiens() {
                 <h1 className="text-xl font-semibold">Praticiens</h1>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   {counts.total} fiches · {counts.validees} validées · {counts.enAttente} en attente de retour
+                  {tagsReviewFilter && (
+                    <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-[11px] bg-[#D9C7A1]/30 text-anthracite">
+                      Vue : tags à vérifier
+                      <button
+                        type="button"
+                        onClick={() => setSearchParams({})}
+                        className="ml-1.5 underline hover:no-underline"
+                      >
+                        retirer
+                      </button>
+                    </span>
+                  )}
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <Button onClick={() => openEdit(null)} size="sm">
                   <Plus className="w-4 h-4 mr-1.5" /> Nouveau praticien
+                </Button>
+                <Button
+                  onClick={handleBatchExtract}
+                  variant="outline"
+                  size="sm"
+                  disabled={batchExtracting}
+                  title="Réextrait les tags depuis la bio pour toutes les fiches validées"
+                >
+                  {batchExtracting ? (
+                    <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+                  ) : (
+                    <Sparkles className="w-4 h-4 mr-1.5" />
+                  )}
+                  Réextraire les tags
                 </Button>
                 <Button onClick={() => navigate("/admin/idn-os-webhooks")} variant="outline" size="sm">
                   <Webhook className="w-4 h-4 mr-1.5" /> Webhooks IDN OS
