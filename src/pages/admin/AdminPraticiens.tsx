@@ -337,6 +337,9 @@ export default function AdminPraticiens() {
                 <Button onClick={() => navigate("/admin/idn-os-webhooks")} variant="outline" size="sm">
                   <Webhook className="w-4 h-4 mr-1.5" /> Webhooks IDN OS
                 </Button>
+                <Button onClick={() => navigate("/admin/extractions")} variant="outline" size="sm">
+                  <Sparkles className="w-4 h-4 mr-1.5" /> Suivi extractions
+                </Button>
                 <Button onClick={handleLogout} variant="ghost" size="sm">
                   <LogOut className="w-4 h-4 mr-1.5" /> Se déconnecter
                 </Button>
