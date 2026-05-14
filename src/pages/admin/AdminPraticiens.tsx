@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +32,7 @@ import {
   Search,
   Star,
   Webhook,
+  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
 import { adminLogout, callAdminFunction, getAdminToken } from "@/lib/adminAuth";
@@ -130,6 +131,7 @@ function isIncomplete(p: Praticien): { incomplete: boolean; reasons: string[] } 
 
 export default function AdminPraticiens() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [praticiens, setPraticiens] = useState<Praticien[]>([]);
   const [cache, setCache] = useState<Map<string, AvisCache>>(new Map());
@@ -139,6 +141,8 @@ export default function AdminPraticiens() {
   const [cabinetFilter, setCabinetFilter] = useState<string>("all");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editing, setEditing] = useState<Praticien | null>(null);
+  const [batchExtracting, setBatchExtracting] = useState(false);
+  const tagsReviewFilter = searchParams.get("filter") === "tags-review";
 
   const fetchAll = async () => {
     setLoading(true);
@@ -188,6 +192,11 @@ export default function AdminPraticiens() {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     let arr = [...praticiens];
+    if (tagsReviewFilter) {
+      arr = arr.filter((p) =>
+        ["review", "error"].includes(p.tags_extraction_status),
+      );
+    }
     if (q) {
       arr = arr.filter(
         (p) =>
@@ -209,7 +218,7 @@ export default function AdminPraticiens() {
       return `${a.nom} ${a.prenom}`.localeCompare(`${b.nom} ${b.prenom}`);
     });
     return arr;
-  }, [praticiens, search, statutFilter, cabinetFilter]);
+  }, [praticiens, search, statutFilter, cabinetFilter, tagsReviewFilter]);
 
   const counts = useMemo(() => {
     const total = praticiens.length;
@@ -226,6 +235,31 @@ export default function AdminPraticiens() {
     await adminLogout();
     toast.success("Déconnecté");
     navigate("/admin/login");
+  };
+
+  const handleBatchExtract = async () => {
+    const targets = praticiens.filter(
+      (p) => p.statut_validation === "validee" && p.actif,
+    );
+    if (!targets.length) {
+      toast.message("Aucune fiche validée à traiter");
+      return;
+    }
+    setBatchExtracting(true);
+    let ok = 0;
+    let ko = 0;
+    for (const p of targets) {
+      try {
+        await callAdminFunction("admin-reextract-tags", { praticien_id: p.id });
+        ok += 1;
+      } catch (e) {
+        console.error("backfill", p.slug, e);
+        ko += 1;
+      }
+    }
+    setBatchExtracting(false);
+    toast.success(`Backfill terminé · ${ok} OK · ${ko} erreurs`);
+    await fetchAll();
   };
 
   const openEdit = (p: Praticien | null) => {
