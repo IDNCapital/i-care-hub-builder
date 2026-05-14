@@ -47,6 +47,11 @@ export type Praticien = {
   profession: string;
   specialites: string[];
   problematiques: string[];
+  specialites_derivees: string[];
+  problematiques_derivees: string[];
+  tags_extraction_status: string;
+  tags_extracted_at: string | null;
+  tags_bio_hash: string | null;
   bio_courte: string | null;
   bio_courte_en: string | null;
   bio_longue: string | null;
