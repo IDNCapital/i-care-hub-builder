@@ -131,17 +131,6 @@ function intersectAllowed(received: unknown, allowed: string[]): string[] {
   return out;
 }
 
-const SYSTEM_PROMPT = `Tu es un assistant qui extrait des tags filtrables depuis la biographie d'un praticien du soin et du bien-être. Tu ne dois JAMAIS inventer un tag absent de la taxonomie autorisée fournie.
-
-Règles strictes :
-1. N'extraire que les tags affirmés explicitement ou clairement impliqués dans la bio (ex. : "j'accompagne enfants et ados" → adolescents)
-2. Ne PAS extraire un tag si la bio le nie ou l'exclut (ex. : "je ne reçois pas de mineurs" → ne pas inclure adolescents)
-3. Ne PAS extraire un tag sur la base d'une mention indirecte d'une seule occurrence ambiguë
-4. En cas de doute sur un tag, ne pas l'inclure
-5. Retourner uniquement les tags présents dans les listes autorisées ci-dessous
-
-SPÉCIALITÉS AUTORISÉES : ${SPEC_ALLOWED.join(", ")}
-PROBLÉMATIQUES AUTORISÉES : ${PROB_ALLOWED.join(", ")}`;
 const SYSTEM_PROMPT = `Tu es un assistant qui extrait des tags filtrables depuis la biographie d'un praticien du soin et du bien-être. Ta mission : tagger tout ce que la biographie affirme positivement sur la pratique du praticien, sans rien inventer ni présumer.
 
 Règles strictes :
