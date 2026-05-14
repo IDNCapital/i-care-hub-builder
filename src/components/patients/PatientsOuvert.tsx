@@ -301,21 +301,34 @@ export function PatientsOuvert({ praticiens }: Props) {
 
   const filtered = useMemo(() => {
     const q = norm(query.trim());
+    const selectedTypes = Array.from(types);
+    const selectedBesoins = Array.from(besoins);
     return praticiens.filter((p) => {
+      // Recherche par nom (insensible casse + accents)
       if (q) {
         const full = norm(`${p.prenom} ${p.nom}`);
         if (!full.includes(q)) return false;
       }
+      // Bloc Cabinet (OR interne)
       if (cabinets.size && !cabinets.has(p.cabinet_slug)) return false;
-      if (types.size) {
-        const ok = Array.from(types).some((t) =>
-          groupMatches(p.specialites, SPECIALITY_GROUPS[t] ?? []),
+      // Bloc Type de soin — match si AU MOINS UNE specialité du praticien
+      // appartient à AU MOINS UN groupe sélectionné (parcourt tout l'array).
+      if (selectedTypes.length) {
+        const specs = p.specialites ?? [];
+        const ok = specs.some((spe) =>
+          selectedTypes.some((group) =>
+            (SPECIALITY_GROUPS[group] ?? []).map(norm).includes(norm(spe)),
+          ),
         );
         if (!ok) return false;
       }
-      if (besoins.size) {
-        const ok = Array.from(besoins).some((b) =>
-          groupMatches(p.problematiques, PROBLEMATIQUE_GROUPS[b] ?? []),
+      // Bloc Besoin — même logique sur l'array `problematiques`.
+      if (selectedBesoins.length) {
+        const pbs = p.problematiques ?? [];
+        const ok = pbs.some((pb) =>
+          selectedBesoins.some((group) =>
+            (PROBLEMATIQUE_GROUPS[group] ?? []).map(norm).includes(norm(pb)),
+          ),
         );
         if (!ok) return false;
       }
