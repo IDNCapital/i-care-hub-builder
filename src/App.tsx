@@ -45,6 +45,7 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminPraticiens from "./pages/admin/AdminPraticiens";
 import AdminDemandes from "./pages/admin/AdminDemandes";
 import AdminWebhooks from "./pages/admin/AdminWebhooks";
+import AdminExtractions from "./pages/admin/AdminExtractions";
 import { AdminGuard } from "./components/AdminGuard";
 import PreviewPraticien from "./pages/PreviewPraticien";
 import PraticienPublic from "./pages/PraticienPublic";
@@ -154,6 +155,14 @@ const App = () => (
                 element={
                   <AdminGuard>
                     <AdminWebhooks />
+                  </AdminGuard>
+                }
+              />
+              <Route
+                path="/admin/extractions"
+                element={
+                  <AdminGuard>
+                    <AdminExtractions />
                   </AdminGuard>
                 }
               />
