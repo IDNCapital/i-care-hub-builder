@@ -8,6 +8,7 @@ import {
   ALL_PROBLEMATIQUES,
   ALL_PUBLICS,
   ALL_SPECIALITIES,
+  IMPLICIT_TERMS,
   SYNONYM_MAP,
   TAXONOMY_VERSION,
 } from "../_shared/taxonomy.ts";
@@ -379,36 +380,54 @@ Deno.serve(async (req) => {
       : "basse";
     const status = confiance === "basse" ? "review" : "success";
 
-    const notes = typeof parsed.notes === "string" ? parsed.notes.slice(0, 500) : "";
-    const candidates = parseCandidates(notes);
+    const llmNotes = typeof parsed.notes === "string" ? parsed.notes.slice(0, 500) : "";
 
-    // Capture des candidats hors-taxonomie
+    // Capture des candidats hors-taxonomie sur les 3 dimensions
+    // Source = termes renvoyés par le LLM mais filtrés-out à l'étape intersect.
+    // Les IMPLICIT_TERMS sont silencieusement absorbés (ni final, ni candidat).
+    const dimensionSources: Array<{
+      dimension: Dim;
+      filteredOut: string[];
+      implicit: string[];
+      shortTag: "spe" | "prb" | "pub";
+    }> = [
+      { dimension: "specialite", filteredOut: specsFilteredOut, implicit: IMPLICIT_TERMS.specialites, shortTag: "spe" },
+      { dimension: "problematique", filteredOut: probsFilteredOut, implicit: IMPLICIT_TERMS.problematiques, shortTag: "prb" },
+      { dimension: "public", filteredOut: pubsFilteredOut, implicit: IMPLICIT_TERMS.publics_cibles, shortTag: "pub" },
+    ];
+
     const capturedCandidates: Array<{ term: string; dimension: Dim }> = [];
-    for (const c of candidates) {
-      const normTerm = normalize(c.term);
-      // Skip si déjà dans la taxonomie correspondante (ne devrait pas arriver mais sécurise)
-      const allowed =
-        c.dimension === "specialite"
-          ? ALL_SPECIALITIES
-          : c.dimension === "problematique"
-            ? ALL_PROBLEMATIQUES
-            : ALL_PUBLICS;
-      if (allowed.some((a) => normalize(a) === normTerm)) continue;
-      try {
-        await supabase.rpc("upsert_taxonomy_candidate", {
-          p_term: c.term,
-          p_term_normalized: normTerm,
-          p_dimension: c.dimension,
-          p_praticien_id: praticienId,
-        });
-        capturedCandidates.push(c);
-      } catch (err) {
-        console.error(
-          "upsert_taxonomy_candidate failed",
-          err instanceof Error ? err.message : err,
-        );
+    const noteSegments: string[] = [];
+    const seenCapture = new Set<string>();
+    for (const src of dimensionSources) {
+      const implicitNorm = new Set(src.implicit.map((t) => normalize(t)));
+      for (const term of src.filteredOut) {
+        const normTerm = normalize(term);
+        if (!normTerm) continue;
+        if (implicitNorm.has(normTerm)) continue;
+        const key = `${src.dimension}::${normTerm}`;
+        if (seenCapture.has(key)) continue;
+        seenCapture.add(key);
+        try {
+          await supabase.rpc("upsert_taxonomy_candidate", {
+            p_term: term,
+            p_term_normalized: normTerm,
+            p_dimension: src.dimension,
+            p_praticien_id: praticienId,
+          });
+          capturedCandidates.push({ term, dimension: src.dimension });
+          noteSegments.push(`[CANDIDAT-${src.shortTag}] ${term}`);
+        } catch (err) {
+          console.error(
+            "upsert_taxonomy_candidate failed",
+            err instanceof Error ? err.message : err,
+          );
+        }
       }
     }
+    const notes = noteSegments.length > 0
+      ? noteSegments.join(" | ")
+      : llmNotes;
 
     const log = appendLog(praticien.tags_extraction_log, {
       ts: new Date().toISOString(),
