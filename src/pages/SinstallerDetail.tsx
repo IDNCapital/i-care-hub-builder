@@ -5,9 +5,8 @@ import { Link, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Mail, MapPin, ChevronRight } from "lucide-react";
 import NotFound from "@/pages/NotFound";
-import { useInstallationPage } from "@/hooks/useInstallation";
+import { useInstallationPage, useProfessions } from "@/hooks/useInstallation";
 import { cabinetNomCourt, formatDateOuverture } from "@/lib/installation";
-import { useProfessions } from "@/hooks/useInstallation";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
 
 function parsePostalAddress(address: string | null, city: string) {
