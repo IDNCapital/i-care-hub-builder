@@ -46,7 +46,7 @@ export const Header = memo(function Header() {
 
   const practitionerSubItems = useMemo(() => [
     { name: labels.sub.spaces, href: localePath(lang, "projects") },
-    { name: labels.sub.install, href: localePath(lang, "insights") },
+    { name: labels.sub.install, href: lang === "fr" ? "/sinstaller" : localePath(lang, "insights") },
     { name: labels.sub.testimonials, href: localePath(lang, "temoignages") },
     { name: labels.sub.referral, href: localePath(lang, "parrainage") },
   ], [labels, lang]);
