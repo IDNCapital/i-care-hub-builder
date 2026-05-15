@@ -15,6 +15,16 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   CheckCircle2,
   ExternalLink,
   Loader2,
@@ -175,10 +185,19 @@ export function PraticienDrawer({
   const [form, setForm] = useState<FormState>(() => fromPraticien(praticien));
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     setForm(fromPraticien(praticien));
   }, [praticien]);
+
+  // Reset confirmation quand on change de fiche
+  useEffect(() => {
+    setDeleteConfirm("");
+    setDeleteOpen(false);
+  }, [praticien?.id]);
 
   // Auto-slug si pas en mode manual
   useEffect(() => {
@@ -676,6 +695,53 @@ export function PraticienDrawer({
         </div>
       </section>
 
+      {/* I. Zone de danger — suppression définitive (uniquement si fiche existante) */}
+      {form.id && (() => {
+        const isLive = form.statut_validation === "validee" || form.actif === true;
+        const tooltipMsg = isLive
+          ? "Désactivez la fiche (Actif = off) et repassez-la en brouillon avant de pouvoir la supprimer définitivement."
+          : "";
+        const button = (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={isLive || deleting}
+            onClick={() => {
+              setDeleteConfirm("");
+              setDeleteOpen(true);
+            }}
+            className="border-[#B89B6F]/50 text-[#7A4A3A] hover:bg-[#D9C7A1]/15 hover:text-[#7A4A3A]"
+          >
+            <Trash2 className="w-3.5 h-3.5 mr-1.5" />
+            Supprimer définitivement cette fiche
+          </Button>
+        );
+        return (
+          <>
+            <Separator />
+            <section className="space-y-3">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-[#7A4A3A]">
+                Zone de danger
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                La suppression est irréversible et ne peut s'effectuer que sur une fiche en brouillon, refusée, ou désactivée.
+              </p>
+              {isLive ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span tabIndex={0} className="inline-block">{button}</span>
+                  </TooltipTrigger>
+                  <TooltipContent>{tooltipMsg}</TooltipContent>
+                </Tooltip>
+              ) : (
+                button
+              )}
+            </section>
+          </>
+        );
+      })()}
+
       {/* Actions */}
       <div className="flex items-center justify-end gap-2 pt-4 border-t sticky bottom-0 bg-background pb-2">
         <Button type="button" variant="ghost" onClick={onCancel} disabled={saving}>
@@ -686,6 +752,64 @@ export function PraticienDrawer({
           Enregistrer
         </Button>
       </div>
+
+      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Suppression définitive</AlertDialogTitle>
+            <AlertDialogDescription>
+              Vous êtes sur le point de supprimer définitivement la fiche de{" "}
+              <span className="font-medium text-foreground">
+                {form.prenom} {form.nom}
+              </span>
+              . Cette action est irréversible. Toutes les données associées seront perdues : bio, photo, tags dérivés, historique d'extraction, candidats taxonomie liés.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-1.5">
+            <Label htmlFor="confirm-suppr" className="text-xs">
+              Tapez <span className="font-mono font-semibold">SUPPRIMER</span> pour confirmer
+            </Label>
+            <Input
+              id="confirm-suppr"
+              autoFocus
+              autoComplete="off"
+              value={deleteConfirm}
+              onChange={(e) => setDeleteConfirm(e.target.value)}
+              className="font-mono"
+            />
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={deleteConfirm !== "SUPPRIMER" || deleting}
+              onClick={async (e) => {
+                e.preventDefault();
+                if (!form.id || deleteConfirm !== "SUPPRIMER") return;
+                setDeleting(true);
+                try {
+                  await callAdminFunction("admin-delete-praticien", {
+                    praticien_id: form.id,
+                    confirmation: "SUPPRIMER",
+                  });
+                  toast.success("Fiche supprimée.");
+                  setDeleteOpen(false);
+                  onSaved();
+                } catch (err) {
+                  toast.error(
+                    err instanceof Error ? err.message : "Échec de la suppression",
+                  );
+                } finally {
+                  setDeleting(false);
+                }
+              }}
+              className="bg-[#7A4A3A] hover:bg-[#5E3829] text-white"
+            >
+              {deleting && <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />}
+              Supprimer définitivement
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
