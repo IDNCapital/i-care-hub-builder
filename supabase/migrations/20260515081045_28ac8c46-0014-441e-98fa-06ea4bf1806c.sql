@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.upsert_taxonomy_candidate(text, text, text, uuid) FROM PUBLIC, anon, authenticated;
