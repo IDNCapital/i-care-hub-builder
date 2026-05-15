@@ -531,6 +531,7 @@ export type Database = {
           problematiques: string[]
           problematiques_derivees: string[]
           profession: string
+          publics_derives: string[]
           slug: string
           specialites: string[]
           specialites_derivees: string[]
@@ -566,6 +567,7 @@ export type Database = {
           problematiques?: string[]
           problematiques_derivees?: string[]
           profession: string
+          publics_derives?: string[]
           slug: string
           specialites?: string[]
           specialites_derivees?: string[]
@@ -601,6 +603,7 @@ export type Database = {
           problematiques?: string[]
           problematiques_derivees?: string[]
           profession?: string
+          publics_derives?: string[]
           slug?: string
           specialites?: string[]
           specialites_derivees?: string[]
@@ -697,6 +700,57 @@ export type Database = {
         }
         Relationships: []
       }
+      taxonomy_candidates: {
+        Row: {
+          dimension: string
+          first_seen_at: string
+          id: string
+          last_seen_at: string
+          occurrences: number
+          praticiens_ids: string[]
+          resolution_action: string | null
+          resolution_canonical: string | null
+          resolution_group: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          term: string
+          term_normalized: string
+        }
+        Insert: {
+          dimension: string
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          occurrences?: number
+          praticiens_ids?: string[]
+          resolution_action?: string | null
+          resolution_canonical?: string | null
+          resolution_group?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          term: string
+          term_normalized: string
+        }
+        Update: {
+          dimension?: string
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          occurrences?: number
+          praticiens_ids?: string[]
+          resolution_action?: string | null
+          resolution_canonical?: string | null
+          resolution_group?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          term?: string
+          term_normalized?: string
+        }
+        Relationships: []
+      }
       temoignages_praticiens: {
         Row: {
           actif: boolean
@@ -768,6 +822,7 @@ export type Database = {
           problematiques: string[]
           problematiques_derivees: string[]
           profession: string
+          publics_derives: string[]
           slug: string
           specialites: string[]
           specialites_derivees: string[]
@@ -786,6 +841,15 @@ export type Database = {
         }
       }
       unaccent: { Args: { "": string }; Returns: string }
+      upsert_taxonomy_candidate: {
+        Args: {
+          p_dimension: string
+          p_praticien_id: string
+          p_term: string
+          p_term_normalized: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       investor_lead_status: "new" | "contacted" | "qualified" | "not_interested"
