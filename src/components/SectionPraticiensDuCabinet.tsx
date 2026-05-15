@@ -39,7 +39,7 @@ export function SectionPraticiensDuCabinet({
   const medicalBusinessLd = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
-    name: `Cabinet I-CA.RE ${cabinetNomCourt}`,
+    name: cabinetNomCourt,
     url: cabinetUrl,
     ...(medicalSpecialty.length > 0 ? { medicalSpecialty } : {}),
     serviceProvider: visibles.map((p) => ({
