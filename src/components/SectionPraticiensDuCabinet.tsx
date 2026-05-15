@@ -65,8 +65,7 @@ export function SectionPraticiensDuCabinet({
             Le réseau présent dans ce lieu
           </h2>
           <p className="font-body text-base text-muted-foreground leading-relaxed">
-            Les spécialistes installés au Cabinet I-CA.RE {cabinetNomCourt} et accueillant
-            des consultations ouvertes au public.
+            Les spécialistes accueillant des consultations ouvertes au public à {cabinetNomCourt}.
           </p>
         </div>
 
