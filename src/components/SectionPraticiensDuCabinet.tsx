@@ -27,11 +27,21 @@ export function SectionPraticiensDuCabinet({
   const max = Math.min(praticiens.length, 8);
   const visibles = praticiens.slice(0, max);
 
+  const medicalSpecialty = Array.from(
+    new Set(
+      praticiens.flatMap((p) => [
+        ...(p.specialites ?? []),
+        ...(p.specialites_derivees ?? []),
+      ]),
+    ),
+  ).filter((s) => typeof s === "string" && s.trim().length > 0);
+
   const medicalBusinessLd = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
     name: `Cabinet I-CA.RE ${cabinetNomCourt}`,
     url: cabinetUrl,
+    ...(medicalSpecialty.length > 0 ? { medicalSpecialty } : {}),
     serviceProvider: visibles.map((p) => ({
       "@type": "Person",
       name: `${p.prenom} ${p.nom}`,
