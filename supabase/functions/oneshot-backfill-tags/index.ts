@@ -10,13 +10,6 @@ const corsHeaders = {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
-  const auth = req.headers.get("authorization") ?? "";
-  const expected = `Bearer ${Deno.env.get("BOOTSTRAP_TOKEN") ?? ""}`;
-  if (!Deno.env.get("BOOTSTRAP_TOKEN") || auth !== expected) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
-      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  }
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
