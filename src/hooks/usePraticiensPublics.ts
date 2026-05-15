@@ -11,6 +11,7 @@ export interface PraticienPublic {
   problematiques: string[];
   specialites_derivees: string[];
   problematiques_derivees: string[];
+  publics_derives: string[];
   cabinet_slug: string;
 }
 
@@ -29,7 +30,7 @@ export function usePraticiensPublics() {
       const { data: rows, error } = await supabase
         .from("praticiens")
         .select(
-          "slug, prenom, nom, profession, photo_url, specialites, problematiques, specialites_derivees, problematiques_derivees, cabinet_slug",
+          "slug, prenom, nom, profession, photo_url, specialites, problematiques, specialites_derivees, problematiques_derivees, publics_derives, cabinet_slug",
         )
         .eq("statut_validation", "validee")
         .eq("actif", true)
