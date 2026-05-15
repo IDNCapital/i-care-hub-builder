@@ -317,6 +317,120 @@ export type Database = {
         }
         Relationships: []
       }
+      installation_content_common: {
+        Row: {
+          actif: boolean
+          content_key: string
+          content_md: string
+          created_at: string
+          ordre: number
+          titre_section: string
+          updated_at: string
+        }
+        Insert: {
+          actif?: boolean
+          content_key: string
+          content_md: string
+          created_at?: string
+          ordre?: number
+          titre_section: string
+          updated_at?: string
+        }
+        Update: {
+          actif?: boolean
+          content_key?: string
+          content_md?: string
+          created_at?: string
+          ordre?: number
+          titre_section?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      installation_content_profession: {
+        Row: {
+          created_at: string
+          enjeux_md: string | null
+          patientele_md: string | null
+          pourquoi_idn_md: string | null
+          profession_slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          enjeux_md?: string | null
+          patientele_md?: string | null
+          pourquoi_idn_md?: string | null
+          profession_slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          enjeux_md?: string | null
+          patientele_md?: string | null
+          pourquoi_idn_md?: string | null
+          profession_slug?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "installation_content_profession_profession_slug_fkey"
+            columns: ["profession_slug"]
+            isOneToOne: true
+            referencedRelation: "installation_pages"
+            referencedColumns: ["profession_slug"]
+          },
+          {
+            foreignKeyName: "installation_content_profession_profession_slug_fkey"
+            columns: ["profession_slug"]
+            isOneToOne: true
+            referencedRelation: "professions"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
+      installation_content_ville: {
+        Row: {
+          acces_md: string | null
+          cabinet_details_md: string | null
+          created_at: string
+          quartier_md: string | null
+          updated_at: string
+          ville_slug: string
+        }
+        Insert: {
+          acces_md?: string | null
+          cabinet_details_md?: string | null
+          created_at?: string
+          quartier_md?: string | null
+          updated_at?: string
+          ville_slug: string
+        }
+        Update: {
+          acces_md?: string | null
+          cabinet_details_md?: string | null
+          created_at?: string
+          quartier_md?: string | null
+          updated_at?: string
+          ville_slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "installation_content_ville_ville_slug_fkey"
+            columns: ["ville_slug"]
+            isOneToOne: true
+            referencedRelation: "installation_pages"
+            referencedColumns: ["ville_slug"]
+          },
+          {
+            foreignKeyName: "installation_content_ville_ville_slug_fkey"
+            columns: ["ville_slug"]
+            isOneToOne: true
+            referencedRelation: "projets"
+            referencedColumns: ["slug_installation"]
+          },
+        ]
+      }
       investor_leads: {
         Row: {
           access_token_expires_at: string | null

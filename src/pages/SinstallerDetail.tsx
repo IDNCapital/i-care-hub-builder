@@ -5,8 +5,9 @@ import { Link, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Mail, MapPin, ChevronRight } from "lucide-react";
 import NotFound from "@/pages/NotFound";
-import { useInstallationPage } from "@/hooks/useInstallation";
+import { useInstallationPage, useProfessions } from "@/hooks/useInstallation";
 import { cabinetNomCourt, formatDateOuverture } from "@/lib/installation";
+import { MarkdownContent } from "@/components/ui/MarkdownContent";
 
 function parsePostalAddress(address: string | null, city: string) {
   if (!address) return { streetAddress: "", postalCode: "", addressLocality: city };
@@ -25,6 +26,7 @@ function parsePostalAddress(address: string | null, city: string) {
 export default function SinstallerDetail() {
   const { profession, ville } = useParams<{ profession: string; ville: string }>();
   const { data, isLoading } = useInstallationPage(profession ?? "", ville ?? "");
+  const { data: professions } = useProfessions();
 
   if (isLoading) {
     return (
@@ -51,6 +53,18 @@ export default function SinstallerDetail() {
     `Installation ${data.profession_libelle} - ${nomCourt}`
   );
   const mailto = `mailto:contact@i-ca.re?subject=${subjectMail}`;
+
+  const professionRow = professions?.find((p) => p.slug === data.profession_slug);
+  const nomInclusifPluriel = professionRow?.nom_inclusif_pluriel ?? data.profession_libelle.toLowerCase();
+
+  const contenuVille = data.contenuVille;
+  const contenuProfession = data.contenuProfession;
+  const contenuCommun = data.contenuCommun ?? [];
+
+  const hasProfessionContent =
+    !!contenuProfession?.enjeux_md ||
+    !!contenuProfession?.patientele_md ||
+    !!contenuProfession?.pourquoi_idn_md;
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -140,13 +154,60 @@ export default function SinstallerDetail() {
           <h2 className="text-2xl md:text-3xl font-heading font-normal mb-6">
             Le cabinet
           </h2>
-          <p className="text-base text-muted-foreground leading-relaxed">
-            Détails complets en cours de préparation. Demandez le dossier d'installation
-            pour recevoir les informations détaillées : surfaces disponibles, conditions
-            de location, équipements et planning précis.
-          </p>
+          {contenuVille?.cabinet_details_md ? (
+            <MarkdownContent content={contenuVille.cabinet_details_md} />
+          ) : (
+            <p className="text-base text-muted-foreground leading-relaxed">
+              Détails du cabinet en cours de préparation. Demandez le dossier d'installation
+              pour recevoir les informations complètes.
+            </p>
+          )}
         </div>
       </section>
+
+      {/* Le quartier */}
+      {contenuVille?.quartier_md && (
+        <section className="section-padding bg-secondary">
+          <div className="container max-w-3xl">
+            <h2 className="text-2xl md:text-3xl font-heading font-normal mb-6">
+              Le quartier
+            </h2>
+            <MarkdownContent content={contenuVille.quartier_md} />
+          </div>
+        </section>
+      )}
+
+      {/* Accès et environnement */}
+      {contenuVille?.acces_md && (
+        <section className="section-padding bg-background">
+          <div className="container max-w-3xl">
+            <h2 className="text-2xl md:text-3xl font-heading font-normal mb-6">
+              Accès et environnement
+            </h2>
+            <MarkdownContent content={contenuVille.acces_md} />
+          </div>
+        </section>
+      )}
+
+      {/* Exercer comme {profession} */}
+      {hasProfessionContent && (
+        <section className="section-padding bg-secondary">
+          <div className="container max-w-3xl">
+            <h2 className="text-2xl md:text-3xl font-heading font-normal mb-6">
+              Exercer comme {nomInclusifPluriel}
+            </h2>
+            {contenuProfession?.enjeux_md && (
+              <MarkdownContent content={contenuProfession.enjeux_md} className="mb-8" />
+            )}
+            {contenuProfession?.patientele_md && (
+              <MarkdownContent content={contenuProfession.patientele_md} className="mb-8" />
+            )}
+            {contenuProfession?.pourquoi_idn_md && (
+              <MarkdownContent content={contenuProfession.pourquoi_idn_md} />
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Pourquoi I-CA.RE */}
       <section className="section-padding bg-secondary">
@@ -177,6 +238,21 @@ export default function SinstallerDetail() {
           </div>
         </div>
       </section>
+
+      {/* Sections communes */}
+      {contenuCommun.map((bloc, idx) => (
+        <section
+          key={bloc.content_key}
+          className={`section-padding ${idx % 2 === 0 ? "bg-background" : "bg-secondary"}`}
+        >
+          <div className="container max-w-3xl">
+            <h2 className="text-2xl md:text-3xl font-heading font-normal mb-6">
+              {bloc.titre_section}
+            </h2>
+            <MarkdownContent content={bloc.content_md} />
+          </div>
+        </section>
+      ))}
 
       {/* CTA */}
       <section className="section-padding bg-background">
