@@ -58,6 +58,13 @@ const ROUTES = [
   { path: "/notre-approche", type: "strategic" },
   { path: "/contact", type: "strategic" },
   { path: "/questions-frequentes", type: "strategic" },
+  // FR installation matrix (LOT 4-bis-A) — index + 9 professions × 4 cabinets pipeline
+  { path: "/sinstaller", type: "strategic" },
+  ...["osteopathe","sophrologue","psychologue","psychotherapeute","dieteticien-nutritionniste","naturopathe","hypnotherapeute","medecin-generaliste","sage-femme"].flatMap(p =>
+    ["bordeaux-chartrons","toulouse-capitole","floirac","lormont"].map(v => ({
+      path: `/sinstaller/${p}/${v}`, type: "strategic",
+    }))
+  ),
   // FR legal
   { path: "/mentions-legales", type: "legal" },
   { path: "/confidentialite", type: "legal" },
