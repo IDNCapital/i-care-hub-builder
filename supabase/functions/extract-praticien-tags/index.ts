@@ -22,6 +22,7 @@ const SPECIALITY_GROUPS: Record<string, string[]> = {
     "Psychothérapie intégrative",
     "Thérapie EMDR",
     "Thérapie brève",
+    "TBSI",
     "Sophrologie",
     "Sophrothérapie",
     "Gestalt-thérapie",
@@ -33,7 +34,7 @@ const SPECIALITY_GROUPS: Record<string, string[]> = {
     "Shiatsu",
     "Breathwork",
   ],
-  "Pratiques énergétiques": ["Reiki", "Rebirthing", "TBSI"],
+  "Pratiques énergétiques": ["Reiki", "Rebirthing"],
   "Enfance et adolescence": ["Stress scolaire enfants & ados"],
 };
 
