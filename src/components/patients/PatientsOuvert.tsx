@@ -4,6 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import type { PraticienPublic } from "@/hooks/usePraticiensPublics";
+import {
+  SPECIALITY_GROUPS,
+  PROBLEMATIQUE_GROUPS,
+  PUBLIC_CIBLE_GROUPS,
+} from "@/lib/taxonomy";
 
 interface Props {
   praticiens: PraticienPublic[];
@@ -14,81 +19,6 @@ const CABINETS_LABEL: Record<string, string> = {
   "i-ca-re-pey-berland": "Pey-Berland",
   "i-ca-re-jardin-public": "Jardin Public",
   "i-ca-re-chartrons": "Chartrons",
-};
-
-const SPECIALITY_GROUPS: Record<string, string[]> = {
-  "Soin psychique": [
-    "Psychologie clinique",
-    "Psychologie du travail",
-    "Psychothérapie humaniste",
-    "Psychothérapie intégrative",
-    "Thérapie EMDR",
-    "Thérapie brève",
-    "TBSI",
-    "Sophrologie",
-    "Sophrothérapie",
-    "Gestalt-thérapie",
-  ],
-  "Soin du corps": [
-    "Massage bien-être",
-    "Kobido",
-    "Réflexologie plantaire",
-    "Shiatsu",
-    "Breathwork",
-  ],
-  "Pratiques énergétiques": ["Reiki", "Rebirthing"],
-  "Enfance et adolescence": ["Stress scolaire enfants & ados"],
-};
-
-const PROBLEMATIQUE_GROUPS: Record<string, string[]> = {
-  "Stress et anxiété": [
-    "anxiété",
-    "anxiété de performance",
-    "stress",
-    "surcharge émotionnelle",
-    "régulation émotionnelle",
-  ],
-  "Travail et orientation": [
-    "burn-out",
-    "souffrance au travail",
-    "stress au travail",
-    "transition professionnelle",
-    "orientation",
-  ],
-  "Vie et transitions": [
-    "transitions de vie",
-    "périodes de doute",
-    "questionnements",
-    "situations complexes",
-    "parcours de vie difficiles",
-    "blocages persistants",
-    "difficultés personnelles",
-  ],
-  "Estime et rapport à soi": [
-    "estime de soi",
-    "peur de l'échec",
-    "relation au corps",
-    "souffrance psychique",
-    "difficultés relationnelles",
-    "parentalité",
-  ],
-  "Enfants et adolescents": [
-    "adolescents",
-    "stress scolaire",
-    "tensions liées à la pression scolaire",
-    "concentration",
-  ],
-  "Corps et émotions": [
-    "douleur chronique",
-    "détente",
-    "relaxation",
-    "relâchement des tensions",
-    "bien-être global",
-    "traumatismes",
-    "troubles émotionnels",
-    "troubles du comportement alimentaire",
-    "TCA",
-  ],
 };
 
 const norm = (s: string) =>
@@ -116,6 +46,8 @@ interface FiltersProps {
   toggleType: (t: string) => void;
   besoins: Set<string>;
   toggleBesoin: (b: string) => void;
+  publics: Set<string>;
+  togglePublic: (p: string) => void;
   activeCount: number;
   reset: () => void;
 }
@@ -155,6 +87,8 @@ function FiltersPanel(props: FiltersProps) {
     toggleType,
     besoins,
     toggleBesoin,
+    publics,
+    togglePublic,
     activeCount,
     reset,
   } = props;
@@ -221,6 +155,17 @@ function FiltersPanel(props: FiltersProps) {
         ))}
       </Section>
 
+      <Section title="Public">
+        {Object.keys(PUBLIC_CIBLE_GROUPS).map((p) => (
+          <Pill
+            key={p}
+            label={p}
+            active={publics.has(p)}
+            onClick={() => togglePublic(p)}
+          />
+        ))}
+      </Section>
+
       {activeCount > 0 && (
         <button
           type="button"
@@ -275,6 +220,7 @@ export function PatientsOuvert({ praticiens }: Props) {
   const [cabinets, setCabinets] = useState<Set<string>>(new Set());
   const [types, setTypes] = useState<Set<string>>(new Set());
   const [besoins, setBesoins] = useState<Set<string>>(new Set());
+  const [publics, setPublics] = useState<Set<string>>(new Set());
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const cabinetOptions = useMemo(
@@ -298,12 +244,14 @@ export function PatientsOuvert({ praticiens }: Props) {
     setCabinets(new Set());
     setTypes(new Set());
     setBesoins(new Set());
+    setPublics(new Set());
   };
 
   const filtered = useMemo(() => {
     const q = norm(query.trim());
     const selectedTypes = Array.from(types);
     const selectedBesoins = Array.from(besoins);
+    const selectedPublics = Array.from(publics);
     return praticiens.filter((p) => {
       // Recherche par nom (insensible casse + accents)
       if (q) {
@@ -340,12 +288,23 @@ export function PatientsOuvert({ praticiens }: Props) {
         );
         if (!ok) return false;
       }
+      // Bloc Public — match si AU MOINS UN public_derive du praticien
+      // appartient à AU MOINS UN groupe sélectionné.
+      if (selectedPublics.length) {
+        const pubs = p.publics_derives ?? [];
+        const ok = pubs.some((pu) =>
+          selectedPublics.some((group) =>
+            (PUBLIC_CIBLE_GROUPS[group] ?? []).map(norm).includes(norm(pu)),
+          ),
+        );
+        if (!ok) return false;
+      }
       return true;
     });
-  }, [praticiens, query, cabinets, types, besoins]);
+  }, [praticiens, query, cabinets, types, besoins, publics]);
 
   const activeCount =
-    cabinets.size + types.size + besoins.size + (query ? 1 : 0);
+    cabinets.size + types.size + besoins.size + publics.size + (query ? 1 : 0);
 
   const filtersProps: FiltersProps = {
     query,
@@ -357,6 +316,8 @@ export function PatientsOuvert({ praticiens }: Props) {
     toggleType: (t) => toggle(types, t, setTypes),
     besoins,
     toggleBesoin: (b) => toggle(besoins, b, setBesoins),
+    publics,
+    togglePublic: (p) => toggle(publics, p, setPublics),
     activeCount,
     reset,
   };

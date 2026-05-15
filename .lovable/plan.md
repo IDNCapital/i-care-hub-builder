@@ -1,114 +1,78 @@
-# Lot 0bis — Extraction automatique des tags depuis la bio
+## Lot 0ter — Refonte taxonomique vivante (3 dimensions + candidats GPT)
 
-## Vue d'ensemble
-Automatiser l'extraction des tags filtrables (`specialites_derivees`, `problematiques_derivees`) depuis la bio de chaque praticien via OpenAI `gpt-4o-mini`. La bio reste source de vérité ; les tags dérivés alimentent le filtre `/patients`. Le slug devient auto-généré.
-
----
-
-## Pré-requis
-- **Secret à créer après déploiement** : `OPENAI_API_KEY` (Lovable Cloud → Secrets). Je demanderai sa valeur via `add_secret` dès le Lot 3.
-- Réutilisation de `CRON_TOKEN` (cron/trigger) et `ADMIN_SESSION_SECRET` (proxy admin).
+Objectif : centraliser la taxonomie, ajouter une 3ᵉ dimension (publics), et créer un système vivant où GPT remonte des candidats que l'admin valide.
 
 ---
 
-## Lot 0 — Snapshot
-Snapshot des fichiers impactés avant modification dans `docs/icare-connect/snapshots/lot0bis/` :
-- `PatientsOuvert.tsx`, `PraticienDrawer.tsx`, `AdminPraticiens.tsx`
+### Lot 1 — Centralisation `src/lib/taxonomy.ts`
 
-## Lot 1 — Migration schéma `praticiens`
-Ajout de 6 colonnes (sans toucher `specialites`/`problematiques` existantes) :
-- `specialites_derivees text[]` default `'{}'`
-- `problematiques_derivees text[]` default `'{}'`
-- `tags_extraction_status text` default `'pending'` + CHECK (`pending|success|review|error|skipped`)
-- `tags_extracted_at timestamptz`
-- `tags_bio_hash text`
-- `tags_extraction_log jsonb` default `'[]'`
-RLS héritée (lecture publique sur `validee+actif`, écriture service_role).
+- Créer `src/lib/taxonomy.ts` (source unique) avec `SPECIALITY_GROUPS`, `PROBLEMATIQUE_GROUPS`, `PUBLIC_CIBLE_GROUPS`, `SYNONYM_MAP`, `ALL_*` aplaties, `TAXONOMY_VERSION = "0ter-2026-05-15"`.
+- Créer `supabase/functions/_shared/taxonomy.ts` (miroir documenté `// MIRROR — keep in sync with src/lib/taxonomy.ts`, mêmes constantes + même `TAXONOMY_VERSION`). Choix pragmatique : duplication contrôlée avec en-tête fort, version comparée au runtime (warning si divergence).
+- Snapshot avant modif dans `docs/icare-connect/snapshots/lot0ter/`.
 
-## Lot 2 — Auto-slug
-- `CREATE EXTENSION IF NOT EXISTS unaccent;`
-- Fonction `public.set_praticien_slug()` :
-  - calcule slug = `lower(unaccent(prenom || '-' || nom))`, regex non-alphanum → `-`, collapse, trim
-  - vérifie unicité, suffixe `-2`, `-3`…
-- Trigger `BEFORE INSERT OR UPDATE OF prenom, nom` sur `praticiens`
-- Backfill : `UPDATE praticiens SET prenom = prenom` pour déclencher recalcul ; log éventuels changements via `RAISE NOTICE`
+### Lot 2 — Migration BDD
 
-## Lot 3 — Edge Function `extract-praticien-tags`
-Fichier `supabase/functions/extract-praticien-tags/index.ts` (Deno) :
-- Auth via `x-cron-token` constant-time vs `CRON_TOKEN`, sinon délai 600 ms + 401
-- Lit praticien (service_role), calcule SHA-256 bio (concat `bio_courte || bio_longue`)
-- Si `tags_bio_hash === current` et `!force` → status `skipped`, exit
-- Construit prompt système avec listes `SPECIALITY_GROUPS` et `PROBLEMATIQUE_GROUPS` aplaties (dupliquées dans la fonction depuis `src/components/patients/PatientsOuvert.tsx`)
-- Appelle OpenAI `gpt-4o-mini`, `temperature: 0`, `response_format: json_schema strict`
-- Filtre côté code les tags retournés contre la taxonomie
-- `confiance==='basse'` → `review`, sinon `success` ; erreur OpenAI → `error` (sans écraser tags existants)
-- Met à jour `specialites_derivees`, `problematiques_derivees`, `tags_bio_hash`, `tags_extracted_at`, append `tags_extraction_log` (10 max)
-- Configuration `verify_jwt = false` dans `supabase/config.toml`
-- Pas de log de bio/contenu personnel
+- `ALTER TABLE praticiens ADD COLUMN publics_derives text[] NOT NULL DEFAULT '{}'`.
+- Création table `taxonomy_candidates` (term, term_normalized, dimension, occurrences, praticiens_ids[], first_seen_at, last_seen_at, status, resolution_*, UNIQUE(term_normalized, dimension)). RLS service_role only.
+- Fonction `upsert_taxonomy_candidate(term, term_normalized, dimension, praticien_id)` SECURITY DEFINER.
 
-## Lot 4 — Trigger Postgres → Edge Function
-- Activer `pg_net` si pas actif
-- Fonction `public.trigger_extract_praticien_tags()` qui POST async via `net.http_post` à l'Edge Function avec `x-cron-token` et `force:false`
-- Trigger `AFTER INSERT OR UPDATE OF bio_courte, bio_longue` quand `statut_validation IN ('brouillon','preview_envoyee','validee')`
-- L'URL et le token sont stockés dans `app_settings` (table key/value sécurisée) ou récupérés via fonction `current_setting` — implémentation via paramètres GUC posés par migration depuis env. **À défaut** : utiliser `vault.decrypted_secrets` (Supabase Vault) si dispo.
+### Lot 3 — Edge Function `extract-praticien-tags` (3 dimensions + candidats)
 
-## Lot 5 — Admin
-- `PraticienDrawer.tsx` (section « Profession & Spécialités ») :
-  - pills lecture seule pour `specialites_derivees` / `problematiques_derivees`
-  - badge `tags_extraction_status` coloré (sage/or/gris/rouge selon charte)
-  - `tags_extracted_at` formaté FR
-  - Bouton « Réextraire les tags » → appelle nouvelle Edge Function `admin-reextract-tags` (proxy avec `x-admin-token` qui forge `x-cron-token` côté serveur, force:true)
-- Nouvelle Edge Function `admin-reextract-tags/index.ts` qui valide la session admin puis invoque `extract-praticien-tags`
-- `AdminPraticiens.tsx` : ajouter filtre URL `?filter=tags-review` qui pré-coche un nouveau filtre logique « tags à vérifier » (status review/error)
-- Mise à jour de `admin-list-praticiens` pour renvoyer les nouvelles colonnes
-- Type `Praticien` étendu
+- Refactor pour produire `specialites`, `problematiques`, `publics_cibles` séparés.
+- Prompt système réécrit (R1-R7), schema JSON strict avec 3 arrays + `notes`.
+- Pipeline : normalisation → `SYNONYM_MAP` → `intersectAllowed` par dimension → union avec déclarations formelles (specialités/problématiques) → écriture `specialites_derivees`, `problematiques_derivees`, `publics_derives`.
+- Parsing du champ `notes` pour `[CANDIDAT-specialite|problematique|public]` → appel `upsert_taxonomy_candidate`.
+- Log enrichi par dimension dans `tags_extraction_log`.
 
-## Lot 6 — Filtre `/patients`
-Dans `PatientsOuvert.tsx` :
-- Hook `usePraticiensPublics` : sélectionner aussi `specialites_derivees` et `problematiques_derivees`
-- Filtre Type/Besoin lit `specialites_derivees ?? []` et `problematiques_derivees ?? []` (au lieu de `specialites`/`problematiques`)
-- Aucun changement visuel
-- `FichePraticien` continue d'afficher les colonnes brutes (inchangé)
+### Lot 4 — Filtre `/patients` 4 blocs
 
-## Lot 7 — Backfill 8 fiches validées
-Insert SQL one-shot (via tool `supabase--insert`) :
-```sql
-SELECT net.http_post(...) FROM praticiens WHERE statut_validation='validee' AND actif=true;
-```
-Vérification via `read_query` que les 8 fiches ont `tags_extraction_status IN ('success','review')`.
+- `PatientsOuvert.tsx` : import depuis `@/lib/taxonomy` (suppression définitions locales), suppression du groupe "Enfants et adolescents" obsolète côté problématiques.
+- Ajout bloc « PUBLIC » (Enfants, Adolescents, Couples, Familles) dans sidebar et drawer mobile, sous « BESOIN ».
+- Filtrage `.some()` sur `publics_derives`. ET inter-blocs, OU intra-bloc.
+- `usePraticiensPublics` : ajout `publics_derives` dans le SELECT et le type.
+
+### Lot 5 — Page `/admin/taxonomie`
+
+- Nouvelle route protégée par `AdminGuard`, ajoutée dans `App.tsx`, lien dans la nav admin.
+- Header + compteurs (en attente / intégrés / synonymes / ignorés).
+- Filtres statut + dimension. Tableau trié par occurrences DESC, pending en haut.
+- Actions par ligne : **Intégrer** (modal + suggestion GPT), **Synonyme** (modal autocomplete), **Ignorer**.
+- Bouton « Lancer le re-backfill » manuel.
+
+### Lot 6 — Edge Function `suggest-taxonomy-group`
+
+- Auth `x-admin-token`, gpt-4o-mini, response_format json_schema strict.
+- Prompt classifie un terme dans le bon groupe selon la dimension.
+- Renvoie `{ groupe_recommande, justification, alternative_synonyme }`.
+
+### Lot 7 — Edge Functions admin pour résolution candidats
+
+- `admin-resolve-taxonomy-candidate` : update du candidat (`integrated|synonym|ignored`), trace `resolved_by`, `resolved_at`.
+- **Choix pragmatique sur l'écriture de `taxonomy.ts`** : pas d'écriture runtime du fichier (impossible en prod statique GitHub Pages). La modal de validation affiche le snippet à coller dans `taxonomy.ts` avec bouton « Copier », et le candidat passe quand même en `integrated` côté DB. Re-backfill via bouton manuel.
+- `admin-trigger-rebackfill` : déclenche extraction sur toutes fiches validées + actives.
+
+### Lot 8 — Re-backfill initial
+
+- Edge function temporaire `oneshot-backfill-lot0ter` qui itère sur les 8 fiches validées, puis suppression.
 
 ---
 
-## Détails techniques
+### Détails techniques
 
-### Taxonomie partagée
-Pour éviter la divergence front/back, j'extrais `SPECIALITY_GROUPS` et `PROBLEMATIQUE_GROUPS` actuels de `PatientsOuvert.tsx` et les duplique dans la function (commentaire `// MIRROR — keep in sync`).
+- **Pas d'écriture auto de `taxonomy.ts`** : l'admin colle le snippet, recompile via Lovable. Trade-off accepté pour ne pas bricoler un système d'écriture de fichiers en prod.
+- **TAXONOMY_VERSION** : constante incrémentée à chaque modif, présente dans les 2 fichiers. L'Edge Function compare et `console.warn` si divergence (sans bloquer).
+- **Suppression du groupe "Enfants et adolescents"** côté problématiques : les anciens tags `adolescents`, `stress scolaire enfants & ados`, `tensions liées à la pression scolaire` sont remplacés. `adolescents` migre vers `publics_derives`. `stress scolaire` reste dans groupe `Scolarité`.
+- **Pas de nouveau secret** : réutilisation `OPENAI_API_KEY`, `CRON_TOKEN`, `ADMIN_SESSION_SECRET`.
+- **Snapshots** : `docs/icare-connect/snapshots/lot0ter/` pour `taxonomy` Edge Function, `PatientsOuvert.tsx`, `usePraticiensPublics.ts`.
 
-### Hash bio
-SHA-256 hex de `${bio_courte ?? ''}\n---\n${bio_longue ?? ''}` (deno `crypto.subtle.digest`).
+### Ordre d'exécution
 
-### Sécurité
-- Service role key uniquement dans la fonction
-- Constant-time compare via boucle XOR sur bytes
-- Pas de log PII
-
-### URL Edge Function dans trigger SQL
-Stockée dans une nouvelle table `app_config(key text primary key, value text)` insérée par migration ; l'URL = `https://ttxxqxipnwbzeoohvseu.supabase.co/functions/v1/extract-praticien-tags`. Le `CRON_TOKEN` y est aussi stocké (RLS service_role only).
-
-### Non-régression
-Aucune modif sur `/`, `/projets`, `/investissement`, `/temoignages-praticiens`, `/parrainage`, `/preview/...`, `/admin/demandes`, pages confidentialité. `FichePraticien` inchangé.
-
----
-
-## Ordre d'exécution
 1. Snapshots
-2. Migration Lot 1 (colonnes) — **demande approbation**
-3. Migration Lot 2 (slug + backfill)
-4. `add_secret` `OPENAI_API_KEY` (interaction utilisateur)
-5. Edge Function `extract-praticien-tags` + config.toml
-6. Migration Lot 4 (trigger pg_net + table app_config)
-7. Edge Function `admin-reextract-tags`, mise à jour `admin-list-praticiens`
-8. Front : `PraticienDrawer`, `AdminPraticiens`, hook `usePraticiensPublics`, `PatientsOuvert`
-9. Backfill SQL Lot 7 + vérification
-
-Travail conséquent en plusieurs migrations. Je confirme chaque migration avant la suivante.
+2. `src/lib/taxonomy.ts` + `supabase/functions/_shared/taxonomy.ts`
+3. Migration BDD (table + colonne + fonction)
+4. Refactor `extract-praticien-tags` (3 dim + candidats)
+5. `usePraticiensPublics` + `PatientsOuvert` (4 blocs)
+6. Edge functions `suggest-taxonomy-group` + `admin-resolve-taxonomy-candidate` + `admin-trigger-rebackfill` + `admin-list-taxonomy-candidates`
+7. Page `/admin/taxonomie` + lien nav
+8. Re-backfill initial via oneshot
+9. Vérifications BDD + logs

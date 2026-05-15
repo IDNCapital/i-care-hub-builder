@@ -1,119 +1,22 @@
 // Edge Function : extract-praticien-tags
-// Extrait via OpenAI gpt-4o-mini les tags filtrables (specialites_derivees,
-// problematiques_derivees) depuis le matériel déclaratif d'un praticien
-// (profession + spécialités/problématiques formelles + bio courte + bio longue).
-// Authentification : header x-cron-token comparé en constant-time à CRON_TOKEN.
+// Lot 0ter — Extraction LLM 3 dimensions (spécialités, problématiques, publics-cibles)
+// + capture des candidats hors-taxonomie dans la table taxonomy_candidates.
+// Auth : header x-cron-token comparé en constant-time à CRON_TOKEN.
 
 import { createClient } from "npm:@supabase/supabase-js@2.45.0";
+import {
+  ALL_PROBLEMATIQUES,
+  ALL_PUBLICS,
+  ALL_SPECIALITIES,
+  SYNONYM_MAP,
+  TAXONOMY_VERSION,
+} from "../_shared/taxonomy.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type, x-cron-token",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
-
-// MIRROR — keep in sync with src/components/patients/PatientsOuvert.tsx
-const SPECIALITY_GROUPS: Record<string, string[]> = {
-  "Soin psychique": [
-    "Psychologie clinique",
-    "Psychologie du travail",
-    "Psychothérapie humaniste",
-    "Psychothérapie intégrative",
-    "Thérapie EMDR",
-    "Thérapie brève",
-    "TBSI",
-    "Sophrologie",
-    "Sophrothérapie",
-    "Gestalt-thérapie",
-  ],
-  "Soin du corps": [
-    "Massage bien-être",
-    "Kobido",
-    "Réflexologie plantaire",
-    "Shiatsu",
-    "Breathwork",
-  ],
-  "Pratiques énergétiques": ["Reiki", "Rebirthing"],
-  "Enfance et adolescence": ["Stress scolaire enfants & ados"],
-};
-
-const PROBLEMATIQUE_GROUPS: Record<string, string[]> = {
-  "Stress et anxiété": [
-    "anxiété",
-    "anxiété de performance",
-    "stress",
-    "surcharge émotionnelle",
-    "régulation émotionnelle",
-  ],
-  "Travail et orientation": [
-    "burn-out",
-    "souffrance au travail",
-    "stress au travail",
-    "transition professionnelle",
-    "orientation",
-  ],
-  "Vie et transitions": [
-    "transitions de vie",
-    "périodes de doute",
-    "questionnements",
-    "situations complexes",
-    "parcours de vie difficiles",
-    "blocages persistants",
-    "difficultés personnelles",
-  ],
-  "Estime et rapport à soi": [
-    "estime de soi",
-    "peur de l'échec",
-    "relation au corps",
-    "souffrance psychique",
-    "difficultés relationnelles",
-    "parentalité",
-  ],
-  "Enfants et adolescents": [
-    "adolescents",
-    "stress scolaire",
-    "tensions liées à la pression scolaire",
-    "concentration",
-  ],
-  "Corps et émotions": [
-    "douleur chronique",
-    "détente",
-    "relaxation",
-    "relâchement des tensions",
-    "bien-être global",
-    "traumatismes",
-    "troubles émotionnels",
-    "troubles du comportement alimentaire",
-    "TCA",
-  ],
-};
-
-const SPEC_ALLOWED = Array.from(new Set(Object.values(SPECIALITY_GROUPS).flat()));
-const PROB_ALLOWED = Array.from(new Set(Object.values(PROBLEMATIQUE_GROUPS).flat()));
-
-// Dictionnaire de synonymes : variantes courantes → terme canonique de la taxonomie
-const SYNONYM_MAP: Record<string, string> = {
-  // Spécialités
-  "thérapie brève self inductive": "TBSI",
-  "tbsi": "TBSI",
-  "thérapie brève systémique": "Thérapie brève",
-  "emdr": "Thérapie EMDR",
-  "psychothérapie": "Psychothérapie intégrative",
-  // Problématiques
-  "difficultés de concentration": "concentration",
-  "troubles de l'attention": "concentration",
-  "manque de confiance en soi": "estime de soi",
-  "faible estime": "estime de soi",
-  "perte de confiance": "estime de soi",
-  "épuisement professionnel": "burn-out",
-  "fatigue chronique au travail": "burn-out",
-  "stress de performance": "anxiété de performance",
-  "pression de performance": "anxiété de performance",
-  "psychotraumatisme": "traumatismes",
-  "trauma": "traumatismes",
-  "tca": "troubles du comportement alimentaire",
-  "troubles alimentaires": "troubles du comportement alimentaire",
 };
 
 function constantTimeEqual(a: string, b: string): boolean {
@@ -124,10 +27,7 @@ function constantTimeEqual(a: string, b: string): boolean {
 }
 
 async function sha256Hex(input: string): Promise<string> {
-  const buf = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(input),
-  );
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
   return Array.from(new Uint8Array(buf))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
@@ -173,7 +73,11 @@ function intersectAllowed(received: unknown, allowed: string[]): string[] {
   return out;
 }
 
-function unionAllowed(base: string[], extra: unknown, allowed: string[]): { merged: string[]; added: string[] } {
+function unionAllowed(
+  base: string[],
+  extra: unknown,
+  allowed: string[],
+): { merged: string[]; added: string[] } {
   const allowedNorm = new Map(allowed.map((a) => [normalize(a), a]));
   const merged = [...base];
   const seen = new Set(base.map((b) => normalize(b)));
@@ -192,41 +96,52 @@ function unionAllowed(base: string[], extra: unknown, allowed: string[]): { merg
   return { merged, added };
 }
 
-const SYSTEM_PROMPT = `Tu es un assistant qui extrait des tags filtrables depuis le matériel déclaratif validé par un praticien du soin et du bien-être. Ce matériel comprend ses spécialités et problématiques formellement déclarées, sa bio courte et sa bio longue. Ta mission : produire la liste la plus complète possible des tags réellement applicables à ce praticien, sans inventer.
+type Dim = "specialite" | "problematique" | "public";
+
+function parseCandidates(notes: string): Array<{ term: string; dimension: Dim }> {
+  if (!notes) return [];
+  const re = /\[CANDIDAT-(specialite|problematique|public)\]\s*([^\[\n,;]+)/gi;
+  const out: Array<{ term: string; dimension: Dim }> = [];
+  const seen = new Set<string>();
+  for (const m of notes.matchAll(re)) {
+    const dim = m[1].toLowerCase() as Dim;
+    const term = m[2].trim().replace(/[.;]+$/, "");
+    if (!term) continue;
+    const key = `${dim}::${normalize(term)}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ term, dimension: dim });
+  }
+  return out;
+}
+
+const SYSTEM_PROMPT = `Tu es un assistant qui extrait des tags filtrables depuis le matériel déclaratif validé par un praticien du soin et du bien-être. Tu produis TROIS listes SÉPARÉES :
+
+1. **specialites** : méthodes thérapeutiques pratiquées (psychothérapie, sophrologie, EMDR, etc.)
+2. **problematiques** : ce que le praticien traite (anxiété, burn-out, douleur chronique, etc.)
+3. **publics_cibles** : publics que le praticien reçoit explicitement (enfants, adolescents, couples, familles)
 
 Règles strictes :
 
-1. **PRIORITÉ ABSOLUE — Tags formellement déclarés.** Si le praticien a déclaré formellement une spécialité ou une problématique (sections SPÉCIALITÉS FORMELLEMENT DÉCLARÉES et PROBLÉMATIQUES FORMELLEMENT DÉCLARÉES), et que ce tag est présent dans les listes autorisées ci-dessous, tu DOIS l'inclure dans ta sortie. C'est une déclaration validée par le praticien lui-même, donc source de vérité prioritaire.
+R1. **Priorité absolue — Tags formellement déclarés.** Les tags présents dans les sections SPÉCIALITÉS FORMELLEMENT DÉCLARÉES et PROBLÉMATIQUES FORMELLEMENT DÉCLARÉES doivent être inclus s'ils figurent dans les listes autorisées correspondantes.
 
-2. **Extraction depuis la bio.** En plus des tags formellement déclarés, extraire tous les tags supplémentaires affirmés ou clairement impliqués dans la bio courte et la bio longue. Exemples :
-   - « accompagne enfants, adolescents et adultes » → extraire \`adolescents\` (public-cible reçu)
-   - « spécialisée dans le stress scolaire » → extraire \`stress scolaire\`
-   - « praticienne en sophrologie » → extraire \`Sophrologie\`
+R2. **Extraction depuis bio.** Extraire en plus tous les tags supplémentaires affirmés ou clairement impliqués par les bios courte et longue.
 
-3. **Publics-cibles.** Le tag \`adolescents\` (dans la taxonomie autorisée) est à extraire dès que le praticien indique accompagner des enfants, ados, adolescents, jeunes, ou mineurs — c'est un public-cible, pas une problématique au sens strict. Logique identique pour tout autre tag de public-cible présent dans la taxonomie autorisée.
+R3. **Publics-cibles dans une dimension dédiée.** Les tags \`enfants\`, \`adolescents\`, \`couples\`, \`familles\` se placent UNIQUEMENT dans \`publics_cibles\`, JAMAIS dans \`problematiques\`. Règle : « j'accompagne X » → X est un public. « je traite Y » → Y est une problématique.
 
-4. **Négations et exclusions.** Ne JAMAIS extraire un tag si le matériel nie ou exclut explicitement le sujet (ex : « je ne reçois pas de mineurs » → ne pas inclure \`adolescents\`).
+R4. **Négations et exclusions.** Si le matériel exclut explicitement un sujet/public (« je ne reçois pas de mineurs »), ne pas l'extraire.
 
-5. **Synonymes et variantes.** Pour les concepts voisins, utiliser le terme canonique de la taxonomie autorisée. Tableau d'équivalences à appliquer :
-   - difficultés de concentration, troubles de l'attention → \`concentration\`
-   - manque de confiance en soi, faible estime → \`estime de soi\`
-   - épuisement professionnel, fatigue chronique au travail → \`burn-out\`
-   - stress de performance, pression de performance → \`anxiété de performance\`
-   - couples, conjoint, vie de couple → ne pas extraire (hors taxonomie actuelle, à signaler dans notes)
-   - thérapie familiale, dynamique familiale → ne pas extraire (hors taxonomie, à signaler dans notes)
-   - art-thérapie, médiation artistique → ne pas extraire (hors taxonomie, à signaler dans notes)
-   - psychotraumatisme, trauma → \`traumatismes\`
-   - obésité, surpoids → ne pas extraire (hors taxonomie, à signaler dans notes)
+R5. **Synonymes.** Utiliser uniquement les termes canoniques des listes autorisées. Un dictionnaire de post-traitement côté code rabat les variantes courantes — pas de reformulations gratuites de ta part.
 
-6. **Ne JAMAIS retourner un tag absent des listes autorisées ci-dessous.** Si un concept est pertinent mais hors taxonomie, le mentionner dans le champ \`notes\`.
+R6. **Ne JAMAIS retourner un tag absent des listes autorisées.** Si un concept pertinent est hors taxonomie, le mentionner dans \`notes\` avec un préfixe explicite : \`[CANDIDAT-specialite] thérapie de groupe\` ou \`[CANDIDAT-problematique] phobie sociale\` ou \`[CANDIDAT-public] seniors\`. Sépare plusieurs candidats par des virgules ou retours à la ligne. C'est ainsi que la taxonomie s'enrichit.
 
-7. **Confiance.** \`confiance: "haute"\` si tous les tags sont fermement étayés par le matériel. \`"moyenne"\` si certaines extractions reposent sur des inférences raisonnables. \`"basse"\` si plusieurs tags sont incertains.
+R7. **Confiance.** \`haute\` si tags fermement étayés. \`moyenne\` si inférences raisonnables. \`basse\` si plusieurs incertitudes.
 
-Champ \`notes\` : utiliser pour lister les concepts pertinents évoqués dans le matériel mais hors taxonomie actuelle (ex : « art-thérapie évoquée, hors taxonomie » ; « couples mentionnés, hors taxonomie »). Maximum 300 caractères. Vide si rien à signaler.
+SPÉCIALITÉS AUTORISÉES : ${ALL_SPECIALITIES.join(", ")}
 
-SPÉCIALITÉS AUTORISÉES : ${SPEC_ALLOWED.join(", ")}
+PROBLÉMATIQUES AUTORISÉES : ${ALL_PROBLEMATIQUES.join(", ")}
 
-PROBLÉMATIQUES AUTORISÉES : ${PROB_ALLOWED.join(", ")}`;
+PUBLICS-CIBLES AUTORISÉS : ${ALL_PUBLICS.join(", ")}`;
 
 const JSON_SCHEMA = {
   name: "praticien_tags",
@@ -236,10 +151,17 @@ const JSON_SCHEMA = {
     properties: {
       specialites: { type: "array", items: { type: "string" } },
       problematiques: { type: "array", items: { type: "string" } },
+      publics_cibles: { type: "array", items: { type: "string" } },
       confiance: { type: "string", enum: ["haute", "moyenne", "basse"] },
       notes: { type: "string" },
     },
-    required: ["specialites", "problematiques", "confiance", "notes"],
+    required: [
+      "specialites",
+      "problematiques",
+      "publics_cibles",
+      "confiance",
+      "notes",
+    ],
     additionalProperties: false,
   },
 };
@@ -316,7 +238,6 @@ Deno.serve(async (req) => {
   const bioLongue = (praticien.bio_longue ?? "").trim();
   const bioLongueEffective = bioLongue.length > 0 ? bioLongue : bioCourte;
 
-  // Composite source
   const composite = [
     `PROFESSION DÉCLARÉE : ${profession || "Non renseignée"}`,
     "",
@@ -344,6 +265,7 @@ Deno.serve(async (req) => {
     const log = appendLog(praticien.tags_extraction_log, {
       ts: new Date().toISOString(),
       status: "error",
+      taxonomy_version: TAXONOMY_VERSION,
       error: "Aucun matériel déclaratif disponible",
     });
     await supabase
@@ -361,14 +283,14 @@ Deno.serve(async (req) => {
   }
 
   const bioSource = "composite";
-  const currentHash = await sha256Hex(`${bioSource}::${composite}`);
+  const currentHash = await sha256Hex(`${TAXONOMY_VERSION}::${bioSource}::${composite}`);
 
-  // Idempotence
   if (!force && praticien.tags_bio_hash === currentHash) {
     const log = appendLog(praticien.tags_extraction_log, {
       ts: new Date().toISOString(),
       status: "skipped",
       reason: "hash_unchanged",
+      taxonomy_version: TAXONOMY_VERSION,
       bio_source: bioSource,
       bio_length: composite.length,
     });
@@ -386,7 +308,6 @@ Deno.serve(async (req) => {
     );
   }
 
-  // Appel OpenAI
   try {
     const aiResp = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -421,21 +342,27 @@ Deno.serve(async (req) => {
     const rawProbs = Array.isArray(parsed.problematiques)
       ? parsed.problematiques.filter((x: unknown): x is string => typeof x === "string")
       : [];
+    const rawPubs = Array.isArray(parsed.publics_cibles)
+      ? parsed.publics_cibles.filter((x: unknown): x is string => typeof x === "string")
+      : [];
 
-    // Étape 1 : SYNONYM_MAP
+    // SYNONYM_MAP
     const specsAfterSyn = applySynonymMap(rawSpecs);
     const probsAfterSyn = applySynonymMap(rawProbs);
+    const pubsAfterSyn = applySynonymMap(rawPubs);
 
-    // Étape 2 : intersectAllowed
-    const specsAfterIntersect = intersectAllowed(specsAfterSyn, SPEC_ALLOWED);
-    const probsAfterIntersect = intersectAllowed(probsAfterSyn, PROB_ALLOWED);
+    // intersectAllowed
+    const specsAfterIntersect = intersectAllowed(specsAfterSyn, ALL_SPECIALITIES);
+    const probsAfterIntersect = intersectAllowed(probsAfterSyn, ALL_PROBLEMATIQUES);
+    const pubsAfterIntersect = intersectAllowed(pubsAfterSyn, ALL_PUBLICS);
 
-    // Étape 3 : Union avec déclarations formelles
-    const specsUnion = unionAllowed(specsAfterIntersect, declaredSpecs, SPEC_ALLOWED);
-    const probsUnion = unionAllowed(probsAfterIntersect, declaredProbs, PROB_ALLOWED);
+    // Union avec déclarations formelles (specialités + problématiques uniquement)
+    const specsUnion = unionAllowed(specsAfterIntersect, declaredSpecs, ALL_SPECIALITIES);
+    const probsUnion = unionAllowed(probsAfterIntersect, declaredProbs, ALL_PROBLEMATIQUES);
 
     const specsClean = specsUnion.merged;
     const probsClean = probsUnion.merged;
+    const pubsClean = pubsAfterIntersect;
 
     const specsFilteredOut = specsAfterSyn.filter(
       (t) => !specsAfterIntersect.some((c) => normalize(c) === normalize(t)),
@@ -443,35 +370,88 @@ Deno.serve(async (req) => {
     const probsFilteredOut = probsAfterSyn.filter(
       (t) => !probsAfterIntersect.some((c) => normalize(c) === normalize(t)),
     );
+    const pubsFilteredOut = pubsAfterSyn.filter(
+      (t) => !pubsAfterIntersect.some((c) => normalize(c) === normalize(t)),
+    );
 
     const confiance = ["haute", "moyenne", "basse"].includes(parsed.confiance)
       ? parsed.confiance
       : "basse";
     const status = confiance === "basse" ? "review" : "success";
 
+    const notes = typeof parsed.notes === "string" ? parsed.notes.slice(0, 500) : "";
+    const candidates = parseCandidates(notes);
+
+    // Capture des candidats hors-taxonomie
+    const capturedCandidates: Array<{ term: string; dimension: Dim }> = [];
+    for (const c of candidates) {
+      const normTerm = normalize(c.term);
+      // Skip si déjà dans la taxonomie correspondante (ne devrait pas arriver mais sécurise)
+      const allowed =
+        c.dimension === "specialite"
+          ? ALL_SPECIALITIES
+          : c.dimension === "problematique"
+            ? ALL_PROBLEMATIQUES
+            : ALL_PUBLICS;
+      if (allowed.some((a) => normalize(a) === normTerm)) continue;
+      try {
+        await supabase.rpc("upsert_taxonomy_candidate", {
+          p_term: c.term,
+          p_term_normalized: normTerm,
+          p_dimension: c.dimension,
+          p_praticien_id: praticienId,
+        });
+        capturedCandidates.push(c);
+      } catch (err) {
+        console.error(
+          "upsert_taxonomy_candidate failed",
+          err instanceof Error ? err.message : err,
+        );
+      }
+    }
+
     const log = appendLog(praticien.tags_extraction_log, {
       ts: new Date().toISOString(),
       status,
       confiance,
+      taxonomy_version: TAXONOMY_VERSION,
       bio_source: bioSource,
       bio_excerpt: composite.slice(0, 500),
       bio_length: composite.length,
-      model_returned: { specialites: rawSpecs, problematiques: rawProbs },
-      after_synonym_map: { specialites: specsAfterSyn, problematiques: probsAfterSyn },
+      model_returned: {
+        specialites: rawSpecs,
+        problematiques: rawProbs,
+        publics_cibles: rawPubs,
+      },
+      after_synonym_map: {
+        specialites: specsAfterSyn,
+        problematiques: probsAfterSyn,
+        publics_cibles: pubsAfterSyn,
+      },
       after_intersect_allowed: {
         specialites: specsAfterIntersect,
         problematiques: probsAfterIntersect,
+        publics_cibles: pubsAfterIntersect,
       },
       model_returned_filtered_out: {
         specialites: specsFilteredOut,
         problematiques: probsFilteredOut,
+        publics_cibles: pubsFilteredOut,
       },
       added_from_declarations: {
         specialites: specsUnion.added,
         problematiques: probsUnion.added,
       },
-      final: { specialites: specsClean, problematiques: probsClean },
-      notes: typeof parsed.notes === "string" ? parsed.notes.slice(0, 300) : "",
+      final: {
+        specialites: specsClean,
+        problematiques: probsClean,
+        publics_cibles: pubsClean,
+      },
+      candidates_captured: capturedCandidates,
+      specialites_count: specsClean.length,
+      problematiques_count: probsClean.length,
+      publics_count: pubsClean.length,
+      notes,
     });
 
     const { error: updErr } = await supabase
@@ -479,6 +459,7 @@ Deno.serve(async (req) => {
       .update({
         specialites_derivees: specsClean,
         problematiques_derivees: probsClean,
+        publics_derives: pubsClean,
         tags_bio_hash: currentHash,
         tags_extraction_status: status,
         tags_extracted_at: new Date().toISOString(),
@@ -492,7 +473,9 @@ Deno.serve(async (req) => {
         status,
         specialites: specsClean,
         problematiques: probsClean,
+        publics_cibles: pubsClean,
         confiance,
+        candidates_captured: capturedCandidates.length,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
@@ -501,6 +484,7 @@ Deno.serve(async (req) => {
     const log = appendLog(praticien.tags_extraction_log, {
       ts: new Date().toISOString(),
       status: "error",
+      taxonomy_version: TAXONOMY_VERSION,
       bio_source: bioSource,
       bio_length: composite.length,
       error: e instanceof Error ? e.message : "unknown",
