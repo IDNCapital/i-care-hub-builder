@@ -1,0 +1,1 @@
+ALTER VIEW public.installation_pages SET (security_invoker = true);

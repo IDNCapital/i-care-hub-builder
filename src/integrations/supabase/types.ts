@@ -616,11 +616,48 @@ export type Database = {
         }
         Relationships: []
       }
+      professions: {
+        Row: {
+          actif: boolean
+          created_at: string
+          id: string
+          nom_feminin_singulier: string
+          nom_inclusif_pluriel: string
+          nom_masculin_singulier: string
+          ordre_affichage: number
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          actif?: boolean
+          created_at?: string
+          id?: string
+          nom_feminin_singulier: string
+          nom_inclusif_pluriel: string
+          nom_masculin_singulier: string
+          ordre_affichage?: number
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          actif?: boolean
+          created_at?: string
+          id?: string
+          nom_feminin_singulier?: string
+          nom_inclusif_pluriel?: string
+          nom_masculin_singulier?: string
+          ordre_affichage?: number
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       projets: {
         Row: {
           address: string | null
           city: string
           created_at: string
+          date_ouverture_cible: string | null
           delivery_date: string | null
           google_kgmid: string | null
           google_place_id: string | null
@@ -638,6 +675,7 @@ export type Database = {
           short_description_en: string | null
           show_address: boolean
           slug: string
+          slug_installation: string | null
           status: Database["public"]["Enums"]["project_status"]
           surface_m2: number
           typology: Database["public"]["Enums"]["project_typology"]
@@ -648,6 +686,7 @@ export type Database = {
           address?: string | null
           city: string
           created_at?: string
+          date_ouverture_cible?: string | null
           delivery_date?: string | null
           google_kgmid?: string | null
           google_place_id?: string | null
@@ -665,6 +704,7 @@ export type Database = {
           short_description_en?: string | null
           show_address?: boolean
           slug: string
+          slug_installation?: string | null
           status?: Database["public"]["Enums"]["project_status"]
           surface_m2: number
           typology: Database["public"]["Enums"]["project_typology"]
@@ -675,6 +715,7 @@ export type Database = {
           address?: string | null
           city?: string
           created_at?: string
+          date_ouverture_cible?: string | null
           delivery_date?: string | null
           google_kgmid?: string | null
           google_place_id?: string | null
@@ -692,6 +733,7 @@ export type Database = {
           short_description_en?: string | null
           show_address?: boolean
           slug?: string
+          slug_installation?: string | null
           status?: Database["public"]["Enums"]["project_status"]
           surface_m2?: number
           typology?: Database["public"]["Enums"]["project_typology"]
@@ -792,7 +834,22 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      installation_pages: {
+        Row: {
+          cabinet_adresse: string | null
+          cabinet_nom_complet: string | null
+          cabinet_ville: string | null
+          date_ouverture: string | null
+          profession_id: string | null
+          profession_libelle: string | null
+          profession_ordre: number | null
+          profession_slug: string | null
+          projet_id: string | null
+          url_path: string | null
+          ville_slug: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_praticien_preview: {

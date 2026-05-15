@@ -38,6 +38,8 @@ import Patients from "./pages/Patients";
 import DecrireMonBesoin from "./pages/DecrireMonBesoin";
 import Parrainage from "./pages/Parrainage";
 import TemoignagesPraticiens from "./pages/TemoignagesPraticiens";
+import SinstallerIndex from "./pages/SinstallerIndex";
+import SinstallerDetail from "./pages/SinstallerDetail";
 import { CookieBanner } from "./components/CookieBanner";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { useAnalytics } from "./hooks/useAnalytics";
@@ -254,6 +256,8 @@ const App = () => (
                 <Route path="/patients/decrire-mon-besoin" element={<DecrireMonBesoin />} />
                 <Route path="/parrainage" element={<Parrainage />} />
                 <Route path="/temoignages-praticiens" element={<TemoignagesPraticiens />} />
+                <Route path="/sinstaller" element={<SinstallerIndex />} />
+                <Route path="/sinstaller/:profession/:ville" element={<SinstallerDetail />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
             </Routes>
