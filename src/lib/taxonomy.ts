@@ -5,7 +5,7 @@
 // quand vous modifiez ce fichier, propagez la même modification dans le miroir
 // ET incrémentez TAXONOMY_VERSION dans les deux fichiers.
 
-export const TAXONOMY_VERSION = "0ter-2026-05-15";
+export const TAXONOMY_VERSION = "0ter-2026-05-15.2";
 
 export const SPECIALITY_GROUPS: Record<string, string[]> = {
   "Soin psychique": [
@@ -15,6 +15,7 @@ export const SPECIALITY_GROUPS: Record<string, string[]> = {
     "Psychothérapie intégrative",
     "Thérapie EMDR",
     "Thérapie brève",
+    "Thérapie cognitivo-comportementale (TCC)",
     "TBSI",
     "Sophrologie",
     "Sophrothérapie",
@@ -22,6 +23,9 @@ export const SPECIALITY_GROUPS: Record<string, string[]> = {
     "Thérapie de couple",
     "Thérapie familiale",
     "Art-thérapie",
+    "Hypnothérapie",
+    "EFT",
+    "Psychotraumatologie",
   ],
   "Soin du corps": [
     "Massage bien-être",
@@ -29,10 +33,18 @@ export const SPECIALITY_GROUPS: Record<string, string[]> = {
     "Réflexologie plantaire",
     "Shiatsu",
     "Breathwork",
+    "Fasciathérapie",
+    "Fasciathérapie biodynamique",
   ],
   "Pratiques énergétiques": [
     "Reiki",
     "Rebirthing",
+  ],
+  "Périnatalité & parentalité": [
+    "Sage-femme",
+    "Accompagnement périnatal",
+    "Yoga prénatal",
+    "Préparation à la naissance",
   ],
 };
 
@@ -44,6 +56,7 @@ export const PROBLEMATIQUE_GROUPS: Record<string, string[]> = {
     "stress",
     "gestion des émotions",
     "surcharge mentale",
+    "prise de parole en public",
   ],
   "Travail": [
     "burn-out",
@@ -70,15 +83,26 @@ export const PROBLEMATIQUE_GROUPS: Record<string, string[]> = {
   ],
   "Corps et bien-être": [
     "douleur chronique",
+    "gestion de la douleur",
     "relation au corps",
     "troubles du comportement alimentaire",
     "traumatismes",
     "troubles du sommeil",
+    "arrêt du tabac",
   ],
   "Scolarité": [
     "stress scolaire",
     "difficultés de concentration",
     "phobie scolaire",
+  ],
+  "Périnatalité": [
+    "grossesse",
+    "post-partum",
+    "allaitement",
+    "dépression post-partum",
+    "sommeil du nourrisson",
+    "diversification alimentaire",
+    "gestion des émotions de l'enfant",
   ],
 };
 
@@ -87,6 +111,19 @@ export const PUBLIC_CIBLE_GROUPS: Record<string, string[]> = {
   "Adolescents": ["adolescents"],
   "Couples": ["couples"],
   "Familles": ["familles"],
+  "Femmes enceintes": ["femmes enceintes"],
+  "Jeunes parents": ["jeunes parents"],
+  "Parents de jeunes enfants": ["parents de jeunes enfants"],
+  "Sportifs": ["sportifs"],
+};
+
+// Termes implicites — silencieusement absorbés par l'extraction.
+// Ne sont ni filtrés-in dans le résultat final, ni capturés comme candidats.
+// "adultes" est le public par défaut, jamais explicité dans la taxonomie.
+export const IMPLICIT_TERMS: Record<"specialites" | "problematiques" | "publics_cibles", string[]> = {
+  publics_cibles: ["adultes"],
+  specialites: [],
+  problematiques: [],
 };
 
 // Dictionnaire de synonymes : variantes courantes → terme canonique de la taxonomie.
@@ -103,6 +140,17 @@ export const SYNONYM_MAP: Record<string, string> = {
   "mediation artistique": "Art-thérapie",
   "therapie de couple": "Thérapie de couple",
   "therapie familiale": "Thérapie familiale",
+  "hypnose": "Hypnothérapie",
+  "hypnose ericksonienne": "Hypnothérapie",
+  "tcc": "Thérapie cognitivo-comportementale (TCC)",
+  "thérapie cognitivo-comportementale": "Thérapie cognitivo-comportementale (TCC)",
+  "fasciatherapie": "Fasciathérapie",
+  "fasciatherapie biodynamique": "Fasciathérapie biodynamique",
+  "fascia biodynamique": "Fasciathérapie biodynamique",
+  "preparation a la naissance": "Préparation à la naissance",
+  "yoga prenatal": "Yoga prénatal",
+  "accompagnement perinatal": "Accompagnement périnatal",
+  "sage femme": "Sage-femme",
 
   // Problématiques
   "troubles de l'attention": "difficultés de concentration",
@@ -111,6 +159,8 @@ export const SYNONYM_MAP: Record<string, string> = {
   "faible estime": "estime de soi",
   "perte de confiance": "manque de confiance",
   "épuisement professionnel": "burn-out",
+  "burn-out professionnel": "burn-out",
+  "burnout": "burn-out",
   "fatigue chronique au travail": "burn-out",
   "stress de performance": "anxiété de performance",
   "pression de performance": "anxiété de performance",
@@ -118,10 +168,18 @@ export const SYNONYM_MAP: Record<string, string> = {
   "trauma": "traumatismes",
   "tca": "troubles du comportement alimentaire",
   "troubles alimentaires": "troubles du comportement alimentaire",
+  "troubles des conduites alimentaires": "troubles du comportement alimentaire",
   "insomnie": "troubles du sommeil",
   "troubles du couple": "difficultés de couple",
   "conflit familial": "difficultés familiales",
   "orientation": "orientation professionnelle",
+  "douleur": "gestion de la douleur",
+  "prise de parole": "prise de parole en public",
+  "tabac": "arrêt du tabac",
+  "sevrage tabagique": "arrêt du tabac",
+  "post partum": "post-partum",
+  "depression post-partum": "dépression post-partum",
+  "depression post partum": "dépression post-partum",
 
   // Publics
   "enfant": "enfants",
@@ -129,6 +187,11 @@ export const SYNONYM_MAP: Record<string, string> = {
   "adolescent": "adolescents",
   "couple": "couples",
   "famille": "familles",
+  "femme enceinte": "femmes enceintes",
+  "futurs parents": "jeunes parents",
+  "jeune parent": "jeunes parents",
+  "sportif": "sportifs",
+  "athletes": "sportifs",
 };
 
 export const ALL_SPECIALITIES: string[] = Array.from(
