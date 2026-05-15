@@ -185,10 +185,19 @@ export function PraticienDrawer({
   const [form, setForm] = useState<FormState>(() => fromPraticien(praticien));
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     setForm(fromPraticien(praticien));
   }, [praticien]);
+
+  // Reset confirmation quand on change de fiche
+  useEffect(() => {
+    setDeleteConfirm("");
+    setDeleteOpen(false);
+  }, [praticien?.id]);
 
   // Auto-slug si pas en mode manual
   useEffect(() => {
