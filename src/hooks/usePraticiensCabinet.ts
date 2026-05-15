@@ -9,6 +9,7 @@ export interface PraticienCabinetPublic {
   photo_url: string | null;
   specialites: string[];
   problematiques: string[];
+  specialites_derivees: string[];
   google_place_id: string | null;
 }
 
@@ -32,7 +33,7 @@ export function usePraticiensCabinet(cabinetSlug: string | undefined) {
       setLoading(true);
       const { data: rows, error } = await supabase
         .from("praticiens")
-        .select("slug, prenom, nom, profession, photo_url, specialites, problematiques, google_place_id")
+        .select("slug, prenom, nom, profession, photo_url, specialites, problematiques, specialites_derivees, google_place_id")
         .eq("cabinet_slug", cabinetSlug)
         .eq("statut_validation", "validee")
         .eq("actif", true)
