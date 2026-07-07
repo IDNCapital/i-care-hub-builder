@@ -493,4 +493,68 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Location cabinet Toulouse -->
+  <url>
+    <loc>https://i-ca.re/location-cabinet-toulouse</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/location-cabinet-toulouse" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/office-rental-toulouse" />
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/en/office-rental-toulouse</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/location-cabinet-toulouse" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/office-rental-toulouse" />
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Témoignages praticiens -->
+  <url>
+    <loc>https://i-ca.re/temoignages-praticiens</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/temoignages-praticiens" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/practitioner-testimonials" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/en/practitioner-testimonials</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/temoignages-praticiens" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/practitioner-testimonials" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Parrainage -->
+  <url>
+    <loc>https://i-ca.re/parrainage</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/parrainage" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/referral" />
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/en/referral</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/parrainage" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/referral" />
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Patients -->
+  <url>
+    <loc>https://i-ca.re/patients</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/patients" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/patients" />
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/en/patients</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/patients" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/patients" />
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

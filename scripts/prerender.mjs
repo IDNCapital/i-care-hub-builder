@@ -58,6 +58,9 @@ const ROUTES = [
   { path: "/notre-approche", type: "strategic" },
   { path: "/contact", type: "strategic" },
   { path: "/questions-frequentes", type: "strategic" },
+  { path: "/temoignages-praticiens", type: "strategic" },
+  { path: "/parrainage", type: "strategic" },
+  { path: "/patients", type: "strategic" },
   // FR installation matrix (LOT 4-bis-A) — index + 9 professions × 4 cabinets pipeline
   { path: "/sinstaller", type: "strategic" },
   ...["osteopathe","sophrologue","psychologue","psychotherapeute","dieteticien-nutritionniste","naturopathe","hypnotherapeute","medecin-generaliste","sage-femme"].flatMap(p =>
@@ -88,6 +91,9 @@ const ROUTES = [
   { path: "/en/our-approach", type: "strategic" },
   { path: "/en/contact", type: "strategic" },
   { path: "/en/faq", type: "strategic" },
+  { path: "/en/practitioner-testimonials", type: "strategic" },
+  { path: "/en/referral", type: "strategic" },
+  { path: "/en/patients", type: "strategic" },
   // EN legal
   { path: "/en/legal", type: "legal" },
   { path: "/en/privacy", type: "legal" },

@@ -88,7 +88,7 @@ export function localePath(lang: "fr" | "en", routeKey: string, slug?: string): 
 export function getEquivalentPath(
   currentPath: string,
   targetLang: "fr" | "en"
-): string {
+): string | null {
   // Detect current language from path
   const enMatch = currentPath.match(/^\/en(\/.*)?$/);
   const currentLang: "fr" | "en" = enMatch ? "en" : "fr";
@@ -97,7 +97,6 @@ export function getEquivalentPath(
     : currentPath.replace(/^\//, "");
 
   const currentRoutes = routeMap[currentLang];
-  const targetRoutes = routeMap[targetLang];
 
   for (const [key, routePath] of Object.entries(currentRoutes)) {
     if (!routePath) continue;
@@ -117,9 +116,8 @@ export function getEquivalentPath(
     return localePath(targetLang, "home");
   }
 
-  // Fallback
-  if (targetLang === "en") return `/en/${rest}`;
-  return `/${rest}`;
+  // No mapping for this path in the target language
+  return null;
 }
 
 export { routeMap };
