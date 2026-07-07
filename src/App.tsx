@@ -46,6 +46,7 @@ import { useAnalytics } from "./hooks/useAnalytics";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminPraticiens from "./pages/admin/AdminPraticiens";
 import AdminDemandes from "./pages/admin/AdminDemandes";
+import AdminDemandesInstallation from "./pages/admin/AdminDemandesInstallation";
 import AdminWebhooks from "./pages/admin/AdminWebhooks";
 import AdminExtractions from "./pages/admin/AdminExtractions";
 import { AdminGuard } from "./components/AdminGuard";
@@ -149,6 +150,14 @@ const App = () => (
                 element={
                   <AdminGuard>
                     <AdminDemandes />
+                  </AdminGuard>
+                }
+              />
+              <Route
+                path="/admin/demandes-installation"
+                element={
+                  <AdminGuard>
+                    <AdminDemandesInstallation />
                   </AdminGuard>
                 }
               />

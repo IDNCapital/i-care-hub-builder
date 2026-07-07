@@ -2,13 +2,10 @@ import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { MapPin, ArrowRight, Mail } from "lucide-react";
+import { MapPin, ArrowRight } from "lucide-react";
 import { useProfessions, useCabinetsPipeline } from "@/hooks/useInstallation";
 import { cabinetNomCourt, formatDateOuverture, installationUrl } from "@/lib/installation";
-
-const CONTACT_MAILTO =
-  "mailto:contact@i-ca.re?subject=Demande%20de%20dossier%20d'installation%20I-CA.RE";
+import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 
 export default function SinstallerIndex() {
   const { data: professions = [] } = useProfessions();
@@ -124,22 +121,23 @@ export default function SinstallerIndex() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="section-padding bg-background">
-        <div className="container max-w-3xl text-center">
-          <h2 className="text-3xl md:text-4xl font-heading font-normal mb-6">
-            Vous souhaitez en savoir plus ?
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            Demandez le dossier d'installation pour recevoir les informations détaillées :
-            surfaces disponibles, conditions de location, équipements et planning précis.
-          </p>
-          <Button variant="hero" asChild>
-            <a href={CONTACT_MAILTO}>
-              <Mail className="mr-2 h-5 w-5" />
+      {/* Formulaire de demande */}
+      <section id="demande" className="section-padding bg-background">
+        <div className="container max-w-2xl">
+          <div className="text-center mb-10">
+            <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-4">
+              Vous souhaitez en savoir plus ?
+            </p>
+            <h2 className="text-3xl md:text-4xl font-heading font-normal mb-4">
               Demander le dossier d'installation
-            </a>
-          </Button>
+            </h2>
+            <p className="text-base text-muted-foreground">
+              Recevez les informations détaillées : surfaces disponibles, conditions de
+              location, équipements et planning précis. Notre équipe revient vers vous
+              sous 48h ouvrées.
+            </p>
+          </div>
+          <FormulaireInteretInstallation />
         </div>
       </section>
     </Layout>
