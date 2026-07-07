@@ -28,6 +28,8 @@ export function SeoHead({ title, description, path, ogImage, noIndex }: SeoHeadP
   const frPath = lang === "fr" ? path : getEquivalentPath(path, "fr");
   const enPath = lang === "en" ? path : getEquivalentPath(path, "en");
   const image = ogImage || DEFAULT_OG_IMAGE;
+  // x-default falls back to FR when available, otherwise to the current path.
+  const xDefaultPath = frPath ?? path;
 
   return (
     <Helmet>
@@ -38,9 +40,9 @@ export function SeoHead({ title, description, path, ogImage, noIndex }: SeoHeadP
       <link rel="canonical" href={canonical} />
 
       {/* Hreflang */}
-      <link rel="alternate" hrefLang="fr" href={`${BASE_URL}${frPath}`} />
-      <link rel="alternate" hrefLang="en" href={`${BASE_URL}${enPath}`} />
-      <link rel="alternate" hrefLang="x-default" href={`${BASE_URL}${frPath}`} />
+      {frPath && <link rel="alternate" hrefLang="fr" href={`${BASE_URL}${frPath}`} />}
+      {enPath && <link rel="alternate" hrefLang="en" href={`${BASE_URL}${enPath}`} />}
+      <link rel="alternate" hrefLang="x-default" href={`${BASE_URL}${xDefaultPath}`} />
 
       {/* Open Graph */}
       <meta property="og:type" content="website" />
