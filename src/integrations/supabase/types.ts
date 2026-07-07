@@ -287,6 +287,60 @@ export type Database = {
         }
         Relationships: []
       }
+      demandes_installation: {
+        Row: {
+          consentement_rgpd: boolean
+          created_at: string
+          email: string
+          id: string
+          ip_hash: string | null
+          message: string | null
+          nom: string
+          notes_internes: string | null
+          profession_slug: string
+          source_path: string | null
+          statut: string
+          telephone: string | null
+          updated_at: string
+          user_agent: string | null
+          ville_slug: string | null
+        }
+        Insert: {
+          consentement_rgpd?: boolean
+          created_at?: string
+          email: string
+          id?: string
+          ip_hash?: string | null
+          message?: string | null
+          nom: string
+          notes_internes?: string | null
+          profession_slug: string
+          source_path?: string | null
+          statut?: string
+          telephone?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          ville_slug?: string | null
+        }
+        Update: {
+          consentement_rgpd?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          ip_hash?: string | null
+          message?: string | null
+          nom?: string
+          notes_internes?: string | null
+          profession_slug?: string
+          source_path?: string | null
+          statut?: string
+          telephone?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          ville_slug?: string | null
+        }
+        Relationships: []
+      }
       icare_idnos_audit_log: {
         Row: {
           created_at: string
