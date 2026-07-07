@@ -2,7 +2,6 @@ import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { MapPin, ChevronRight } from "lucide-react";
 import NotFound from "@/pages/NotFound";
 import { useInstallationPage, useProfessions } from "@/hooks/useInstallation";
