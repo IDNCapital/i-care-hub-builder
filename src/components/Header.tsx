@@ -58,7 +58,10 @@ export const Header = memo(function Header() {
     { name: labels.contact, href: localePath(lang, "contact") },
   ], [labels, lang]);
 
-  const switchPath = getEquivalentPath(location.pathname, otherLang);
+  // Fallback to the home page of the target language when the current
+  // route has no equivalent (e.g. FR-only pages like /sinstaller).
+  const switchPath =
+    getEquivalentPath(location.pathname, otherLang) ?? localePath(otherLang, "home");
 
   // Close mobile menu on route change
   useEffect(() => {
