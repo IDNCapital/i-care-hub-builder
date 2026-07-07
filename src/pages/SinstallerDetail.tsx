@@ -3,11 +3,12 @@ import { SeoHead } from "@/components/SeoHead";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Mail, MapPin, ChevronRight } from "lucide-react";
+import { MapPin, ChevronRight } from "lucide-react";
 import NotFound from "@/pages/NotFound";
 import { useInstallationPage, useProfessions } from "@/hooks/useInstallation";
 import { cabinetNomCourt, formatDateOuverture } from "@/lib/installation";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
+import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 
 function parsePostalAddress(address: string | null, city: string) {
   if (!address) return { streetAddress: "", postalCode: "", addressLocality: city };
@@ -48,11 +49,6 @@ export default function SinstallerDetail() {
   const path = data.url_path;
   const canonical = `https://i-ca.re${path}`;
   const postal = parsePostalAddress(data.cabinet_adresse, data.cabinet_ville);
-
-  const subjectMail = encodeURIComponent(
-    `Installation ${data.profession_libelle} - ${nomCourt}`
-  );
-  const mailto = `mailto:contact@i-ca.re?subject=${subjectMail}`;
 
   const professionRow = professions?.find((p) => p.slug === data.profession_slug);
   const nomInclusifPluriel = professionRow?.nom_inclusif_pluriel ?? data.profession_libelle.toLowerCase();
@@ -254,15 +250,28 @@ export default function SinstallerDetail() {
         </section>
       ))}
 
-      {/* CTA */}
-      <section className="section-padding bg-background">
-        <div className="container max-w-3xl text-center">
-          <Button variant="hero" asChild>
-            <a href={mailto}>
-              <Mail className="mr-2 h-5 w-5" />
+      {/* Formulaire de demande */}
+      <section id="demande" className="section-padding bg-background">
+        <div className="container max-w-2xl">
+          <div className="text-center mb-10">
+            <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-4">
+              Prochaine étape
+            </p>
+            <h2 className="text-2xl md:text-3xl font-heading font-normal mb-4">
               Demander le dossier d'installation
-            </a>
-          </Button>
+            </h2>
+            <p className="text-base text-muted-foreground">
+              Recevez les informations détaillées : surfaces disponibles, conditions de
+              location, équipements et planning précis. Notre équipe revient vers vous
+              sous 48h ouvrées.
+            </p>
+          </div>
+          <FormulaireInteretInstallation
+            professionSlug={data.profession_slug}
+            villeSlug={ville}
+            professionLabel={data.profession_libelle}
+            villeLabel={nomCourt}
+          />
         </div>
       </section>
     </Layout>
