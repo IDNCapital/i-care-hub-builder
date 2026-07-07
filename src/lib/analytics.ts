@@ -1,5 +1,5 @@
 // Google Tag Manager Container ID — replace with your actual ID
-export const GTM_ID = "GTM-XXXXXXX";
+export const GTM_ID = "GTM-W5VF94T3";
 
 // Consent-gated GTM loader
 export function loadGTM() {
