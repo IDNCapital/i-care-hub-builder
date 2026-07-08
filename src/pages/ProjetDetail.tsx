@@ -311,6 +311,20 @@ export default function ProjetDetail() {
         </div>
       </section>
 
+      {lang === "fr" && isPipelineCabinet(project.status) && project.slug_installation && (
+        <section className="section-padding bg-secondary">
+          <div className="container max-w-4xl">
+            <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-3">
+              S'installer ici
+            </p>
+            <SinstallerLinksCabinet
+              slugInstallation={project.slug_installation}
+              cabinetLabel={project.name.replace(/^Cabinet I[‑-]CA\.RE\s*/i, "").trim() || project.name}
+            />
+          </div>
+        </section>
+      )}
+
       <section className="section-padding">
         <div className="container">
           <div className="cta-section text-center">
