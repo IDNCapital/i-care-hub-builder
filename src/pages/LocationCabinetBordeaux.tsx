@@ -30,7 +30,7 @@ export default function LocationCabinetBordeaux() {
   const { data: pipelineCabinets } = useCabinetsPipeline();
   const cabinetsBordeaux = (pipelineCabinets ?? []).filter((c) => c.city !== "Toulouse");
 
-  const centresWithImages = STATIC_CENTRES.filter((c) => c.slug && PROJECT_IMAGES[c.slug]);
+  const centresWithImages = STATIC_CENTRES.filter((c) => c.slug && PROJECT_IMAGES[c.slug] && c.region === "bordeaux");
 
   const whyBlocks = [
     {
@@ -149,7 +149,7 @@ export default function LocationCabinetBordeaux() {
             <p className="section-subtitle mx-auto">{t("locationBordeaux.centresSubtitle")}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {STATIC_CENTRES.map((centre) => {
+            {STATIC_CENTRES.filter((c) => c.region === "bordeaux").map((centre) => {
               const images = centre.slug ? PROJECT_IMAGES[centre.slug] : null;
               const heroImg = images?.hero;
               const linkTo = centre.slug
