@@ -25,6 +25,8 @@ import { getCentreBySlug } from "@/lib/centres";
 import { getLocalBusinessData } from "@/lib/projectSchema";
 import { BrandName } from "@/components/BrandName";
 import { SectionPraticiensDuCabinet } from "@/components/SectionPraticiensDuCabinet";
+import { isPipelineCabinet } from "@/lib/installation";
+import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -308,6 +310,20 @@ export default function ProjetDetail() {
           </div>
         </div>
       </section>
+
+      {lang === "fr" && isPipelineCabinet(project.status) && project.slug_installation && (
+        <section className="section-padding bg-secondary">
+          <div className="container max-w-4xl">
+            <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-3">
+              S'installer ici
+            </p>
+            <SinstallerLinksCabinet
+              slugInstallation={project.slug_installation}
+              cabinetLabel={project.name.replace(/^Cabinet I[‑-]CA\.RE\s*/i, "").trim() || project.name}
+            />
+          </div>
+        </section>
+      )}
 
       <section className="section-padding">
         <div className="container">

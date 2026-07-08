@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
 import { MapPin, ChevronRight } from "lucide-react";
 import NotFound from "@/pages/NotFound";
-import { useInstallationPage, useProfessions } from "@/hooks/useInstallation";
+import { useInstallationPage, useProfessions, useCabinetsPipeline } from "@/hooks/useInstallation";
 import { cabinetNomCourt, formatDateOuverture } from "@/lib/installation";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
@@ -27,6 +27,8 @@ export default function SinstallerDetail() {
   const { profession, ville } = useParams<{ profession: string; ville: string }>();
   const { data, isLoading } = useInstallationPage(profession ?? "", ville ?? "");
   const { data: professions } = useProfessions();
+  const { data: pipelineCabinets } = useCabinetsPipeline();
+  const projetCabinet = pipelineCabinets?.find((c) => c.slug_installation === ville);
 
   if (isLoading) {
     return (
@@ -142,6 +144,20 @@ export default function SinstallerDetail() {
           </p>
         </div>
       </section>
+
+      {projetCabinet && (
+        <section className="bg-background border-b border-border">
+          <div className="container max-w-4xl py-4">
+            <Link
+              to={`/projets/${projetCabinet.slug}`}
+              className="inline-flex items-center gap-1.5 text-sm text-primary hover:text-primary/80 transition-colors"
+            >
+              <ChevronRight className="h-4 w-4" />
+              Voir le projet détaillé : {nomCourt}
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Le cabinet */}
       <section className="section-padding bg-background">

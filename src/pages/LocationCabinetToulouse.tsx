@@ -29,10 +29,15 @@ import {
 import { ArrowRight, MapPin, TreePine, Volume2, Loader2 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { InlineBrand } from "@/components/BrandName";
+import { useCabinetsPipeline } from "@/hooks/useInstallation";
+import { cabinetNomCourt } from "@/lib/installation";
+import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
 
 export default function LocationCabinetToulouse() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
+  const { data: pipelineCabinets } = useCabinetsPipeline();
+  const cabinetsToulouse = (pipelineCabinets ?? []).filter((c) => c.city === "Toulouse");
 
   const toulouseCapitoleHero = PROJECT_IMAGES["i-ca-re-toulouse-capitole"]?.hero;
 
@@ -313,6 +318,20 @@ export default function LocationCabinetToulouse() {
           </p>
         </div>
       </section>
+
+      {lang === "fr" && cabinetsToulouse.length > 0 && (
+        <section className="section-padding">
+          <div className="container max-w-4xl">
+            {cabinetsToulouse.map((c) => (
+              <SinstallerLinksCabinet
+                key={c.id}
+                slugInstallation={c.slug_installation}
+                cabinetLabel={cabinetNomCourt(c.name)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Pourquoi rejoindre */}
       <section className="section-padding bg-muted/50">

@@ -20,10 +20,15 @@ import {
   Volume2,
 } from "lucide-react";
 import { BrandName } from "@/components/BrandName";
+import { useCabinetsPipeline } from "@/hooks/useInstallation";
+import { cabinetNomCourt } from "@/lib/installation";
+import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
 
 export default function LocationCabinetBordeaux() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
+  const { data: pipelineCabinets } = useCabinetsPipeline();
+  const cabinetsBordeaux = (pipelineCabinets ?? []).filter((c) => c.city !== "Toulouse");
 
   const centresWithImages = STATIC_CENTRES.filter((c) => c.slug && PROJECT_IMAGES[c.slug]);
 
@@ -197,6 +202,28 @@ export default function LocationCabinetBordeaux() {
           </div>
         </div>
       </section>
+
+      {lang === "fr" && cabinetsBordeaux.length > 0 && (
+        <section className="section-padding">
+          <div className="container max-w-4xl">
+            <div className="text-center mb-12">
+              <h2 className="section-title">S'installer dans nos futurs cabinets</h2>
+              <p className="section-subtitle mx-auto">
+                Sélectionnez votre profession pour découvrir les opportunités d'installation cabinet par cabinet.
+              </p>
+            </div>
+            <div className="space-y-12">
+              {cabinetsBordeaux.map((c) => (
+                <SinstallerLinksCabinet
+                  key={c.id}
+                  slugInstallation={c.slug_installation}
+                  cabinetLabel={cabinetNomCourt(c.name)}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── SECTION 3 — Pourquoi rejoindre ── */}
       <section className="section-padding">
