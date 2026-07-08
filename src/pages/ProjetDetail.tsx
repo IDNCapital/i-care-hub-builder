@@ -25,6 +25,8 @@ import { getCentreBySlug } from "@/lib/centres";
 import { getLocalBusinessData } from "@/lib/projectSchema";
 import { BrandName } from "@/components/BrandName";
 import { SectionPraticiensDuCabinet } from "@/components/SectionPraticiensDuCabinet";
+import { isPipelineCabinet } from "@/lib/installation";
+import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
