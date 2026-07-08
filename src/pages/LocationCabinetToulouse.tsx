@@ -319,6 +319,20 @@ export default function LocationCabinetToulouse() {
         </div>
       </section>
 
+      {lang === "fr" && cabinetsToulouse.length > 0 && (
+        <section className="section-padding">
+          <div className="container max-w-4xl">
+            {cabinetsToulouse.map((c) => (
+              <SinstallerLinksCabinet
+                key={c.id}
+                slugInstallation={c.slug_installation}
+                cabinetLabel={cabinetNomCourt(c.name)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Pourquoi rejoindre */}
       <section className="section-padding bg-muted/50">
         <div className="container">
