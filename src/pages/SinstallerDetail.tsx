@@ -165,6 +165,12 @@ export default function SinstallerDetail() {
         </section>
       )}
 
+      <section className="pt-10 bg-background">
+        <div className="container max-w-4xl">
+          <CabinetVisuel projectSlug={projetCabinet?.slug} alt={visuelAlt} variant="detail" />
+        </div>
+      </section>
+
       {/* Le cabinet */}
       <section className="section-padding bg-background">
         <div className="container max-w-3xl">
