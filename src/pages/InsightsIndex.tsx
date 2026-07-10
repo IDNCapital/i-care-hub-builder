@@ -237,7 +237,7 @@ export default function InsightsIndex() {
               </Link>
               <span className="hidden sm:inline text-muted-foreground">·</span>
               <Link
-                to={localePath(lang, "installerCabinet")}
+                to={lang === "fr" ? "/sinstaller" : localePath(lang, "professionals")}
                 className="text-primary font-semibold underline underline-offset-4 hover:text-primary/80"
               >
                 {lang === "fr" ? "S'installer comme praticien" : "Setting up as a practitioner"}
