@@ -27,6 +27,7 @@ import {
 import { getDefaultHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
 import { InlineBrand } from "@/components/BrandName";
+import { ICARE_TELEPHONE_AFFICHAGE } from "@/lib/contact";
 
 export default function Professionnels() {
   const { t, i18n } = useTranslation();

@@ -29,6 +29,7 @@ import {
 import { ArrowRight, MapPin, TreePine, Volume2, Loader2 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { InlineBrand } from "@/components/BrandName";
+import { ICARE_TELEPHONE_AFFICHAGE } from "@/lib/contact";
 import { useCabinetsPipeline } from "@/hooks/useInstallation";
 import { cabinetNomCourt } from "@/lib/installation";
 import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
