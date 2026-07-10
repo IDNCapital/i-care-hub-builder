@@ -194,7 +194,7 @@ export function Footer() {
   ];
   const resourceLinks = [
     { name: lang === "fr" ? "Guides pratiques" : "Practical guides", href: localePath(lang, "insights") },
-    { name: lang === "fr" ? "S'installer" : "Setting up", href: localePath(lang, "installerCabinet") },
+    { name: lang === "fr" ? "S'installer" : "Setting up", href: lang === "fr" ? "/sinstaller" : localePath(lang, "professionals") },
     { name: lang === "fr" ? "Cabinet à louer Bordeaux" : "Office Bordeaux", href: localePath(lang, "locationBordeaux") },
   ];
 
