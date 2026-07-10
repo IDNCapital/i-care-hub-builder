@@ -25,8 +25,6 @@ import LocationCabinetToulouse from "./pages/LocationCabinetToulouse";
 import FAQ from "./pages/FAQ";
 import BlogTrouverCabinet from "./pages/BlogTrouverCabinet";
 import BlogCoutCabinetBordeaux from "./pages/BlogCoutCabinetBordeaux";
-import InstallerCabinet from "./pages/InstallerCabinet";
-import TrouverCabinetMedicalBordeaux from "./pages/TrouverCabinetMedicalBordeaux";
 import InsightsCabinetMedicalBordeaux from "./pages/InsightsCabinetMedicalBordeaux";
 import InsightsIndex from "./pages/InsightsIndex";
 import InsightsBudget from "./pages/InsightsBudget";
@@ -200,8 +198,8 @@ const App = () => (
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/blog/finding-office-bordeaux-practitioner" element={<Navigate to="/en/insights/medical-office-bordeaux" replace />} />
                 <Route path="/blog/consultation-office-cost-bordeaux" element={<Navigate to="/en/insights/office-budget-bordeaux" replace />} />
-                <Route path="/setting-up-practice" element={<InstallerCabinet />} />
-                <Route path="/finding-medical-office-bordeaux" element={<TrouverCabinetMedicalBordeaux />} />
+                <Route path="/setting-up-practice" element={<Navigate to="/en/health-professionals" replace />} />
+                <Route path="/finding-medical-office-bordeaux" element={<Navigate to="/en/office-rental-bordeaux" replace />} />
                 <Route path="/insights/medical-office-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
                 <Route path="/insights" element={<InsightsIndex />} />
                 <Route path="/insights/office-budget-bordeaux" element={<InsightsBudget />} />
@@ -252,8 +250,8 @@ const App = () => (
                 <Route path="/location-cabinet-bordeaux" element={<LocationCabinetBordeaux />} />
                 <Route path="/location-cabinet-toulouse" element={<LocationCabinetToulouse />} />
                 <Route path="/questions-frequentes" element={<FAQ />} />
-                <Route path="/installer-cabinet-praticien" element={<InstallerCabinet />} />
-                <Route path="/trouver-cabinet-medical-bordeaux" element={<TrouverCabinetMedicalBordeaux />} />
+                <Route path="/installer-cabinet-praticien" element={<Navigate to="/sinstaller" replace />} />
+                <Route path="/trouver-cabinet-medical-bordeaux" element={<Navigate to="/location-cabinet-bordeaux" replace />} />
                 <Route path="/insights/cabinet-medical-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
                 <Route path="/insights" element={<InsightsIndex />} />
                 <Route path="/insights/budget-cabinet-bordeaux" element={<InsightsBudget />} />
