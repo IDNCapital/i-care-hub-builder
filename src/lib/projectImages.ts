@@ -154,3 +154,32 @@ export function getProjectGallery(slug: string, dbGallery?: string[] | null): st
   const db = dbGallery ?? [];
   return [...local, ...db.filter((url) => !local.includes(url))];
 }
+
+// ─── Visuels pour les pages d'installation (Lot 10.6) ────
+
+export interface CabinetVisuals {
+  /** Image principale à afficher */
+  hero: string;
+  /** Vignettes complémentaires (peut être vide) */
+  gallery: string[];
+  /** true = visuel d'ambiance générique, PAS une photo du cabinet */
+  isGeneric: boolean;
+}
+
+/**
+ * Visuels d'un cabinet pour les pages /sinstaller.
+ * Retombe sur un visuel d'ambiance générique du réseau si le cabinet
+ * n'a aucune photo (ex. Lormont). Ne réutilise JAMAIS la photo d'un
+ * cabinet exploité pour illustrer un cabinet en travaux.
+ */
+export function getCabinetVisuals(projectSlug?: string | null): CabinetVisuals {
+  const found = projectSlug ? PROJECT_IMAGES[projectSlug] : undefined;
+  if (found) {
+    return {
+      hero: found.hero,
+      gallery: found.gallery.filter((img) => img !== found.hero),
+      isGeneric: false,
+    };
+  }
+  return { hero: heroPraticiens, gallery: [], isGeneric: true };
+}
