@@ -45,8 +45,6 @@ const ROUTES = [
   { path: "/professionnels", type: "strategic" },
   { path: "/location-cabinet-bordeaux", type: "strategic" },
   { path: "/location-cabinet-toulouse", type: "strategic" },
-  { path: "/trouver-cabinet-medical-bordeaux", type: "strategic" },
-  { path: "/installer-cabinet-praticien", type: "strategic" },
   { path: "/insights", type: "strategic" },
   { path: "/insights/cabinet-medical-bordeaux", type: "strategic" },
   { path: "/insights/budget-cabinet-bordeaux", type: "strategic" },
@@ -78,8 +76,6 @@ const ROUTES = [
   { path: "/en/health-professionals", type: "strategic" },
   { path: "/en/office-rental-bordeaux", type: "strategic" },
   { path: "/en/office-rental-toulouse", type: "strategic" },
-  { path: "/en/finding-medical-office-bordeaux", type: "strategic" },
-  { path: "/en/setting-up-practice", type: "strategic" },
   { path: "/en/insights", type: "strategic" },
   { path: "/en/insights/medical-office-bordeaux", type: "strategic" },
   { path: "/en/insights/office-budget-bordeaux", type: "strategic" },
@@ -98,6 +94,16 @@ const ROUTES = [
   { path: "/en/legal", type: "legal" },
   { path: "/en/privacy", type: "legal" },
   { path: "/en/cookies", type: "legal" },
+];
+
+// ── Legacy redirects (301-equivalent : stub statique meta-refresh + canonical) ──
+// GitHub Pages ne fait pas de 301 serveur ; on écrit un fichier statique servi en 200
+// qui redirige immédiatement et pointe le canonical vers la cible (signal de consolidation).
+const REDIRECTS = [
+  { from: "/installer-cabinet-praticien", to: "/sinstaller" },
+  { from: "/trouver-cabinet-medical-bordeaux", to: "/location-cabinet-bordeaux" },
+  { from: "/en/setting-up-practice", to: "/en/health-professionals" },
+  { from: "/en/finding-medical-office-bordeaux", to: "/en/office-rental-bordeaux" },
 ];
 
 // ── Chromium resolution ─────────────────────────────────────────────
@@ -392,6 +398,29 @@ async function main() {
 
   await browser.close();
   server.close();
+
+  // Write static redirect stubs (legacy → cible). Pas de <script>, donc pas d'hydratation SPA :
+  // le meta-refresh s'exécute seul et le canonical signale la consolidation à Google.
+  for (const r of REDIRECTS) {
+    const cleanFrom = r.from.replace(/\/$/, "");
+    const stubPath = join(DIST, cleanFrom, "index.html");
+    const targetAbs = `https://i-ca.re${r.to}`;
+    const stub = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url=${r.to}">
+<link rel="canonical" href="${targetAbs}">
+<title>Redirection…</title>
+</head>
+<body>
+<p>Cette page a déménagé. <a href="${r.to}">Continuer vers la nouvelle page</a>.</p>
+</body>
+</html>`;
+    await mkdir(dirname(stubPath), { recursive: true });
+    await writeFile(stubPath, stub, "utf-8");
+    console.log(`[prerender] ↪ redirect ${r.from} → ${r.to}`);
+  }
 
   // Create 404.html for GitHub Pages SPA fallback (copy root index.html)
   const rootIndex = join(DIST, "index.html");
