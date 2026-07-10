@@ -1,0 +1,144 @@
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
+import type {
+  InstallationContentCommon,
+  InstallationContentProfession,
+  InstallationContentVille,
+} from "@/types/installation";
+
+export interface Profession {
+  id: string;
+  slug: string;
+  nom_masculin_singulier: string;
+  nom_feminin_singulier: string;
+  nom_inclusif_pluriel: string;
+  ordre_affichage: number;
+  actif: boolean;
+}
+
+export interface InstallationPage {
+  profession_slug: string;
+  profession_libelle: string;
+  profession_ordre: number;
+  ville_slug: string;
+  cabinet_nom_complet: string;
+  cabinet_adresse: string | null;
+  cabinet_ville: string;
+  date_ouverture: string | null;
+  url_path: string;
+  projet_id: string;
+  profession_id: string;
+}
+
+export interface CabinetPipeline {
+  id: string;
+  slug: string;
+  slug_installation: string;
+  name: string;
+  city: string;
+  address: string | null;
+  date_ouverture_cible: string | null;
+}
+
+export function useProfessions() {
+  return useQuery({
+    queryKey: ["professions"],
+    queryFn: async () => {
+      const { data, error } = await (supabase as any)
+        .from("professions")
+        .select("id, slug, nom_masculin_singulier, nom_feminin_singulier, nom_inclusif_pluriel, ordre_affichage, actif")
+        .eq("actif", true)
+        .order("ordre_affichage", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as Profession[];
+    },
+  });
+}
+
+export function useCabinetsPipeline() {
+  return useQuery({
+    queryKey: ["cabinets-pipeline"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("projets")
+        .select("id, slug, slug_installation, name, city, address, date_ouverture_cible")
+        .in("status", ["en_travaux", "a_venir"])
+        .not("slug_installation", "is", null)
+        .order("date_ouverture_cible", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as unknown as CabinetPipeline[];
+    },
+  });
+}
+
+export function useInstallationPage(professionSlug: string, villeSlug: string) {
+  return useQuery({
+    queryKey: ["installation-page", professionSlug, villeSlug],
+    queryFn: async () => {
+      const baseQuery = (supabase as any)
+        .from("installation_pages")
+        .select("*")
+        .eq("profession_slug", professionSlug)
+        .eq("ville_slug", villeSlug)
+        .maybeSingle();
+
+      const villeQuery = (supabase as any)
+        .from("installation_content_ville")
+        .select("ville_slug, cabinet_details_md, quartier_md, acces_md")
+        .eq("ville_slug", villeSlug)
+        .maybeSingle();
+
+      const professionQuery = (supabase as any)
+        .from("installation_content_profession")
+        .select("profession_slug, enjeux_md, patientele_md, pourquoi_idn_md")
+        .eq("profession_slug", professionSlug)
+        .maybeSingle();
+
+      const commonQuery = (supabase as any)
+        .from("installation_content_common")
+        .select("content_key, content_md, titre_section, ordre, actif")
+        .eq("actif", true)
+        .order("ordre", { ascending: true });
+
+      const [baseRes, villeRes, professionRes, commonRes] = await Promise.all([
+        baseQuery,
+        villeQuery,
+        professionQuery,
+        commonQuery,
+      ]);
+
+      if (baseRes.error) throw baseRes.error;
+      const base = baseRes.data as InstallationPage | null;
+      if (!base) return null;
+
+      let contenuVille: InstallationContentVille | null = null;
+      if (villeRes.error) {
+        console.error("[useInstallationPage] ville fetch error", villeRes.error);
+      } else {
+        contenuVille = (villeRes.data ?? null) as InstallationContentVille | null;
+      }
+
+      let contenuProfession: InstallationContentProfession | null = null;
+      if (professionRes.error) {
+        console.error("[useInstallationPage] profession fetch error", professionRes.error);
+      } else {
+        contenuProfession = (professionRes.data ?? null) as InstallationContentProfession | null;
+      }
+
+      let contenuCommun: InstallationContentCommon[] | null = null;
+      if (commonRes.error) {
+        console.error("[useInstallationPage] common fetch error", commonRes.error);
+      } else {
+        contenuCommun = (commonRes.data ?? []) as InstallationContentCommon[];
+      }
+
+      return {
+        ...base,
+        contenuVille,
+        contenuProfession,
+        contenuCommun,
+      };
+    },
+    enabled: !!professionSlug && !!villeSlug,
+  });
+}

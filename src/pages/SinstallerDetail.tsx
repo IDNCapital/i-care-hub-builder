@@ -10,6 +10,8 @@ import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { CabinetVisuel } from "@/components/CabinetVisuel";
 import { getCabinetVisuals } from "@/lib/projectImages";
+import { ICARE_TELEPHONE_E164 } from "@/lib/contact";
+import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
 
 function parsePostalAddress(address: string | null, city: string) {
   if (!address) return { streetAddress: "", postalCode: "", addressLocality: city };
@@ -78,18 +80,39 @@ export default function SinstallerDetail() {
     ],
   };
 
+  // MedicalBusiness : plus spécifique que LocalBusiness pour un cabinet de soin.
+  // Champs émis uniquement s'ils existent réellement. Les cabinets pipeline ne sont
+  // pas ouverts : ni openingHours, ni priceRange, ni aggregateRating ne sont déclarés.
+  const hasMapUrl = googleMapsPlaceUrl(data.cabinet_nom_complet, projetCabinet?.google_place_id);
   const localBusinessJsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "MedicalBusiness",
     name: data.cabinet_nom_complet,
     // image émise uniquement si vraie photo du cabinet (pas de fallback générique)
     ...(visuels.isGeneric ? {} : { image: `https://i-ca.re${visuels.hero}` }),
+    ...(projetCabinet ? { url: `https://i-ca.re/projets/${projetCabinet.slug}` } : {}),
+    telephone: ICARE_TELEPHONE_E164,
     address: {
       "@type": "PostalAddress",
       streetAddress: postal.streetAddress,
       postalCode: postal.postalCode,
       addressLocality: postal.addressLocality,
       addressCountry: "FR",
+    },
+    ...(projetCabinet?.lat != null && projetCabinet?.lng != null
+      ? {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: projetCabinet.lat,
+            longitude: projetCabinet.lng,
+          },
+        }
+      : {}),
+    ...(hasMapUrl ? { hasMap: hasMapUrl } : {}),
+    parentOrganization: {
+      "@type": "Organization",
+      name: "I-CA.RE",
+      url: "https://i-ca.re",
     },
   };
 
@@ -101,6 +124,7 @@ export default function SinstallerDetail() {
       "@type": "Organization",
       name: "I-CA.RE",
       url: "https://i-ca.re",
+      telephone: ICARE_TELEPHONE_E164,
     },
     areaServed: {
       "@type": "City",

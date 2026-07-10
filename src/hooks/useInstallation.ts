@@ -38,6 +38,9 @@ export interface CabinetPipeline {
   city: string;
   address: string | null;
   date_ouverture_cible: string | null;
+  lat: number | null;
+  lng: number | null;
+  google_place_id: string | null;
 }
 
 export function useProfessions() {
@@ -61,7 +64,7 @@ export function useCabinetsPipeline() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("projets")
-        .select("id, slug, slug_installation, name, city, address, date_ouverture_cible")
+        .select("id, slug, slug_installation, name, city, address, date_ouverture_cible, lat, lng, google_place_id")
         .in("status", ["en_travaux", "a_venir"])
         .not("slug_installation", "is", null)
         .order("date_ouverture_cible", { ascending: true });
