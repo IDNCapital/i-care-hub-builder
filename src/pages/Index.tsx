@@ -261,7 +261,7 @@ export default function Index() {
               </Link>
             </p>
             <p className="text-sm text-muted-foreground mb-8">
-              <Link to={localePath(lang, "installerCabinet")} className="text-primary underline underline-offset-4 hover:text-primary/80">
+              <Link to={lang === "fr" ? "/sinstaller" : localePath(lang, "professionals")} className="text-primary underline underline-offset-4 hover:text-primary/80">
                 {lang === "fr" ? "Ressources pour s'installer comme praticien" : "Resources for setting up as a practitioner"}
               </Link>
             </p>
