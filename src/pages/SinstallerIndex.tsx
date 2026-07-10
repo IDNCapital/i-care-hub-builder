@@ -6,6 +6,7 @@ import { MapPin, ArrowRight } from "lucide-react";
 import { useProfessions, useCabinetsPipeline } from "@/hooks/useInstallation";
 import { cabinetNomCourt, formatDateOuverture, installationUrl } from "@/lib/installation";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
+import { CabinetVisuel } from "@/components/CabinetVisuel";
 
 export default function SinstallerIndex() {
   const { data: professions = [] } = useProfessions();
@@ -66,6 +67,12 @@ export default function SinstallerIndex() {
                 key={c.id}
                 className="bg-secondary rounded-lg p-6 flex flex-col gap-3 border border-border"
               >
+                <CabinetVisuel
+                  projectSlug={c.slug}
+                  alt={`Cabinet I‑CA.RE ${cabinetNomCourt(c.name)}`}
+                  variant="card"
+                  className="-mx-6 -mt-6 mb-1"
+                />
                 <h3 className="text-xl font-heading font-normal">
                   {cabinetNomCourt(c.name)}
                 </h3>
