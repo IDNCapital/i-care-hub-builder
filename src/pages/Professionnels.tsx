@@ -195,8 +195,8 @@ export default function Professionnels() {
           </p>
           <p className="text-center text-muted-foreground mt-2">
             {lang === "fr"
-              ? <>Consultez nos <Link to={localePath(lang, "installerCabinet")} className="text-primary underline underline-offset-4 hover:text-primary/80">ressources pour s'installer comme praticien</Link>.</>
-              : <>Browse our <Link to={localePath(lang, "installerCabinet")} className="text-primary underline underline-offset-4 hover:text-primary/80">resources for setting up as a practitioner</Link>.</>
+              ? <>Consultez nos <Link to="/sinstaller" className="text-primary underline underline-offset-4 hover:text-primary/80">ressources pour s'installer comme praticien</Link>.</>
+              : <>Browse our <Link to={localePath(lang, "professionals")} className="text-primary underline underline-offset-4 hover:text-primary/80">resources for setting up as a practitioner</Link>.</>
             }
           </p>
         </div>
