@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { BrandName } from "@/components/BrandName";
+import { ICARE_TELEPHONE_E164, ICARE_TELEPHONE_AFFICHAGE } from "@/lib/contact";
 
 export default function MentionsLegales() {
   const { i18n } = useTranslation();
@@ -45,7 +46,7 @@ export default function MentionsLegales() {
           </ul>
           <div className="mt-4 space-y-2 text-muted-foreground">
             <p><strong className="text-foreground">Email :</strong> <a href="mailto:contact@i-ca.re" className="text-primary hover:underline">contact@i-ca.re</a></p>
-            <p><strong className="text-foreground">{lang === "en" ? "Phone:" : "Téléphone :"}</strong> <a href="tel:+33649808097" className="text-primary hover:underline">06 49 80 80 97</a></p>
+            <p><strong className="text-foreground">{lang === "en" ? "Phone:" : "Téléphone :"}</strong> <a href={`tel:${ICARE_TELEPHONE_E164}`} className="text-primary hover:underline">{ICARE_TELEPHONE_AFFICHAGE}</a></p>
           </div>
 
           {/* 2. Directeur de publication */}

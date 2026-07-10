@@ -29,6 +29,7 @@ import {
 import { ArrowRight, MapPin, TreePine, Volume2, Loader2 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { InlineBrand } from "@/components/BrandName";
+import { ICARE_TELEPHONE_AFFICHAGE } from "@/lib/contact";
 import { useCabinetsPipeline } from "@/hooks/useInstallation";
 import { cabinetNomCourt } from "@/lib/installation";
 import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
@@ -421,7 +422,7 @@ export default function LocationCabinetToulouse() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="tlse-phone" className="text-[#F6F5F0]">Téléphone *</Label>
-                  <Input id="tlse-phone" type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="06 49 80 80 97" className="h-12" required maxLength={30} />
+                  <Input id="tlse-phone" type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder={ICARE_TELEPHONE_AFFICHAGE} className="h-12" required maxLength={30} />
                 </div>
               </div>
 

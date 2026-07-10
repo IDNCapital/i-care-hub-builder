@@ -27,6 +27,7 @@ import {
 import { getDefaultHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
 import { InlineBrand } from "@/components/BrandName";
+import { ICARE_TELEPHONE_AFFICHAGE } from "@/lib/contact";
 
 export default function Professionnels() {
   const { t, i18n } = useTranslation();
@@ -288,7 +289,7 @@ export default function Professionnels() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="phone" className="text-[#F6F5F0]">{t("professionals.formPhone")} *</Label>
-                  <Input id="phone" type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="06 49 80 80 97" className="h-12" required maxLength={30} />
+                  <Input id="phone" type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder={ICARE_TELEPHONE_AFFICHAGE} className="h-12" required maxLength={30} />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { BrandName } from "@/components/BrandName";
+import { ICARE_TELEPHONE_E164, ICARE_TELEPHONE_AFFICHAGE, ICARE_TELEPHONE_AFFICHAGE_INTL } from "@/lib/contact";
 
 export default function PolitiqueConfidentialite() {
   const { i18n } = useTranslation();
@@ -51,7 +52,7 @@ function FrVersion() {
             <li>Siège social : 106 Bis rue Bertrand de Goth, 33800 Bordeaux</li>
             <li>RCS Bordeaux : 942 176 884</li>
             <li>Email : <a href="mailto:contact@i-ca.re" className="text-primary hover:underline">contact@i-ca.re</a></li>
-            <li>Téléphone : <a href="tel:+33649808097" className="text-primary hover:underline">06 49 80 80 97</a></li>
+            <li>Téléphone : <a href={`tel:${ICARE_TELEPHONE_E164}`} className="text-primary hover:underline">{ICARE_TELEPHONE_AFFICHAGE}</a></li>
           </ul>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">3. Données collectées</h2>
@@ -238,7 +239,7 @@ function EnVersion() {
             <li>Registered office: 106 Bis rue Bertrand de Goth, 33800 Bordeaux, France</li>
             <li>RCS Bordeaux: 942 176 884</li>
             <li>Email: <a href="mailto:contact@i-ca.re" className="text-primary hover:underline">contact@i-ca.re</a></li>
-            <li>Phone: <a href="tel:+33649808097" className="text-primary hover:underline">+33 6 49 80 80 97</a></li>
+            <li>Phone: <a href={`tel:${ICARE_TELEPHONE_E164}`} className="text-primary hover:underline">{ICARE_TELEPHONE_AFFICHAGE_INTL}</a></li>
           </ul>
 
           <h2 className="text-2xl font-semibold mt-10 mb-4">3. Data Collected</h2>
