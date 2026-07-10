@@ -138,6 +138,7 @@ export default function SinstallerDetail() {
         title={`S'installer comme ${professionLower} à ${nomCourt} — Cabinet I-CA.RE`}
         description={`Découvrez les opportunités d'installation pour ${professionLower} au Cabinet I-CA.RE de ${nomCourt}, ${data.cabinet_adresse ?? ""}. ${ouvertureLabel}. Demandez le dossier d'installation.`}
         path={path}
+        ogImage={`https://i-ca.re/og/og-${ville}.png`}
       />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
