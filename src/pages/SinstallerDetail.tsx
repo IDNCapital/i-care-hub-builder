@@ -8,6 +8,8 @@ import { useInstallationPage, useProfessions, useCabinetsPipeline } from "@/hook
 import { cabinetNomCourt, formatDateOuverture } from "@/lib/installation";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
+import { CabinetVisuel } from "@/components/CabinetVisuel";
+import { getCabinetVisuals } from "@/lib/projectImages";
 
 function parsePostalAddress(address: string | null, city: string) {
   if (!address) return { streetAddress: "", postalCode: "", addressLocality: city };
@@ -50,6 +52,8 @@ export default function SinstallerDetail() {
   const path = data.url_path;
   const canonical = `https://i-ca.re${path}`;
   const postal = parsePostalAddress(data.cabinet_adresse, data.cabinet_ville);
+  const visuels = getCabinetVisuals(projetCabinet?.slug);
+  const visuelAlt = `Cabinet pour ${professionLower} à louer — I‑CA.RE ${nomCourt}`;
 
   const professionRow = professions?.find((p) => p.slug === data.profession_slug);
   const nomInclusifPluriel = professionRow?.nom_inclusif_pluriel ?? data.profession_libelle.toLowerCase();
@@ -78,6 +82,8 @@ export default function SinstallerDetail() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: data.cabinet_nom_complet,
+    // image émise uniquement si vraie photo du cabinet (pas de fallback générique)
+    ...(visuels.isGeneric ? {} : { image: `https://i-ca.re${visuels.hero}` }),
     address: {
       "@type": "PostalAddress",
       streetAddress: postal.streetAddress,
