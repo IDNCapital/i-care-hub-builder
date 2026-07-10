@@ -421,7 +421,7 @@ export default function LocationCabinetToulouse() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="tlse-phone" className="text-[#F6F5F0]">Téléphone *</Label>
-                  <Input id="tlse-phone" type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="06 49 80 80 97" className="h-12" required maxLength={30} />
+                  <Input id="tlse-phone" type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder={ICARE_TELEPHONE_AFFICHAGE} className="h-12" required maxLength={30} />
                 </div>
               </div>
 

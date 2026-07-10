@@ -15,6 +15,7 @@ import rivageLogo from "@/assets/rivage-logo.png";
 import { localePath } from "@/lib/routes";
 import { BrandName } from "./BrandName";
 import { LinkedInLink } from "./LinkedInLink";
+import { ICARE_TELEPHONE_E164, ICARE_TELEPHONE_AFFICHAGE } from "@/lib/contact";
 
 const COLORS = {
   cream: "#F6F5F0",
@@ -292,8 +293,8 @@ export function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="tel:+33649808097" style={linkBase} className="hover:text-background transition-colors">
-                    06 49 80 80 97
+                  <a href={`tel:${ICARE_TELEPHONE_E164}`} style={linkBase} className="hover:text-background transition-colors">
+                    {ICARE_TELEPHONE_AFFICHAGE}
                   </a>
                 </li>
               </ul>
