@@ -7,6 +7,26 @@
 
 export const TAXONOMY_VERSION = "0ter-2026-05-15.2";
 
+/**
+ * Normalisation utilitaire : minuscules + retrait des diacritiques.
+ * Utilisée pour comparer libellés utilisateur ↔ termes de la taxonomie.
+ */
+export const norm = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+/**
+ * Libellés d'affichage des cabinets I-CA.RE (slug → nom court).
+ */
+export const CABINETS_LABEL: Record<string, string> = {
+  "i-ca-re-nansouty": "Nansouty",
+  "i-ca-re-pey-berland": "Pey-Berland",
+  "i-ca-re-jardin-public": "Jardin Public",
+  "i-ca-re-chartrons": "Chartrons",
+};
+
 export const SPECIALITY_GROUPS: Record<string, string[]> = {
   "Soin psychique": [
     "Psychologie clinique",
