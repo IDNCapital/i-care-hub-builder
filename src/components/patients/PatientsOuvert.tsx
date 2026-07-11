@@ -8,24 +8,14 @@ import {
   SPECIALITY_GROUPS,
   PROBLEMATIQUE_GROUPS,
   PUBLIC_CIBLE_GROUPS,
+  CABINETS_LABEL,
+  norm,
 } from "@/lib/taxonomy";
+import { CartePraticien } from "@/components/patients/CartePraticien";
 
 interface Props {
   praticiens: PraticienPublic[];
 }
-
-const CABINETS_LABEL: Record<string, string> = {
-  "i-ca-re-nansouty": "Nansouty",
-  "i-ca-re-pey-berland": "Pey-Berland",
-  "i-ca-re-jardin-public": "Jardin Public",
-  "i-ca-re-chartrons": "Chartrons",
-};
-
-const norm = (s: string) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
 
 const groupMatches = (
   values: string[] | undefined,
@@ -176,42 +166,6 @@ function FiltersPanel(props: FiltersProps) {
         </button>
       )}
     </div>
-  );
-}
-
-function CarteResult({ p }: { p: PraticienPublic }) {
-  return (
-    <a
-      href={`/praticien/${p.slug}`}
-      className="group flex flex-col bg-background border border-border rounded-2xl overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-sage"
-    >
-      <div className="aspect-square w-full overflow-hidden bg-secondary rounded-2xl">
-        {p.photo_url ? (
-          <img
-            src={p.photo_url}
-            alt={`Portrait de ${p.prenom} ${p.nom}`}
-            loading="lazy"
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
-            Photo à venir
-          </div>
-        )}
-      </div>
-      <div className="p-5 flex flex-col gap-1">
-        <h3 className="font-heading font-normal text-[22px] leading-tight text-anthracite">
-          {p.prenom} {p.nom}
-        </h3>
-        <p className="font-sans text-sm text-[#6B6B6B]">
-          {p.specialites?.[0] ?? p.profession}
-        </p>
-        <p className="font-sans text-[13px] text-[#B89B6F] flex items-center gap-1.5 mt-0.5">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-sage" />
-          {CABINETS_LABEL[p.cabinet_slug] ?? p.cabinet_slug}
-        </p>
-      </div>
-    </a>
   );
 }
 
@@ -412,12 +366,27 @@ export function PatientsOuvert({ praticiens }: Props) {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filtered.map((p) => (
-                    <CarteResult key={p.slug} p={p} />
+                    <CartePraticien key={p.slug} p={p} />
                   ))}
                 </div>
               )}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Passerelle problématiques (Lot 11.2b) */}
+      <section className="pt-12 pb-4 bg-cream border-t border-border">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
+          <p className="font-sans text-sm md:text-base text-[#6B6B6B]">
+            Vous ne savez pas quel type d'accompagnement chercher&nbsp;?{" "}
+            <a
+              href="/patients/problematiques"
+              className="text-sage hover:underline font-sans font-medium whitespace-nowrap"
+            >
+              Explorer par problématique →
+            </a>
+          </p>
         </div>
       </section>
 

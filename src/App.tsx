@@ -34,6 +34,8 @@ import InsightsProfessions from "./pages/InsightsProfessions";
 import InsightsLouerAcheter from "./pages/InsightsLouerAcheter";
 import Patients from "./pages/Patients";
 import DecrireMonBesoin from "./pages/DecrireMonBesoin";
+import ProblematiquesIndex from "./pages/ProblematiquesIndex";
+import ProblematiqueDetail from "./pages/ProblematiqueDetail";
 import Parrainage from "./pages/Parrainage";
 import TemoignagesPraticiens from "./pages/TemoignagesPraticiens";
 import SinstallerIndex from "./pages/SinstallerIndex";
@@ -261,6 +263,8 @@ const App = () => (
                 <Route path="/insights/louer-ou-acheter-cabinet" element={<InsightsLouerAcheter />} />
                 <Route path="/patients" element={<Patients />} />
                 <Route path="/patients/decrire-mon-besoin" element={<DecrireMonBesoin />} />
+                <Route path="/patients/problematiques" element={<ProblematiquesIndex />} />
+                <Route path="/patients/problematiques/:slug" element={<ProblematiqueDetail />} />
                 <Route path="/parrainage" element={<Parrainage />} />
                 <Route path="/temoignages-praticiens" element={<TemoignagesPraticiens />} />
                 <Route path="/sinstaller" element={<SinstallerIndex />} />
