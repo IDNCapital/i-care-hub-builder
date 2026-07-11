@@ -186,7 +186,6 @@ export function Footer() {
     { name: t("nav.home"), href: localePath(lang, "home") },
     { name: t("nav.projects"), href: localePath(lang, "projects") },
     { name: t("nav.professionals"), href: localePath(lang, "professionals") },
-    { name: t("nav.investment"), href: localePath(lang, "investment") },
   ];
   const companyLinks = [
     { name: t("nav.approach"), href: localePath(lang, "approach") },
