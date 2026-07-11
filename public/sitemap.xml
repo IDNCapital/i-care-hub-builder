@@ -209,22 +209,6 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- Investment -->
-  <url>
-    <loc>https://i-ca.re/investissement</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/investissement" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/investment" />
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://i-ca.re/en/investment</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/investissement" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/investment" />
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
   <!-- Approach -->
   <url>
     <loc>https://i-ca.re/notre-approche</loc>
