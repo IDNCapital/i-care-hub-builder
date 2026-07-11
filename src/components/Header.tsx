@@ -33,7 +33,6 @@ export const Header = memo(function Header() {
   const labels = useMemo(() => ({
     practitioners: lang === "fr" ? "Praticiens" : "Practitioners",
     patients: lang === "fr" ? "Patients" : "Patients",
-    investment: t("nav.investment"),
     approach: t("nav.approach"),
     contact: t("nav.contact"),
     sub: {
@@ -53,7 +52,6 @@ export const Header = memo(function Header() {
 
   const mainItems = useMemo(() => [
     { name: labels.patients, href: localePath(lang, "patients") },
-    { name: labels.investment, href: localePath(lang, "investment") },
     { name: labels.approach, href: localePath(lang, "approach") },
     { name: labels.contact, href: localePath(lang, "contact") },
   ], [labels, lang]);
