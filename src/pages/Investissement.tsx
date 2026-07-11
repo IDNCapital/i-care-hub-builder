@@ -80,6 +80,7 @@ export default function Investissement() {
         title={t("seo.investmentTitle")}
         description={t("seo.investmentDesc")}
         path={lang === "fr" ? "/investissement" : "/en/investment"}
+        noIndex
       />
 
       {/* Hero */}
