@@ -8,24 +8,14 @@ import {
   SPECIALITY_GROUPS,
   PROBLEMATIQUE_GROUPS,
   PUBLIC_CIBLE_GROUPS,
+  CABINETS_LABEL,
+  norm,
 } from "@/lib/taxonomy";
+import { CartePraticien } from "@/components/patients/CartePraticien";
 
 interface Props {
   praticiens: PraticienPublic[];
 }
-
-const CABINETS_LABEL: Record<string, string> = {
-  "i-ca-re-nansouty": "Nansouty",
-  "i-ca-re-pey-berland": "Pey-Berland",
-  "i-ca-re-jardin-public": "Jardin Public",
-  "i-ca-re-chartrons": "Chartrons",
-};
-
-const norm = (s: string) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
 
 const groupMatches = (
   values: string[] | undefined,
