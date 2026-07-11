@@ -15,7 +15,7 @@
  * No external dependencies (Node 20 native fetch only). No service_role.
  */
 
-import { readFile, writeFile, copyFile } from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { existsSync } from "fs";
@@ -50,6 +50,28 @@ function toIsoDate(value) {
   const d = new Date(value);
   if (isNaN(d.getTime())) return new Date().toISOString().slice(0, 10);
   return d.toISOString().slice(0, 10);
+}
+
+// dupliqué de src/lib/taxonomy.ts (contexte Node build), à garder synchronisé
+function norm(s) {
+  return String(s ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+async function fetchJson(url) {
+  const res = await fetch(url, {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      Accept: "application/json",
+    },
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const json = await res.json();
+  if (!Array.isArray(json)) throw new Error("non-array JSON");
+  return json;
 }
 
 async function main() {
@@ -92,6 +114,38 @@ async function main() {
     console.warn("[generate-sitemap] ⚠ 0 published praticiens returned (no error).");
   }
 
+  // Fetch problématiques (RLS filtre actif=true).
+  const problematiquesUrl =
+    `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/problematiques` +
+    `?select=slug,nom,synonymes,updated_at&order=nom.asc`;
+  let problematiques;
+  try {
+    problematiques = await fetchJson(problematiquesUrl);
+  } catch (e) {
+    return fail(`Supabase REST call error (problematiques): ${e?.message || e}`);
+  }
+
+  // Fetch tags des praticiens publiés (pour matcher côté build).
+  const tagsUrl =
+    `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/praticiens` +
+    `?select=problematiques,problematiques_derivees&statut_validation=eq.validee&actif=eq.true`;
+  let praticiensTags;
+  try {
+    praticiensTags = await fetchJson(tagsUrl);
+  } catch (e) {
+    return fail(`Supabase REST call error (praticiens tags): ${e?.message || e}`);
+  }
+
+  // Pré-calcule pour chaque praticien la liste normalisée de ses tags
+  // (problematiques_derivees, fallback problematiques si dérivé vide).
+  const praticiensNormTags = praticiensTags.map((pr) => {
+    const source =
+      (Array.isArray(pr.problematiques_derivees) && pr.problematiques_derivees.length > 0
+        ? pr.problematiques_derivees
+        : pr.problematiques) ?? [];
+    return new Set(source.map(norm));
+  });
+
   // Existing <loc> values in the static base (for dedup on the entire file).
   const existingLocs = new Set(
     Array.from(baseXml.matchAll(/<loc>([^<]+)<\/loc>/g)).map((m) => m[1].trim()),
@@ -120,15 +174,58 @@ async function main() {
     existingLocs.add(loc);
   }
 
+  // Bloc problématiques : index (toujours) + détails matchés (≥1 praticien).
+  const problematiquesBlocks = [];
+  const indexLoc = "https://i-ca.re/patients/problematiques";
+  if (!existingLocs.has(indexLoc)) {
+    problematiquesBlocks.push(
+      `  <url>\n` +
+      `    <loc>${xmlEscape(indexLoc)}</loc>\n` +
+      `    <changefreq>weekly</changefreq>\n` +
+      `    <priority>0.6</priority>\n` +
+      `  </url>`,
+    );
+    existingLocs.add(indexLoc);
+  }
+
+  let matchedCount = 0;
+  for (const pb of problematiques) {
+    const slug = (pb && pb.slug ? String(pb.slug) : "").trim();
+    if (!slug) continue;
+    const targets = [pb.nom, ...(Array.isArray(pb.synonymes) ? pb.synonymes : [])]
+      .map(norm)
+      .filter(Boolean);
+    const hasMatch = praticiensNormTags.some((tagSet) =>
+      targets.some((t) => tagSet.has(t)),
+    );
+    if (!hasMatch) continue;
+
+    const loc = `https://i-ca.re/patients/problematiques/${slug}`;
+    if (existingLocs.has(loc)) continue;
+
+    const lastmod = toIsoDate(pb.updated_at);
+    problematiquesBlocks.push(
+      `  <url>\n` +
+      `    <loc>${xmlEscape(loc)}</loc>\n` +
+      `    <lastmod>${xmlEscape(lastmod)}</lastmod>\n` +
+      `    <changefreq>monthly</changefreq>\n` +
+      `    <priority>0.5</priority>\n` +
+      `  </url>`,
+    );
+    existingLocs.add(loc);
+    matchedCount++;
+  }
+
   const closing = "</urlset>";
   if (!baseXml.includes(closing)) {
     return fail("Static sitemap has no </urlset> closing tag.");
   }
 
-  const injection = blocks.length > 0 ? blocks.join("\n") + "\n" : "";
+  const allBlocks = [...blocks, ...problematiquesBlocks];
+  const injection = allBlocks.length > 0 ? allBlocks.join("\n") + "\n" : "";
   const finalXml = baseXml.replace(
     closing,
-    (blocks.length > 0 ? `\n${injection}` : "") + closing,
+    (allBlocks.length > 0 ? `\n${injection}` : "") + closing,
   );
 
   // Sanity: balanced <url> tags and no duplicate <loc>.
@@ -153,8 +250,9 @@ async function main() {
   await writeFile(DIST_SITEMAP, finalXml, "utf8");
 
   const staticCount = (baseXml.match(/<url>/g) || []).length;
+  const problematiquesTotal = problematiquesBlocks.length;
   console.log(
-    `[generate-sitemap] ✓ ${staticCount} static URLs + ${blocks.length} praticien fiches = ${openCount} total → dist/sitemap.xml`,
+    `[generate-sitemap] ✓ ${staticCount} static + ${blocks.length} praticiens + ${problematiquesTotal} problematiques = ${openCount} total → dist/sitemap.xml`,
   );
 }
 
