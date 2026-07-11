@@ -80,6 +80,17 @@ jobs:
             exit 1
           fi
           echo "✓ $COUNT praticien URLs in sitemap"
+          echo "=== Checking praticien pages are prerendered ==="
+          if ! ls dist/praticien/*/index.html >/dev/null 2>&1; then
+            echo "✗ No prerendered praticien page found"
+            exit 1
+          fi
+          echo "✓ $(ls -d dist/praticien/*/index.html | wc -l) praticien pages prerendered"
+          if ! ls dist/patients/problematiques/*/index.html >/dev/null 2>&1; then
+            echo "✗ No prerendered problematique detail found"
+            exit 1
+          fi
+          echo "✓ $(ls -d dist/patients/problematiques/*/index.html | wc -l) problematique details prerendered"
 
       - name: Upload dist artifact
         if: success()

@@ -289,6 +289,60 @@ async function main() {
   }
   console.log(`[prerender] Using browser: ${execPath}`);
 
+  // ── Dynamic routes: praticiens publiés + détails problématiques matchés ──
+  // Fetch avant lancement du navigateur pour un mode d'échec clair.
+  const dynamicRoutes = [];
+  if (process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+    try {
+      const {
+        fetchPraticiensPublies,
+        fetchProblematiques,
+        matchProblematiques,
+      } = await import("./publishedRoutes.mjs");
+      const praticiens = await fetchPraticiensPublies();
+      const problematiques = await fetchProblematiques();
+      const matched = matchProblematiques(problematiques, praticiens);
+
+      const seenP = new Set();
+      for (const p of praticiens) {
+        const slug = (p?.slug ?? "").toString().trim();
+        if (!slug || seenP.has(slug)) continue;
+        seenP.add(slug);
+        dynamicRoutes.push({ path: `/praticien/${slug}`, type: "strategic" });
+      }
+      const seenPb = new Set();
+      for (const pb of matched) {
+        const slug = (pb?.slug ?? "").toString().trim();
+        if (!slug || seenPb.has(slug)) continue;
+        seenPb.add(slug);
+        dynamicRoutes.push({
+          path: `/patients/problematiques/${slug}`,
+          type: "strategic",
+        });
+      }
+      console.log(
+        `[prerender] Dynamic routes: ${seenP.size} praticiens + ${seenPb.size} problematiques détails`,
+      );
+    } catch (err) {
+      const msg = `[prerender] Failed to fetch dynamic routes: ${err?.message || err}`;
+      if (OPTIONAL) {
+        console.warn(`${msg} — PRERENDER_OPTIONAL=true, skipping dynamic routes.`);
+      } else {
+        console.error(msg);
+        process.exit(1);
+      }
+    }
+  } else {
+    const msg = "[prerender] Missing VITE_SUPABASE_URL or VITE_SUPABASE_PUBLISHABLE_KEY — dynamic routes skipped.";
+    if (OPTIONAL) {
+      console.warn(msg);
+    } else {
+      console.error(msg);
+      process.exit(1);
+    }
+  }
+  const allRoutes = [...ROUTES, ...dynamicRoutes];
+
   // 1. Serve dist/ locally
   const server = createServer((req, res) =>
     handler(req, res, {
@@ -310,7 +364,7 @@ async function main() {
   let fail = 0;
   const report = [];
 
-  for (const route of ROUTES) {
+  for (const route of allRoutes) {
     const entry = {
       url: route.path,
       type: route.type,
@@ -460,7 +514,7 @@ async function main() {
 
   const total = report.filter((r) => r.prerendered).length;
   console.log(
-    `\n[prerender] Done: ${total} prerendered, ${fail} failed out of ${ROUTES.length} routes.`
+    `\n[prerender] Done: ${total} prerendered, ${fail} failed out of ${allRoutes.length} routes.`
   );
 
   // Fail on critical SEO issues on strategic pages (even if prerender succeeded)
