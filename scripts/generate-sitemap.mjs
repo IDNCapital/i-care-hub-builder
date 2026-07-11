@@ -19,6 +19,11 @@ import { readFile, writeFile } from "fs/promises";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { existsSync } from "fs";
+import {
+  fetchPraticiensPublies,
+  fetchProblematiques,
+  matchProblematiques,
+} from "./publishedRoutes.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -52,28 +57,6 @@ function toIsoDate(value) {
   return d.toISOString().slice(0, 10);
 }
 
-// dupliqué de src/lib/taxonomy.ts (contexte Node build), à garder synchronisé
-function norm(s) {
-  return String(s ?? "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-
-async function fetchJson(url) {
-  const res = await fetch(url, {
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${SUPABASE_KEY}`,
-      Accept: "application/json",
-    },
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const json = await res.json();
-  if (!Array.isArray(json)) throw new Error("non-array JSON");
-  return json;
-}
-
 async function main() {
   if (!SUPABASE_URL || !SUPABASE_KEY) {
     return fail("Missing VITE_SUPABASE_URL or VITE_SUPABASE_PUBLISHABLE_KEY env var.");
@@ -86,26 +69,9 @@ async function main() {
   const baseXml = await readFile(STATIC_SITEMAP, "utf8");
 
   // Fetch published praticiens (RLS enforces validee + actif).
-  const url =
-    `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/praticiens` +
-    `?select=slug,updated_at&statut_validation=eq.validee&actif=eq.true&order=nom.asc`;
-
   let rows;
   try {
-    const res = await fetch(url, {
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`,
-        Accept: "application/json",
-      },
-    });
-    if (!res.ok) {
-      return fail(`Supabase REST call failed: HTTP ${res.status}`);
-    }
-    rows = await res.json();
-    if (!Array.isArray(rows)) {
-      return fail("Supabase REST call returned non-array JSON.");
-    }
+    rows = await fetchPraticiensPublies();
   } catch (e) {
     return fail(`Supabase REST call error: ${e?.message || e}`);
   }
@@ -115,36 +81,16 @@ async function main() {
   }
 
   // Fetch problématiques (RLS filtre actif=true).
-  const problematiquesUrl =
-    `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/problematiques` +
-    `?select=slug,nom,synonymes,updated_at&order=nom.asc`;
   let problematiques;
   try {
-    problematiques = await fetchJson(problematiquesUrl);
+    problematiques = await fetchProblematiques();
   } catch (e) {
     return fail(`Supabase REST call error (problematiques): ${e?.message || e}`);
   }
 
-  // Fetch tags des praticiens publiés (pour matcher côté build).
-  const tagsUrl =
-    `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/praticiens` +
-    `?select=problematiques,problematiques_derivees&statut_validation=eq.validee&actif=eq.true`;
-  let praticiensTags;
-  try {
-    praticiensTags = await fetchJson(tagsUrl);
-  } catch (e) {
-    return fail(`Supabase REST call error (praticiens tags): ${e?.message || e}`);
-  }
-
-  // Pré-calcule pour chaque praticien la liste normalisée de ses tags
-  // (problematiques_derivees, fallback problematiques si dérivé vide).
-  const praticiensNormTags = praticiensTags.map((pr) => {
-    const source =
-      (Array.isArray(pr.problematiques_derivees) && pr.problematiques_derivees.length > 0
-        ? pr.problematiques_derivees
-        : pr.problematiques) ?? [];
-    return new Set(source.map(norm));
-  });
+  // Ordre d'origine : matchProblematiques garde l'ordre reçu (nom.asc).
+  const matchedProblematiques = matchProblematiques(problematiques, rows);
+  const matchedSet = new Set(matchedProblematiques.map((p) => p.slug));
 
   // Existing <loc> values in the static base (for dedup on the entire file).
   const existingLocs = new Set(
@@ -192,13 +138,7 @@ async function main() {
   for (const pb of problematiques) {
     const slug = (pb && pb.slug ? String(pb.slug) : "").trim();
     if (!slug) continue;
-    const targets = [pb.nom, ...(Array.isArray(pb.synonymes) ? pb.synonymes : [])]
-      .map(norm)
-      .filter(Boolean);
-    const hasMatch = praticiensNormTags.some((tagSet) =>
-      targets.some((t) => tagSet.has(t)),
-    );
-    if (!hasMatch) continue;
+    if (!matchedSet.has(slug)) continue;
 
     const loc = `https://i-ca.re/patients/problematiques/${slug}`;
     if (existingLocs.has(loc)) continue;
