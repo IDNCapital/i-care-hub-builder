@@ -59,6 +59,7 @@ const ROUTES = [
   { path: "/temoignages-praticiens", type: "strategic" },
   { path: "/parrainage", type: "strategic" },
   { path: "/patients", type: "strategic" },
+  { path: "/patients/problematiques", type: "strategic" },
   // FR installation matrix (LOT 4-bis-A) — index + 9 professions × 4 cabinets pipeline
   { path: "/sinstaller", type: "strategic" },
   ...["osteopathe","sophrologue","psychologue","psychotherapeute","dieteticien-nutritionniste","naturopathe","hypnotherapeute","medecin-generaliste","sage-femme"].flatMap(p =>
