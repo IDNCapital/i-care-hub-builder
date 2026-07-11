@@ -73,6 +73,13 @@ jobs:
             exit 1
           fi
           echo "✓ No www.i-ca.re found"
+          echo "=== Checking sitemap contains praticien URLs ==="
+          COUNT=$(grep -c "i-ca.re/praticien/" dist/sitemap.xml || true)
+          if [ "$COUNT" -lt 1 ]; then
+            echo "✗ No /praticien/ URL in dist/sitemap.xml"
+            exit 1
+          fi
+          echo "✓ $COUNT praticien URLs in sitemap"
 
       - name: Upload dist artifact
         if: success()
