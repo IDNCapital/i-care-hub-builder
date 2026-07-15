@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { supabase } from "@/integrations/supabase/client";
+import { Analytics } from "@/lib/analytics";
 import {
   ArrowRight,
   Shield,
@@ -125,6 +126,7 @@ export default function Professionnels() {
       if (data?.error) throw new Error(data.error);
 
       toast.success(t("professionals.formSuccess"));
+      Analytics.formSubmission("installation_praticien", window.location.pathname);
       setFormData({ firstName: "", lastName: "", email: "", phone: "", organisation: "", website: "", profession: "", ville: "", neighbourhood: "", dateInstallation: "", cabinetCount: "", cabinetConfig: "", message: "" });
       setRgpdConsent(false);
     } catch (err) {

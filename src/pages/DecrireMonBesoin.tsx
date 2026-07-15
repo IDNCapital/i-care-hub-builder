@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
+import { Analytics } from "@/lib/analytics";
 
 const CABINETS = [
   { slug: "", label: "Sans préférence" },
@@ -129,6 +130,7 @@ export default function DecrireMonBesoin() {
         return;
       }
       setState("success");
+      Analytics.formSubmission("conciergerie_patients", "/patients/decrire-mon-besoin");
     } catch (err) {
       console.error("[decrire-mon-besoin] submit error:", err);
       setErrorMsg("Une erreur est survenue. Merci de réessayer.");

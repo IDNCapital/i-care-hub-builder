@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { supabase } from "@/integrations/supabase/client";
+import { Analytics } from "@/lib/analytics";
 import { FadeImage } from "@/components/FadeImage";
 import { PROJECT_IMAGES } from "@/lib/projectImages";
 import {
@@ -126,6 +127,7 @@ export default function LocationCabinetToulouse() {
       if (data?.error === "rate_limited") { toast.error("Une demande a déjà été envoyée récemment. Réessayez dans un instant."); return; }
       if (data?.error) throw new Error(data.error);
       toast.success("Merci ! Nous vous recontactons dès qu'un cabinet correspondant à votre projet est disponible.");
+      Analytics.formSubmission("installation_toulouse", "/location-cabinet-toulouse");
       setForm({ firstName: "", lastName: "", email: "", phone: "", profession: "", neighbourhood: "", days: "", dateInstall: "", message: "" });
       setConsent(false);
     } catch (err) {
