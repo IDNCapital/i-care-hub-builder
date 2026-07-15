@@ -225,3 +225,34 @@ export const ALL_PUBLICS: string[] = Array.from(
 );
 
 export type TaxonomyDimension = "specialite" | "problematique" | "public";
+
+/**
+ * Matching partagé pour les pages /patients/specialite/[slug].
+ * True si la profession du praticien OU un élément de specialites_derivees
+ * (fallback specialites si dérivé vide) correspond, après normalisation,
+ * au nom canonique ou à un synonyme de la spécialité.
+ */
+export interface PraticienForSpecialiteMatch {
+  profession?: string | null;
+  specialites?: string[] | null;
+  specialites_derivees?: string[] | null;
+}
+
+export interface SpecialiteForMatch {
+  nom: string;
+  synonymes?: string[] | null;
+}
+
+export function matchSpecialite(
+  praticien: PraticienForSpecialiteMatch,
+  specialite: SpecialiteForMatch,
+): boolean {
+  const targets = [specialite.nom, ...(specialite.synonymes ?? [])].map(norm);
+  const derived = praticien.specialites_derivees ?? [];
+  const raw = praticien.specialites ?? [];
+  const specSource = derived.length > 0 ? derived : raw;
+  const candidates: string[] = [];
+  if (praticien.profession) candidates.push(praticien.profession);
+  candidates.push(...specSource);
+  return candidates.some((c) => targets.includes(norm(c)));
+}
