@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { supabase } from "@/integrations/supabase/client";
+import { Analytics } from "@/lib/analytics";
 import {
   ArrowRight,
   MapPin,
@@ -85,6 +86,7 @@ export default function Contact() {
       if (data?.error) throw new Error(data.error);
 
       toast.success(t("contact.success"));
+      Analytics.formSubmission("contact", window.location.pathname);
       setFormData({ nom: "", email: "", telephone: "", organisation: "", message: "" });
       setSelectedType(null);
       setRgpdConsent(false);
