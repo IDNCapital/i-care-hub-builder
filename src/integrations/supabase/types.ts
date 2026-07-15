@@ -946,6 +946,42 @@ export type Database = {
         }
         Relationships: []
       }
+      specialites: {
+        Row: {
+          actif: boolean
+          created_at: string
+          description_courte: string
+          description_longue: string | null
+          id: string
+          nom: string
+          slug: string
+          synonymes: string[]
+          updated_at: string
+        }
+        Insert: {
+          actif?: boolean
+          created_at?: string
+          description_courte: string
+          description_longue?: string | null
+          id?: string
+          nom: string
+          slug: string
+          synonymes?: string[]
+          updated_at?: string
+        }
+        Update: {
+          actif?: boolean
+          created_at?: string
+          description_courte?: string
+          description_longue?: string | null
+          id?: string
+          nom?: string
+          slug?: string
+          synonymes?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       taxonomy_candidates: {
         Row: {
           dimension: string
