@@ -298,10 +298,14 @@ async function main() {
         fetchPraticiensPublies,
         fetchProblematiques,
         matchProblematiques,
+        fetchSpecialites,
+        matchSpecialites,
       } = await import("./publishedRoutes.mjs");
       const praticiens = await fetchPraticiensPublies();
       const problematiques = await fetchProblematiques();
       const matched = matchProblematiques(problematiques, praticiens);
+      const specialites = await fetchSpecialites();
+      const matchedSp = matchSpecialites(specialites, praticiens);
 
       const seenP = new Set();
       for (const p of praticiens) {
@@ -320,8 +324,18 @@ async function main() {
           type: "strategic",
         });
       }
+      const seenSp = new Set();
+      for (const sp of matchedSp) {
+        const slug = (sp?.slug ?? "").toString().trim();
+        if (!slug || seenSp.has(slug)) continue;
+        seenSp.add(slug);
+        dynamicRoutes.push({
+          path: `/patients/specialite/${slug}`,
+          type: "strategic",
+        });
+      }
       console.log(
-        `[prerender] Dynamic routes: ${seenP.size} praticiens + ${seenPb.size} problematiques détails`,
+        `[prerender] Dynamic routes: ${seenP.size} praticiens + ${seenPb.size} problematiques + ${seenSp.size} specialites`,
       );
     } catch (err) {
       const msg = `[prerender] Failed to fetch dynamic routes: ${err?.message || err}`;

@@ -91,6 +91,11 @@ jobs:
             exit 1
           fi
           echo "✓ $(ls -d dist/patients/problematiques/*/index.html | wc -l) problematique details prerendered"
+          if ! ls dist/patients/specialite/*/index.html >/dev/null 2>&1; then
+            echo "✗ No prerendered specialite page found"
+            exit 1
+          fi
+          echo "✓ $(ls -d dist/patients/specialite/*/index.html | wc -l) specialite pages prerendered"
 
       - name: Upload dist artifact
         if: success()
