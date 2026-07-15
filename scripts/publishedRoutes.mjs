@@ -47,7 +47,7 @@ function base() {
 export async function fetchPraticiensPublies() {
   const url =
     `${base()}/rest/v1/praticiens` +
-    `?select=slug,updated_at,problematiques,problematiques_derivees` +
+    `?select=slug,updated_at,profession,specialites,specialites_derivees,problematiques,problematiques_derivees` +
     `&statut_validation=eq.validee&actif=eq.true&order=nom.asc`;
   return fetchJson(url);
 }
@@ -59,6 +59,17 @@ export async function fetchPraticiensPublies() {
 export async function fetchProblematiques() {
   const url =
     `${base()}/rest/v1/problematiques` +
+    `?select=slug,nom,synonymes,updated_at&order=nom.asc`;
+  return fetchJson(url);
+}
+
+/**
+ * All active specialités (RLS filters actif=true).
+ * Returns [{slug, nom, synonymes, updated_at}].
+ */
+export async function fetchSpecialites() {
+  const url =
+    `${base()}/rest/v1/specialites` +
     `?select=slug,nom,synonymes,updated_at&order=nom.asc`;
   return fetchJson(url);
 }
@@ -92,6 +103,42 @@ export function matchProblematiques(problematiques, praticiens) {
       .filter(Boolean);
     const hasMatch = tagSets.some((tagSet) => targets.some((t) => tagSet.has(t)));
     if (hasMatch) matched.push(pb);
+  }
+  return matched;
+}
+
+/**
+ * Pre-compute per-praticien normalized specialite candidate Set :
+ * norm(profession) + norm(specialites_derivees) (fallback specialites).
+ * Aligné sur src/lib/taxonomy.ts matchSpecialite().
+ */
+export function praticiensNormSpecialiteSets(praticiens) {
+  return praticiens.map((pr) => {
+    const derived = Array.isArray(pr.specialites_derivees) ? pr.specialites_derivees : [];
+    const raw = Array.isArray(pr.specialites) ? pr.specialites : [];
+    const specSource = derived.length > 0 ? derived : raw;
+    const set = new Set();
+    if (pr.profession) set.add(norm(pr.profession));
+    for (const s of specSource) set.add(norm(s));
+    return set;
+  });
+}
+
+/**
+ * Subset of `specialites` for which ≥1 praticien matches
+ * (norm(profession) OU specialites_derivees/specialites vs nom + synonymes).
+ */
+export function matchSpecialites(specialites, praticiens) {
+  const candSets = praticiensNormSpecialiteSets(praticiens);
+  const matched = [];
+  for (const sp of specialites) {
+    const slug = (sp && sp.slug ? String(sp.slug) : "").trim();
+    if (!slug) continue;
+    const targets = [sp.nom, ...(Array.isArray(sp.synonymes) ? sp.synonymes : [])]
+      .map(norm)
+      .filter(Boolean);
+    const hasMatch = candSets.some((set) => targets.some((t) => set.has(t)));
+    if (hasMatch) matched.push(sp);
   }
   return matched;
 }
