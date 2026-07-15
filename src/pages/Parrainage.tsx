@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { localePath } from "@/lib/routes";
+import { Analytics } from "@/lib/analytics";
 import { z } from "zod";
 
 // ─────────────────────────────────────────────
@@ -244,6 +245,7 @@ export default function Parrainage() {
     // and acknowledgement email to the sponsor (parrain_email).
     setSubmittedFilleulNom(payload.filleul_nom);
     setSuccess(true);
+    Analytics.formSubmission("parrainage", "/parrainage");
   };
 
   // ─── JSON-LD ──────────────────────────────
