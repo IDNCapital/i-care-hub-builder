@@ -10,8 +10,10 @@ import {
   PUBLIC_CIBLE_GROUPS,
   CABINETS_LABEL,
   norm,
+  matchSpecialite,
 } from "@/lib/taxonomy";
 import { CartePraticien } from "@/components/patients/CartePraticien";
+import { useSpecialites } from "@/hooks/useSpecialites";
 
 interface Props {
   praticiens: PraticienPublic[];
@@ -176,6 +178,15 @@ export function PatientsOuvert({ praticiens }: Props) {
   const [besoins, setBesoins] = useState<Set<string>>(new Set());
   const [publics, setPublics] = useState<Set<string>>(new Set());
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { data: specialites } = useSpecialites();
+
+  const specialitesAvecPraticiens = useMemo(
+    () =>
+      specialites.filter((s) =>
+        praticiens.some((pr) => matchSpecialite(pr, s)),
+      ),
+    [specialites, praticiens],
+  );
 
   const cabinetOptions = useMemo(
     () => Array.from(new Set(praticiens.map((p) => p.cabinet_slug))).sort(),
@@ -389,6 +400,28 @@ export function PatientsOuvert({ praticiens }: Props) {
           </p>
         </div>
       </section>
+
+      {/* Recherches fréquentes (Lot 11.3b) */}
+      {specialitesAvecPraticiens.length > 0 && (
+        <section className="pt-4 pb-8 bg-cream">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
+            <h3 className="font-sans font-bold uppercase text-[11px] tracking-[0.15em] text-sage mb-4">
+              Recherches fréquentes
+            </h3>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {specialitesAvecPraticiens.map((s) => (
+                <a
+                  key={s.slug}
+                  href={`/patients/specialite/${s.slug}`}
+                  className="text-[13px] font-sans px-3 py-1.5 rounded-full border bg-cream text-anthracite border-[#BFBFBF] hover:border-sage hover:text-sage transition-colors"
+                >
+                  {s.nom}
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA conciergerie */}
       <section className="py-20 bg-cream border-t border-border">
