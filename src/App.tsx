@@ -36,6 +36,7 @@ import Patients from "./pages/Patients";
 import DecrireMonBesoin from "./pages/DecrireMonBesoin";
 import ProblematiquesIndex from "./pages/ProblematiquesIndex";
 import ProblematiqueDetail from "./pages/ProblematiqueDetail";
+import SpecialiteDetail from "./pages/SpecialiteDetail";
 import Parrainage from "./pages/Parrainage";
 import TemoignagesPraticiens from "./pages/TemoignagesPraticiens";
 import SinstallerIndex from "./pages/SinstallerIndex";
@@ -265,6 +266,7 @@ const App = () => (
                 <Route path="/patients/decrire-mon-besoin" element={<DecrireMonBesoin />} />
                 <Route path="/patients/problematiques" element={<ProblematiquesIndex />} />
                 <Route path="/patients/problematiques/:slug" element={<ProblematiqueDetail />} />
+                <Route path="/patients/specialite/:slug" element={<SpecialiteDetail />} />
                 <Route path="/parrainage" element={<Parrainage />} />
                 <Route path="/temoignages-praticiens" element={<TemoignagesPraticiens />} />
                 <Route path="/sinstaller" element={<SinstallerIndex />} />
