@@ -105,6 +105,7 @@ const REDIRECTS = [
   { from: "/trouver-cabinet-medical-bordeaux", to: "/location-cabinet-bordeaux" },
   { from: "/en/setting-up-practice", to: "/en/health-professionals" },
   { from: "/en/finding-medical-office-bordeaux", to: "/en/office-rental-bordeaux" },
+  { from: "/praticien/vanessa-marty", to: "/patients" },
 ];
 
 // ── Chromium resolution ─────────────────────────────────────────────
