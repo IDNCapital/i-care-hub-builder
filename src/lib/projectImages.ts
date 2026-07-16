@@ -33,6 +33,12 @@ import floiracFacade from "@/assets/floirac/facade.png";
 // Lormont
 import lormontFacade from "@/assets/lormont/facade.webp";
 
+// Le Bouscat
+import leBouscatInsertionFacade from "@/assets/le-bouscat/insertion-facade.webp";
+import leBouscatProjectionAttente from "@/assets/le-bouscat/projection-attente.webp";
+import leBouscatProjectionCab from "@/assets/le-bouscat/projection-cab.webp";
+import leBouscatProjectionCour from "@/assets/le-bouscat/projection-cour.webp";
+
 // Portrait
 import portraitDuo from "@/assets/portrait-duo.webp";
 
@@ -86,6 +92,10 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
   "i-ca-re-lormont": {
     hero: lormontFacade,
     gallery: [lormontFacade],
+  },
+  "i-ca-re-le-bouscat": {
+    hero: leBouscatInsertionFacade,
+    gallery: [leBouscatInsertionFacade, leBouscatProjectionAttente, leBouscatProjectionCab, leBouscatProjectionCour],
   },
 };
 
