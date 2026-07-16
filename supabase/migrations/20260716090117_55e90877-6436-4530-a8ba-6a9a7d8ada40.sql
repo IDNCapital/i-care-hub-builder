@@ -1,0 +1,1 @@
+ALTER TABLE public.specialites ADD COLUMN IF NOT EXISTS cabinet_slug text NULL DEFAULT NULL;

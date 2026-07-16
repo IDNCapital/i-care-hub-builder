@@ -236,17 +236,22 @@ export interface PraticienForSpecialiteMatch {
   profession?: string | null;
   specialites?: string[] | null;
   specialites_derivees?: string[] | null;
+  cabinet_slug?: string | null;
 }
 
 export interface SpecialiteForMatch {
   nom: string;
   synonymes?: string[] | null;
+  cabinet_slug?: string | null;
 }
 
 export function matchSpecialite(
   praticien: PraticienForSpecialiteMatch,
   specialite: SpecialiteForMatch,
 ): boolean {
+  if (specialite.cabinet_slug && praticien.cabinet_slug !== specialite.cabinet_slug) {
+    return false;
+  }
   const targets = [specialite.nom, ...(specialite.synonymes ?? [])].map(norm);
   const derived = praticien.specialites_derivees ?? [];
   const raw = praticien.specialites ?? [];

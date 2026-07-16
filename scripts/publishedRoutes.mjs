@@ -47,7 +47,7 @@ function base() {
 export async function fetchPraticiensPublies() {
   const url =
     `${base()}/rest/v1/praticiens` +
-    `?select=slug,updated_at,profession,specialites,specialites_derivees,problematiques,problematiques_derivees` +
+    `?select=slug,updated_at,profession,specialites,specialites_derivees,problematiques,problematiques_derivees,cabinet_slug` +
     `&statut_validation=eq.validee&actif=eq.true&order=nom.asc`;
   return fetchJson(url);
 }
@@ -70,7 +70,7 @@ export async function fetchProblematiques() {
 export async function fetchSpecialites() {
   const url =
     `${base()}/rest/v1/specialites` +
-    `?select=slug,nom,synonymes,updated_at&order=nom.asc`;
+    `?select=slug,nom,synonymes,updated_at,cabinet_slug&order=nom.asc`;
   return fetchJson(url);
 }
 
@@ -127,13 +127,18 @@ export function praticiensNormSpecialiteSets(praticiens) {
 /**
  * Subset of `specialites` for which ≥1 praticien matches
  * (norm(profession) OU specialites_derivees/specialites vs nom + synonymes).
+ * Une spécialité avec cabinet_slug non nul ne matche que sur les praticiens
+ * du même cabinet_slug (pages quartier).
  */
 export function matchSpecialites(specialites, praticiens) {
-  const candSets = praticiensNormSpecialiteSets(praticiens);
   const matched = [];
   for (const sp of specialites) {
     const slug = (sp && sp.slug ? String(sp.slug) : "").trim();
     if (!slug) continue;
+    const scoped = sp.cabinet_slug
+      ? praticiens.filter((pr) => pr.cabinet_slug === sp.cabinet_slug)
+      : praticiens;
+    const candSets = praticiensNormSpecialiteSets(scoped);
     const targets = [sp.nom, ...(Array.isArray(sp.synonymes) ? sp.synonymes : [])]
       .map(norm)
       .filter(Boolean);

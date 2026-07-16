@@ -8,7 +8,7 @@ import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import { useSpecialites } from "@/hooks/useSpecialites";
 import { usePraticiensPublics } from "@/hooks/usePraticiensPublics";
 import { CartePraticien } from "@/components/patients/CartePraticien";
-import { matchSpecialite } from "@/lib/taxonomy";
+import { matchSpecialite, CABINETS_LABEL } from "@/lib/taxonomy";
 import NotFound from "@/pages/NotFound";
 
 const BASE_URL = "https://i-ca.re";
@@ -50,8 +50,13 @@ export default function SpecialiteDetail() {
   }
 
   const canonicalPath = `/patients/specialite/${specialite.slug}`;
-  const h1 = `${specialite.nom} à Bordeaux`;
-  const title = `${specialite.nom} à Bordeaux : praticiennes et praticiens I-CA.RE`;
+  const cabinetLabel = specialite.cabinet_slug ? CABINETS_LABEL[specialite.cabinet_slug] : null;
+  const h1 = cabinetLabel
+    ? `${specialite.nom} à ${cabinetLabel}, Bordeaux`
+    : `${specialite.nom} à Bordeaux`;
+  const title = cabinetLabel
+    ? `${specialite.nom} à ${cabinetLabel} (Bordeaux) : praticiennes et praticiens I-CA.RE`
+    : `${specialite.nom} à Bordeaux : praticiennes et praticiens I-CA.RE`;
   const description = truncateDesc(specialite.description_courte, 155);
   const noIndex = matchingPraticiens.length === 0;
 
@@ -61,7 +66,12 @@ export default function SpecialiteDetail() {
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Patients", item: `${BASE_URL}/patients` },
         { "@type": "ListItem", position: 2, name: "Annuaire", item: `${BASE_URL}/patients` },
-        { "@type": "ListItem", position: 3, name: specialite.nom, item: `${BASE_URL}${canonicalPath}` },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: cabinetLabel ? h1 : specialite.nom,
+          item: `${BASE_URL}${canonicalPath}`,
+        },
       ],
     },
     {
