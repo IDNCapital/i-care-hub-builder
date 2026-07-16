@@ -26,3 +26,13 @@ export function formatDateOuverture(dateString: string | null): string {
 export function cabinetNomCourt(name: string): string {
   return name.replace(/^I[-‑]CA\.RE\s+/i, "").trim();
 }
+
+/**
+ * Contraction de la préposition « à » devant un nom de ville avec article.
+ * "Le Bouscat" → "au Bouscat", "Les Angles" → "aux Angles", sinon "à {ville}".
+ */
+export function aVille(city: string): string {
+  if (/^Le\s/i.test(city)) return "au " + city.replace(/^Le\s/i, "");
+  if (/^Les\s/i.test(city)) return "aux " + city.replace(/^Les\s/i, "");
+  return "à " + city;
+}

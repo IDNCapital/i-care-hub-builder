@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { MapPin, ChevronRight } from "lucide-react";
 import NotFound from "@/pages/NotFound";
 import { useInstallationPage, useProfessions, useCabinetsPipeline } from "@/hooks/useInstallation";
-import { cabinetNomCourt, formatDateOuverture } from "@/lib/installation";
+import { cabinetNomCourt, formatDateOuverture, aVille } from "@/lib/installation";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { CabinetVisuel } from "@/components/CabinetVisuel";
