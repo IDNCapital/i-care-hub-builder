@@ -36,7 +36,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 import { callAdminFunction } from "@/lib/adminAuth";
 import type { AvisCache, Cabinet, Praticien } from "@/pages/admin/AdminPraticiens";
 import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
@@ -231,15 +230,31 @@ export function PraticienDrawer({
     }
     setUploading(true);
     try {
-      const ext = file.type.split("/")[1] === "jpeg" ? "jpg" : file.type.split("/")[1];
-      const slug = form.slug || slugify(`${form.prenom} ${form.nom}`) || crypto.randomUUID();
-      const path = `${slug}-${Date.now()}.${ext}`;
-      const { error: upErr } = await supabase.storage
-        .from("praticiens-photos")
-        .upload(path, file, { upsert: true, contentType: file.type });
-      if (upErr) throw upErr;
-      const { data } = supabase.storage.from("praticiens-photos").getPublicUrl(path);
-      update("photo_url", data.publicUrl);
+      const slugBase = form.slug || slugify(`${form.prenom} ${form.nom}`);
+      const slug = slugBase && /^[a-z0-9-]+$/.test(slugBase) ? slugBase : "praticien";
+      const buffer = await file.arrayBuffer();
+      // Encode ArrayBuffer -> base64 sans dépasser la stack
+      const bytes = new Uint8Array(buffer);
+      let binary = "";
+      const chunk = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunk) {
+        binary += String.fromCharCode.apply(
+          null,
+          Array.from(bytes.subarray(i, i + chunk)) as unknown as number[],
+        );
+      }
+      const data_base64 = btoa(binary);
+      const res = await callAdminFunction<{ publicUrl: string }>(
+        "admin-upload-praticien-photo",
+        {
+          slug,
+          filename: file.name,
+          content_type: file.type,
+          data_base64,
+        },
+      );
+      if (!res?.publicUrl) throw new Error("Réponse invalide");
+      update("photo_url", res.publicUrl);
       toast.success("Photo téléversée");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Échec du téléversement");
