@@ -42,6 +42,7 @@ const ROUTES = [
   { path: "/projets/i-ca-re-floirac", type: "strategic" },
   { path: "/projets/i-ca-re-lormont", type: "strategic" },
   { path: "/projets/i-ca-re-toulouse-capitole", type: "strategic" },
+  { path: "/projets/i-ca-re-le-bouscat", type: "strategic" },
   { path: "/professionnels", type: "strategic" },
   { path: "/location-cabinet-bordeaux", type: "strategic" },
   { path: "/location-cabinet-toulouse", type: "strategic" },
