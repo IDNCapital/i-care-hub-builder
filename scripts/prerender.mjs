@@ -64,7 +64,7 @@ const ROUTES = [
   // FR installation matrix (LOT 4-bis-A) — index + 9 professions × 4 cabinets pipeline
   { path: "/sinstaller", type: "strategic" },
   ...["osteopathe","sophrologue","psychologue","psychotherapeute","dieteticien-nutritionniste","naturopathe","hypnotherapeute","medecin-generaliste","sage-femme"].flatMap(p =>
-    ["bordeaux-chartrons","toulouse-capitole","floirac","lormont"].map(v => ({
+    ["bordeaux-chartrons","toulouse-capitole","floirac","lormont","le-bouscat"].map(v => ({
       path: `/sinstaller/${p}/${v}`, type: "strategic",
     }))
   ),
