@@ -47,15 +47,22 @@ export default function NotreApproche() {
             </p>
           </div>
 
-          {/* Jazmin */}
-          <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
-            <div>
-              <FadeImage
-                src={SECTION_IMAGES.portrait}
-                alt={`${t("approach.jazminName")} — ${t("approach.jazminRole")}`}
-                className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3]"
-              />
-            </div>
+          {/* Duo portrait */}
+          <div className="max-w-4xl mx-auto mb-16">
+            <FadeImage
+              src={SECTION_IMAGES.portraitDuo}
+              alt={
+                lang === "fr"
+                  ? "Nicolas Idelot et Jazmin Cousins, fondateurs d'I-CA.RE"
+                  : "Nicolas Idelot and Jazmin Cousins, founders of I-CA.RE"
+              }
+              className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/5] md:aspect-[3/2]"
+            />
+          </div>
+
+          {/* Bios side by side */}
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+            {/* Jazmin */}
             <div>
               <p className="text-primary font-medium mb-2">{t("approach.jazminRole")}</p>
               <h3 className="text-3xl md:text-4xl font-bold mb-6">{t("approach.jazminName")}</h3>
@@ -71,18 +78,9 @@ export default function NotreApproche() {
                 </a>
               </Button>
             </div>
-          </div>
 
-          {/* Nicolas */}
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="lg:order-2">
-              <FadeImage
-                src={SECTION_IMAGES.portraitNicolas}
-                alt={`${t("approach.nicolasName")} — ${t("approach.nicolasRole")}`}
-                className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/3] object-top"
-              />
-            </div>
-            <div className="lg:order-1">
+            {/* Nicolas */}
+            <div>
               <p className="text-primary font-medium mb-2">{t("approach.nicolasRole")}</p>
               <h3 className="text-3xl md:text-4xl font-bold mb-6">{t("approach.nicolasName")}</h3>
               <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
