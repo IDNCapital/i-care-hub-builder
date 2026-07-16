@@ -19,6 +19,7 @@ export function HeroSlideshow({ lang }: Props) {
   const [firstLoaded, setFirstLoaded] = useState(false);
   const idleRef = useRef<number | ReturnType<typeof setTimeout> | null>(null);
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const imgElsRef = useRef<Record<number, HTMLImageElement>>({});
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -76,6 +77,10 @@ export function HeroSlideshow({ lang }: Props) {
     const id = setInterval(() => {
       setActiveIndex((prev) => {
         const next = (prev + 1) % slides.length;
+        const el = imgElsRef.current[next];
+        if (el && typeof el.decode === "function") {
+          el.decode().catch(() => {});
+        }
         setPrevIndex(prev);
         if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
         fadeTimerRef.current = setTimeout(() => setPrevIndex(null), FADE_DURATION + 50);
@@ -83,7 +88,7 @@ export function HeroSlideshow({ lang }: Props) {
       });
     }, SLIDE_DURATION);
     return () => clearInterval(id);
-  }, [shouldAnimate, canLoadRest, slides.length]);
+  }, [shouldAnimate, canLoadRest, ...);
 
   useEffect(() => {
     if (!canLoadRest || !shouldAnimate) return;
