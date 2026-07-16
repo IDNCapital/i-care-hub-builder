@@ -88,7 +88,7 @@ export function HeroSlideshow({ lang }: Props) {
       });
     }, SLIDE_DURATION);
     return () => clearInterval(id);
-  }, [shouldAnimate, canLoadRest, ...);
+  }, [shouldAnimate, canLoadRest, slides.length]);
 
   useEffect(() => {
     if (!canLoadRest || !shouldAnimate) return;
@@ -114,7 +114,7 @@ export function HeroSlideshow({ lang }: Props) {
   const renderSlides = canLoadRest ? slides : [slides[0]];
 
   return (
-    <div className="absolute inset-0 overflow-hidden" aria-hidden="true" style={{ contain: "paint" }}>
+    <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
       {/* ── Placeholder: dominant color shown instantly, hides when image loads ── */}
       <div
         className="absolute inset-0 transition-opacity duration-700 ease-out"
@@ -138,7 +138,8 @@ export function HeroSlideshow({ lang }: Props) {
             key={slide.src}
             src={slide.src}
             alt={alt}
-            loading={realIndex === 0 ? "eager" : "lazy"}
+            ref={(el) => { if (el) imgElsRef.current[realIndex] = el; }}
+            loading="eager"
             decoding="async"
             fetchPriority={realIndex === 0 ? "high" : "low"}
             sizes="100vw"
