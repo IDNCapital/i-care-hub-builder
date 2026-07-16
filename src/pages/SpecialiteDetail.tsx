@@ -66,7 +66,12 @@ export default function SpecialiteDetail() {
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Patients", item: `${BASE_URL}/patients` },
         { "@type": "ListItem", position: 2, name: "Annuaire", item: `${BASE_URL}/patients` },
-        { "@type": "ListItem", position: 3, name: h1, item: `${BASE_URL}${canonicalPath}` },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: cabinetLabel ? h1 : specialite.nom,
+          item: `${BASE_URL}${canonicalPath}`,
+        },
       ],
     },
     {
