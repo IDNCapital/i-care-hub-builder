@@ -182,9 +182,9 @@ export function PatientsOuvert({ praticiens }: Props) {
 
   const specialitesAvecPraticiens = useMemo(
     () =>
-      specialites.filter((s) =>
-        praticiens.some((pr) => matchSpecialite(pr, s)),
-      ),
+      specialites
+        .filter((s) => !s.cabinet_slug)
+        .filter((s) => praticiens.some((pr) => matchSpecialite(pr, s))),
     [specialites, praticiens],
   );
 
