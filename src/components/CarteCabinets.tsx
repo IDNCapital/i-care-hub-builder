@@ -43,6 +43,7 @@ const OPENING_FORECAST: Record<string, string> = {
   "i-ca-re-floirac": "Ouverture à venir",
   "i-ca-re-lormont": "Ouverture à venir",
   "i-ca-re-toulouse-capitole": "Ouverture à venir",
+  "i-ca-re-le-bouscat": "Ouverture prévue T1 2027",
 };
 
 /** Mapping ville -> métropole. */
@@ -50,6 +51,7 @@ const CITY_TO_METRO: Record<string, string> = {
   Bordeaux: "Bordeaux Métropole",
   Floirac: "Bordeaux Métropole",
   Lormont: "Bordeaux Métropole",
+  "Le Bouscat": "Bordeaux Métropole",
   Toulouse: "Toulouse Métropole",
 };
 
