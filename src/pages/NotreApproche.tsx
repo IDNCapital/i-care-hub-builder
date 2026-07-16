@@ -56,12 +56,30 @@ export default function NotreApproche() {
                   ? "Nicolas Idelot et Jazmin Cousins, fondateurs d'I-CA.RE"
                   : "Nicolas Idelot and Jazmin Cousins, founders of I-CA.RE"
               }
-              className="rounded-3xl shadow-elevated w-full object-cover aspect-[4/5] md:aspect-[3/2]"
+              className="rounded-3xl shadow-elevated w-full object-cover object-top aspect-[4/5] md:aspect-[3/2]"
             />
           </div>
 
           {/* Bios side by side */}
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+            {/* Nicolas */}
+            <div>
+              <p className="text-primary font-medium mb-2">{t("approach.nicolasRole")}</p>
+              <h3 className="text-3xl md:text-4xl font-bold mb-6">{t("approach.nicolasName")}</h3>
+              <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
+                <p>{t("approach.nicolasP1")}</p>
+                <p>{t("approach.nicolasP2")}</p>
+                <p><InlineBrand>{t("approach.nicolasP3")}</InlineBrand></p>
+                <p className="font-medium text-foreground italic">{t("approach.nicolasP4")}</p>
+              </div>
+              <Button variant="outline" asChild className="mt-8">
+                <a href="https://www.idn-capital.fr" target="_blank" rel="noopener noreferrer">
+                  {t("approach.nicolasCta")}
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            </div>
+
             {/* Jazmin */}
             <div>
               <p className="text-primary font-medium mb-2">{t("approach.jazminRole")}</p>
@@ -74,24 +92,6 @@ export default function NotreApproche() {
               <Button variant="outline" asChild className="mt-8">
                 <a href="https://jazmincousins.com/" target="_blank" rel="noopener noreferrer">
                   {t("approach.jazminCta")}
-                  <ExternalLink className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-            </div>
-
-            {/* Nicolas */}
-            <div>
-              <p className="text-primary font-medium mb-2">{t("approach.nicolasRole")}</p>
-              <h3 className="text-3xl md:text-4xl font-bold mb-6">{t("approach.nicolasName")}</h3>
-              <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
-                <p>{t("approach.nicolasP1")}</p>
-                <p>{t("approach.nicolasP2")}</p>
-                <p><InlineBrand>{t("approach.nicolasP3")}</InlineBrand></p>
-                <p className="font-medium text-foreground italic">{t("approach.nicolasP4")}</p>
-              </div>
-              <Button variant="outline" asChild className="mt-8">
-                <a href="https://rivage-ic.fr/" target="_blank" rel="noopener noreferrer">
-                  {t("approach.nicolasCta")}
                   <ExternalLink className="ml-2 h-4 w-4" />
                 </a>
               </Button>
