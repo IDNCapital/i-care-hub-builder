@@ -7,6 +7,7 @@ export interface Specialite {
   description_courte: string;
   description_longue: string | null;
   synonymes: string[];
+  cabinet_slug: string | null;
 }
 
 /**
@@ -23,7 +24,7 @@ export function useSpecialites() {
       setLoading(true);
       const { data: rows, error } = await supabase
         .from("specialites")
-        .select("slug, nom, description_courte, description_longue, synonymes")
+        .select("slug, nom, description_courte, description_longue, synonymes, cabinet_slug")
         .order("nom", { ascending: true });
       if (cancelled) return;
       if (error) setData([]);
