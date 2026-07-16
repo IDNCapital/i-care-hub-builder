@@ -21,6 +21,9 @@ import peyBerlandFacade from "@/assets/pey-berland/facade.webp";
 // Chartrons
 import chartronsFacade from "@/assets/chartrons/facade.webp";
 import chartronsPlan from "@/assets/chartrons/plan.webp";
+import chartronsInsertionFacade from "@/assets/chartrons/insertion-facade.webp";
+import chartronsProjectionCab1 from "@/assets/chartrons/projection-cab-1.webp";
+import chartronsProjectionCab2 from "@/assets/chartrons/projection-cab-2.webp";
 
 // Toulouse Capitole
 import toulouseCapitoleFacade from "@/assets/toulouse-capitole/facade.png";
@@ -29,16 +32,12 @@ import toulouseCapitoleFacade from "@/assets/toulouse-capitole/facade.png";
 import floiracFacade from "@/assets/floirac/facade.png";
 
 // Portrait
-import portraitJazmin from "@/assets/portrait-jazmin.webp";
-import portraitNicolas from "@/assets/portrait-nicolas.jpg";
+import portraitDuo from "@/assets/portrait-duo.webp";
 
-// ─── Generated hero images ──────────────────────────────
-import heroHomeFacade1 from "@/assets/hero/hero-home-facade-1.webp";
-import heroHomeAttente1 from "@/assets/hero/hero-home-attente-1.webp";
-import heroHomeCabinet1 from "@/assets/hero/hero-home-cabinet-1.webp";
-import heroHomeFacade2 from "@/assets/hero/hero-home-facade-2.webp";
-import heroHomeAttente2 from "@/assets/hero/hero-home-attente-2.webp";
-import heroHomeCabinet2 from "@/assets/hero/hero-home-cabinet-2.webp";
+// ─── Hero images ────────────────────────────────────────
+import heroHomeReelleAttente1 from "@/assets/hero/hero-home-reelle-attente-1.webp";
+import heroHomeReelleCabinet1 from "@/assets/hero/hero-home-reelle-cabinet-1.webp";
+import heroHomeReelleAttente2 from "@/assets/hero/hero-home-reelle-attente-2.webp";
 import heroPraticiens from "@/assets/hero/hero-praticiens.webp";
 import heroInvestissement from "@/assets/hero/hero-investissement.webp";
 
@@ -71,8 +70,8 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
     gallery: [peyBerlandAttente, peyBerlandCab1, peyBerlandCab2, peyBerlandCab3, peyBerlandFacade],
   },
   "i-ca-re-chartrons": {
-    hero: chartronsFacade,
-    gallery: [chartronsFacade, chartronsPlan],
+    hero: chartronsInsertionFacade,
+    gallery: [chartronsInsertionFacade, chartronsProjectionCab1, chartronsProjectionCab2, chartronsFacade, chartronsPlan],
   },
   "i-ca-re-toulouse-capitole": {
     hero: toulouseCapitoleFacade,
@@ -87,7 +86,7 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
 // ─── Page-level default heroes ───────────────────────────
 
 const PAGE_HEROES: Record<PageContext, string> = {
-  home: heroHomeFacade1,
+  home: chartronsInsertionFacade,
   professionnels: heroPraticiens,
   investissement: heroInvestissement,
   approche: nansoutyAttente,
@@ -100,10 +99,8 @@ export const SECTION_IMAGES = {
   homeWhyChoose: peyBerlandCab2,
   /** Societal impact section on homepage */
   homeImpact: nansoutyCab1,
-  /** Founder portrait on Notre Approche */
-  portrait: portraitJazmin,
-  /** Nicolas portrait on Notre Approche */
-  portraitNicolas: portraitNicolas,
+  /** Founders duo portrait on Notre Approche */
+  portraitDuo: portraitDuo,
   /** Method section on Notre Approche */
   approachMethod: peyBerlandFacade,
   /** Collectivités section on Notre Approche */
@@ -120,12 +117,12 @@ export interface HeroSlide {
 
 /** Full set for desktop (6 slides, alternating facade ↔ interior) */
 export const HOME_HERO_SLIDES: HeroSlide[] = [
-  { src: heroHomeFacade1,    altFr: "Façade élégante – I-CA.RE",                altEn: "Elegant facade – I-CA.RE" },
-  { src: heroHomeAttente1,   altFr: "Salle d'attente chaleureuse – I-CA.RE",    altEn: "Warm waiting room – I-CA.RE" },
-  { src: heroHomeCabinet1,   altFr: "Cabinet de soin – I-CA.RE",                altEn: "Care practice – I-CA.RE" },
-  { src: heroHomeFacade2,    altFr: "Immeuble patrimonial – I-CA.RE",           altEn: "Heritage building – I-CA.RE" },
-  { src: heroHomeAttente2,   altFr: "Espace d'accueil lumineux – I-CA.RE",      altEn: "Bright reception area – I-CA.RE" },
-  { src: heroHomeCabinet2,   altFr: "Cabinet de bien-être – I-CA.RE",           altEn: "Wellbeing practice – I-CA.RE" },
+  { src: chartronsInsertionFacade, altFr: "Façade du futur cabinet I-CA.RE Chartrons à Bordeaux (insertion 3D)", altEn: "Facade of the future I-CA.RE Chartrons practice in Bordeaux (3D rendering)" },
+  { src: heroHomeReelleAttente1,   altFr: "Salle d'attente d'un cabinet I-CA.RE à Bordeaux",                     altEn: "Waiting room of an I-CA.RE practice in Bordeaux" },
+  { src: chartronsProjectionCab1,  altFr: "Projection d'un cabinet du futur I-CA.RE Chartrons",                   altEn: "Rendering of a practice room, future I-CA.RE Chartrons" },
+  { src: heroHomeReelleCabinet1,   altFr: "Cabinet de consultation I-CA.RE à Bordeaux",                           altEn: "I-CA.RE consultation room in Bordeaux" },
+  { src: chartronsProjectionCab2,  altFr: "Projection d'un espace de consultation, futur cabinet Chartrons",      altEn: "Rendering of a consultation space, future Chartrons practice" },
+  { src: heroHomeReelleAttente2,   altFr: "Espace d'accueil d'un cabinet I-CA.RE à Bordeaux",                     altEn: "Reception area of an I-CA.RE practice in Bordeaux" },
 ];
 
 /** Reduced set for mobile (4 slides) */
