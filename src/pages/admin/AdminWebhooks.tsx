@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { adminLogout, callAdminFunction } from "@/lib/adminAuth";
-import { supabase } from "@/integrations/supabase/client";
 
 interface AuditRow {
   id: string;
@@ -25,38 +24,38 @@ export default function AdminWebhooks() {
 
   useEffect(() => {
     (async () => {
-      // Fetch last 50 webhook events
-      const { data, error } = await supabase
-        .from("icare_idnos_audit_log")
-        .select("*")
-        .in("event_type", ["webhook_sent", "webhook_failed", "webhook_config_missing"])
-        .order("created_at", { ascending: false })
-        .limit(50);
+      try {
+        // Last 50 webhook events (via admin Edge Function, service_role)
+        const listRes = await callAdminFunction<{ rows: AuditRow[] }>("admin-get-audit-log", {
+          limit: 50,
+          event_types: ["webhook_sent", "webhook_failed", "webhook_config_missing"],
+        });
+        if (listRes?.rows) setRows(listRes.rows);
 
-      if (!error && data) {
-        setRows(data as AuditRow[]);
-      }
-
-      // 24h stats
-      const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      const { data: recent } = await supabase
-        .from("icare_idnos_audit_log")
-        .select("event_type")
-        .in("event_type", ["webhook_sent", "webhook_failed"])
-        .gte("created_at", since);
-
-      if (recent) {
-        const sent = recent.filter((r: { event_type: string }) => r.event_type === "webhook_sent").length;
-        const failed = recent.filter((r: { event_type: string }) => r.event_type === "webhook_failed").length;
+        // 24h stats
+        const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+        const statsRes = await callAdminFunction<{ rows: Array<{ event_type: string }> }>(
+          "admin-get-audit-log",
+          {
+            limit: 500,
+            event_types: ["webhook_sent", "webhook_failed"],
+            since,
+          },
+        );
+        const recent = statsRes?.rows ?? [];
+        const sent = recent.filter((r) => r.event_type === "webhook_sent").length;
+        const failed = recent.filter((r) => r.event_type === "webhook_failed").length;
         const total = sent + failed;
         setStats({
           sent,
           failed,
           rate: total > 0 ? `${Math.round((sent / total) * 100)}%` : "—",
         });
+      } catch {
+        // silent — page reste en état vide
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     })();
   }, []);
 
