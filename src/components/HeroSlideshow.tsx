@@ -19,6 +19,7 @@ export function HeroSlideshow({ lang }: Props) {
   const [firstLoaded, setFirstLoaded] = useState(false);
   const idleRef = useRef<number | ReturnType<typeof setTimeout> | null>(null);
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const imgElsRef = useRef<Record<number, HTMLImageElement>>({});
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -76,6 +77,10 @@ export function HeroSlideshow({ lang }: Props) {
     const id = setInterval(() => {
       setActiveIndex((prev) => {
         const next = (prev + 1) % slides.length;
+        const el = imgElsRef.current[next];
+        if (el && typeof el.decode === "function") {
+          el.decode().catch(() => {});
+        }
         setPrevIndex(prev);
         if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
         fadeTimerRef.current = setTimeout(() => setPrevIndex(null), FADE_DURATION + 50);
@@ -109,7 +114,7 @@ export function HeroSlideshow({ lang }: Props) {
   const renderSlides = canLoadRest ? slides : [slides[0]];
 
   return (
-    <div className="absolute inset-0 overflow-hidden" aria-hidden="true" style={{ contain: "paint" }}>
+    <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
       {/* ── Placeholder: dominant color shown instantly, hides when image loads ── */}
       <div
         className="absolute inset-0 transition-opacity duration-700 ease-out"
@@ -133,7 +138,8 @@ export function HeroSlideshow({ lang }: Props) {
             key={slide.src}
             src={slide.src}
             alt={alt}
-            loading={realIndex === 0 ? "eager" : "lazy"}
+            ref={(el) => { if (el) imgElsRef.current[realIndex] = el; }}
+            loading="eager"
             decoding="async"
             fetchPriority={realIndex === 0 ? "high" : "low"}
             sizes="100vw"
