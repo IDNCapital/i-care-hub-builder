@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { MapPin, ChevronRight } from "lucide-react";
 import NotFound from "@/pages/NotFound";
 import { useInstallationPage, useProfessions, useCabinetsPipeline } from "@/hooks/useInstallation";
-import { cabinetNomCourt, formatDateOuverture } from "@/lib/installation";
+import { cabinetNomCourt, formatDateOuverture, aVille } from "@/lib/installation";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { CabinetVisuel } from "@/components/CabinetVisuel";
@@ -54,6 +54,7 @@ export default function SinstallerDetail() {
   const path = data.url_path;
   const canonical = `https://i-ca.re${path}`;
   const postal = parsePostalAddress(data.cabinet_adresse, data.cabinet_ville);
+  const villeAvecPreposition = aVille(nomCourt);
   const visuels = getCabinetVisuals(projetCabinet?.slug);
   const visuelAlt = `Cabinet pour ${professionLower} à louer — I‑CA.RE ${nomCourt}`;
 
@@ -135,7 +136,7 @@ export default function SinstallerDetail() {
   return (
     <Layout>
       <SeoHead
-        title={`S'installer comme ${professionLower} à ${nomCourt} — Cabinet I-CA.RE`}
+        title={`S'installer comme ${professionLower} ${villeAvecPreposition} — Cabinet I-CA.RE`}
         description={`Découvrez les opportunités d'installation pour ${professionLower} au Cabinet I-CA.RE de ${nomCourt}, ${data.cabinet_adresse ?? ""}. ${ouvertureLabel}. Demandez le dossier d'installation.`}
         path={path}
         ogImage={`https://i-ca.re/og/og-${ville}.png`}
@@ -163,7 +164,7 @@ export default function SinstallerDetail() {
       <section className="pb-16 bg-secondary">
         <div className="container max-w-4xl pt-12">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-normal mb-6">
-            S'installer comme {professionLower} à {nomCourt}
+            S'installer comme {professionLower} {villeAvecPreposition}
           </h1>
           <p className="text-lg text-muted-foreground flex items-start gap-2">
             <MapPin className="h-5 w-5 mt-1 shrink-0 text-primary" />
