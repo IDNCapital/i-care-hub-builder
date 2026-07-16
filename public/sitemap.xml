@@ -64,6 +64,34 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://i-ca.re/projets/i-ca-re-floirac</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/projets/i-ca-re-floirac" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/projects/i-ca-re-floirac" />
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/projets/i-ca-re-lormont</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/projets/i-ca-re-lormont" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/projects/i-ca-re-lormont" />
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/projets/i-ca-re-toulouse-capitole</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/projets/i-ca-re-toulouse-capitole" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/projects/i-ca-re-toulouse-capitole" />
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/projets/i-ca-re-le-bouscat</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/projets/i-ca-re-le-bouscat" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/projects/i-ca-re-le-bouscat" />
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
   <!-- Professionals -->
   <url>
