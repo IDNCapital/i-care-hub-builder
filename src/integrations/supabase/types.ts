@@ -949,6 +949,7 @@ export type Database = {
       specialites: {
         Row: {
           actif: boolean
+          cabinet_slug: string | null
           created_at: string
           description_courte: string
           description_longue: string | null
@@ -960,6 +961,7 @@ export type Database = {
         }
         Insert: {
           actif?: boolean
+          cabinet_slug?: string | null
           created_at?: string
           description_courte: string
           description_longue?: string | null
@@ -971,6 +973,7 @@ export type Database = {
         }
         Update: {
           actif?: boolean
+          cabinet_slug?: string | null
           created_at?: string
           description_courte?: string
           description_longue?: string | null
