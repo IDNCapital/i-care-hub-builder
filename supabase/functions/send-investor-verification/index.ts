@@ -92,6 +92,26 @@ function requireEnv(name: string): string {
   return value;
 }
 
+function maskEmail(e: string): string {
+  const at = e.indexOf("@");
+  if (at <= 0) return "***";
+  return `${e.slice(0, Math.min(3, at))}***@${e.slice(at + 1)}`;
+}
+async function auditEmailFailed(
+  supabase: ReturnType<typeof createClient>,
+  description: string,
+  payload: Record<string, unknown>,
+): Promise<void> {
+  try {
+    await supabase.from("icare_idnos_audit_log").insert({
+      event_type: "email_failed",
+      function_name: "send-investor-verification",
+      description: description.slice(0, 200),
+      payload_json: payload,
+    });
+  } catch (_) { /* swallow */ }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -319,12 +339,22 @@ Deno.serve(async (req) => {
       },
     });
 
-    await transporter.sendMail({
-      from: `"${mailFromName}" <${mailFromEmail}>`,
-      to: cleanEmail,
-      subject,
-      html: htmlBody,
-    });
+    try {
+      await transporter.sendMail({
+        from: `"${mailFromName}" <${mailFromEmail}>`,
+        to: cleanEmail,
+        subject,
+        html: htmlBody,
+      });
+    } catch (mailErr) {
+      const errMsg = mailErr instanceof Error ? mailErr.message : String(mailErr);
+      await auditEmailFailed(supabase, "échec envoi lien de vérification investisseur", {
+        error_message: errMsg.slice(0, 500),
+        lead_email: maskEmail(cleanEmail),
+        stage: "verification",
+      });
+      throw mailErr;
+    }
 
     // Get the lead ID for webhook
     const { data: webhookLead } = await supabase
