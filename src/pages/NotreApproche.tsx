@@ -56,7 +56,7 @@ export default function NotreApproche() {
                   ? "Nicolas Idelot et Jazmin Cousins, fondateurs d'I-CA.RE"
                   : "Nicolas Idelot and Jazmin Cousins, founders of I-CA.RE"
               }
-              className="rounded-3xl shadow-elevated w-full object-cover object-top aspect-[4/5] md:aspect-[3/2]"
+              className="rounded-3xl shadow-elevated w-full object-cover object-[center_25%] aspect-[4/5] md:aspect-[3/2]"
             />
           </div>
 
