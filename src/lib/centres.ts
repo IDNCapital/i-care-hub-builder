@@ -19,6 +19,7 @@ export const STATIC_CENTRES: StaticCentre[] = [
   { id: "floirac", name: "Floirac", address: "23 avenue de la Libération, 33270 Floirac", status: "coming_soon", slug: "i-ca-re-floirac", region: "bordeaux", openingLabel: "Q4 2026" },
   { id: "lormont", name: "Lormont", address: "1 rue Marc Tallavi, 33310 Lormont", status: "coming_soon", slug: "i-ca-re-lormont", region: "bordeaux", openingLabel: "Q2 2027" },
   { id: "toulouse-capitole", name: "Toulouse Capitole", address: "5 rue de Mirepoix, 31000 Toulouse", status: "coming_soon", slug: "i-ca-re-toulouse-capitole", region: "toulouse", openingLabel: "Q4 2026" },
+  { id: "le-bouscat", name: "Le Bouscat", address: "212 avenue de la Libération Charles de Gaulle, 33110 Le Bouscat", status: "coming_soon", slug: "i-ca-re-le-bouscat", region: "bordeaux", openingLabel: "Q1 2027" },
 ];
 
 export function getCentreBySlug(slug: string): StaticCentre | undefined {
