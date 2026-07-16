@@ -1,6 +1,6 @@
 import { InsightArticleTemplate } from "@/components/InsightArticleTemplate";
 import { useTranslation } from "react-i18next";
-import chartronsFacade from "@/assets/chartrons/facade.webp";
+import chartronsInsertionFacade from "@/assets/chartrons/insertion-facade.webp";
 
 export default function InsightsTransformer() {
   const { i18n } = useTranslation();
@@ -61,8 +61,8 @@ export default function InsightsTransformer() {
         title="Converting a commercial space into a medical office | I‑CA.RE"
         description="Planning rules, designated use, ERP standards, co-ownership, acoustics, costs and timelines: a step-by-step guide for practitioners considering space conversion."
         path="/en/insights/converting-commercial-space"
-        heroImage={chartronsFacade}
-        heroImageAlt="Heritage commercial building for conversion – I-CA.RE Chartrons Bordeaux"
+        heroImage={chartronsInsertionFacade}
+        heroImageAlt="3D projection of the Chartrons facade insertion – I-CA.RE Bordeaux"
         articleTitle="Can you convert a commercial space into a medical or paramedical office"
         intro="You've found a well-located commercial space and you're wondering whether it could become your consulting room. The short answer is often yes — but the path involves regulatory checks, technical adaptations and a realistic budget. Understanding each step before committing protects you from costly mistakes."
         takeaways={[
@@ -164,8 +164,8 @@ export default function InsightsTransformer() {
       title="Transformer un local commercial en cabinet médical | I‑CA.RE"
       description="Urbanisme, destination, ERP, copropriété, acoustique, coûts et délais : guide étape par étape pour transformer un local commercial en cabinet."
       path="/insights/transformer-local-en-cabinet"
-      heroImage={chartronsFacade}
-      heroImageAlt="Immeuble des Chartrons – transformation en espace de soins I-CA.RE Bordeaux"
+      heroImage={chartronsInsertionFacade}
+      heroImageAlt="Projection 3D de l'insertion de façade des Chartrons – I-CA.RE Bordeaux"
       articleTitle="Peut-on transformer un local commercial en cabinet médical ou paramédical"
       intro={<>Vous avez repéré un local commercial bien situé et vous vous demandez s'il pourrait devenir votre cabinet. La réponse est souvent oui — mais le chemin passe par des vérifications réglementaires, des adaptations techniques et un budget réaliste. Comprendre chaque étape avant de s'engager protège contre les erreurs coûteuses.</>}
       takeaways={[
