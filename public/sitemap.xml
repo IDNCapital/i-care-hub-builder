@@ -472,6 +472,51 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://i-ca.re/sinstaller/osteopathe/le-bouscat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/sinstaller/sophrologue/le-bouscat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/sinstaller/psychologue/le-bouscat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/sinstaller/psychotherapeute/le-bouscat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/sinstaller/dieteticien-nutritionniste/le-bouscat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/sinstaller/naturopathe/le-bouscat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/sinstaller/hypnotherapeute/le-bouscat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/sinstaller/medecin-generaliste/le-bouscat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/sinstaller/sage-femme/le-bouscat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 
   <!-- Location cabinet Toulouse -->
   <url>
