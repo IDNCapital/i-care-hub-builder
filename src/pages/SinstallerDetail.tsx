@@ -54,7 +54,7 @@ export default function SinstallerDetail() {
   const path = data.url_path;
   const canonical = `https://i-ca.re${path}`;
   const postal = parsePostalAddress(data.cabinet_adresse, data.cabinet_ville);
-  const villeAvecPreposition = aVille(data.cabinet_ville);
+  const villeAvecPreposition = aVille(nomCourt);
   const visuels = getCabinetVisuals(projetCabinet?.slug);
   const visuelAlt = `Cabinet pour ${professionLower} à louer — I‑CA.RE ${nomCourt}`;
 
