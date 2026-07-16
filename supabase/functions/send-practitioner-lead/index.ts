@@ -82,6 +82,26 @@ function requireEnv(name: string): string {
   return value;
 }
 
+function maskEmail(e: string): string {
+  const at = e.indexOf("@");
+  if (at <= 0) return "***";
+  return `${e.slice(0, Math.min(3, at))}***@${e.slice(at + 1)}`;
+}
+async function auditEmailFailed(
+  supabase: ReturnType<typeof createClient>,
+  description: string,
+  payload: Record<string, unknown>,
+): Promise<void> {
+  try {
+    await supabase.from("icare_idnos_audit_log").insert({
+      event_type: "email_failed",
+      function_name: "send-practitioner-lead",
+      description: description.slice(0, 200),
+      payload_json: payload,
+    });
+  } catch (_) { /* swallow */ }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -246,13 +266,24 @@ Deno.serve(async (req) => {
 </div>
 </body></html>`;
 
-    await transporter.sendMail({
-      from: `"${mailFromName}" <${mailFromEmail}>`,
-      to: mailFromEmail,
-      replyTo: `"${cleanFirstName} ${cleanLastName}" <${cleanEmail}>`,
-      subject: notifSubject,
-      html: notifHtml,
-    });
+    try {
+      await transporter.sendMail({
+        from: `"${mailFromName}" <${mailFromEmail}>`,
+        to: mailFromEmail,
+        replyTo: `"${cleanFirstName} ${cleanLastName}" <${cleanEmail}>`,
+        subject: notifSubject,
+        html: notifHtml,
+      });
+    } catch (smtpErr) {
+      const errMsg = smtpErr instanceof Error ? smtpErr.message : String(smtpErr);
+      await auditEmailFailed(supabase, "échec envoi notification interne (praticien)", {
+        error_message: errMsg.slice(0, 500),
+        lead_id: leadId,
+        recipient: maskEmail(mailFromEmail),
+        stage: "notification",
+      });
+      throw smtpErr;
+    }
 
     // ── Email 2: Acknowledgment to prospect ──
     const isFr = locale === "fr";
@@ -312,12 +343,23 @@ Deno.serve(async (req) => {
 </div>
 </body></html>`;
 
-    await transporter.sendMail({
-      from: `"${mailFromName}" <${mailFromEmail}>`,
-      to: cleanEmail,
-      subject: ackSubject,
-      html: ackHtml,
-    });
+    try {
+      await transporter.sendMail({
+        from: `"${mailFromName}" <${mailFromEmail}>`,
+        to: cleanEmail,
+        subject: ackSubject,
+        html: ackHtml,
+      });
+    } catch (ackErr) {
+      const errMsg = ackErr instanceof Error ? ackErr.message : String(ackErr);
+      await auditEmailFailed(supabase, "échec envoi accusé praticien", {
+        error_message: errMsg.slice(0, 500),
+        lead_id: leadId,
+        recipient: maskEmail(cleanEmail),
+        stage: "ack",
+      });
+      throw ackErr;
+    }
 
     // IDN OS webhook added 2026-05-03 — see docs/icare-connect/snapshot-pre-icare-connect-2026-05.md for rollback
     try {
