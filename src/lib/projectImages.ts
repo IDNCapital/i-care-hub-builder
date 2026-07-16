@@ -19,7 +19,6 @@ import peyBerlandCab3 from "@/assets/pey-berland/cab3.webp";
 import peyBerlandFacade from "@/assets/pey-berland/facade.webp";
 
 // Chartrons
-import chartronsFacade from "@/assets/chartrons/facade.webp";
 import chartronsPlan from "@/assets/chartrons/plan.webp";
 import chartronsInsertionFacade from "@/assets/chartrons/insertion-facade.webp";
 import chartronsProjectionCab1 from "@/assets/chartrons/projection-cab-1.webp";
@@ -30,6 +29,9 @@ import toulouseCapitoleFacade from "@/assets/toulouse-capitole/facade.png";
 
 // Floirac
 import floiracFacade from "@/assets/floirac/facade.png";
+
+// Lormont
+import lormontFacade from "@/assets/lormont/facade.webp";
 
 // Portrait
 import portraitDuo from "@/assets/portrait-duo.webp";
@@ -71,7 +73,7 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
   },
   "i-ca-re-chartrons": {
     hero: chartronsInsertionFacade,
-    gallery: [chartronsInsertionFacade, chartronsProjectionCab1, chartronsProjectionCab2, chartronsFacade, chartronsPlan],
+    gallery: [chartronsInsertionFacade, chartronsProjectionCab1, chartronsProjectionCab2, chartronsPlan],
   },
   "i-ca-re-toulouse-capitole": {
     hero: toulouseCapitoleFacade,
@@ -80,6 +82,10 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
   "i-ca-re-floirac": {
     hero: floiracFacade,
     gallery: [floiracFacade],
+  },
+  "i-ca-re-lormont": {
+    hero: lormontFacade,
+    gallery: [lormontFacade],
   },
 };
 
