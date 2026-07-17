@@ -212,7 +212,6 @@ const App = () => (
                 <Route path="/insights/rent-or-buy-office" element={<InsightsLouerAcheter />} />
                 <Route path="/patients" element={<Patients />} />
                 <Route path="/patients/decrire-mon-besoin" element={<DecrireMonBesoin />} />
-                <Route path="/referral" element={<Parrainage />} />
                 <Route path="/practitioner-testimonials" element={<TemoignagesPraticiens />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
@@ -267,7 +266,6 @@ const App = () => (
                 <Route path="/patients/problematiques" element={<ProblematiquesIndex />} />
                 <Route path="/patients/problematiques/:slug" element={<ProblematiqueDetail />} />
                 <Route path="/patients/specialite/:slug" element={<SpecialiteDetail />} />
-                <Route path="/parrainage" element={<Parrainage />} />
                 <Route path="/temoignages-praticiens" element={<TemoignagesPraticiens />} />
                 <Route path="/sinstaller" element={<SinstallerIndex />} />
                 <Route path="/sinstaller/:profession/:ville" element={<SinstallerDetail />} />
