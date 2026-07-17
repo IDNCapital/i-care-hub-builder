@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
 import { useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
@@ -27,12 +28,14 @@ import { BrandName } from "@/components/BrandName";
 import { SectionPraticiensDuCabinet } from "@/components/SectionPraticiensDuCabinet";
 import { isPipelineCabinet } from "@/lib/installation";
 import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
+import { Lightbox, type LightboxImage } from "@/components/Lightbox";
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: project, isLoading } = useProject(slug || "");
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const statusLabels: Record<string, string> = {
     en_exploitation: t("statusLabels.en_exploitation"),
@@ -95,6 +98,26 @@ export default function ProjetDetail() {
   const shortDesc = lang === "en" && project.short_description_en ? project.short_description_en : project.short_description;
   const features = lang === "en" && project.key_features_en ? project.key_features_en : project.key_features;
 
+  const heroSrc = getProjectHero(project.slug, project.hero_image_url);
+  const gallery = getProjectGallery(project.slug, project.image_gallery);
+  const lightboxImages: LightboxImage[] = useMemo(() => {
+    const list: LightboxImage[] = [];
+    const seen = new Set<string>();
+    if (heroSrc) {
+      list.push({ src: heroSrc, alt: `${project.name} — ${project.city}` });
+      seen.add(heroSrc);
+    }
+    gallery.forEach((url, i) => {
+      if (!seen.has(url)) {
+        list.push({ src: url, alt: `${project.name} — ${i + 1}` });
+        seen.add(url);
+      }
+    });
+    return list;
+  }, [heroSrc, gallery, project.name, project.city]);
+
+  const galleryIndexInLightbox = (url: string) => lightboxImages.findIndex((img) => img.src === url);
+
   return (
     <Layout>
       <SeoHead
@@ -153,18 +176,22 @@ export default function ProjetDetail() {
       </Helmet>
 
       <section className="relative h-[60vh] min-h-[400px]">
-        {(() => {
-          const heroSrc = getProjectHero(project.slug, project.hero_image_url);
-          return heroSrc ? (
+        {heroSrc ? (
+          <button
+            type="button"
+            onClick={() => setLightboxIndex(0)}
+            aria-label={`Afficher en plein écran : ${project.name} — ${project.city}`}
+            className="absolute inset-0 w-full h-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-sage focus-visible:ring-inset"
+          >
             <FadeImage src={heroSrc} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover" loading="eager" fadeDuration={500} />
-          ) : (
-            <VisuelsAVenir className="w-full h-full" />
-          );
-        })()}
+          </button>
+        ) : (
+          <VisuelsAVenir className="w-full h-full" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 pb-12">
+        <div className="absolute bottom-0 left-0 right-0 pb-12 pointer-events-none">
           <div className="container">
-            <Link to={localePath(lang, "projects")} className="inline-flex items-center text-sm text-background/80 hover:text-background mb-4 transition-colors">
+            <Link to={localePath(lang, "projects")} className="pointer-events-auto inline-flex items-center text-sm text-background/80 hover:text-background mb-4 transition-colors">
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t("projectDetail.allProjects")}
             </Link>
@@ -256,14 +283,25 @@ export default function ProjetDetail() {
                 <p className="text-sm text-muted-foreground leading-relaxed">{t("projectDetail.rentDetails")}</p>
               </div>
               {(() => {
-                const gallery = getProjectGallery(project.slug, project.image_gallery);
                 return gallery.length > 0 ? (
                   <div className="mt-12">
                     <h3 className="text-2xl font-semibold mb-6">{t("projectDetail.gallery")}</h3>
                     <div className="grid grid-cols-2 gap-4">
-                      {gallery.map((url, i) => (
-                        <FadeImage key={i} src={url} alt={`${project.name} — ${i + 1}`} className="rounded-2xl w-full h-48 object-cover" />
-                      ))}
+                      {gallery.map((url, i) => {
+                        const alt = `${project.name} — ${i + 1}`;
+                        const idx = galleryIndexInLightbox(url);
+                        return (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => setLightboxIndex(idx >= 0 ? idx : 0)}
+                            aria-label={`Afficher en plein écran : ${alt}`}
+                            className="cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-sage rounded-2xl"
+                          >
+                            <FadeImage src={url} alt={alt} className="rounded-2xl w-full h-48 object-cover" />
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 ) : null;
@@ -354,6 +392,13 @@ export default function ProjetDetail() {
           cabinetUrl={`https://i-ca.re${lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}`}
         />
       )}
+
+      <Lightbox
+        images={lightboxImages}
+        openIndex={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onNavigate={(i) => setLightboxIndex(i)}
+      />
     </Layout>
   );
 }
