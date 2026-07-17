@@ -319,6 +319,8 @@
     "comingSoonBadge": "Opening soon",
     "availableUnits": "3 offices still available",
     "fullNotice": "This space is currently fully occupied, but you can explore its atmosphere and leave your contact details to be notified of future availability.",
+    "availabilityNoticeTitle": "A part-time availability has just opened",
+    "availabilityNoticeBody": "{{label}}. An opportunity to practise in an operating centre in the heart of Bordeaux. Contact us to arrange a visit.",
     "centres": {
       "chartrons": { "name": "Chartrons", "status": "available", "desc": "3 offices still available" },
       "nansouty": { "name": "Nansouty", "status": "full" },
