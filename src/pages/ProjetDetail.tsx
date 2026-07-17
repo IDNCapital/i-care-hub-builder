@@ -2,8 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
-import { useEffect } from "react";
-import { useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
@@ -100,7 +99,7 @@ export default function ProjetDetail() {
 
   const heroSrc = getProjectHero(project.slug, project.hero_image_url);
   const gallery = getProjectGallery(project.slug, project.image_gallery);
-  const lightboxImages: LightboxImage[] = useMemo(() => {
+  const lightboxImages: LightboxImage[] = (() => {
     const list: LightboxImage[] = [];
     const seen = new Set<string>();
     if (heroSrc) {
@@ -114,7 +113,7 @@ export default function ProjetDetail() {
       }
     });
     return list;
-  }, [heroSrc, gallery, project.name, project.city]);
+  })();
 
   const galleryIndexInLightbox = (url: string) => lightboxImages.findIndex((img) => img.src === url);
 
