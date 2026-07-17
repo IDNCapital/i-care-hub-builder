@@ -14,9 +14,11 @@ import jardinPublicFacade from "@/assets/jardin-public/facade.webp";
 
 // Pey Berland
 import peyBerlandAttente from "@/assets/pey-berland/attente.webp";
+import peyBerlandAttente2 from "@/assets/pey-berland/attente-2.webp";
 import peyBerlandCab1 from "@/assets/pey-berland/cab1.webp";
 import peyBerlandCab2 from "@/assets/pey-berland/cab2.webp";
 import peyBerlandCab3 from "@/assets/pey-berland/cab3.webp";
+import peyBerlandDetailBureau from "@/assets/pey-berland/detail-bureau.webp";
 import peyBerlandFacade from "@/assets/pey-berland/facade.webp";
 
 // Chartrons
@@ -79,7 +81,7 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
   },
   "i-ca-re-pey-berland": {
     hero: peyBerlandAttente,
-    gallery: [peyBerlandAttente, peyBerlandCab1, peyBerlandCab2, peyBerlandCab3, peyBerlandFacade],
+    gallery: [peyBerlandAttente, peyBerlandAttente2, peyBerlandCab1, peyBerlandCab2, peyBerlandCab3, peyBerlandDetailBureau, peyBerlandFacade],
   },
   "i-ca-re-chartrons": {
     hero: chartronsInsertionFacade,
