@@ -42,12 +42,12 @@ function base() {
 
 /**
  * Published praticiens (RLS: statut_validation='validee' AND actif=true).
- * Returns [{slug, updated_at, problematiques, problematiques_derivees}].
+ * Returns [{slug, updated_at, problematiques, problematiques_derivees, problematiques_manuelles}].
  */
 export async function fetchPraticiensPublies() {
   const url =
     `${base()}/rest/v1/praticiens` +
-    `?select=slug,updated_at,profession,specialites,specialites_derivees,problematiques,problematiques_derivees,cabinet_slug` +
+    `?select=slug,updated_at,profession,specialites,specialites_derivees,problematiques,problematiques_derivees,problematiques_manuelles,cabinet_slug` +
     `&statut_validation=eq.validee&actif=eq.true&order=nom.asc`;
   return fetchJson(url);
 }
@@ -75,16 +75,25 @@ export async function fetchSpecialites() {
 }
 
 /**
- * Pre-compute per-praticien normalized tag Set
- * (problematiques_derivees, fallback problematiques if empty).
+ * Pre-compute per-praticien normalized tag Set.
+ *
+ * Règle de fusion canonique (dupliqué de src/lib/taxonomy.ts
+ * getPraticienProblematiqueTags, à garder synchronisé — contexte Node build) :
+ * (problematiques_derivees non vide ? problematiques_derivees : problematiques)
+ * UNION problematiques_manuelles, dédoublonné après norm().
  */
 export function praticiensNormTagSets(praticiens) {
   return praticiens.map((pr) => {
-    const source =
-      (Array.isArray(pr.problematiques_derivees) && pr.problematiques_derivees.length > 0
-        ? pr.problematiques_derivees
-        : pr.problematiques) ?? [];
-    return new Set(source.map(norm));
+    const derived = Array.isArray(pr.problematiques_derivees) ? pr.problematiques_derivees : [];
+    const raw = Array.isArray(pr.problematiques) ? pr.problematiques : [];
+    const manual = Array.isArray(pr.problematiques_manuelles) ? pr.problematiques_manuelles : [];
+    const source = derived.length > 0 ? derived : raw;
+    const set = new Set();
+    for (const tag of [...source, ...manual]) {
+      if (!tag) continue;
+      set.add(norm(tag));
+    }
+    return set;
   });
 }
 
