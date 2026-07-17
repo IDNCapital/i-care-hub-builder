@@ -318,6 +318,7 @@
     "fullBadge": "Complet",
     "comingSoonBadge": "Ouverture prochaine",
     "availableUnits": "3 cabinets encore disponibles",
+    "partTimePrefix": "Temps partiel :",
     "fullNotice": "Ce lieu est actuellement complet, mais vous pouvez découvrir son atmosphère et nous laisser vos coordonnées pour être informé des prochaines disponibilités.",
     "availabilityNoticeTitle": "Une disponibilité à temps partiel vient de s'ouvrir",
     "availabilityNoticeBody": "{{label}}. Une occasion d'exercer dans un cabinet en exploitation, au cœur de Bordeaux. Contactez-nous pour organiser une visite.",

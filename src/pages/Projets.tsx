@@ -15,9 +15,9 @@ import { InlineBrand } from "@/components/BrandName";
 import { CarteCabinetsSection } from "@/components/CarteCabinetsSection";
 
 const badgeStyles: Record<CentreStatus, string> = {
-  available: "bg-primary/15 text-primary",
-  full: "bg-muted text-muted-foreground",
-  coming_soon: "bg-accent/25 text-accent-foreground",
+  available: "bg-sage text-cream",
+  full: "bg-cream text-anthracite",
+  coming_soon: "bg-gold text-anthracite",
 };
 
 export default function Projets() {
@@ -138,7 +138,7 @@ export default function Projets() {
                     )}
                     {/* Badge */}
                     <div className="absolute top-4 left-4">
-                      <span className={`text-sm font-medium px-3 py-1.5 rounded-full ${badgeStyles[centre.status]}`}>
+                      <span className={`text-sm font-bold uppercase tracking-wide px-3 py-1.5 rounded-full shadow-sm ${badgeStyles[centre.status]}`}>
                         {badgeLabel(centre.status)}{centre.status === "coming_soon" && centre.openingLabel ? ` — ${centre.openingLabel}` : ""}
                       </span>
                     </div>
@@ -161,7 +161,16 @@ export default function Projets() {
 
                     {centre.status === "available" && (
                       <p className="text-primary text-sm font-medium">
-                        {t("projects.availableUnits")}
+                        {(() => {
+                          const label = lang === "en"
+                            ? (centre.availabilityLabelEn ?? centre.availabilityLabel)
+                            : centre.availabilityLabel;
+                          if (label) {
+                            const cleaned = label.replace(/\s*:\s*/, " — ");
+                            return `${t("projects.partTimePrefix")} ${cleaned}`;
+                          }
+                          return t("projects.availableUnits");
+                        })()}
                       </p>
                     )}
 
