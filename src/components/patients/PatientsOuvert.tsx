@@ -11,6 +11,7 @@ import {
   CABINETS_LABEL,
   norm,
   matchSpecialite,
+  getPraticienProblematiqueTags,
 } from "@/lib/taxonomy";
 import { CartePraticien } from "@/components/patients/CartePraticien";
 import { useSpecialites } from "@/hooks/useSpecialites";
@@ -240,12 +241,9 @@ export function PatientsOuvert({ praticiens }: Props) {
         );
         if (!ok) return false;
       }
-      // Bloc Besoin — même logique sur problematiques_derivees (fallback brut).
+      // Bloc Besoin — fusion dérivés + manuels via helper centralisé (lot 16.0-bis).
       if (selectedBesoins.length) {
-        const pbs =
-          (p.problematiques_derivees && p.problematiques_derivees.length > 0
-            ? p.problematiques_derivees
-            : p.problematiques) ?? [];
+        const pbs = getPraticienProblematiqueTags(p);
         const ok = pbs.some((pb) =>
           selectedBesoins.some((group) =>
             (PROBLEMATIQUE_GROUPS[group] ?? []).map(norm).includes(norm(pb)),
