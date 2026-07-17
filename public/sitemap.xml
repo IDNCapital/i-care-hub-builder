@@ -550,22 +550,6 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- Parrainage -->
-  <url>
-    <loc>https://i-ca.re/parrainage</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/parrainage" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/referral" />
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://i-ca.re/en/referral</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/parrainage" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/referral" />
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
   <!-- Patients -->
   <url>
     <loc>https://i-ca.re/patients</loc>
