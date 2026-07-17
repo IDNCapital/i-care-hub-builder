@@ -417,6 +417,23 @@ export default function ProjetDetail() {
         </section>
       )}
 
+      {lang === "fr" && isPipelineCabinet(project.status) && project.slug_installation && (
+        <section className="section-padding">
+          <div className="container max-w-3xl">
+            <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-3">
+              Manifester son intérêt
+            </p>
+            <h2 className="font-display text-3xl md:text-4xl font-normal text-foreground mb-4">
+              Vous projetez de vous installer ici ?
+            </h2>
+            <p className="text-base text-muted-foreground mb-8">
+              Ce cabinet <BrandName /> est en pré-lancement. Laissez-nous quelques informations pour recevoir en priorité les disponibilités de bureaux, les conditions de location et le planning d'ouverture prévisionnel.
+            </p>
+            <FormulaireInteretInstallation villeSlug={project.slug_installation} />
+          </div>
+        </section>
+      )}
+
       <section className="section-padding">
         <div className="container">
           <div className="cta-section text-center">
