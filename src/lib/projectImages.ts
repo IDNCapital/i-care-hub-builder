@@ -28,13 +28,13 @@ import chartronsProjectionCab2 from "@/assets/chartrons/projection-cab-2.webp";
 import toulouseCapitoleFacade from "@/assets/toulouse-capitole/facade.png";
 
 // Floirac
-import floiracFacade from "@/assets/floirac/facade.png";
+import floiracInsertionFacade from "@/assets/floirac/insertion-facade.webp";
+import floiracProjectionAttente from "@/assets/floirac/projection-attente.webp";
+import floiracProjectionCab1 from "@/assets/floirac/projection-cab-1.webp";
+import floiracProjectionCab2 from "@/assets/floirac/projection-cab-2.webp";
 
 // Lormont
-import lormontInsertionFacade from "@/assets/lormont/insertion-facade.webp";
-import lormontProjectionAttente from "@/assets/lormont/projection-attente.webp";
-import lormontProjectionCab1 from "@/assets/lormont/projection-cab-1.webp";
-import lormontProjectionCab2 from "@/assets/lormont/projection-cab-2.webp";
+import lormontFacade from "@/assets/lormont/facade.webp";
 
 // Le Bouscat
 import leBouscatInsertionFacade from "@/assets/le-bouscat/insertion-facade.webp";
@@ -89,12 +89,12 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
     gallery: [toulouseCapitoleFacade],
   },
   "i-ca-re-floirac": {
-    hero: floiracFacade,
-    gallery: [floiracFacade],
+    hero: floiracInsertionFacade,
+    gallery: [floiracInsertionFacade, floiracProjectionAttente, floiracProjectionCab1, floiracProjectionCab2],
   },
   "i-ca-re-lormont": {
-    hero: lormontInsertionFacade,
-    gallery: [lormontInsertionFacade, lormontProjectionAttente, lormontProjectionCab1, lormontProjectionCab2],
+    hero: lormontFacade,
+    gallery: [lormontFacade],
   },
   "i-ca-re-le-bouscat": {
     hero: leBouscatInsertionFacade,
