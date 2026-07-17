@@ -39,7 +39,6 @@ export const Header = memo(function Header() {
       spaces: lang === "fr" ? "Nos lieux de soin" : "Our care spaces",
       install: lang === "fr" ? "S'installer" : "Setting up",
       testimonials: lang === "fr" ? "Témoignages" : "Testimonials",
-      referral: lang === "fr" ? "Parrainage" : "Referral",
     },
   }), [t, lang]);
 
@@ -47,7 +46,6 @@ export const Header = memo(function Header() {
     { name: labels.sub.spaces, href: localePath(lang, "projects") },
     { name: labels.sub.install, href: lang === "fr" ? "/sinstaller" : localePath(lang, "insights") },
     { name: labels.sub.testimonials, href: localePath(lang, "temoignages") },
-    { name: labels.sub.referral, href: localePath(lang, "parrainage") },
   ], [labels, lang]);
 
   const mainItems = useMemo(() => [

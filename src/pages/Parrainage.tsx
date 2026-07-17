@@ -1,3 +1,5 @@
+// Page en sommeil depuis le 17/07/2026 (Sprint 16) — route retirée de App.tsx,
+// réactivable en la remettant + prerender + sitemap.
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
