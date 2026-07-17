@@ -37,7 +37,6 @@ import DecrireMonBesoin from "./pages/DecrireMonBesoin";
 import ProblematiquesIndex from "./pages/ProblematiquesIndex";
 import ProblematiqueDetail from "./pages/ProblematiqueDetail";
 import SpecialiteDetail from "./pages/SpecialiteDetail";
-import Parrainage from "./pages/Parrainage";
 import TemoignagesPraticiens from "./pages/TemoignagesPraticiens";
 import SinstallerIndex from "./pages/SinstallerIndex";
 import SinstallerDetail from "./pages/SinstallerDetail";
