@@ -698,6 +698,7 @@ export type Database = {
           preview_token: string
           problematiques: string[]
           problematiques_derivees: string[]
+          problematiques_manuelles: string[]
           profession: string
           publics_derives: string[]
           slug: string
@@ -734,6 +735,7 @@ export type Database = {
           preview_token?: string
           problematiques?: string[]
           problematiques_derivees?: string[]
+          problematiques_manuelles?: string[]
           profession: string
           publics_derives?: string[]
           slug: string
@@ -770,6 +772,7 @@ export type Database = {
           preview_token?: string
           problematiques?: string[]
           problematiques_derivees?: string[]
+          problematiques_manuelles?: string[]
           profession?: string
           publics_derives?: string[]
           slug?: string
@@ -1121,6 +1124,7 @@ export type Database = {
           preview_token: string
           problematiques: string[]
           problematiques_derivees: string[]
+          problematiques_manuelles: string[]
           profession: string
           publics_derives: string[]
           slug: string

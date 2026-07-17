@@ -338,3 +338,45 @@ export function matchSpecialite(
   candidates.push(...specSource);
   return candidates.some((c) => targets.includes(norm(c)));
 }
+
+/**
+ * Helper centralisé — Lot 16.0-bis.
+ *
+ * Règle de fusion canonique des tags problématiques d'un praticien pour
+ * TOUTE lecture (matching /patients, pages problématique, etc.) :
+ *
+ *   tags = dédoublonnage normalisé (norm()) de
+ *          (problematiques_derivees non vide ? problematiques_derivees : problematiques)
+ *          UNION problematiques_manuelles.
+ *
+ * Le fallback vers les tags bruts (problematiques) reste conditionné
+ * UNIQUEMENT à problematiques_derivees vide. La présence de
+ * problematiques_manuelles ne désactive pas ce fallback.
+ *
+ * Les tags manuels vivent dans une colonne dédiée que l'Edge Function
+ * extract-praticien-tags ne réécrit jamais.
+ */
+export interface PraticienForProblematiqueTags {
+  problematiques?: string[] | null;
+  problematiques_derivees?: string[] | null;
+  problematiques_manuelles?: string[] | null;
+}
+
+export function getPraticienProblematiqueTags(
+  praticien: PraticienForProblematiqueTags,
+): string[] {
+  const derived = praticien.problematiques_derivees ?? [];
+  const raw = praticien.problematiques ?? [];
+  const manual = praticien.problematiques_manuelles ?? [];
+  const source = derived.length > 0 ? derived : raw;
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const tag of [...source, ...manual]) {
+    if (!tag) continue;
+    const key = norm(tag);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(tag);
+  }
+  return out;
+}

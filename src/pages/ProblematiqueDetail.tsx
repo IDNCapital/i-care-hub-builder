@@ -8,7 +8,7 @@ import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import { useProblematiques } from "@/hooks/useProblematiques";
 import { usePraticiensPublics } from "@/hooks/usePraticiensPublics";
 import { CartePraticien } from "@/components/patients/CartePraticien";
-import { norm } from "@/lib/taxonomy";
+import { norm, getPraticienProblematiqueTags } from "@/lib/taxonomy";
 import NotFound from "@/pages/NotFound";
 
 const BASE_URL = "https://i-ca.re";
@@ -34,10 +34,7 @@ export default function ProblematiqueDetail() {
     if (!problematique) return [];
     const targets = [problematique.nom, ...(problematique.synonymes ?? [])].map(norm);
     return praticiens.filter((pr) => {
-      const source =
-        (pr.problematiques_derivees && pr.problematiques_derivees.length > 0
-          ? pr.problematiques_derivees
-          : pr.problematiques) ?? [];
+      const source = getPraticienProblematiqueTags(pr);
       return source.some((tag) => targets.includes(norm(tag)));
     });
   }, [praticiens, problematique]);
