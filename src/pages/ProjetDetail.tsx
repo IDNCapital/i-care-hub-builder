@@ -123,6 +123,7 @@ export default function ProjetDetail() {
         title={`${project.name} — I-CA.RE`}
         description={shortDesc}
         path={lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}
+        {...(PROJECT_OG_IMAGES[project.slug] ?? {})}
       />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify((() => {
