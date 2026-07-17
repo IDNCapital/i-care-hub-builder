@@ -129,7 +129,7 @@ Deno.serve(async (req) => {
     // ── IP hash
     const xff = req.headers.get("x-forwarded-for") ?? "";
     const ip = xff.split(",")[0]?.trim() || "unknown";
-    const ipSalt = Deno.env.get("IP_HASH_SALT") ?? "i-ca-re-installation-salt-v1";
+    const ipSalt = requireEnv("IP_HASH_SALT");
     const ipHash = await sha256Hex(`${ipSalt}:${ip}`);
     const userAgent = (req.headers.get("user-agent") ?? "").slice(0, 500);
 
