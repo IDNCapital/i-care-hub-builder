@@ -37,10 +37,14 @@ type Cabinet = {
   googlePlaceId: string | null;
 };
 
-/** Forecast d'ouverture par slug (statut en travaux). */
+/**
+ * Forecast d'ouverture par slug (statut en travaux).
+ * Source de vérité des dates : projets.date_ouverture_cible —
+ * synchroniser manuellement ces labels (dette V1.3-G, centralisation à terme).
+ */
 const OPENING_FORECAST: Record<string, string> = {
   "i-ca-re-chartrons": "Ouverture prévue T4 2026",
-  "i-ca-re-floirac": "Ouverture à venir",
+  "i-ca-re-floirac": "Ouverture prévue T1 2027",
   "i-ca-re-lormont": "Ouverture à venir",
   "i-ca-re-toulouse-capitole": "Ouverture à venir",
   "i-ca-re-le-bouscat": "Ouverture prévue T1 2027",
