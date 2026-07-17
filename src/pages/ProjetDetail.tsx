@@ -27,6 +27,7 @@ import { BrandName } from "@/components/BrandName";
 import { SectionPraticiensDuCabinet } from "@/components/SectionPraticiensDuCabinet";
 import { isPipelineCabinet } from "@/lib/installation";
 import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
+import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
 
 /**
