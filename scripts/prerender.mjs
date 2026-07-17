@@ -58,7 +58,6 @@ const ROUTES = [
   { path: "/contact", type: "strategic" },
   { path: "/questions-frequentes", type: "strategic" },
   { path: "/temoignages-praticiens", type: "strategic" },
-  { path: "/parrainage", type: "strategic" },
   { path: "/patients", type: "strategic" },
   { path: "/patients/problematiques", type: "strategic" },
   // FR installation matrix (LOT 4-bis-A) — index + 9 professions × 4 cabinets pipeline
@@ -90,7 +89,6 @@ const ROUTES = [
   { path: "/en/contact", type: "strategic" },
   { path: "/en/faq", type: "strategic" },
   { path: "/en/practitioner-testimonials", type: "strategic" },
-  { path: "/en/referral", type: "strategic" },
   { path: "/en/patients", type: "strategic" },
   // EN legal
   { path: "/en/legal", type: "legal" },
@@ -107,6 +105,9 @@ const REDIRECTS = [
   { from: "/en/setting-up-practice", to: "/en/health-professionals" },
   { from: "/en/finding-medical-office-bordeaux", to: "/en/office-rental-bordeaux" },
   { from: "/praticien/vanessa-marty", to: "/patients" },
+  // Parrainage mis en sommeil (Sprint 16, 17/07/2026) — page retirée de App.tsx et du sitemap.
+  { from: "/parrainage", to: "/professionnels" },
+  { from: "/en/referral", to: "/en/health-professionals" },
 ];
 
 // ── Chromium resolution ─────────────────────────────────────────────
