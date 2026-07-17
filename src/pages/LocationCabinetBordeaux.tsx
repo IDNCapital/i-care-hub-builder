@@ -64,9 +64,9 @@ export default function LocationCabinetBordeaux() {
   };
 
   const statusBadgeClass = (status: string) => {
-    if (status === "available") return "bg-[hsl(var(--primary)/0.15)] text-primary";
-    if (status === "full") return "bg-muted text-muted-foreground";
-    return "bg-[hsl(38,30%,90%)] text-[hsl(38,40%,35%)]";
+    if (status === "available") return "bg-sage text-cream";
+    if (status === "full") return "bg-cream text-anthracite";
+    return "bg-gold text-anthracite";
   };
 
   const ctaLabel = (status: string) => {
@@ -180,7 +180,7 @@ export default function LocationCabinetBordeaux() {
                       </div>
                     )}
                     {/* Status badge on image */}
-                    <span className={`absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm ${statusBadgeClass(centre.status)}`}>
+                    <span className={`absolute top-3 right-3 text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full shadow-sm ${statusBadgeClass(centre.status)}`}>
                       {statusLabel(centre.status)}
                     </span>
                   </div>
