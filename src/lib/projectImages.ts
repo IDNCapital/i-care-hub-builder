@@ -6,9 +6,10 @@ import nansoutyFacade from "@/assets/nansouty/facade.webp";
 
 // Jardin Public
 import jardinPublicAttente from "@/assets/jardin-public/attente.webp";
+import jardinPublicAttente2 from "@/assets/jardin-public/attente-2.webp";
 import jardinPublicCab1 from "@/assets/jardin-public/cab1.webp";
 import jardinPublicCab2 from "@/assets/jardin-public/cab2.webp";
-import jardinPublicCab3 from "@/assets/jardin-public/cab3.webp";
+import jardinPublicDetailAttente from "@/assets/jardin-public/detail-attente.webp";
 import jardinPublicFacade from "@/assets/jardin-public/facade.webp";
 
 // Pey Berland
@@ -74,7 +75,7 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
   },
   "i-ca-re-jardin-public": {
     hero: jardinPublicAttente,
-    gallery: [jardinPublicAttente, jardinPublicCab1, jardinPublicCab2, jardinPublicCab3, jardinPublicFacade],
+    gallery: [jardinPublicAttente, jardinPublicAttente2, jardinPublicCab1, jardinPublicCab2, jardinPublicDetailAttente, jardinPublicFacade],
   },
   "i-ca-re-pey-berland": {
     hero: peyBerlandAttente,
