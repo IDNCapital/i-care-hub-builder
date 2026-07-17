@@ -235,6 +235,29 @@ export default function ProjetDetail() {
         );
       })()}
 
+      {/* Availability notice for centres with a partial availability */}
+      {(() => {
+        const centre = slug ? getCentreBySlug(slug) : undefined;
+        if (!centre || centre.status !== "available" || !centre.availabilityLabel) return null;
+        const label = lang === "en" ? (centre.availabilityLabelEn ?? centre.availabilityLabel) : centre.availabilityLabel;
+        return (
+          <section className="pb-0 pt-8">
+            <div className="container">
+              <div className="bg-primary/10 border border-primary/30 rounded-2xl p-6 text-center max-w-3xl mx-auto">
+                <p className="text-base font-heading text-foreground mb-2">{t("projects.availabilityNoticeTitle")}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{t("projects.availabilityNoticeBody", { label })}</p>
+                <Button size="sm" variant="outline" asChild className="mt-4">
+                  <Link to={localePath(lang, "contact")}>
+                    {t("projectDetail.scheduleVisit")}
+                    <ArrowRight className="ml-1.5 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </section>
+        );
+      })()}
+
       <section className="section-padding">
         <div className="container">
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 mb-16">
