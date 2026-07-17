@@ -2,6 +2,9 @@
 import nansoutyAttente from "@/assets/nansouty/attente.webp";
 import nansoutyCab1 from "@/assets/nansouty/cab1.webp";
 import nansoutyCab2 from "@/assets/nansouty/cab2.webp";
+import nansoutyCab3 from "@/assets/nansouty/cab3.webp";
+import nansoutyCab4 from "@/assets/nansouty/cab4.webp";
+import nansoutyCoinEnfants from "@/assets/nansouty/coin-enfants.webp";
 import nansoutyFacade from "@/assets/nansouty/facade.webp";
 
 // Jardin Public
@@ -73,7 +76,7 @@ export type PageContext =
 export const PROJECT_IMAGES: Record<string, ProjectImages> = {
   "i-ca-re-nansouty": {
     hero: nansoutyAttente,
-    gallery: [nansoutyAttente, nansoutyCab1, nansoutyCab2, nansoutyFacade],
+    gallery: [nansoutyAttente, nansoutyCab1, nansoutyCab2, nansoutyCab3, nansoutyCab4, nansoutyCoinEnfants, nansoutyFacade],
   },
   "i-ca-re-jardin-public": {
     hero: jardinPublicAttente,
