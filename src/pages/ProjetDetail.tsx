@@ -29,6 +29,36 @@ import { isPipelineCabinet } from "@/lib/installation";
 import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
 
+/**
+ * OG images dédiées (1200×630) pour les pages /projets/[cabinet] exploitées.
+ * Générées à partir du hero réel (photographe, Sprint 15) et stockées
+ * dans public/og/. Les autres cabinets retombent sur DEFAULT_OG_IMAGE
+ * via SeoHead. Alt descriptif et sobre par cabinet.
+ */
+const PROJECT_OG_IMAGES: Record<
+  string,
+  { ogImage: string; ogImageWidth: number; ogImageHeight: number; ogImageAlt: string }
+> = {
+  "i-ca-re-jardin-public": {
+    ogImage: "https://i-ca.re/og/og-jardin-public.png",
+    ogImageWidth: 1200,
+    ogImageHeight: 630,
+    ogImageAlt: "Cabinet I-CA.RE Jardin Public à Bordeaux, salle d'attente",
+  },
+  "i-ca-re-pey-berland": {
+    ogImage: "https://i-ca.re/og/og-pey-berland.png",
+    ogImageWidth: 1200,
+    ogImageHeight: 630,
+    ogImageAlt: "Cabinet I-CA.RE Pey-Berland à Bordeaux, salle d'attente",
+  },
+  "i-ca-re-nansouty": {
+    ogImage: "https://i-ca.re/og/og-nansouty.png",
+    ogImageWidth: 1200,
+    ogImageHeight: 630,
+    ogImageAlt: "Cabinet I-CA.RE Nansouty à Bordeaux, salle d'attente",
+  },
+};
+
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: project, isLoading } = useProject(slug || "");
@@ -123,6 +153,7 @@ export default function ProjetDetail() {
         title={`${project.name} — I-CA.RE`}
         description={shortDesc}
         path={lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}
+        {...(PROJECT_OG_IMAGES[project.slug] ?? {})}
       />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify((() => {
