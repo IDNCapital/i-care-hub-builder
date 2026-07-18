@@ -54,10 +54,13 @@ export const Header = memo(function Header() {
     { name: labels.contact, href: localePath(lang, "contact") },
   ], [labels, lang]);
 
-  // Fallback to the home page of the target language when the current
-  // route has no equivalent (e.g. FR-only pages like /sinstaller).
+  // Repli contextuel : sur une sous-page Patients sans équivalent EN, pointer vers
+  // l'index Patients de l'autre langue (prérendu) plutôt que vers l'accueil.
+  const equivalentPath = getEquivalentPath(location.pathname, otherLang);
+  const isPatientsSection = /^\/(en\/)?patients(\/|$)/.test(location.pathname);
   const switchPath =
-    getEquivalentPath(location.pathname, otherLang) ?? localePath(otherLang, "home");
+    equivalentPath ??
+    (isPatientsSection ? localePath(otherLang, "patients") : localePath(otherLang, "home"));
 
   // Close mobile menu on route change
   useEffect(() => {

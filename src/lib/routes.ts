@@ -102,6 +102,9 @@ export function getEquivalentPath(
     }
 
     if (rest.startsWith(routePath + "/")) {
+      // Sous-pages Patients (problématiques, spécialités, décrire-mon-besoin) :
+      // pas d'équivalent localisé prérendu → pas de deep-link EN, pas de hreflang en.
+      if (key === "patients") return null;
       const slug = rest.slice(routePath.length + 1);
       return localePath(targetLang, key, slug);
     }
