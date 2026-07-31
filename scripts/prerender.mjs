@@ -268,7 +268,7 @@ function validateRouteType(html, route) {
   }
 
   // JSON-LD check for insight articles
-  if (route.path.includes("/insights/")) {
+  if (route.path.includes("/insights/") || /^\/patients\/articles\/./.test(route.path)) {
     const scripts = doc.querySelectorAll('script[type="application/ld+json"]');
     let hasArticle = false;
     let hasBreadcrumb = false;
@@ -462,7 +462,7 @@ async function main() {
         ? (noindex ? "✓ present" : "✗ MISSING")
         : (noindex ? "✗ UNEXPECTED" : "✓ absent");
 
-      if (route.path.includes("/insights/")) {
+      if (route.path.includes("/insights/") || /^\/patients\/articles\/./.test(route.path)) {
         const scripts = doc.querySelectorAll('script[type="application/ld+json"]');
         let hasArticle = false, hasBreadcrumb = false;
         for (const s of scripts) {
