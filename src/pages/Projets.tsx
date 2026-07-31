@@ -10,7 +10,7 @@ import { useProjects } from "@/hooks/useProjects";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
-import { STATIC_CENTRES, type CentreStatus } from "@/lib/centres";
+import { STATIC_CENTRES, quarterLabel, type CentreStatus } from "@/lib/centres";
 import { InlineBrand } from "@/components/BrandName";
 import { CarteCabinetsSection } from "@/components/CarteCabinetsSection";
 
@@ -139,7 +139,11 @@ export default function Projets() {
                     {/* Badge */}
                     <div className="absolute top-4 left-4">
                       <span className={`text-sm font-bold uppercase tracking-wide px-3 py-1.5 rounded-full shadow-sm ${badgeStyles[centre.status]}`}>
-                        {badgeLabel(centre.status)}{centre.status === "coming_soon" && centre.openingLabel ? ` — ${centre.openingLabel}` : ""}
+                        {badgeLabel(centre.status)}{(() => {
+                          if (centre.status !== "coming_soon") return "";
+                          const q = quarterLabel(getProject(centre.slug)?.date_ouverture_cible, "Q");
+                          return q ? ` — ${q}` : "";
+                        })()}
                       </span>
                     </div>
                   </Link>

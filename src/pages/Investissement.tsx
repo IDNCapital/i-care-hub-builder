@@ -21,11 +21,13 @@ import {
 import { getDefaultHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
 import { BrandName, InlineBrand } from "@/components/BrandName";
-import { STATIC_CENTRES } from "@/lib/centres";
+import { STATIC_CENTRES, quarterLabel } from "@/lib/centres";
+import { useProjects } from "@/hooks/useProjects";
 
 export default function Investissement() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
+  const { data: projects } = useProjects();
 
   const pillars = [
     { icon: Heart, title: t("investment.pillar1Title"), description: t("investment.pillar1Desc") },
@@ -204,13 +206,16 @@ export default function Investissement() {
                   <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
                   <span>{c.address}</span>
                 </p>
-                {c.openingLabel && (
-                  <p className="text-xs font-body text-primary mt-3 font-bold uppercase tracking-wider">
-                    {lang === "en"
-                      ? `Opening ${c.openingLabel}`
-                      : `Ouverture ${c.openingLabel.replace(/^Q(\d)/, "T$1")}`}
-                  </p>
-                )}
+                {(() => {
+                  const dateStr = projects?.find((p) => p.slug === c.slug)?.date_ouverture_cible;
+                  const label = quarterLabel(dateStr, lang === "en" ? "Q" : "T");
+                  if (!label) return null;
+                  return (
+                    <p className="text-xs font-body text-primary mt-3 font-bold uppercase tracking-wider">
+                      {lang === "en" ? `Opening ${label}` : `Ouverture ${label}`}
+                    </p>
+                  );
+                })()}
               </div>
             ))}
           </div>
