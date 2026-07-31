@@ -187,6 +187,7 @@ export function CarteCabinets({
           lat: Number(r.lat),
           lng: Number(r.lng),
           googlePlaceId: r.google_place_id,
+          dateOuvertureCible: r.date_ouverture_cible,
         }));
       setCabinets(rows);
       setLoading(false);
