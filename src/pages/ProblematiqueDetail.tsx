@@ -1,10 +1,12 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
 import { Button } from "@/components/ui/button";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
+import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
+import { supabase } from "@/integrations/supabase/client";
 import { useProblematiques } from "@/hooks/useProblematiques";
 import { usePraticiensPublics } from "@/hooks/usePraticiensPublics";
 import { CartePraticien } from "@/components/patients/CartePraticien";
@@ -24,6 +26,25 @@ export default function ProblematiqueDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: problematiques, loading: loadingP } = useProblematiques();
   const { data: praticiens, loading: loadingPr } = usePraticiensPublics();
+  const [articles, setArticles] = useState<ArticleCardData[]>([]);
+
+  useEffect(() => {
+    if (!slug) return;
+    let cancelled = false;
+    (async () => {
+      // La RLS ne renvoie que les articles au statut publié.
+      const { data, error } = await supabase
+        .from("articles")
+        .select("slug, titre, chapo, published_at")
+        .contains("problematiques_associees", [slug])
+        .order("published_at", { ascending: false });
+      if (cancelled) return;
+      setArticles(error ? [] : ((data ?? []) as ArticleCardData[]));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
 
   const problematique = useMemo(
     () => problematiques.find((p) => p.slug === slug),
