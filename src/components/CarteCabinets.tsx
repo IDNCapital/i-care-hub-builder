@@ -19,6 +19,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Crosshair } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
+import { openingForecastLabel } from "@/lib/centres";
 
 const SAGE = "#9EB8A5";
 const SAGE_LIGHT = "#E2EAE5";
@@ -35,19 +36,7 @@ type Cabinet = {
   lat: number;
   lng: number;
   googlePlaceId: string | null;
-};
-
-/**
- * Forecast d'ouverture par slug (statut en travaux).
- * Source de vérité des dates : projets.date_ouverture_cible —
- * synchroniser manuellement ces labels (dette V1.3-G, centralisation à terme).
- */
-const OPENING_FORECAST: Record<string, string> = {
-  "i-ca-re-chartrons": "Ouverture prévue T4 2026",
-  "i-ca-re-floirac": "Ouverture prévue T1 2027",
-  "i-ca-re-lormont": "Ouverture à venir",
-  "i-ca-re-toulouse-capitole": "Ouverture à venir",
-  "i-ca-re-le-bouscat": "Ouverture prévue T1 2027",
+  dateOuvertureCible: string | null;
 };
 
 /** Mapping ville -> métropole. */
@@ -177,7 +166,7 @@ export function CarteCabinets({
     (async () => {
       const { data, error: err } = await supabase
         .from("projets")
-        .select("slug, name, address, city, status, lat, lng, google_place_id")
+        .select("slug, name, address, city, status, lat, lng, google_place_id, date_ouverture_cible")
         .not("lat", "is", null)
         .not("lng", "is", null)
         .order("name");
