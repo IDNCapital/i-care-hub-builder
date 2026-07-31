@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      articles: {
+        Row: {
+          chapo: string
+          contenu: string
+          created_at: string
+          id: string
+          meta_description: string | null
+          meta_title: string | null
+          problematiques_associees: string[]
+          published_at: string | null
+          slug: string
+          statut: string
+          titre: string
+          updated_at: string
+        }
+        Insert: {
+          chapo: string
+          contenu: string
+          created_at?: string
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          problematiques_associees?: string[]
+          published_at?: string | null
+          slug: string
+          statut?: string
+          titre: string
+          updated_at?: string
+        }
+        Update: {
+          chapo?: string
+          contenu?: string
+          created_at?: string
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          problematiques_associees?: string[]
+          published_at?: string | null
+          slug?: string
+          statut?: string
+          titre?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       avis_google_cache: {
         Row: {
           google_display_name: string | null

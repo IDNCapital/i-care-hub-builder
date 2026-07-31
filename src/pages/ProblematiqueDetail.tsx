@@ -1,10 +1,12 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
 import { Button } from "@/components/ui/button";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
+import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
+import { supabase } from "@/integrations/supabase/client";
 import { useProblematiques } from "@/hooks/useProblematiques";
 import { usePraticiensPublics } from "@/hooks/usePraticiensPublics";
 import { CartePraticien } from "@/components/patients/CartePraticien";
@@ -24,6 +26,25 @@ export default function ProblematiqueDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: problematiques, loading: loadingP } = useProblematiques();
   const { data: praticiens, loading: loadingPr } = usePraticiensPublics();
+  const [articles, setArticles] = useState<ArticleCardData[]>([]);
+
+  useEffect(() => {
+    if (!slug) return;
+    let cancelled = false;
+    (async () => {
+      // La RLS ne renvoie que les articles au statut publié.
+      const { data, error } = await supabase
+        .from("articles")
+        .select("slug, titre, chapo, published_at")
+        .contains("problematiques_associees", [slug])
+        .order("published_at", { ascending: false });
+      if (cancelled) return;
+      setArticles(error ? [] : ((data ?? []) as ArticleCardData[]));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
 
   const problematique = useMemo(
     () => problematiques.find((p) => p.slug === slug),
@@ -154,6 +175,22 @@ export default function ProblematiqueDetail() {
           )}
         </div>
       </section>
+
+      {/* Pour aller plus loin (maillage articles) */}
+      {articles.length > 0 && (
+        <section className="bg-background border-t border-border">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 max-w-5xl">
+            <h2 className="font-heading font-normal text-2xl md:text-3xl text-anthracite mb-8 text-balance">
+              Pour aller plus loin
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {articles.map((a) => (
+                <ArticleCard key={a.slug} article={a} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA conciergerie */}
       <section className="py-20 bg-cream border-t border-border">

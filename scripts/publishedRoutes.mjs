@@ -75,6 +75,17 @@ export async function fetchSpecialites() {
 }
 
 /**
+ * All published articles (RLS filters statut='publie').
+ * Returns [{slug, updated_at}].
+ */
+export async function fetchArticlesPublies() {
+  const url =
+    `${base()}/rest/v1/articles` +
+    `?select=slug,updated_at&order=published_at.desc`;
+  return fetchJson(url);
+}
+
+/**
  * Pre-compute per-praticien normalized tag Set.
  *
  * Règle de fusion canonique (dupliqué de src/lib/taxonomy.ts

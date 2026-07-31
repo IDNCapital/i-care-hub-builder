@@ -60,6 +60,7 @@ const ROUTES = [
   { path: "/temoignages-praticiens", type: "strategic" },
   { path: "/patients", type: "strategic" },
   { path: "/patients/problematiques", type: "strategic" },
+  { path: "/patients/articles", type: "strategic" },
   // FR installation matrix (LOT 4-bis-A) — index + 9 professions × 4 cabinets pipeline
   { path: "/sinstaller", type: "strategic" },
   ...["osteopathe","sophrologue","psychologue","psychotherapeute","dieteticien-nutritionniste","naturopathe","hypnotherapeute","medecin-generaliste","sage-femme"].flatMap(p =>
@@ -267,7 +268,7 @@ function validateRouteType(html, route) {
   }
 
   // JSON-LD check for insight articles
-  if (route.path.includes("/insights/")) {
+  if (route.path.includes("/insights/") || /^\/patients\/articles\/./.test(route.path)) {
     const scripts = doc.querySelectorAll('script[type="application/ld+json"]');
     let hasArticle = false;
     let hasBreadcrumb = false;
@@ -311,12 +312,14 @@ async function main() {
         matchProblematiques,
         fetchSpecialites,
         matchSpecialites,
+        fetchArticlesPublies,
       } = await import("./publishedRoutes.mjs");
       const praticiens = await fetchPraticiensPublies();
       const problematiques = await fetchProblematiques();
       const matched = matchProblematiques(problematiques, praticiens);
       const specialites = await fetchSpecialites();
       const matchedSp = matchSpecialites(specialites, praticiens);
+      const articles = await fetchArticlesPublies();
 
       const seenP = new Set();
       for (const p of praticiens) {
@@ -345,8 +348,18 @@ async function main() {
           type: "strategic",
         });
       }
+      const seenAr = new Set();
+      for (const ar of articles) {
+        const slug = (ar?.slug ?? "").toString().trim();
+        if (!slug || seenAr.has(slug)) continue;
+        seenAr.add(slug);
+        dynamicRoutes.push({
+          path: `/patients/articles/${slug}`,
+          type: "strategic",
+        });
+      }
       console.log(
-        `[prerender] Dynamic routes: ${seenP.size} praticiens + ${seenPb.size} problematiques + ${seenSp.size} specialites`,
+        `[prerender] Dynamic routes: ${seenP.size} praticiens + ${seenPb.size} problematiques + ${seenSp.size} specialites + ${seenAr.size} articles`,
       );
     } catch (err) {
       const msg = `[prerender] Failed to fetch dynamic routes: ${err?.message || err}`;
@@ -449,7 +462,7 @@ async function main() {
         ? (noindex ? "✓ present" : "✗ MISSING")
         : (noindex ? "✗ UNEXPECTED" : "✓ absent");
 
-      if (route.path.includes("/insights/")) {
+      if (route.path.includes("/insights/") || /^\/patients\/articles\/./.test(route.path)) {
         const scripts = doc.querySelectorAll('script[type="application/ld+json"]');
         let hasArticle = false, hasBreadcrumb = false;
         for (const s of scripts) {
