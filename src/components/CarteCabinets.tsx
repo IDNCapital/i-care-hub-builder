@@ -299,7 +299,7 @@ export function CarteCabinets({
               ? ICON_WORK_HL
               : ICON_WORK;
           const mapsUrl = active ? googleMapsPlaceUrl(c.name, c.googlePlaceId) : null;
-          const forecast = OPENING_FORECAST[c.slug] ?? "Ouverture à venir";
+          const forecast = openingForecastLabel(c.dateOuvertureCible);
           return (
             <Marker
               key={c.slug}
