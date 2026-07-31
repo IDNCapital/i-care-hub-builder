@@ -176,6 +176,22 @@ export default function ProblematiqueDetail() {
         </div>
       </section>
 
+      {/* Pour aller plus loin (maillage articles) */}
+      {articles.length > 0 && (
+        <section className="bg-background border-t border-border">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 max-w-5xl">
+            <h2 className="font-heading font-normal text-2xl md:text-3xl text-anthracite mb-8 text-balance">
+              Pour aller plus loin
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {articles.map((a) => (
+                <ArticleCard key={a.slug} article={a} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* CTA conciergerie */}
       <section className="py-20 bg-cream border-t border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
