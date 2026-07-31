@@ -25,6 +25,7 @@ import {
   matchProblematiques,
   fetchSpecialites,
   matchSpecialites,
+  fetchArticlesPublies,
 } from "./publishedRoutes.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -103,6 +104,14 @@ async function main() {
   }
   const matchedSpecialites = matchSpecialites(specialites, rows);
   const matchedSpecialiteSet = new Set(matchedSpecialites.map((s) => s.slug));
+
+  // Fetch articles publiés (RLS filtre statut='publie').
+  let articles;
+  try {
+    articles = await fetchArticlesPublies();
+  } catch (e) {
+    return fail(`Supabase REST call error (articles): ${e?.message || e}`);
+  }
 
   // Existing <loc> values in the static base (for dedup on the entire file).
   const existingLocs = new Set(
@@ -190,12 +199,45 @@ async function main() {
     existingLocs.add(loc);
   }
 
+  // Bloc articles : index (toujours) + détails publiés.
+  const articlesBlocks = [];
+  const articlesIndexLoc = "https://i-ca.re/patients/articles";
+  if (!existingLocs.has(articlesIndexLoc)) {
+    articlesBlocks.push(
+      `  <url>\n` +
+      `    <loc>${xmlEscape(articlesIndexLoc)}</loc>\n` +
+      `    <changefreq>weekly</changefreq>\n` +
+      `    <priority>0.6</priority>\n` +
+      `  </url>`,
+    );
+    existingLocs.add(articlesIndexLoc);
+  }
+
+  for (const ar of articles) {
+    const slug = (ar && ar.slug ? String(ar.slug) : "").trim();
+    if (!slug) continue;
+
+    const loc = `https://i-ca.re/patients/articles/${slug}`;
+    if (existingLocs.has(loc)) continue;
+
+    const lastmod = toIsoDate(ar.updated_at);
+    articlesBlocks.push(
+      `  <url>\n` +
+      `    <loc>${xmlEscape(loc)}</loc>\n` +
+      `    <lastmod>${xmlEscape(lastmod)}</lastmod>\n` +
+      `    <changefreq>monthly</changefreq>\n` +
+      `    <priority>0.5</priority>\n` +
+      `  </url>`,
+    );
+    existingLocs.add(loc);
+  }
+
   const closing = "</urlset>";
   if (!baseXml.includes(closing)) {
     return fail("Static sitemap has no </urlset> closing tag.");
   }
 
-  const allBlocks = [...blocks, ...problematiquesBlocks, ...specialitesBlocks];
+  const allBlocks = [...blocks, ...problematiquesBlocks, ...specialitesBlocks, ...articlesBlocks];
   const injection = allBlocks.length > 0 ? allBlocks.join("\n") + "\n" : "";
   const finalXml = baseXml.replace(
     closing,
@@ -226,8 +268,9 @@ async function main() {
   const staticCount = (baseXml.match(/<url>/g) || []).length;
   const problematiquesTotal = problematiquesBlocks.length;
   const specialitesTotal = specialitesBlocks.length;
+  const articlesTotal = articlesBlocks.length;
   console.log(
-    `[generate-sitemap] ✓ ${staticCount} static + ${blocks.length} praticiens + ${problematiquesTotal} problematiques + ${specialitesTotal} specialites = ${openCount} total → dist/sitemap.xml`,
+    `[generate-sitemap] ✓ ${staticCount} static + ${blocks.length} praticiens + ${problematiquesTotal} problematiques + ${specialitesTotal} specialites + ${articlesTotal} articles = ${openCount} total → dist/sitemap.xml`,
   );
 }
 
