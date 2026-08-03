@@ -17,6 +17,7 @@ import {
   Phone,
 } from "lucide-react";
 import { useProject } from "@/hooks/useProjects";
+import { ChargementPage } from "@/components/ChargementPage";
 import { Analytics } from "@/lib/analytics";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero, getProjectGallery } from "@/lib/projectImages";
