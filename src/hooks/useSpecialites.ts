@@ -17,17 +17,22 @@ export interface Specialite {
 export function useSpecialites() {
   const [data, setData] = useState<Specialite[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       setLoading(true);
+      setError(false);
       const { data: rows, error } = await supabase
         .from("specialites")
         .select("slug, nom, description_courte, description_longue, synonymes, cabinet_slug")
         .order("nom", { ascending: true });
       if (cancelled) return;
-      if (error) setData([]);
+      if (error) {
+        setData([]);
+        setError(true);
+      }
       else setData((rows ?? []) as Specialite[]);
       setLoading(false);
     })();
@@ -36,5 +41,5 @@ export function useSpecialites() {
     };
   }, []);
 
-  return { data, loading };
+  return { data, loading, error };
 }
