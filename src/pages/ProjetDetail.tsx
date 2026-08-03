@@ -312,7 +312,7 @@ export default function ProjetDetail() {
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
               <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
-              <p className="text-3xl font-bold">{project.delivery_date || "—"}</p>
+              <p className="text-3xl font-bold">{deliveryLabel}</p>
               <p className="text-sm text-muted-foreground">{t("projectDetail.delivery")}</p>
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
@@ -393,7 +393,7 @@ export default function ProjetDetail() {
                   <div className="flex justify-between"><dt className="text-muted-foreground">{t("projectDetail.unitsLabel")}</dt><dd className="font-medium">{project.units_count}</dd></div>
                   <div className="flex justify-between"><dt className="text-muted-foreground">{t("projectDetail.typology")}</dt><dd className="font-medium">{typologyLabels[project.typology]}</dd></div>
                   <div className="flex justify-between"><dt className="text-muted-foreground">{t("projectDetail.status")}</dt><dd className="font-medium">{statusLabels[project.status]}</dd></div>
-                  <div className="flex justify-between"><dt className="text-muted-foreground">{t("projectDetail.deliveryLabel")}</dt><dd className="font-medium">{project.delivery_date || "—"}</dd></div>
+                  <div className="flex justify-between"><dt className="text-muted-foreground">{t("projectDetail.deliveryLabel")}</dt><dd className="font-medium">{deliveryLabel}</dd></div>
                 </dl>
               </div>
 
