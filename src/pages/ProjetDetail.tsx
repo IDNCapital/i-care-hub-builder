@@ -22,7 +22,7 @@ import { Analytics } from "@/lib/analytics";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero, getProjectGallery } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
-import { getCentreBySlug } from "@/lib/centres";
+import { getCentreBySlug, quarterLabel } from "@/lib/centres";
 import { getLocalBusinessData } from "@/lib/projectSchema";
 import { BrandName } from "@/components/BrandName";
 import { SectionPraticiensDuCabinet } from "@/components/SectionPraticiensDuCabinet";
