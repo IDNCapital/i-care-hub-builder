@@ -141,7 +141,7 @@ export default function Projets() {
                       <span className={`text-sm font-bold uppercase tracking-wide px-3 py-1.5 rounded-full shadow-sm ${badgeStyles[centre.status]}`}>
                         {badgeLabel(centre.status)}{(() => {
                           if (centre.status !== "coming_soon") return "";
-                          const q = quarterLabel(getProject(centre.slug)?.date_ouverture_cible, "Q");
+                          const q = quarterLabel(getProject(centre.slug)?.date_ouverture_cible, lang === "fr" ? "T" : "Q");
                           return q ? ` — ${q}` : "";
                         })()}
                       </span>

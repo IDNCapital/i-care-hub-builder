@@ -22,7 +22,7 @@ import { Analytics } from "@/lib/analytics";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero, getProjectGallery } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
-import { getCentreBySlug } from "@/lib/centres";
+import { getCentreBySlug, quarterLabel } from "@/lib/centres";
 import { getLocalBusinessData } from "@/lib/projectSchema";
 import { BrandName } from "@/components/BrandName";
 import { SectionPraticiensDuCabinet } from "@/components/SectionPraticiensDuCabinet";
@@ -132,6 +132,8 @@ export default function ProjetDetail() {
   const description = lang === "en" && project.long_description_en ? project.long_description_en : (project.long_description || project.short_description);
   const shortDesc = lang === "en" && project.short_description_en ? project.short_description_en : project.short_description;
   const features = lang === "en" && project.key_features_en ? project.key_features_en : project.key_features;
+  // Libellé de livraison dérivé de projets.date_ouverture_cible (source de vérité unique)
+  const deliveryLabel = quarterLabel(project.date_ouverture_cible, lang === "fr" ? "T" : "Q") ?? "—";
 
   const heroSrc = getProjectHero(project.slug, project.hero_image_url);
   const gallery = getProjectGallery(project.slug, project.image_gallery);
@@ -310,7 +312,7 @@ export default function ProjetDetail() {
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
               <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
-              <p className="text-3xl font-bold">{project.delivery_date || "—"}</p>
+              <p className="text-3xl font-bold">{deliveryLabel}</p>
               <p className="text-sm text-muted-foreground">{t("projectDetail.delivery")}</p>
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
@@ -391,7 +393,7 @@ export default function ProjetDetail() {
                   <div className="flex justify-between"><dt className="text-muted-foreground">{t("projectDetail.unitsLabel")}</dt><dd className="font-medium">{project.units_count}</dd></div>
                   <div className="flex justify-between"><dt className="text-muted-foreground">{t("projectDetail.typology")}</dt><dd className="font-medium">{typologyLabels[project.typology]}</dd></div>
                   <div className="flex justify-between"><dt className="text-muted-foreground">{t("projectDetail.status")}</dt><dd className="font-medium">{statusLabels[project.status]}</dd></div>
-                  <div className="flex justify-between"><dt className="text-muted-foreground">{t("projectDetail.deliveryLabel")}</dt><dd className="font-medium">{project.delivery_date || "—"}</dd></div>
+                  <div className="flex justify-between"><dt className="text-muted-foreground">{t("projectDetail.deliveryLabel")}</dt><dd className="font-medium">{deliveryLabel}</dd></div>
                 </dl>
               </div>
 
