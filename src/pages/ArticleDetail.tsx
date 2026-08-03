@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Loader2 } from "lucide-react";
 import { Layout } from "@/components/Layout";
+import { ChargementPage } from "@/components/ChargementPage";
 import { SeoHead } from "@/components/SeoHead";
 import { Button } from "@/components/ui/button";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
@@ -26,10 +26,12 @@ export default function ArticleDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [article, setArticle] = useState<ArticleRow | null>(null);
   const [loading, setLoading] = useState(true);
+  const [errored, setErrored] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
+    setErrored(false);
     (async () => {
       // La RLS ne renvoie que les articles au statut publié.
       const { data, error } = await supabase
@@ -38,7 +40,12 @@ export default function ArticleDetail() {
         .eq("slug", slug ?? "")
         .maybeSingle();
       if (cancelled) return;
-      setArticle(error ? null : ((data as ArticleRow) ?? null));
+      if (error) {
+        setErrored(true);
+        setArticle(null);
+      } else {
+        setArticle((data as ArticleRow) ?? null);
+      }
       setLoading(false);
     })();
     return () => {
@@ -47,13 +54,11 @@ export default function ArticleDetail() {
   }, [slug]);
 
   if (loading) {
-    return (
-      <Layout>
-        <div className="pt-40 pb-40 flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
-        </div>
-      </Layout>
-    );
+    return <ChargementPage mode="loading" />;
+  }
+
+  if (errored) {
+    return <ChargementPage mode="error" />;
   }
 
   if (!article) {
