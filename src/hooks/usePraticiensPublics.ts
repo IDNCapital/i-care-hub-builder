@@ -23,11 +23,13 @@ export interface PraticienPublic {
 export function usePraticiensPublics() {
   const [data, setData] = useState<PraticienPublic[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       setLoading(true);
+      setError(false);
       const { data: rows, error } = await supabase
         .from("praticiens")
         .select(
@@ -37,7 +39,10 @@ export function usePraticiensPublics() {
         .eq("actif", true)
         .order("nom", { ascending: true });
       if (cancelled) return;
-      if (error) setData([]);
+      if (error) {
+        setData([]);
+        setError(true);
+      }
       else setData((rows ?? []) as PraticienPublic[]);
       setLoading(false);
     })();
@@ -46,5 +51,5 @@ export function usePraticiensPublics() {
     };
   }, []);
 
-  return { data, loading };
+  return { data, loading, error };
 }

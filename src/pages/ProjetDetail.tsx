@@ -17,6 +17,7 @@ import {
   Phone,
 } from "lucide-react";
 import { useProject } from "@/hooks/useProjects";
+import { ChargementPage } from "@/components/ChargementPage";
 import { Analytics } from "@/lib/analytics";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero, getProjectGallery } from "@/lib/projectImages";
@@ -62,7 +63,7 @@ const PROJECT_OG_IMAGES: Record<
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: project, isLoading } = useProject(slug || "");
+  const { data: project, isLoading, isError } = useProject(slug || "");
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -95,6 +96,10 @@ export default function ProjetDetail() {
         </div>
       </Layout>
     );
+  }
+
+  if (isError) {
+    return <ChargementPage mode="error" />;
   }
 
   if (!project) {

@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { MapPin, ChevronRight } from "lucide-react";
 import NotFound from "@/pages/NotFound";
 import { useInstallationPage, useProfessions, useCabinetsPipeline } from "@/hooks/useInstallation";
+import { ChargementPage } from "@/components/ChargementPage";
 import { cabinetNomCourt, formatDateOuverture, aVille } from "@/lib/installation";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
@@ -29,7 +30,7 @@ function parsePostalAddress(address: string | null, city: string) {
 
 export default function SinstallerDetail() {
   const { profession, ville } = useParams<{ profession: string; ville: string }>();
-  const { data, isLoading } = useInstallationPage(profession ?? "", ville ?? "");
+  const { data, isLoading, isError } = useInstallationPage(profession ?? "", ville ?? "");
   const { data: professions } = useProfessions();
   const { data: pipelineCabinets } = useCabinetsPipeline();
   const projetCabinet = pipelineCabinets?.find((c) => c.slug_installation === ville);
@@ -42,6 +43,10 @@ export default function SinstallerDetail() {
         </div>
       </Layout>
     );
+  }
+
+  if (isError) {
+    return <ChargementPage mode="error" />;
   }
 
   if (!data) {

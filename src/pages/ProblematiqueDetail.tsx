@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Loader2 } from "lucide-react";
 import { Layout } from "@/components/Layout";
+import { ChargementPage } from "@/components/ChargementPage";
 import { SeoHead } from "@/components/SeoHead";
 import { Button } from "@/components/ui/button";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
@@ -24,8 +24,8 @@ function truncateDesc(text: string, max = 155): string {
 
 export default function ProblematiqueDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: problematiques, loading: loadingP } = useProblematiques();
-  const { data: praticiens, loading: loadingPr } = usePraticiensPublics();
+  const { data: problematiques, loading: loadingP, error: errorP } = useProblematiques();
+  const { data: praticiens, loading: loadingPr, error: errorPr } = usePraticiensPublics();
   const [articles, setArticles] = useState<ArticleCardData[]>([]);
 
   useEffect(() => {
@@ -61,13 +61,11 @@ export default function ProblematiqueDetail() {
   }, [praticiens, problematique]);
 
   if (loadingP || loadingPr) {
-    return (
-      <Layout>
-        <div className="pt-40 pb-40 flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
-        </div>
-      </Layout>
-    );
+    return <ChargementPage mode="loading" />;
+  }
+
+  if (errorP || errorPr) {
+    return <ChargementPage mode="error" />;
   }
 
   if (!problematique) {
