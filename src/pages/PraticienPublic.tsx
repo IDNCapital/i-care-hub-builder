@@ -20,6 +20,7 @@ export default function PraticienPublic() {
   const [praticien, setPraticien] = useState<Praticien | null>(null);
   const [cabinet, setCabinet] = useState<CabinetForLd | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [errored, setErrored] = useState(false);
   const handleBack = () => {
     // Si l'utilisateur a un historique dans l'app, on revient en arrière.
     // Sinon (arrivée directe via Google), on retombe sur la fiche cabinet ou l'accueil.
@@ -48,7 +49,12 @@ export default function PraticienPublic() {
         .eq("actif", true)
         .maybeSingle();
       if (cancelled) return;
-      if (error || !data) {
+      if (error) {
+        setErrored(true);
+        setLoading(false);
+        return;
+      }
+      if (!data) {
         setNotFound(true);
         setLoading(false);
         return;
@@ -73,11 +79,37 @@ export default function PraticienPublic() {
         className="min-h-screen flex items-center justify-center"
         style={{ backgroundColor: "#F6F5F0" }}
       >
-        <Helmet>
-          <title>Chargement · I-CA.RE</title>
-        </Helmet>
         <div className="flex items-center gap-2 text-sm" style={{ color: "#6B6B6B" }}>
           <Loader2 className="w-4 h-4 animate-spin" /> Chargement…
+        </div>
+      </main>
+    );
+  }
+
+  if (errored) {
+    return (
+      <main
+        className="min-h-screen flex items-center justify-center px-6"
+        style={{ backgroundColor: "#F6F5F0" }}
+      >
+        <div
+          className="max-w-md w-full text-center bg-white"
+          style={{ border: "1px solid #E2EAE5", padding: 32, borderRadius: 12 }}
+        >
+          <h2 className="font-heading" style={{ fontSize: "1.5rem", color: "#2C2C2C" }}>
+            Le contenu n'a pas pu être chargé.
+          </h2>
+          <p className="font-sans mt-3" style={{ color: "#6B6B6B", fontSize: "0.95rem" }}>
+            Vérifiez votre connexion, puis réessayez.
+          </p>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="inline-block mt-6 rounded font-sans font-bold uppercase tracking-[0.1em] text-[12px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#90A997]"
+            style={{ backgroundColor: "#D9C7A1", color: "#2B2B2B", padding: "12px 24px" }}
+          >
+            Réessayer
+          </button>
         </div>
       </main>
     );
