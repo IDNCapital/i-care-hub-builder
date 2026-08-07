@@ -211,6 +211,7 @@
     "formWebsite": "Site web",
     "formProfession": "Type de praticien",
     "formProfessionPlaceholder": "Sélectionnez votre profession",
+    "formProfessionOther": "Autre praticienne ou praticien du soin ou du bien-être",
     "formCity": "Ville recherchée",
     "formCityPlaceholder": "Ex : Bordeaux, Floirac, Lormont…",
     "formNeighbourhood": "Quartier / secteur souhaité",
@@ -246,17 +247,6 @@
     "formSuccessCheck": "Vérifiez votre boîte de réception.",
     "bottomCtaTitle": "Prêt à exercer dans un cadre d'exception ?",
     "bottomCtaDesc": "Découvrez nos espaces disponibles ou échangez directement avec notre équipe.",
-    "professionOptions": {
-      "medecin_generaliste": "Médecin généraliste",
-      "medecin_specialiste": "Médecin spécialiste",
-      "infirmier": "Infirmier(ère)",
-      "osteopathe": "Ostéopathe",
-      "psychologue": "Psychologue",
-      "orthophoniste": "Orthophoniste",
-      "sage_femme": "Sage-femme",
-      "dentiste": "Chirurgien-dentiste",
-      "autre": "Autre praticien du soin ou du bien-être"
-    },
     "dateOptions": {
       "immediat": "Dès que possible",
       "3mois": "Dans les 3 prochains mois",
@@ -323,12 +313,31 @@
     "availabilityNoticeTitle": "Une disponibilité à temps partiel vient de s'ouvrir",
     "availabilityNoticeBody": "{{label}}. Une occasion d'exercer dans un cabinet en exploitation, au cœur de Bordeaux. Contactez-nous pour organiser une visite.",
     "centres": {
-      "chartrons": { "name": "Chartrons", "status": "available", "desc": "3 cabinets encore disponibles" },
-      "nansouty": { "name": "Nansouty", "status": "full" },
-      "jardin-public": { "name": "Jardin Public", "status": "full" },
-      "pey-berland": { "name": "Pey-Berland", "status": "full" },
-      "floirac": { "name": "Floirac", "status": "coming_soon" },
-      "lormont": { "name": "Lormont", "status": "coming_soon" }
+      "chartrons": {
+        "name": "Chartrons",
+        "status": "available",
+        "desc": "3 cabinets encore disponibles"
+      },
+      "nansouty": {
+        "name": "Nansouty",
+        "status": "full"
+      },
+      "jardin-public": {
+        "name": "Jardin Public",
+        "status": "full"
+      },
+      "pey-berland": {
+        "name": "Pey-Berland",
+        "status": "full"
+      },
+      "floirac": {
+        "name": "Floirac",
+        "status": "coming_soon"
+      },
+      "lormont": {
+        "name": "Lormont",
+        "status": "coming_soon"
+      }
     }
   },
   "projectDetail": {

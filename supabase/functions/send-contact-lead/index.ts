@@ -158,6 +158,29 @@ Deno.serve(async (req) => {
     // ── Supabase client ──
     const supabase = createClient(requireEnv("SUPABASE_URL"), requireEnv("SUPABASE_SERVICE_ROLE_KEY"));
 
+    // ── Validation profession (même référentiel que submit-demande-installation)
+    const rawProfession = (extra_data as Record<string, unknown> | null | undefined)?.profession;
+    if (typeof rawProfession === "string" && rawProfession.trim()) {
+      const cleanProfession = rawProfession.trim().slice(0, 100);
+      if (cleanProfession !== "autre") {
+        const { data: professionRow, error: profErr } = await supabase
+          .from("professions")
+          .select("slug, actif")
+          .eq("slug", cleanProfession)
+          .maybeSingle();
+        if (profErr) {
+          return new Response(JSON.stringify({ error: "internal_error" }), {
+            status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        if (!professionRow || professionRow.actif === false) {
+          return new Response(JSON.stringify({ error: "invalid_profession" }), {
+            status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+      }
+    }
+
     // ── Rate limit: 1 per 30s per email ──
     const { data: recentLead } = await supabase
       .from("contact_leads")

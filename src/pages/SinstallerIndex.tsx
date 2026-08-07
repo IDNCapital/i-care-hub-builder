@@ -3,13 +3,13 @@ import { SeoHead } from "@/components/SeoHead";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { MapPin, ArrowRight } from "lucide-react";
-import { useProfessions, useCabinetsPipeline } from "@/hooks/useInstallation";
+import { useProfessionsInstallation, useCabinetsPipeline } from "@/hooks/useInstallation";
 import { cabinetNomCourt, formatDateOuverture, installationUrl } from "@/lib/installation";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { CabinetVisuel } from "@/components/CabinetVisuel";
 
 export default function SinstallerIndex() {
-  const { data: professions = [] } = useProfessions();
+  const { data: professions = [] } = useProfessionsInstallation();
   const { data: cabinets = [] } = useCabinetsPipeline();
 
   const breadcrumbJsonLd = {

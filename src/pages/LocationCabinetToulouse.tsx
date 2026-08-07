@@ -31,7 +31,7 @@ import { ArrowRight, MapPin, TreePine, Volume2, Loader2 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { InlineBrand } from "@/components/BrandName";
 import { ICARE_TELEPHONE_AFFICHAGE } from "@/lib/contact";
-import { useCabinetsPipeline } from "@/hooks/useInstallation";
+import { useCabinetsPipeline, useProfessions } from "@/hooks/useInstallation";
 import { cabinetNomCourt } from "@/lib/installation";
 import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
 
@@ -39,22 +39,10 @@ export default function LocationCabinetToulouse() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const { data: pipelineCabinets } = useCabinetsPipeline();
+  const { data: professions = [] } = useProfessions();
   const cabinetsToulouse = (pipelineCabinets ?? []).filter((c) => c.city === "Toulouse");
 
   const toulouseCapitoleHero = PROJECT_IMAGES["i-ca-re-toulouse-capitole"]?.hero;
-
-  const professionOptions = [
-    { value: "medecin_generaliste", label: "Médecin généraliste" },
-    { value: "medecin_specialiste", label: "Médecin spécialiste" },
-    { value: "kinesitherapeute", label: "Kinésithérapeute" },
-    { value: "osteopathe", label: "Ostéopathe" },
-    { value: "psychologue", label: "Psychologue" },
-    { value: "orthophoniste", label: "Orthophoniste" },
-    { value: "sage_femme", label: "Sage-femme" },
-    { value: "dentiste", label: "Chirurgien-dentiste" },
-    { value: "infirmier", label: "Infirmier·ère" },
-    { value: "autre", label: "Autre praticien du soin ou du bien-être" },
-  ];
 
   const neighbourhoodOptions = [
     "Capitole", "Carmes", "Saint-Étienne", "Saint-Cyprien",
@@ -435,11 +423,14 @@ export default function LocationCabinetToulouse() {
                     <SelectValue placeholder="Sélectionnez votre profession" />
                   </SelectTrigger>
                   <SelectContent className={darkSelectContent}>
-                    {professionOptions.map((p) => (
-                      <SelectItem key={p.value} value={p.value} className={darkSelectItem}>
-                        {p.label}
+                    {professions.map((p) => (
+                      <SelectItem key={p.slug} value={p.slug} className={darkSelectItem}>
+                        {p.nom_inclusif_pluriel}
                       </SelectItem>
                     ))}
+                    <SelectItem value="autre" className={darkSelectItem}>
+                      Autre praticienne ou praticien du soin ou du bien-être
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>

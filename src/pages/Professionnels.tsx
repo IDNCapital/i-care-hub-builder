@@ -29,10 +29,12 @@ import { getDefaultHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
 import { InlineBrand } from "@/components/BrandName";
 import { ICARE_TELEPHONE_AFFICHAGE } from "@/lib/contact";
+import { useProfessions } from "@/hooks/useInstallation";
 
 export default function Professionnels() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
+  const { data: professions = [] } = useProfessions();
 
   const pillars = [
     {
@@ -62,10 +64,6 @@ export default function Professionnels() {
     { icon: Key, number: "04", title: t("professionals.steps.install"), description: t("professionals.steps.installDesc") },
   ];
 
-  const professionOptions = [
-    "medecin_generaliste", "medecin_specialiste", "infirmier", "kinesitherapeute",
-    "osteopathe", "psychologue", "orthophoniste", "sage_femme", "dentiste", "autre",
-  ];
   const dateOptions = ["immediat", "3mois", "6mois", "1an", "plus"];
   const cabinetCountOptions = ["1", "2", "3", "4+", "custom"];
 
@@ -313,11 +311,14 @@ export default function Professionnels() {
                     <SelectValue placeholder={t("professionals.formProfessionPlaceholder")} />
                   </SelectTrigger>
                   <SelectContent className={darkSelectContent}>
-                    {professionOptions.map((key) => (
-                      <SelectItem key={key} value={key} className="text-[#F6F5F0] focus:bg-primary/15 data-[state=checked]:bg-primary data-[state=checked]:text-[#1F1F1F]">
-                        {t(`professionals.professionOptions.${key}`)}
+                    {professions.map((p) => (
+                      <SelectItem key={p.slug} value={p.slug} className="text-[#F6F5F0] focus:bg-primary/15 data-[state=checked]:bg-primary data-[state=checked]:text-[#1F1F1F]">
+                        {p.nom_inclusif_pluriel}
                       </SelectItem>
                     ))}
+                    <SelectItem value="autre" className="text-[#F6F5F0] focus:bg-primary/15 data-[state=checked]:bg-primary data-[state=checked]:text-[#1F1F1F]">
+                      {t("professionals.formProfessionOther")}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
