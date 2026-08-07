@@ -96,6 +96,18 @@ jobs:
             exit 1
           fi
           echo "✓ $(ls -d dist/patients/specialite/*/index.html | wc -l) specialite pages prerendered"
+          echo "=== Checking installation matrix parity (dist/sinstaller vs sitemap) ==="
+          PRERENDERED=$(ls -d dist/sinstaller/*/*/index.html 2>/dev/null | wc -l)
+          SITEMAP=$(grep -c "<loc>https://i-ca.re/sinstaller/[^<]*/[^<]*</loc>" dist/sitemap.xml || true)
+          if [ "$PRERENDERED" -eq 0 ] || [ "$SITEMAP" -eq 0 ]; then
+            echo "✗ Installation matrix empty: $PRERENDERED prerendered / $SITEMAP in sitemap"
+            exit 1
+          fi
+          if [ "$PRERENDERED" -ne "$SITEMAP" ]; then
+            echo "✗ Installation matrix mismatch: $PRERENDERED prerendered vs $SITEMAP sitemap URLs"
+            exit 1
+          fi
+          echo "✓ $PRERENDERED installation matrix pages prerendered = $SITEMAP sitemap URLs"
 
       - name: Upload dist artifact
         if: success()

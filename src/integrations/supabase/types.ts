@@ -877,6 +877,7 @@ export type Database = {
           nom_inclusif_pluriel: string
           nom_masculin_singulier: string
           ordre_affichage: number
+          page_installation: boolean
           slug: string
           updated_at: string
         }
@@ -888,6 +889,7 @@ export type Database = {
           nom_inclusif_pluriel: string
           nom_masculin_singulier: string
           ordre_affichage?: number
+          page_installation?: boolean
           slug: string
           updated_at?: string
         }
@@ -899,6 +901,7 @@ export type Database = {
           nom_inclusif_pluriel?: string
           nom_masculin_singulier?: string
           ordre_affichage?: number
+          page_installation?: boolean
           slug?: string
           updated_at?: string
         }
