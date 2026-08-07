@@ -27,14 +27,14 @@ export default function SinstallerIndex() {
     name: "S'installer en cabinet I-CA.RE",
     url: "https://i-ca.re/sinstaller",
     description:
-      "Quatre cabinets I-CA.RE en cours d'ouverture en Nouvelle-Aquitaine et Occitanie. Trouvez l'espace adapté à votre pratique.",
+      "Les cabinets I-CA.RE ouvrent en Nouvelle-Aquitaine et en Occitanie. Trouvez l'espace adapté à votre pratique.",
   };
 
   return (
     <Layout>
       <SeoHead
         title="S'installer en cabinet I-CA.RE — Cabinets en ouverture à Bordeaux et Toulouse"
-        description="Quatre cabinets I-CA.RE en cours d'ouverture en Nouvelle-Aquitaine et Occitanie. Découvrez les opportunités d'installation pour 9 professions du soin, paramédical et bien-être."
+        description="Les cabinets I-CA.RE ouvrent en Nouvelle-Aquitaine et en Occitanie. Découvrez les opportunités d'installation pour les professions du soin, du paramédical et du bien-être."
         path="/sinstaller"
       />
       <Helmet>
@@ -49,7 +49,7 @@ export default function SinstallerIndex() {
             S'installer en cabinet I‑CA.RE
           </h1>
           <p className="text-xl text-muted-foreground">
-            Quatre cabinets en cours d'ouverture en Nouvelle-Aquitaine et Occitanie.
+            Nos cabinets ouvrent en Nouvelle-Aquitaine et en Occitanie.
             Trouvez l'espace adapté à votre pratique.
           </p>
         </div>
