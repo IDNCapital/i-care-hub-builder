@@ -61,13 +61,9 @@ const ROUTES = [
   { path: "/patients", type: "strategic" },
   { path: "/patients/problematiques", type: "strategic" },
   { path: "/patients/articles", type: "strategic" },
-  // FR installation matrix (LOT 4-bis-A) — index + 9 professions × 4 cabinets pipeline
+  // FR installation matrix — index seul ; les combinaisons profession × ville
+  // sont ajoutées dynamiquement depuis la base (voir fetchInstallationMatrix).
   { path: "/sinstaller", type: "strategic" },
-  ...["osteopathe","sophrologue","psychologue","psychotherapeute","dieteticien-nutritionniste","naturopathe","hypnotherapeute","medecin-generaliste","sage-femme"].flatMap(p =>
-    ["bordeaux-chartrons","toulouse-capitole","floirac","lormont","le-bouscat"].map(v => ({
-      path: `/sinstaller/${p}/${v}`, type: "strategic",
-    }))
-  ),
   // FR legal
   { path: "/mentions-legales", type: "legal" },
   { path: "/confidentialite", type: "legal" },
@@ -313,6 +309,7 @@ async function main() {
         fetchSpecialites,
         matchSpecialites,
         fetchArticlesPublies,
+        fetchInstallationMatrix,
       } = await import("./publishedRoutes.mjs");
       const praticiens = await fetchPraticiensPublies();
       const problematiques = await fetchProblematiques();
@@ -320,6 +317,7 @@ async function main() {
       const specialites = await fetchSpecialites();
       const matchedSp = matchSpecialites(specialites, praticiens);
       const articles = await fetchArticlesPublies();
+      const installation = await fetchInstallationMatrix();
 
       const seenP = new Set();
       for (const p of praticiens) {
@@ -358,11 +356,18 @@ async function main() {
           type: "strategic",
         });
       }
+      for (const path of installation.paths) {
+        dynamicRoutes.push({ path, type: "strategic" });
+      }
       console.log(
-        `[prerender] Dynamic routes: ${seenP.size} praticiens + ${seenPb.size} problematiques + ${seenSp.size} specialites + ${seenAr.size} articles`,
+        `[prerender] Dynamic routes: ${seenP.size} praticiens + ${seenPb.size} problematiques + ${seenSp.size} specialites + ${seenAr.size} articles + ${installation.paths.length} sinstaller (${installation.professions.length} professions × ${installation.villes.length} villes)`,
       );
     } catch (err) {
       const msg = `[prerender] Failed to fetch dynamic routes: ${err?.message || err}`;
+      if (err?.isEditorialGuard) {
+        console.error(`[prerender] ✗ ${err.message}`);
+        process.exit(1);
+      }
       if (OPTIONAL) {
         console.warn(`${msg} — PRERENDER_OPTIONAL=true, skipping dynamic routes.`);
       } else {

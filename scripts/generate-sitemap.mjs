@@ -26,6 +26,7 @@ import {
   fetchSpecialites,
   matchSpecialites,
   fetchArticlesPublies,
+  fetchInstallationMatrix,
 } from "./publishedRoutes.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -111,6 +112,18 @@ async function main() {
     articles = await fetchArticlesPublies();
   } catch (e) {
     return fail(`Supabase REST call error (articles): ${e?.message || e}`);
+  }
+
+  // Matrice /sinstaller/[profession]/[ville], pilotée par la base.
+  let installation;
+  try {
+    installation = await fetchInstallationMatrix();
+  } catch (e) {
+    if (e?.isEditorialGuard) {
+      console.error(`[generate-sitemap] ✗ ${e.message}`);
+      process.exit(1);
+    }
+    return fail(`Supabase REST call error (installation matrix): ${e?.message || e}`);
   }
 
   // Existing <loc> values in the static base (for dedup on the entire file).
@@ -237,7 +250,28 @@ async function main() {
     return fail("Static sitemap has no </urlset> closing tag.");
   }
 
-  const allBlocks = [...blocks, ...problematiquesBlocks, ...specialitesBlocks, ...articlesBlocks];
+  // Bloc matrice installation.
+  const installationBlocks = [];
+  for (const path of installation.paths) {
+    const loc = `https://i-ca.re${path}`;
+    if (existingLocs.has(loc)) continue;
+    installationBlocks.push(
+      `  <url>\n` +
+      `    <loc>${xmlEscape(loc)}</loc>\n` +
+      `    <changefreq>monthly</changefreq>\n` +
+      `    <priority>0.7</priority>\n` +
+      `  </url>`,
+    );
+    existingLocs.add(loc);
+  }
+
+  const allBlocks = [
+    ...blocks,
+    ...problematiquesBlocks,
+    ...specialitesBlocks,
+    ...articlesBlocks,
+    ...installationBlocks,
+  ];
   const injection = allBlocks.length > 0 ? allBlocks.join("\n") + "\n" : "";
   const finalXml = baseXml.replace(
     closing,
@@ -270,7 +304,7 @@ async function main() {
   const specialitesTotal = specialitesBlocks.length;
   const articlesTotal = articlesBlocks.length;
   console.log(
-    `[generate-sitemap] ✓ ${staticCount} static + ${blocks.length} praticiens + ${problematiquesTotal} problematiques + ${specialitesTotal} specialites + ${articlesTotal} articles = ${openCount} total → dist/sitemap.xml`,
+    `[generate-sitemap] ✓ ${staticCount} static + ${blocks.length} praticiens + ${problematiquesTotal} problematiques + ${specialitesTotal} specialites + ${articlesTotal} articles + ${installationBlocks.length} sinstaller = ${openCount} total → dist/sitemap.xml`,
   );
 }
 

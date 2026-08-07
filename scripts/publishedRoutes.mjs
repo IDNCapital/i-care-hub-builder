@@ -86,6 +86,86 @@ export async function fetchArticlesPublies() {
 }
 
 /**
+ * Professions ayant une page d'installation dédiée
+ * (actif=true ET page_installation=true), triées par ordre_affichage.
+ * Returns [{slug}].
+ */
+export async function fetchProfessionsInstallation() {
+  const url =
+    `${base()}/rest/v1/professions` +
+    `?select=slug&actif=eq.true&page_installation=eq.true&order=ordre_affichage.asc`;
+  return fetchJson(url);
+}
+
+/**
+ * Villes disposant d'un contenu d'installation.
+ * Returns [{ville_slug}].
+ */
+export async function fetchVillesInstallation() {
+  const url =
+    `${base()}/rest/v1/installation_content_ville` +
+    `?select=ville_slug&order=ville_slug.asc`;
+  return fetchJson(url);
+}
+
+/**
+ * Professions disposant d'une ligne de contenu éditorial d'installation.
+ * Returns [{profession_slug}].
+ */
+export async function fetchContenusProfessionInstallation() {
+  const url =
+    `${base()}/rest/v1/installation_content_profession` +
+    `?select=profession_slug&order=profession_slug.asc`;
+  return fetchJson(url);
+}
+
+/**
+ * Matrice /sinstaller/[profession]/[ville], pilotée à 100 % par la base.
+ *
+ * Garde-fou éditorial : une profession marquée page_installation=true sans
+ * ligne dans installation_content_profession fait échouer le build, afin de
+ * ne jamais publier de page jumelle vide.
+ *
+ * Returns { professions: [slug], villes: [slug], paths: ["/sinstaller/p/v"] }.
+ */
+export async function fetchInstallationMatrix() {
+  const [profRows, villeRows, contentRows] = await Promise.all([
+    fetchProfessionsInstallation(),
+    fetchVillesInstallation(),
+    fetchContenusProfessionInstallation(),
+  ]);
+
+  const professions = profRows
+    .map((r) => String(r?.slug ?? "").trim())
+    .filter(Boolean);
+  const villes = villeRows
+    .map((r) => String(r?.ville_slug ?? "").trim())
+    .filter(Boolean)
+    .sort();
+  const withContent = new Set(
+    contentRows.map((r) => String(r?.profession_slug ?? "").trim()).filter(Boolean),
+  );
+
+  const missing = professions.filter((p) => !withContent.has(p));
+  if (missing.length > 0) {
+    const err = new Error(
+      `Garde-fou éditorial : profession(s) avec page_installation=true mais sans ligne dans installation_content_profession : ${missing.join(", ")}. ` +
+        `Ajoutez le contenu éditorial, ou repassez page_installation à false pour cette ou ces professions.`,
+    );
+    err.isEditorialGuard = true;
+    throw err;
+  }
+
+  const paths = [];
+  for (const p of professions) {
+    for (const v of villes) {
+      paths.push(`/sinstaller/${p}/${v}`);
+    }
+  }
+  return { professions, villes, paths };
+}
+
+/**
  * Pre-compute per-praticien normalized tag Set.
  *
  * Règle de fusion canonique (dupliqué de src/lib/taxonomy.ts
