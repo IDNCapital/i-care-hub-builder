@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { useProfessions } from "@/hooks/useInstallation";
+import { useProfessionsInstallation } from "@/hooks/useInstallation";
 import { installationUrl } from "@/lib/installation";
 
 interface SinstallerLinksCabinetProps {
@@ -23,7 +23,7 @@ export function SinstallerLinksCabinet({
   cabinetLabel,
   className,
 }: SinstallerLinksCabinetProps) {
-  const { data: professions } = useProfessions();
+  const { data: professions } = useProfessionsInstallation();
 
   if (!slugInstallation || !professions || professions.length === 0) return null;
 

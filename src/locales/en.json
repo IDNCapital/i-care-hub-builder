@@ -211,6 +211,7 @@
     "formWebsite": "Website",
     "formProfession": "Type of Practitioner",
     "formProfessionPlaceholder": "Select your profession",
+    "formProfessionOther": "Other care or wellbeing practitioner",
     "formCity": "Preferred City",
     "formCityPlaceholder": "e.g. Bordeaux, Floirac, Lormont…",
     "formNeighbourhood": "Preferred area / neighbourhood",
@@ -246,17 +247,6 @@
     "formSuccessCheck": "Check your inbox.",
     "bottomCtaTitle": "Ready to practise in an exceptional setting?",
     "bottomCtaDesc": "Explore our available spaces or speak directly with our team.",
-    "professionOptions": {
-      "medecin_generaliste": "General Practitioner",
-      "medecin_specialiste": "Specialist Doctor",
-      "infirmier": "Nurse",
-      "osteopathe": "Osteopath",
-      "psychologue": "Psychologist",
-      "orthophoniste": "Speech Therapist",
-      "sage_femme": "Midwife",
-      "dentiste": "Dentist",
-      "autre": "Other care or wellbeing practitioner"
-    },
     "dateOptions": {
       "immediat": "As soon as possible",
       "3mois": "Within the next 3 months",
@@ -323,12 +313,31 @@
     "availabilityNoticeTitle": "A part-time availability has just opened",
     "availabilityNoticeBody": "{{label}}. An opportunity to practise in an operating centre in the heart of Bordeaux. Contact us to arrange a visit.",
     "centres": {
-      "chartrons": { "name": "Chartrons", "status": "available", "desc": "3 offices still available" },
-      "nansouty": { "name": "Nansouty", "status": "full" },
-      "jardin-public": { "name": "Jardin Public", "status": "full" },
-      "pey-berland": { "name": "Pey-Berland", "status": "full" },
-      "floirac": { "name": "Floirac", "status": "coming_soon" },
-      "lormont": { "name": "Lormont", "status": "coming_soon" }
+      "chartrons": {
+        "name": "Chartrons",
+        "status": "available",
+        "desc": "3 offices still available"
+      },
+      "nansouty": {
+        "name": "Nansouty",
+        "status": "full"
+      },
+      "jardin-public": {
+        "name": "Jardin Public",
+        "status": "full"
+      },
+      "pey-berland": {
+        "name": "Pey-Berland",
+        "status": "full"
+      },
+      "floirac": {
+        "name": "Floirac",
+        "status": "coming_soon"
+      },
+      "lormont": {
+        "name": "Lormont",
+        "status": "coming_soon"
+      }
     }
   },
   "projectDetail": {

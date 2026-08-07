@@ -14,6 +14,7 @@ export interface Profession {
   nom_inclusif_pluriel: string;
   ordre_affichage: number;
   actif: boolean;
+  page_installation?: boolean;
 }
 
 export interface InstallationPage {
@@ -49,8 +50,29 @@ export function useProfessions() {
     queryFn: async () => {
       const { data, error } = await (supabase as any)
         .from("professions")
-        .select("id, slug, nom_masculin_singulier, nom_feminin_singulier, nom_inclusif_pluriel, ordre_affichage, actif")
+        .select("id, slug, nom_masculin_singulier, nom_feminin_singulier, nom_inclusif_pluriel, ordre_affichage, actif, page_installation")
         .eq("actif", true)
+        .order("ordre_affichage", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as Profession[];
+    },
+  });
+}
+
+/**
+ * Professions disposant d'une page /sinstaller/[profession]/[ville] prérendue.
+ * À utiliser pour tout maillage interne vers la matrice, afin de ne jamais
+ * produire de lien vers une page non générée.
+ */
+export function useProfessionsInstallation() {
+  return useQuery({
+    queryKey: ["professions", "page_installation"],
+    queryFn: async () => {
+      const { data, error } = await (supabase as any)
+        .from("professions")
+        .select("id, slug, nom_masculin_singulier, nom_feminin_singulier, nom_inclusif_pluriel, ordre_affichage, actif, page_installation")
+        .eq("actif", true)
+        .eq("page_installation", true)
         .order("ordre_affichage", { ascending: true });
       if (error) throw error;
       return (data ?? []) as Profession[];
