@@ -478,9 +478,14 @@ export function FichePraticien({
                   }}
                 >
                   <span>
-                    Avis Google sur le profil{" "}
-                    <em>{cache.google_display_name ?? "—"}</em> · Mis à jour le{" "}
-                    {formatDateShortFr(cache.last_updated_at)}
+                    {cache.google_display_name ? (
+                      <>
+                        Avis Google sur le profil <em>{cache.google_display_name}</em>
+                      </>
+                    ) : (
+                      <>Avis Google</>
+                    )}{" "}
+                    · Mis à jour le {formatDateShortFr(cache.last_updated_at)}
                   </span>
                   {(() => {
                     const mapsUrl = googleMapsPlaceUrl(
