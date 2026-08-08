@@ -29,6 +29,69 @@ const DIST = join(__dirname, "..", "dist");
 const PORT = 45678;
 const OPTIONAL = process.env.PRERENDER_OPTIONAL === "true";
 
+// ── JSON-LD expectations per URL family ─────────────────────────────
+// Cette table s'etend a chaque nouvelle famille d'URL, au meme titre que la
+// passe ROUTES. Une route qui ne correspond a aucune entree n'est pas
+// controlee (son rapport vaut "n/a").
+// Statut sprint 8 : avertissement seulement, aucune entree dans criticalFails.
+const JSONLD_EXPECTATIONS = [
+  { match: (p) => p === "/" || p === "/en", label: "accueil", expect: ["Organization", "ProfessionalService"] },
+  { match: (p) => /^(\/en)?\/(projets|projects)\/./.test(p), label: "cabinet", expect: ["MedicalBusiness", "Organization"] },
+  { match: (p) => /^\/praticien\/./.test(p), label: "praticien", expect: ["Person", "Organization"] },
+  { match: (p) => /^(\/en)?\/insights\/./.test(p), label: "insight", expect: ["Article", "BreadcrumbList", "FAQPage"] },
+  { match: (p) => /^\/patients\/problematiques\/./.test(p), label: "problematique", expect: ["MedicalCondition", "ItemList", "BreadcrumbList"] },
+  { match: (p) => /^\/patients\/specialite\/./.test(p), label: "specialite", expect: ["CollectionPage", "ItemList", "BreadcrumbList"] },
+  { match: (p) => /^\/patients\/articles\/./.test(p), label: "article patients", expect: ["Article", "BreadcrumbList"] },
+  { match: (p) => /^\/sinstaller\/[^/]+\/./.test(p), label: "matrice installation", expect: ["MedicalBusiness", "Service", "BreadcrumbList"] },
+];
+
+// Collecte a plat de tous les @type declares dans les blocs JSON-LD du document.
+// Descend uniquement dans les tableaux et dans @graph, pas dans les proprietes
+// imbriquees (PostalAddress, GeoCoordinates ne sont pas des entites de page).
+function collectJsonLdTypes(doc) {
+  const types = new Set();
+  const errors = [];
+  const MAX_DEPTH = 10;
+
+  const walk = (node, depth) => {
+    if (!node || depth > MAX_DEPTH) return;
+    if (Array.isArray(node)) {
+      for (const item of node) walk(item, depth + 1);
+      return;
+    }
+    if (typeof node !== "object") return;
+    const t = node["@type"];
+    if (typeof t === "string") types.add(t);
+    else if (Array.isArray(t)) for (const x of t) if (typeof x === "string") types.add(x);
+    if (node["@graph"]) walk(node["@graph"], depth + 1);
+  };
+
+  for (const s of doc.querySelectorAll('script[type="application/ld+json"]')) {
+    try {
+      walk(JSON.parse(s.textContent), 0);
+    } catch {
+      errors.push("JSON-LD illisible");
+    }
+  }
+
+  return { types, errors };
+}
+
+function checkJsonLd(doc, routePath) {
+  const { types, errors } = collectJsonLdTypes(doc);
+  const found = [...types].sort();
+  const rule = JSONLD_EXPECTATIONS.find((r) => r.match(routePath));
+  if (!rule) {
+    return { label: found.length ? `n/a (trouves : ${found.join(", ")})` : "n/a", errors, checked: false, conform: false, found };
+  }
+  const missing = rule.expect.filter((t) => !types.has(t));
+  const label = missing.length === 0
+    ? `✓ ${rule.expect.join("+")}`
+    : `✗ manque ${missing.join(", ")} (trouves : ${found.length ? found.join(", ") : "aucun"})`;
+  if (missing.length > 0) errors.push(`JSON-LD ${rule.label} : manque ${missing.join(", ")}`);
+  return { label, errors, checked: true, conform: missing.length === 0, found };
+}
+
 // ── Route definitions ───────────────────────────────────────────────
 // type: "strategic" = must be indexed, "legal" = must have noindex
 const ROUTES = [
@@ -263,21 +326,8 @@ function validateRouteType(html, route) {
     if (noindex) errors.push("Strategic page has noindex — should NOT");
   }
 
-  // JSON-LD check for insight articles
-  if (route.path.includes("/insights/") || /^\/patients\/articles\/./.test(route.path)) {
-    const scripts = doc.querySelectorAll('script[type="application/ld+json"]');
-    let hasArticle = false;
-    let hasBreadcrumb = false;
-    for (const s of scripts) {
-      try {
-        const data = JSON.parse(s.textContent);
-        if (data["@type"] === "Article") hasArticle = true;
-        if (data["@type"] === "BreadcrumbList") hasBreadcrumb = true;
-      } catch { /* ignore */ }
-    }
-    if (!hasArticle) errors.push("Missing Article JSON-LD");
-    if (!hasBreadcrumb) errors.push("Missing BreadcrumbList JSON-LD");
-  }
+  // JSON-LD : avertissement seulement (voir JSONLD_EXPECTATIONS)
+  errors.push(...checkJsonLd(doc, route.path).errors);
 
   return errors;
 }
@@ -467,17 +517,13 @@ async function main() {
         ? (noindex ? "✓ present" : "✗ MISSING")
         : (noindex ? "✗ UNEXPECTED" : "✓ absent");
 
-      if (route.path.includes("/insights/") || /^\/patients\/articles\/./.test(route.path)) {
-        const scripts = doc.querySelectorAll('script[type="application/ld+json"]');
-        let hasArticle = false, hasBreadcrumb = false;
-        for (const s of scripts) {
-          try {
-            const d = JSON.parse(s.textContent);
-            if (d["@type"] === "Article") hasArticle = true;
-            if (d["@type"] === "BreadcrumbList") hasBreadcrumb = true;
-          } catch {}
-        }
-        entry.jsonLd = hasArticle && hasBreadcrumb ? "✓ Article+Breadcrumb" : `✗ Article:${hasArticle} Breadcrumb:${hasBreadcrumb}`;
+      const jsonLdResult = checkJsonLd(doc, route.path);
+      entry.jsonLd = jsonLdResult.label;
+      entry.jsonLdChecked = jsonLdResult.checked;
+      entry.jsonLdConform = jsonLdResult.conform;
+      entry.jsonLdFound = jsonLdResult.found;
+      if (process.env.JSONLD_SURVEY === "true") {
+        console.log(`[jsonld-survey] ${route.path} :: ${jsonLdResult.found.join(", ") || "aucun"}`);
       }
 
       if (entry.errors.length === 0) ok++;
@@ -543,6 +589,13 @@ async function main() {
     );
   }
   console.log("══════════════════════════════════════════════════════════════");
+
+  // Synthese JSON-LD (avertissement seulement en sprint 8)
+  const jsonLdChecked = report.filter((r) => r.jsonLdChecked);
+  const jsonLdConform = jsonLdChecked.filter((r) => r.jsonLdConform);
+  console.log(
+    `[prerender] JSON-LD : ${jsonLdChecked.length} route(s) controlee(s), ${jsonLdConform.length} conforme(s), ${jsonLdChecked.length - jsonLdConform.length} non conforme(s).`
+  );
 
   // Check for critical failures on strategic pages
   const criticalFails = report.filter(
