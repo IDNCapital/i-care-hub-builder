@@ -350,6 +350,7 @@
     "surface": "sqm of floor area",
     "offices": "offices (~11–15 sqm)",
     "delivery": "delivery",
+    "deliveryUnknown": "To be confirmed",
     "rent": "rent / office / month",
     "rentDetails": "Rents are controlled and range between €600 and €800 excluding charges, depending on floor area and specific office features.",
     "interested": "Interested?",

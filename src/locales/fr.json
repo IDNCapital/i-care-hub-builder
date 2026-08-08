@@ -350,6 +350,7 @@
     "surface": "m² de surface",
     "offices": "cabinets (~11–15 m²)",
     "delivery": "livraison",
+    "deliveryUnknown": "À confirmer",
     "rent": "loyer / cabinet / mois",
     "rentDetails": "Les loyers sont maîtrisés et varient entre 600 € et 800 € hors charges, en fonction des surfaces et des spécificités du cabinet.",
     "interested": "Intéressé ?",

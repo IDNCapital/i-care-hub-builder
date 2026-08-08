@@ -133,7 +133,9 @@ export default function ProjetDetail() {
   const shortDesc = lang === "en" && project.short_description_en ? project.short_description_en : project.short_description;
   const features = lang === "en" && project.key_features_en ? project.key_features_en : project.key_features;
   // Libellé de livraison dérivé de projets.date_ouverture_cible (source de vérité unique)
-  const deliveryLabel = quarterLabel(project.date_ouverture_cible, lang === "fr" ? "T" : "Q") ?? "—";
+  const deliveryLabel =
+    quarterLabel(project.date_ouverture_cible, lang === "fr" ? "T" : "Q") ??
+    t("projectDetail.deliveryUnknown");
 
   const heroSrc = getProjectHero(project.slug, project.hero_image_url);
   const gallery = getProjectGallery(project.slug, project.image_gallery);
