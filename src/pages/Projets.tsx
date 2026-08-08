@@ -170,8 +170,7 @@ export default function Projets() {
                             ? (centre.availabilityLabelEn ?? centre.availabilityLabel)
                             : centre.availabilityLabel;
                           if (label) {
-                            const cleaned = label.replace(/\s*:\s*/, " — ");
-                            return `${t("projects.partTimePrefix")} ${cleaned}`;
+                            return `${t("projects.partTimePrefix")} ${label}`;
                           }
                           return t("projects.availableUnits");
                         })()}
