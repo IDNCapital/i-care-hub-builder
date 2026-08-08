@@ -73,7 +73,7 @@ export default function ProblematiqueDetail() {
   }
 
   const canonicalPath = `/patients/problematiques/${problematique.slug}`;
-  const title = `${problematique.nom} : trouver une praticienne ou un praticien à Bordeaux — I-CA.RE`;
+  const title = `${problematique.nom} : trouver une praticienne ou un praticien à Bordeaux, I-CA.RE`;
   const description = truncateDesc(problematique.description_courte, 155);
 
   const jsonLd = {

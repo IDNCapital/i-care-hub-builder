@@ -59,7 +59,7 @@ function summarizeLog(entry: LogEntry | null): string {
       `${entry.specialites_count ?? 0} spé · ${entry.problematiques_count ?? 0} pb`,
     );
   }
-  return bits.length ? bits.join(" — ") : entry.status ?? "—";
+  return bits.length ? bits.join(", ") : entry.status ?? "—";
 }
 
 export default function AdminExtractions() {
@@ -122,7 +122,7 @@ export default function AdminExtractions() {
     setReExtractingId(p.id);
     try {
       await callAdminFunction("admin-reextract-tags", { praticien_id: p.id });
-      toast.success(`Extraction relancée — ${p.prenom} ${p.nom}`);
+      toast.success(`Extraction relancée, ${p.prenom} ${p.nom}`);
       await fetchAll();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Échec de relance");
@@ -223,7 +223,7 @@ export default function AdminExtractions() {
   return (
     <>
       <Helmet>
-        <title>Extractions — Admin I‑CA.RE</title>
+        <title>Extractions | Admin I‑CA.RE</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <main className="min-h-screen bg-background">

@@ -56,7 +56,7 @@ export default function ArticlesIndex() {
   return (
     <Layout>
       <SeoHead
-        title="Articles et conseils bien-être — Espace Patients I-CA.RE"
+        title="Articles et conseils bien-être, Espace Patients I-CA.RE"
         description="Les articles de l'Espace Patients I-CA.RE : repères clairs sur le soin, le paramédical et le bien-être, et orientation vers la bonne praticienne ou le bon praticien."
         path={CANONICAL_PATH}
       />

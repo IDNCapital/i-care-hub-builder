@@ -33,7 +33,7 @@ export default function SinstallerIndex() {
   return (
     <Layout>
       <SeoHead
-        title="S'installer en cabinet I-CA.RE — Cabinets en ouverture à Bordeaux et Toulouse"
+        title="S'installer en cabinet I-CA.RE, Cabinets en ouverture à Bordeaux et Toulouse"
         description="Les cabinets I-CA.RE ouvrent en Nouvelle-Aquitaine et en Occitanie. Découvrez les opportunités d'installation pour les professions du soin, du paramédical et du bien-être."
         path="/sinstaller"
       />

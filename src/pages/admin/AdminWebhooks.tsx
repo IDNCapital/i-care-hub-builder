@@ -75,7 +75,7 @@ export default function AdminWebhooks() {
   return (
     <>
       <Helmet>
-        <title>Webhooks IDN OS — Admin I-CA.RE</title>
+        <title>Webhooks IDN OS | Admin I-CA.RE</title>
         <meta name="robots" content="noindex,nofollow" />
       </Helmet>
       <div className="min-h-screen bg-background text-foreground">
@@ -87,7 +87,7 @@ export default function AdminWebhooks() {
               </Button>
               <div>
                 <h1 className="text-xl font-semibold">Webhooks IDN OS</h1>
-                <p className="text-xs text-muted-foreground mt-0.5">Lecture seule — désactivation via secrets Lovable Cloud</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Lecture seule, désactivation via secrets Lovable Cloud</p>
               </div>
             </div>
             <Button

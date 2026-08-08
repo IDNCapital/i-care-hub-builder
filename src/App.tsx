@@ -94,7 +94,7 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Helmet>
-          <title>I-CA.RE — Rénovation de lieux de santé</title>
+          <title>I-CA.RE | Rénovation de lieux de santé</title>
           <meta
             name="description"
             content="I-CA.RE rénove et modernise des lieux de santé pour offrir aux professionnels un cadre de travail exemplaire et aux habitants un accès facilité à des soins de qualité."
@@ -102,20 +102,20 @@ const App = () => (
           {/* Open Graph (default — pages may override) */}
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="I-CA.RE" />
-          <meta property="og:title" content="I-CA.RE — Des lieux de soin pensés comme des lieux de vie" />
+          <meta property="og:title" content="I-CA.RE | Des lieux de soin pensés comme des lieux de vie" />
           <meta property="og:description" content="Foncière familiale indépendante. Des cabinets à louer, pensés pour les praticiennes et praticiens, à Bordeaux et dans le Sud-Ouest." />
           <meta property="og:image" content="https://i-ca.re/og-i-ca-re.png" />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
-          <meta property="og:image:alt" content="I-CA.RE — Des lieux de soin pensés comme des lieux de vie" />
+          <meta property="og:image:alt" content="I-CA.RE | Des lieux de soin pensés comme des lieux de vie" />
           <meta property="og:url" content="https://i-ca.re" />
           <meta property="og:locale" content="fr_FR" />
           {/* Twitter Card */}
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content="I-CA.RE — Des lieux de soin pensés comme des lieux de vie" />
+          <meta name="twitter:title" content="I-CA.RE | Des lieux de soin pensés comme des lieux de vie" />
           <meta name="twitter:description" content="Foncière familiale indépendante. Des cabinets à louer, pensés pour les praticiennes et praticiens, à Bordeaux et dans le Sud-Ouest." />
           <meta name="twitter:image" content="https://i-ca.re/og-i-ca-re.png" />
-          <meta name="twitter:image:alt" content="I-CA.RE — Des lieux de soin pensés comme des lieux de vie" />
+          <meta name="twitter:image:alt" content="I-CA.RE | Des lieux de soin pensés comme des lieux de vie" />
         </Helmet>
         <Toaster />
         <Sonner />

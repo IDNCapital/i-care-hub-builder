@@ -67,7 +67,7 @@ export default function InsightsBudget() {
         intro="How much does it really cost to set up as a practitioner in Bordeaux? The answer goes well beyond rent. Between deposit, renovations, furniture, insurance and cash reserves, the total budget can vary significantly depending on whether you choose a standalone office or a shared care space."
         takeaways={[
           "Always distinguish between one-off set-up costs and recurring monthly charges",
-          "Renovation costs range from €500 to €1,500/sqm — sometimes more for ERP upgrades",
+          "Renovation costs range from €500 to €1,500/sqm, sometimes more for ERP upgrades",
           "A cash reserve covering 3 to 6 months of fixed costs is essential",
           "Furniture, signage and insurance are often underestimated",
           "Shared spaces can reduce the initial outlay by 30 to 50%",
@@ -107,7 +107,7 @@ export default function InsightsBudget() {
 
         <section id="deposit">
           <h2 className="text-xl font-heading font-bold mb-3">Deposit and upfront payments</h2>
-          <p className="text-muted-foreground leading-relaxed">A deposit of 1 to 3 months' rent is standard. Some landlords also require advance rent. In a shared space, the deposit is typically lower — often limited to 1 month.</p>
+          <p className="text-muted-foreground leading-relaxed">A deposit of 1 to 3 months' rent is standard. Some landlords also require advance rent. In a shared space, the deposit is typically lower, often limited to 1 month.</p>
         </section>
 
         <section id="renovation">
@@ -172,7 +172,7 @@ export default function InsightsBudget() {
       intro={<>Combien coûte réellement une installation à Bordeaux&nbsp;? La réponse va bien au-delà du loyer. Entre dépôt de garantie, travaux, mobilier, assurances et trésorerie de sécurité, le budget total peut varier considérablement selon que vous choisissez un cabinet indépendant ou un espace mutualisé.</>}
       takeaways={[
         "Toujours distinguer coûts ponctuels d'installation et charges mensuelles récurrentes",
-        "Coût des travaux\u00a0: 500 à 1\u00a0500\u00a0€/m² — parfois davantage pour les normes ERP",
+        "Coût des travaux\u00a0: 500 à 1\u00a0500\u00a0€/m², parfois davantage pour les normes ERP",
         "Prévoir impérativement une trésorerie de 3 à 6 mois de charges fixes",
         "Mobilier, signalétique et assurances sont souvent sous-estimés",
         "Les espaces mutualisés réduisent le ticket d'entrée de 30 à 50\u00a0%",
@@ -212,7 +212,7 @@ export default function InsightsBudget() {
 
       <section id="depot">
         <h2 className="text-xl font-heading font-bold mb-3">Dépôt de garantie et paiements initiaux</h2>
-        <p className="text-muted-foreground leading-relaxed">Un dépôt de 1 à 3 mois de loyer est standard pour un bail commercial. En espace mutualisé, le dépôt est généralement plus faible — souvent limité à 1 mois.</p>
+        <p className="text-muted-foreground leading-relaxed">Un dépôt de 1 à 3 mois de loyer est standard pour un bail commercial. En espace mutualisé, le dépôt est généralement plus faible, souvent limité à 1 mois.</p>
       </section>
 
       <section id="travaux">

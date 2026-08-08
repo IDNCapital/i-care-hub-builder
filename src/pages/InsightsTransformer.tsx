@@ -64,13 +64,13 @@ export default function InsightsTransformer() {
         heroImage={chartronsInsertionFacade}
         heroImageAlt="3D projection of the Chartrons facade insertion – I-CA.RE Bordeaux"
         articleTitle="Can you convert a commercial space into a medical or paramedical office"
-        intro="You've found a well-located commercial space and you're wondering whether it could become your consulting room. The short answer is often yes — but the path involves regulatory checks, technical adaptations and a realistic budget. Understanding each step before committing protects you from costly mistakes."
+        intro="You've found a well-located commercial space and you're wondering whether it could become your consulting room. The short answer is often yes, but the path involves regulatory checks, technical adaptations and a realistic budget. Understanding each step before committing protects you from costly mistakes."
         takeaways={[
           "Always check the designated use of the premises before signing",
-          "Verify co-ownership rules — healthcare use may be restricted",
+          "Verify co-ownership rules, healthcare use may be restricted",
           "ERP accessibility standards are mandatory and can be costly",
           "Acoustic insulation, ventilation and privacy require specific treatment",
-          "Conversion costs: €500 to €1,500/sqm — more for complex cases",
+          "Conversion costs: €500 to €1,500/sqm, more for complex cases",
           "Allow 2 to 6 months for the full process",
         ]}
         toc={[
@@ -149,7 +149,7 @@ export default function InsightsTransformer() {
           <ul className="list-disc pl-5 space-y-2 text-muted-foreground leading-relaxed">
             <li>Signing a lease before checking designated use and co-ownership rules</li>
             <li>Underestimating ERP compliance costs (€5,000–15,000 for accessibility alone)</li>
-            <li>Ignoring acoustic insulation — confidentiality is non-negotiable</li>
+            <li>Ignoring acoustic insulation, confidentiality is non-negotiable</li>
             <li>Starting work before obtaining all approvals</li>
             <li>Not budgeting a contingency margin (10–15%)</li>
             <li>Assuming all ground-floor spaces are suitable</li>
@@ -167,10 +167,10 @@ export default function InsightsTransformer() {
       heroImage={chartronsInsertionFacade}
       heroImageAlt="Projection 3D de l'insertion de façade des Chartrons – I-CA.RE Bordeaux"
       articleTitle="Peut-on transformer un local commercial en cabinet médical ou paramédical"
-      intro={<>Vous avez repéré un local commercial bien situé et vous vous demandez s'il pourrait devenir votre cabinet. La réponse est souvent oui — mais le chemin passe par des vérifications réglementaires, des adaptations techniques et un budget réaliste. Comprendre chaque étape avant de s'engager protège contre les erreurs coûteuses.</>}
+      intro={<>Vous avez repéré un local commercial bien situé et vous vous demandez s'il pourrait devenir votre cabinet. La réponse est souvent oui, mais le chemin passe par des vérifications réglementaires, des adaptations techniques et un budget réaliste. Comprendre chaque étape avant de s'engager protège contre les erreurs coûteuses.</>}
       takeaways={[
         "Toujours vérifier la destination du local avant de signer quoi que ce soit",
-        "Consulter le règlement de copropriété — l'usage santé peut être restreint",
+        "Consulter le règlement de copropriété, l'usage santé peut être restreint",
         "Les normes ERP d'accessibilité sont obligatoires et peuvent coûter cher",
         "Acoustique, ventilation et intimité nécessitent un traitement spécifique",
         "Coûts de transformation\u00a0: 500 à 1\u00a0500\u00a0€/m² en général",
@@ -251,8 +251,8 @@ export default function InsightsTransformer() {
         <h2 className="text-xl font-heading font-bold mb-3">Les erreurs fréquentes à éviter</h2>
         <ul className="list-disc pl-5 space-y-2 text-muted-foreground leading-relaxed">
           <li>Signer un bail avant d'avoir vérifié la destination et la copropriété</li>
-          <li>Sous-estimer les coûts ERP — les adaptations d'accessibilité seules peuvent atteindre 5&nbsp;000 à 15&nbsp;000&nbsp;€</li>
-          <li>Ignorer l'isolation acoustique — la confidentialité est non négociable</li>
+          <li>Sous-estimer les coûts ERP, les adaptations d'accessibilité seules peuvent atteindre 5&nbsp;000 à 15&nbsp;000&nbsp;€</li>
+          <li>Ignorer l'isolation acoustique, la confidentialité est non négociable</li>
           <li>Démarrer les travaux avant d'avoir toutes les autorisations</li>
           <li>Ne pas budgétiser de marge pour imprévus (10–15&nbsp;%)</li>
           <li>Supposer que tout rez-de-chaussée commercial est automatiquement transformable</li>

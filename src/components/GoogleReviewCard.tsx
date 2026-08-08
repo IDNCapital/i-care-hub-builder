@@ -119,7 +119,7 @@ export function GoogleReviewCard({
             style={{ fontSize: "0.85rem", color: "#9EB8A5" }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "#B89B6F")}
             onMouseLeave={(e) => (e.currentTarget.style.color = "#9EB8A5")}
-            aria-label={`${labelSeeOnGoogle} — ${authorName}`}
+            aria-label={`${labelSeeOnGoogle}, ${authorName}`}
           >
             {labelSeeOnGoogle} →
           </a>

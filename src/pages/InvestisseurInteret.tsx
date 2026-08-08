@@ -115,7 +115,7 @@ export default function InvestisseurInteret() {
     return (
       <Layout>
         <Helmet>
-          <title>{lang === "en" ? "Check Your Email — I-CA.RE" : "Vérifiez vos emails — I-CA.RE"}</title>
+          <title>{lang === "en" ? "Check Your Email | I-CA.RE" : "Vérifiez vos emails | I-CA.RE"}</title>
           <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <section className="pt-32 pb-20">
@@ -159,7 +159,7 @@ export default function InvestisseurInteret() {
   return (
     <Layout>
       <Helmet>
-        <title>{lang === "en" ? "Express Your Interest — I-CA.RE Investment" : "Manifester mon intérêt — Investissement I-CA.RE"}</title>
+        <title>{lang === "en" ? "Express Your Interest | I-CA.RE Investment" : "Manifester mon intérêt | Investissement I-CA.RE"}</title>
         <meta name="description" content={lang === "en"
           ? "Complete a short form to receive the I-CA.RE investment memo and access detailed financial model information."
           : "Remplissez un formulaire court pour recevoir la note d'investissement I-CA.RE et accéder aux informations détaillées de notre modèle financier."

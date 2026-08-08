@@ -45,7 +45,7 @@ export default function InsightsProfessions() {
           { question: "Comment la confidentialité est-elle assurée\u00a0?", answer: "Par l'isolation acoustique, des salles privatives, le décalage des rendez-vous et des limites opérationnelles claires." },
           { question: "Les praticiens du bien-être sont-ils acceptés\u00a0?", answer: "Oui, à condition que leur pratique soit compatible avec un cadre professionnel de santé." },
           { question: "Que se passe-t-il en cas de conflit d'agenda\u00a0?", answer: "Un système de réservation clair et des accords de planning en amont préviennent les conflits." },
-          { question: "Peut-on personnaliser un cabinet partagé\u00a0?", answer: "Oui, dans des limites convenues — cadres, petits objets, matériel personnel — en maintenant une esthétique professionnelle cohérente." },
+          { question: "Peut-on personnaliser un cabinet partagé\u00a0?", answer: "Oui, dans des limites convenues (cadres, petits objets, matériel personnel) en maintenant une esthétique professionnelle cohérente." },
         ]
       : [
           { question: "Can two practitioners share the same office?", answer: "Yes, provided they work at different times. Time-sharing is a common, cost-effective model." },
@@ -71,7 +71,7 @@ export default function InsightsProfessions() {
           "Patient confidentiality must be built into the design",
           "Shared waiting areas and facilities improve the overall experience",
           "Offices of 11 to 18 sqm work well for most consultation-based professions",
-          "The atmosphere of the space matters — calm and professional benefits all",
+          "The atmosphere of the space matters, calm and professional benefits all",
         ]}
         toc={[
           { id: "compatibility", label: "What makes professions compatible" },
@@ -92,7 +92,7 @@ export default function InsightsProfessions() {
       >
         <section id="compatibility">
           <h2 className="text-xl font-heading font-bold mb-3">What makes professions compatible in a shared space</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">The best shared spaces bring together complementary practitioners — psychologist alongside osteopath, dietitian near naturopath. Three criteria matter:</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">The best shared spaces bring together complementary practitioners, psychologist alongside osteopath, dietitian near naturopath. Three criteria matter:</p>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
             <li><strong>Complementarity:</strong> services that complement, not duplicate</li>
             <li><strong>Schedule diversity:</strong> different peak hours for better utilisation</li>
@@ -112,7 +112,7 @@ export default function InsightsProfessions() {
 
         <section id="atmosphere">
           <h2 className="text-xl font-heading font-bold mb-3">The atmosphere of the space</h2>
-          <p className="text-muted-foreground leading-relaxed">A calm, professional atmosphere is a shared asset. Quality finishes, a clean waiting area, appropriate lighting — this standard is easier to achieve collectively.</p>
+          <p className="text-muted-foreground leading-relaxed">A calm, professional atmosphere is a shared asset. Quality finishes, a clean waiting area, appropriate lighting, this standard is easier to achieve collectively.</p>
         </section>
 
         <section id="common-areas">
@@ -152,7 +152,7 @@ export default function InsightsProfessions() {
           <h2 className="text-xl font-heading font-bold mb-3">Common mistakes to avoid</h2>
           <ul className="list-disc pl-5 space-y-2 text-muted-foreground leading-relaxed">
             <li>Sharing with a directly competing practitioner</li>
-            <li>Neglecting acoustic insulation — confidentiality failures damage trust</li>
+            <li>Neglecting acoustic insulation, confidentiality failures damage trust</li>
             <li>Assuming schedules will align without explicit agreements</li>
             <li>Ignoring the overall atmosphere and quality standards</li>
             <li>Joining without clear rules on cleaning, maintenance and bookings</li>
@@ -177,7 +177,7 @@ export default function InsightsProfessions() {
         "La confidentialité du patient doit être intégrée dès la conception",
         "Les espaces d'attente et sanitaires partagés améliorent l'expérience",
         "Des cabinets de 11 à 18\u00a0m² conviennent à la plupart des consultations",
-        "L'ambiance du lieu compte — un environnement calme profite à tous",
+        "L'ambiance du lieu compte, un environnement calme profite à tous",
       ]}
       toc={[
         { id: "compatibilite", label: "Qu'est-ce qui rend des professions compatibles" },
@@ -198,7 +198,7 @@ export default function InsightsProfessions() {
     >
       <section id="compatibilite">
         <h2 className="text-xl font-heading font-bold mb-3">Qu'est-ce qui rend des professions compatibles en espace partagé</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Les espaces les plus réussis réunissent des praticiens complémentaires — psychologue aux côtés d'un ostéopathe, diététicien près d'un naturopathe. Trois critères&nbsp;:</p>
+        <p className="text-muted-foreground leading-relaxed mb-3">Les espaces les plus réussis réunissent des praticiens complémentaires, psychologue aux côtés d'un ostéopathe, diététicien près d'un naturopathe. Trois critères&nbsp;:</p>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
           <li><strong>Complémentarité&nbsp;:</strong> services qui se complètent plutôt que se dupliquent</li>
           <li><strong>Diversité des rythmes&nbsp;:</strong> pics d'activité différents</li>
@@ -218,7 +218,7 @@ export default function InsightsProfessions() {
 
       <section id="ambiance">
         <h2 className="text-xl font-heading font-bold mb-3">L'ambiance du lieu</h2>
-        <p className="text-muted-foreground leading-relaxed">Une atmosphère calme et professionnelle profite à tous. Finitions de qualité, salle d'attente accueillante, éclairage approprié — ce standard est plus facile à atteindre collectivement.</p>
+        <p className="text-muted-foreground leading-relaxed">Une atmosphère calme et professionnelle profite à tous. Finitions de qualité, salle d'attente accueillante, éclairage approprié, ce standard est plus facile à atteindre collectivement.</p>
       </section>
 
       <section id="parties-communes">
@@ -258,7 +258,7 @@ export default function InsightsProfessions() {
         <h2 className="text-xl font-heading font-bold mb-3">Les erreurs fréquentes à éviter</h2>
         <ul className="list-disc pl-5 space-y-2 text-muted-foreground leading-relaxed">
           <li>Partager avec un praticien dont les services concurrencent les vôtres</li>
-          <li>Négliger l'isolation acoustique — la confidentialité est non négociable</li>
+          <li>Négliger l'isolation acoustique, la confidentialité est non négociable</li>
           <li>Supposer que les plannings s'harmoniseront sans accord explicite</li>
           <li>Ignorer l'ambiance générale et le niveau de qualité</li>
           <li>Rejoindre un espace sans règles claires sur le ménage et les réservations</li>

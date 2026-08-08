@@ -311,7 +311,7 @@ export function CarteCabinets({
               ref={(ref) => {
                 if (ref) markerRefs.current[c.slug] = ref;
               }}
-              alt={`Cabinet I-CA.RE ${c.name} — ${c.address}`}
+              alt={`Cabinet I-CA.RE ${c.name}, ${c.address}`}
             >
               <Popup>
                 <div style={{ minWidth: 220, fontFamily: "Inter, system-ui, sans-serif" }}>

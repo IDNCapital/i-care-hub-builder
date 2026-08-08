@@ -61,7 +61,7 @@ export default function SinstallerDetail() {
   const postal = parsePostalAddress(data.cabinet_adresse, data.cabinet_ville);
   const villeAvecPreposition = aVille(nomCourt);
   const visuels = getCabinetVisuals(projetCabinet?.slug);
-  const visuelAlt = `Cabinet pour ${professionLower} à louer — I‑CA.RE ${nomCourt}`;
+  const visuelAlt = `Cabinet pour ${professionLower} à louer, I‑CA.RE ${nomCourt}`;
 
   const professionRow = professions?.find((p) => p.slug === data.profession_slug);
   const nomInclusifPluriel = professionRow?.nom_inclusif_pluriel ?? data.profession_libelle.toLowerCase();
@@ -141,7 +141,7 @@ export default function SinstallerDetail() {
   return (
     <Layout>
       <SeoHead
-        title={`S'installer comme ${professionLower} ${villeAvecPreposition} — Cabinet I-CA.RE`}
+        title={`S'installer comme ${professionLower} ${villeAvecPreposition} | Cabinet I-CA.RE`}
         description={`Découvrez les opportunités d'installation pour ${professionLower} au Cabinet I-CA.RE de ${nomCourt}, ${data.cabinet_adresse ?? ""}. ${ouvertureLabel}. Demandez le dossier d'installation.`}
         path={path}
         ogImage={`https://i-ca.re/og/og-${ville}.png`}

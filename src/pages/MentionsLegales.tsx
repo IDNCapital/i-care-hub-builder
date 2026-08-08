@@ -13,7 +13,7 @@ export default function MentionsLegales() {
   return (
     <Layout>
       <SeoHead
-        title={lang === "en" ? "Legal Notice — I‑CA.RE" : "Mentions légales — I‑CA.RE"}
+        title={lang === "en" ? "Legal Notice | I‑CA.RE" : "Mentions légales | I‑CA.RE"}
         description={lang === "en" ? "Legal notice for the I‑CA.RE website: publisher, host and director of publication." : "Mentions légales du site I‑CA.RE : éditeur, hébergeur et directeur de publication."}
         path={lang === "fr" ? "/mentions-legales" : "/en/legal"}
         noIndex
@@ -40,7 +40,7 @@ export default function MentionsLegales() {
             <li><strong className="text-foreground">{lang === "en" ? "Registered office:" : "Siège social :"}</strong> 106 Bis rue Bertrand de Goth, 33800 Bordeaux</li>
             <li><strong className="text-foreground">RCS Bordeaux :</strong> 942 176 884</li>
             <li><strong className="text-foreground">{lang === "en" ? "EU VAT number:" : "Numéro de TVA intracommunautaire :"}</strong> FR37942176884</li>
-            <li><strong className="text-foreground">Code APE :</strong> 68.20B — {lang === "en" ? "Leasing of land and other real property" : "Location de terrains et autres biens immobiliers"}</li>
+            <li><strong className="text-foreground">Code APE :</strong> 68.20B, {lang === "en" ? "Leasing of land and other real property" : "Location de terrains et autres biens immobiliers"}</li>
             <li><strong className="text-foreground">{lang === "en" ? "Chair:" : "Président :"}</strong> IDN CAPITAL</li>
             <li><strong className="text-foreground">{lang === "en" ? "Managing Director:" : "Directeur Général :"}</strong> Jazmin Cousins</li>
           </ul>

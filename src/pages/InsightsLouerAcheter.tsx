@@ -64,9 +64,9 @@ export default function InsightsLouerAcheter() {
         heroImage={jardinPublicAttente}
         heroImageAlt="Welcoming waiting room in a shared care space – I-CA.RE Bordeaux"
         articleTitle="Should you rent or buy your medical or paramedical office"
-        intro="Rent or buy? It's one of the most frequently asked questions when setting up. There is no universal right answer — the best choice depends on your career stage, financial situation and long-term vision. What matters is making a decision based on professional needs, not property market pressure."
+        intro="Rent or buy? It's one of the most frequently asked questions when setting up. There is no universal right answer, the best choice depends on your career stage, financial situation and long-term vision. What matters is making a decision based on professional needs, not property market pressure."
         takeaways={[
-          "Renting offers maximum flexibility — ideal for early-career practitioners",
+          "Renting offers maximum flexibility, ideal for early-career practitioners",
           "Buying builds equity but requires significant capital and reduces mobility",
           "Shared care spaces combine rental flexibility with enhanced quality",
           "The decision should follow your professional strategy, not speculation",
@@ -96,9 +96,9 @@ export default function InsightsLouerAcheter() {
           <h2 className="text-xl font-heading font-bold mb-3">Renting: flexibility and focus</h2>
           <p className="text-muted-foreground leading-relaxed mb-3">Renting requires a lower initial outlay and preserves financial flexibility. You can change location, test a neighbourhood, and focus on building your patient base.</p>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
-            <li>Lower barrier to entry — deposit of 1–3 months' rent</li>
-            <li>Geographic mobility — relocate if your catchment changes</li>
-            <li>Predictable costs — rent and charges known in advance</li>
+            <li>Lower barrier to entry, deposit of 1–3 months' rent</li>
+            <li>Geographic mobility, relocate if your catchment changes</li>
+            <li>Predictable costs, rent and charges known in advance</li>
             <li>No property management burden</li>
           </ul>
         </section>
@@ -112,8 +112,8 @@ export default function InsightsLouerAcheter() {
           <h2 className="text-xl font-heading font-bold mb-3">Buying: stability and equity</h2>
           <p className="text-muted-foreground leading-relaxed mb-3">Buying builds equity over time. You gain full control over the premises.</p>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
-            <li>Asset building — each payment contributes to your estate</li>
-            <li>Full control — renovate without restrictions</li>
+            <li>Asset building, each payment contributes to your estate</li>
+            <li>Full control, renovate without restrictions</li>
             <li>No rent increases (fixed-rate loans)</li>
             <li>Potential tax advantages (SCI, personal ownership)</li>
           </ul>
@@ -152,7 +152,7 @@ export default function InsightsLouerAcheter() {
         <section id="mistakes">
           <h2 className="text-xl font-heading font-bold mb-3">Common mistakes to avoid</h2>
           <ul className="list-disc pl-5 space-y-2 text-muted-foreground leading-relaxed">
-            <li>Buying too early — before practice and location are confirmed</li>
+            <li>Buying too early, before practice and location are confirmed</li>
             <li>Treating purchase as automatically superior to renting</li>
             <li>Comparing rent to mortgage without accounting for total ownership costs</li>
             <li>Underestimating the management burden of property ownership</li>
@@ -172,9 +172,9 @@ export default function InsightsLouerAcheter() {
       heroImage={jardinPublicAttente}
       heroImageAlt="Salle d'attente accueillante dans un espace de soins partagé – I-CA.RE Bordeaux"
       articleTitle="Faut-il louer ou acheter son cabinet médical ou paramédical"
-      intro={<>Louer ou acheter&nbsp;? C'est l'une des questions les plus posées lors d'une installation. Il n'y a pas de réponse universelle — le meilleur choix dépend de votre stade de carrière, de votre situation financière et de votre vision à long terme. L'important est de décider sur la base de vos besoins professionnels, pas de la pression du marché.</>}
+      intro={<>Louer ou acheter&nbsp;? C'est l'une des questions les plus posées lors d'une installation. Il n'y a pas de réponse universelle, le meilleur choix dépend de votre stade de carrière, de votre situation financière et de votre vision à long terme. L'important est de décider sur la base de vos besoins professionnels, pas de la pression du marché.</>}
       takeaways={[
-        "La location offre un maximum de flexibilité — idéal en début de carrière",
+        "La location offre un maximum de flexibilité, idéal en début de carrière",
         "L'achat permet de constituer un patrimoine mais mobilise un capital important",
         "Les espaces mutualisés combinent flexibilité et qualité d'environnement",
         "La décision doit suivre votre stratégie professionnelle, pas la spéculation",
@@ -204,9 +204,9 @@ export default function InsightsLouerAcheter() {
         <h2 className="text-xl font-heading font-bold mb-3">La location&nbsp;: flexibilité et concentration sur l'essentiel</h2>
         <p className="text-muted-foreground leading-relaxed mb-3">La location nécessite un investissement initial plus faible et préserve votre flexibilité. Vous pouvez changer de lieu, tester un quartier, et concentrer votre énergie sur votre patientèle.</p>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
-          <li>Ticket d'entrée réduit — dépôt de 1 à 3 mois de loyer</li>
-          <li>Mobilité géographique — possibilité de déménager</li>
-          <li>Coûts prévisibles — loyer et charges connus à l'avance</li>
+          <li>Ticket d'entrée réduit, dépôt de 1 à 3 mois de loyer</li>
+          <li>Mobilité géographique, possibilité de déménager</li>
+          <li>Coûts prévisibles, loyer et charges connus à l'avance</li>
           <li>Pas de charge de gestion immobilière</li>
         </ul>
       </section>
@@ -220,8 +220,8 @@ export default function InsightsLouerAcheter() {
         <h2 className="text-xl font-heading font-bold mb-3">L'achat&nbsp;: stabilité et patrimoine</h2>
         <p className="text-muted-foreground leading-relaxed mb-3">L'achat permet de constituer un patrimoine et d'avoir un contrôle total sur le local.</p>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
-          <li>Constitution de patrimoine — chaque paiement contribue à votre actif</li>
-          <li>Contrôle total — rénovation et personnalisation sans restriction</li>
+          <li>Constitution de patrimoine, chaque paiement contribue à votre actif</li>
+          <li>Contrôle total, rénovation et personnalisation sans restriction</li>
           <li>Pas de hausse de loyer (crédit à taux fixe)</li>
           <li>Avantages fiscaux potentiels (SCI, propriété personnelle)</li>
         </ul>
@@ -260,7 +260,7 @@ export default function InsightsLouerAcheter() {
       <section id="erreurs">
         <h2 className="text-xl font-heading font-bold mb-3">Les erreurs fréquentes à éviter</h2>
         <ul className="list-disc pl-5 space-y-2 text-muted-foreground leading-relaxed">
-          <li>Acheter trop tôt — avant que votre activité ne soit confirmée</li>
+          <li>Acheter trop tôt, avant que votre activité ne soit confirmée</li>
           <li>Considérer l'achat comme automatiquement supérieur à la location</li>
           <li>Comparer loyer et mensualité de crédit sans tenir compte du coût total</li>
           <li>Sous-estimer la charge de gestion liée à la propriété</li>

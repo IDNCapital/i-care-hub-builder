@@ -22,7 +22,7 @@ export function CabinetVisuel({ projectSlug, alt, variant = "detail", className 
   const { hero, gallery, isGeneric } = getCabinetVisuals(projectSlug);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const heroAlt = isGeneric ? `${GENERIC_CAPTION} — ${alt}` : alt;
+  const heroAlt = isGeneric ? `${GENERIC_CAPTION}, ${alt}` : alt;
 
   const lightboxImages: LightboxImage[] = useMemo(() => {
     const list: LightboxImage[] = [];
@@ -33,7 +33,7 @@ export function CabinetVisuel({ projectSlug, alt, variant = "detail", className 
     }
     gallery.forEach((url, i) => {
       if (!seen.has(url)) {
-        list.push({ src: url, alt: `${alt} — vue ${i + 2}` });
+        list.push({ src: url, alt: `${alt}, vue ${i + 2}` });
         seen.add(url);
       }
     });
@@ -98,12 +98,12 @@ export function CabinetVisuel({ projectSlug, alt, variant = "detail", className 
                 const idx = indexOfSrc(img);
                 setLightboxIndex(idx >= 0 ? idx : 0);
               }}
-              aria-label={`Afficher en plein écran : ${alt} — vue ${i + 2}`}
+              aria-label={`Afficher en plein écran : ${alt}, vue ${i + 2}`}
               className="block w-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-sage rounded-md"
             >
               <img
                 src={img}
-                alt={`${alt} — vue ${i + 2}`}
+                alt={`${alt}, vue ${i + 2}`}
                 loading="lazy"
                 className="w-full aspect-[4/3] object-cover rounded-md"
               />

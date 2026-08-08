@@ -141,12 +141,12 @@ export default function ProjetDetail() {
     const list: LightboxImage[] = [];
     const seen = new Set<string>();
     if (heroSrc) {
-      list.push({ src: heroSrc, alt: `${project.name} — ${project.city}` });
+      list.push({ src: heroSrc, alt: `${project.name}, ${project.city}` });
       seen.add(heroSrc);
     }
     gallery.forEach((url, i) => {
       if (!seen.has(url)) {
-        list.push({ src: url, alt: `${project.name} — ${i + 1}` });
+        list.push({ src: url, alt: `${project.name}, ${i + 1}` });
         seen.add(url);
       }
     });
@@ -158,7 +158,7 @@ export default function ProjetDetail() {
   return (
     <Layout>
       <SeoHead
-        title={`${project.name} — I-CA.RE`}
+        title={`${project.name} | I-CA.RE`}
         description={shortDesc}
         path={lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}
         {...(PROJECT_OG_IMAGES[project.slug] ?? {})}
@@ -218,10 +218,10 @@ export default function ProjetDetail() {
           <button
             type="button"
             onClick={() => setLightboxIndex(0)}
-            aria-label={`Afficher en plein écran : ${project.name} — ${project.city}`}
+            aria-label={`Afficher en plein écran : ${project.name}, ${project.city}`}
             className="absolute inset-0 w-full h-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-sage focus-visible:ring-inset"
           >
-            <FadeImage src={heroSrc} alt={`${project.name} — ${project.city}`} className="w-full h-full object-cover" loading="eager" fadeDuration={500} />
+            <FadeImage src={heroSrc} alt={`${project.name}, ${project.city}`} className="w-full h-full object-cover" loading="eager" fadeDuration={500} />
           </button>
         ) : (
           <VisuelsAVenir className="w-full h-full" />
@@ -240,7 +240,7 @@ export default function ProjetDetail() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-background mb-2">{project.name}</h1>
             <div className="flex items-center gap-2 text-background/80">
               <MapPin className="w-5 h-5" />
-              <span className="text-lg">{project.city}{project.show_address && project.address ? ` — ${project.address}` : ""}</span>
+              <span className="text-lg">{project.city}{project.show_address && project.address ? `, ${project.address}` : ""}</span>
             </div>
           </div>
         </div>
@@ -349,7 +349,7 @@ export default function ProjetDetail() {
                     <h3 className="text-2xl font-semibold mb-6">{t("projectDetail.gallery")}</h3>
                     <div className="grid grid-cols-2 gap-4">
                       {gallery.map((url, i) => {
-                        const alt = `${project.name} — ${i + 1}`;
+                        const alt = `${project.name}, ${i + 1}`;
                         const idx = galleryIndexInLightbox(url);
                         return (
                           <button

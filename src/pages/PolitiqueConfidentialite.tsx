@@ -21,7 +21,7 @@ function FrVersion() {
   return (
     <Layout>
       <SeoHead
-        title="Politique de confidentialité — I‑CA.RE"
+        title="Politique de confidentialité, I‑CA.RE"
         description="Politique de confidentialité et protection des données personnelles d'I‑CA.RE, conforme au RGPD."
         path="/confidentialite"
         noIndex
@@ -193,7 +193,7 @@ function FrVersion() {
             <BrandName /> se réserve le droit de modifier la présente Politique de confidentialité à tout moment afin d'assurer sa conformité avec la législation en vigueur. La version en vigueur est celle publiée sur le site.
           </p>
           <p className="text-muted-foreground leading-relaxed mt-4 text-sm">
-            <em>Dernière mise à jour : à la date de mise en ligne de l'Espace Patients. Version 2 — extension Espace Patients.</em>
+            <em>Dernière mise à jour : à la date de mise en ligne de l'Espace Patients. Version 2, extension Espace Patients.</em>
           </p>
         </div>
       </section>
@@ -208,7 +208,7 @@ function EnVersion() {
   return (
     <Layout>
       <SeoHead
-        title="Privacy Policy — I‑CA.RE"
+        title="Privacy Policy, I‑CA.RE"
         description="I‑CA.RE privacy policy and personal data protection, compliant with GDPR."
         path="/en/privacy"
         noIndex
@@ -380,7 +380,7 @@ function EnVersion() {
             <BrandName /> reserves the right to amend this Privacy Policy at any time to ensure compliance with applicable legislation. The current version is that published on the website.
           </p>
           <p className="text-muted-foreground leading-relaxed mt-4 text-sm">
-            <em>Last updated: as of the Patient Space launch date. Version 2 — Patient Space extension.</em>
+            <em>Last updated: as of the Patient Space launch date. Version 2, Patient Space extension.</em>
           </p>
         </div>
       </section>

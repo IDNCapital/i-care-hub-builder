@@ -185,7 +185,7 @@ export default function LocationCabinetToulouse() {
           {toulouseCapitoleHero ? (
             <FadeImage
               src={toulouseCapitoleHero}
-              alt="Façade I-CA.RE Toulouse Capitole — cabinets paramédicaux à louer"
+              alt="Façade I-CA.RE Toulouse Capitole, cabinets paramédicaux à louer"
               className="w-full h-full object-cover"
               loading="eager"
               fadeDuration={500}
@@ -204,7 +204,7 @@ export default function LocationCabinetToulouse() {
               Cabinet paramédical à louer à Toulouse
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-10">
-              Cabinets de consultation rénovés, acoustiques et clé en main — premier lieu en plein cœur de Toulouse, ouverture Q4 2026. 550 à 800&nbsp;€ HC/mois selon les surfaces.
+              Cabinets de consultation rénovés, acoustiques et clé en main, premier lieu en plein cœur de Toulouse, ouverture Q4 2026. 550 à 800&nbsp;€ HC/mois selon les surfaces.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="hero" asChild>
@@ -229,7 +229,7 @@ export default function LocationCabinetToulouse() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="section-title"><InlineBrand>I-CA.RE arrive à Toulouse</InlineBrand></h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              Après quatre lieux exploités à Bordeaux — Nansouty, Jardin Public, Pey-Berland et Chartrons — <InlineBrand>I-CA.RE</InlineBrand> étend son modèle à Toulouse. Notre mission reste la même : transformer des rez-de-chaussée urbains sous-valorisés en espaces de soin nouvelle génération, pensés pour la confidentialité, le confort acoustique et la qualité d'accueil des patient·e·s.
+              Après quatre lieux exploités à Bordeaux (Nansouty, Jardin Public, Pey-Berland et Chartrons) <InlineBrand>I-CA.RE</InlineBrand> étend son modèle à Toulouse. Notre mission reste la même : transformer des rez-de-chaussée urbains sous-valorisés en espaces de soin nouvelle génération, pensés pour la confidentialité, le confort acoustique et la qualité d'accueil des patient·e·s.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
               La première ouverture toulousaine, située à deux pas de la place du Capitole, nous évoque naturellement notre réalisation Pey-Berland à Bordeaux : même cœur de ville, même qualité patrimoniale, même potentiel pour devenir un lieu de soin de référence. D'autres ouvertures suivront dans d'autres quartiers toulousains, pour mailler progressivement la ville rose.
@@ -275,7 +275,7 @@ export default function LocationCabinetToulouse() {
                 {toulouseCapitoleHero ? (
                   <FadeImage
                     src={toulouseCapitoleHero}
-                    alt="I-CA.RE Toulouse Capitole — façade brique"
+                    alt="I-CA.RE Toulouse Capitole, façade brique"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     fadeDuration={400}
                   />
@@ -350,7 +350,7 @@ export default function LocationCabinetToulouse() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="section-title">Notre preuve à Bordeaux</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              Nous ne partons pas de zéro. À Bordeaux, nos 4 lieux exploités — Nansouty, Jardin Public, Pey-Berland, Chartrons — sont complets ou en cours de commercialisation, avec une communauté d'une vingtaine de praticien·ne·s : psychologues, psychothérapeutes, sophrologues, naturopathes, ostéopathes, hypnothérapeutes. Nous apportons ce savoir-faire à Toulouse.
+              Nous ne partons pas de zéro. À Bordeaux, nos 4 lieux exploités (Nansouty, Jardin Public, Pey-Berland, Chartrons) sont complets ou en cours de commercialisation, avec une communauté d'une vingtaine de praticien·ne·s : psychologues, psychothérapeutes, sophrologues, naturopathes, ostéopathes, hypnothérapeutes. Nous apportons ce savoir-faire à Toulouse.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="default" asChild>
@@ -530,7 +530,7 @@ export default function LocationCabinetToulouse() {
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto">
-            <h2 className="section-title text-center">Questions fréquentes — Toulouse</h2>
+            <h2 className="section-title text-center">Questions fréquentes, Toulouse</h2>
             <Accordion type="single" collapsible className="mt-10 space-y-3">
               {faqItems.map((item, i) => (
                 <AccordionItem key={i} value={`tlse-faq-${i}`} className="bg-secondary rounded-2xl px-6 border-none">
