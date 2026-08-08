@@ -129,7 +129,7 @@ export default function LocationCabinetToulouse() {
   const whyBlocks = [
     { icon: Volume2, title: "Espaces pensés pour la pratique", desc: "Cabinets de 11 à 15 m² avec isolation acoustique renforcée, lumière naturelle, climatisation réversible et points d'eau." },
     { icon: MapPin, title: "Implantation dans des quartiers vivants à Toulouse", desc: "Capitole et autres quartiers centraux en cours d'étude, accessibles à pied, en métro et à vélo." },
-    { icon: TreePine, title: "Atmosphère calme et professionnelle", desc: "Une décoration soignée, une salle d'attente mutualisée chaleureuse, une communauté de praticien·ne·s engagé·e·s." },
+    { icon: TreePine, title: "Atmosphère calme et professionnelle", desc: "Une décoration soignée, une salle d'attente mutualisée chaleureuse, une communauté engagée de praticiennes et praticiens." },
   ];
 
   const faqItems = [
@@ -139,7 +139,7 @@ export default function LocationCabinetToulouse() {
     },
     {
       q: "Dans quels quartiers de Toulouse I-CA.RE prévoit-il d'ouvrir ?",
-      a: "Au-delà du Capitole, nous étudions plusieurs autres quartiers centraux toulousains pour mailler progressivement la ville rose. Les praticien·ne·s inscrit·e·s à notre liste d'intérêt sont informé·e·s en priorité des nouvelles ouvertures.",
+      a: "Au-delà du Capitole, nous étudions plusieurs autres quartiers centraux toulousains pour mailler progressivement la ville rose. Les personnes inscrites à notre liste d'intérêt sont informées en priorité des nouvelles ouvertures.",
     },
     {
       q: "Quels sont les loyers pratiqués par I-CA.RE à Toulouse ?",
@@ -147,7 +147,7 @@ export default function LocationCabinetToulouse() {
     },
     {
       q: "Comment être informé en priorité des disponibilités toulousaines ?",
-      a: "Inscrivez-vous à notre liste d'intérêt Toulouse via le formulaire ci-dessus. Vous serez contacté·e dès qu'un cabinet correspondant à votre projet est disponible, avant publication des annonces publiques.",
+      a: "Inscrivez-vous à notre liste d'intérêt Toulouse via le formulaire ci-dessus. Nous vous contactons dès qu'un cabinet correspondant à votre projet est disponible, avant publication des annonces publiques.",
     },
   ];
 
@@ -229,7 +229,7 @@ export default function LocationCabinetToulouse() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="section-title"><InlineBrand>I-CA.RE arrive à Toulouse</InlineBrand></h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              Après quatre lieux exploités à Bordeaux (Nansouty, Jardin Public, Pey-Berland et Chartrons), <InlineBrand>I-CA.RE</InlineBrand> étend son modèle à Toulouse. Notre mission reste la même : transformer des rez-de-chaussée urbains sous-valorisés en espaces de soin nouvelle génération, pensés pour la confidentialité, le confort acoustique et la qualité d'accueil des patient·e·s.
+              Après quatre lieux exploités à Bordeaux (Nansouty, Jardin Public, Pey-Berland et Chartrons), <InlineBrand>I-CA.RE</InlineBrand> étend son modèle à Toulouse. Notre mission reste la même : transformer des rez-de-chaussée urbains sous-valorisés en espaces de soin nouvelle génération, pensés pour la confidentialité, le confort acoustique et la qualité d'accueil de la patientèle.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
               La première ouverture toulousaine, située à deux pas de la place du Capitole, nous évoque naturellement notre réalisation Pey-Berland à Bordeaux : même cœur de ville, même qualité patrimoniale, même potentiel pour devenir un lieu de soin de référence. D'autres ouvertures suivront dans d'autres quartiers toulousains, pour mailler progressivement la ville rose.
@@ -247,7 +247,7 @@ export default function LocationCabinetToulouse() {
             </h2>
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Psychologues, ostéopathes, thérapeutes, infirmier·ère·s… trouver un cabinet paramédical à louer à Toulouse qui conjugue confidentialité, accessibilité et loyer maîtrisé reste un parcours du combattant. Les locaux disponibles sont rarement adaptés à la pratique du soin : mauvaise isolation acoustique, absence de conformité PMR, surfaces inadaptées.
+                Psychologues, ostéopathes, thérapeutes, infirmières et infirmiers… trouver un cabinet paramédical à louer à Toulouse qui conjugue confidentialité, accessibilité et loyer maîtrisé reste un parcours du combattant. Les locaux disponibles sont rarement adaptés à la pratique du soin : mauvaise isolation acoustique, absence de conformité PMR, surfaces inadaptées.
               </p>
               <p>
                 C'est pourquoi <InlineBrand>I-CA.RE</InlineBrand> identifie des rez-de-chaussée sous-valorisés dans les quartiers centraux de Toulouse et les transforme en cabinets de consultation nouvelle génération. Chaque espace est pensé pour la relation thérapeutique : isolation phonique renforcée, lumière naturelle, conformité ERP et PMR, accueil chaleureux.
@@ -305,7 +305,7 @@ export default function LocationCabinetToulouse() {
             <a href="#liste-interet" className="text-primary underline underline-offset-4 hover:text-primary/80">
               Rejoignez notre liste d'intérêt
             </a>{" "}
-            pour être informé·e en priorité.
+            pour recevoir l'information en priorité.
           </p>
         </div>
       </section>
@@ -350,7 +350,7 @@ export default function LocationCabinetToulouse() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="section-title">Notre preuve à Bordeaux</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              Nous ne partons pas de zéro. À Bordeaux, nos 4 lieux exploités (Nansouty, Jardin Public, Pey-Berland, Chartrons) sont complets ou en cours de commercialisation, avec une communauté d'une vingtaine de praticien·ne·s : psychologues, psychothérapeutes, sophrologues, naturopathes, ostéopathes, hypnothérapeutes. Nous apportons ce savoir-faire à Toulouse.
+              Nous ne partons pas de zéro. À Bordeaux, nos 4 lieux exploités (Nansouty, Jardin Public, Pey-Berland, Chartrons) sont complets ou en cours de commercialisation, avec une communauté d'une vingtaine de praticiennes et praticiens : psychologues, psychothérapeutes, sophrologues, naturopathes, ostéopathes, hypnothérapeutes. Nous apportons ce savoir-faire à Toulouse.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="default" asChild>
@@ -375,10 +375,10 @@ export default function LocationCabinetToulouse() {
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-10">
               <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4 text-background">
-                Soyez informé·e en priorité des ouvertures toulousaines
+                Recevez en priorité l'information sur les ouvertures toulousaines
               </h2>
               <p className="text-background/70 text-lg">
-                Laissez-nous vos coordonnées et votre projet. Vous serez contacté·e dès qu'un cabinet correspondant à votre besoin sera disponible.
+                Laissez-nous vos coordonnées et votre projet. Nous vous contactons dès qu'un cabinet correspondant à votre besoin sera disponible.
               </p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-6 form-dark-section">
@@ -558,7 +558,7 @@ export default function LocationCabinetToulouse() {
               Échanger sur votre projet d'installation à Toulouse
             </h2>
             <p className="text-background/70 text-lg mb-8">
-              Rejoignez la liste d'intérêt pour être informé·e en priorité, ou contactez-nous directement pour échanger sur votre projet.
+              Rejoignez la liste d'intérêt pour recevoir l'information en priorité, ou contactez-nous directement pour échanger sur votre projet.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>
