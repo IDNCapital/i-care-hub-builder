@@ -306,7 +306,21 @@ export default function Professionnels() {
               {/* Project fields */}
               <div className="space-y-2">
                 <Label className="text-[#F6F5F0]">{t("professionals.formProfession")} *</Label>
-                <Select value={formData.profession} onValueChange={(v) => setFormData({ ...formData, profession: v })}>
+                {/*
+                  key porteuse du correctif : le <select> natif caché généré par Radix
+                  (aria-hidden, lu par les robots, lecteurs d'écran et l'autofill) est
+                  construit dans l'ORDRE DE MONTAGE des SelectItem, pas dans l'ordre du JSX.
+                  Sans remontage, l'item statique « autre » monté au premier rendu (professions
+                  encore vides) se retrouve en PREMIÈRE position du select natif.
+                  La key bascule une seule fois, loading -> loaded, ce qui force Radix à
+                  reconstruire ses options dans l'ordre du JSX. NE PAS SUPPRIMER.
+                  La valeur choisie est conservée : elle vit dans formData (composant contrôlé).
+                */}
+                <Select
+                  key={professions.length > 0 ? "loaded" : "loading"}
+                  value={formData.profession}
+                  onValueChange={(v) => setFormData({ ...formData, profession: v })}
+                >
                   <SelectTrigger className={darkSelectTrigger}>
                     <SelectValue placeholder={t("professionals.formProfessionPlaceholder")} />
                   </SelectTrigger>
