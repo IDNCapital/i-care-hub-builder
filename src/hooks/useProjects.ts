@@ -34,16 +34,7 @@ export function useProject(slug: string) {
   });
 }
 
-export const STATUS_LABELS: Record<string, string> = {
-  en_exploitation: "En exploitation",
-  en_travaux: "En développement",
-  a_venir: "À venir",
-};
-
-export const TYPOLOGY_LABELS: Record<string, string> = {
-  cabinet_medical: "Cabinet médical",
-  pole_pluridisciplinaire: "Pôle pluridisciplinaire",
-  coworking_sante: "Coworking santé",
-  centre_paramedical: "Centre paramédical",
-  maison_de_sante: "Maison de santé",
-};
+/**
+ * Les libellés de statut et de typologie sont portés par i18n
+ * (clés `statusLabels.*` et `typologyLabels.*`), source unique.
+ */
