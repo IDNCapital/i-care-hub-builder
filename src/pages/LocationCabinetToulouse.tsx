@@ -418,7 +418,19 @@ export default function LocationCabinetToulouse() {
 
               <div className="space-y-2">
                 <Label className="text-[#F6F5F0]">Type de praticien *</Label>
-                <Select value={form.profession} onValueChange={(v) => setForm({ ...form, profession: v })}>
+                {/*
+                  key porteuse du correctif : le <select> natif caché de Radix (aria-hidden)
+                  suit l'ORDRE DE MONTAGE des SelectItem, pas l'ordre du JSX. Sans remontage,
+                  l'item statique « autre », monté au premier rendu alors que professions est
+                  encore vide, apparaît en première position dans le HTML servi.
+                  La key bascule une seule fois, loading -> loaded. NE PAS SUPPRIMER.
+                  La valeur choisie est préservée : elle vit dans form (composant contrôlé).
+                */}
+                <Select
+                  key={professions.length > 0 ? "loaded" : "loading"}
+                  value={form.profession}
+                  onValueChange={(v) => setForm({ ...form, profession: v })}
+                >
                   <SelectTrigger className={darkSelectTrigger}>
                     <SelectValue placeholder="Sélectionnez votre profession" />
                   </SelectTrigger>
