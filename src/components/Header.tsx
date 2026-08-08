@@ -3,6 +3,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { useState, useEffect, useMemo, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { getEquivalentPath, localePath } from "@/lib/routes";
+import { masquerSelecteurLangue } from "@/lib/espacePatients";
 import { BrandName } from "./BrandName";
 import {
   NavigationMenu,
@@ -29,6 +30,8 @@ export const Header = memo(function Header() {
 
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const otherLang = lang === "fr" ? "en" : "fr";
+  // Depend uniquement du pathname : identique au rendu serveur, pas d'ecart d'hydratation.
+  const selecteurLangueMasque = masquerSelecteurLangue(location.pathname);
 
   const labels = useMemo(() => ({
     practitioners: lang === "fr" ? "Praticiens" : "Practitioners",
@@ -151,15 +154,17 @@ export const Header = memo(function Header() {
 
           <div className="hidden lg:flex items-center space-x-3">
             {/* Language Switch */}
-            <Link
-              to={switchPath}
-              onClick={() => i18n.changeLanguage(otherLang)}
-              className="px-3 py-1.5 text-xs font-bold uppercase tracking-[0.05em] text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <span className={lang === "fr" ? "text-foreground" : "text-muted-foreground"}>FR</span>
-              <span className="mx-1 text-border">|</span>
-              <span className={lang === "en" ? "text-foreground" : "text-muted-foreground"}>EN</span>
-            </Link>
+            {!selecteurLangueMasque && (
+              <Link
+                to={switchPath}
+                onClick={() => i18n.changeLanguage(otherLang)}
+                className="px-3 py-1.5 text-xs font-bold uppercase tracking-[0.05em] text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <span className={lang === "fr" ? "text-foreground" : "text-muted-foreground"}>FR</span>
+                <span className="mx-1 text-border">|</span>
+                <span className={lang === "en" ? "text-foreground" : "text-muted-foreground"}>EN</span>
+              </Link>
+            )}
 
             <Link
               to={`${localePath(lang, "professionals")}#candidature`}
@@ -239,16 +244,18 @@ export const Header = memo(function Header() {
               ))}
 
               {/* Mobile Language Switch */}
-              <Link
-                to={switchPath}
-                onClick={() => {
-                  i18n.changeLanguage(otherLang);
-                  setIsOpen(false);
-                }}
-                className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground"
-              >
-                {lang === "fr" ? "🇬🇧 English" : "🇫🇷 Français"}
-              </Link>
+              {!selecteurLangueMasque && (
+                <Link
+                  to={switchPath}
+                  onClick={() => {
+                    i18n.changeLanguage(otherLang);
+                    setIsOpen(false);
+                  }}
+                  className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground"
+                >
+                  {lang === "fr" ? "🇬🇧 English" : "🇫🇷 Français"}
+                </Link>
+              )}
 
               <div className="pt-4 flex flex-col space-y-2">
                 <Link
