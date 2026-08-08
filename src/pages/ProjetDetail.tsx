@@ -23,7 +23,7 @@ import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero, getProjectGallery } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
 import { getCentreBySlug, quarterLabel } from "@/lib/centres";
-import { getLocalBusinessData } from "@/lib/projectSchema";
+import { getProjectSchemaCopy, parseAddress, regionFromPostalCode } from "@/lib/projectSchema";
 import { BrandName } from "@/components/BrandName";
 import { SectionPraticiensDuCabinet } from "@/components/SectionPraticiensDuCabinet";
 import { isPipelineCabinet } from "@/lib/installation";
@@ -170,48 +170,42 @@ export default function ProjetDetail() {
           const canonicalUrl = `https://i-ca.re${lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}`;
           const heroPath = getProjectHero(project.slug, project.hero_image_url);
           const heroUrl = heroPath ? `https://i-ca.re${heroPath}` : undefined;
-          const lb = slug ? getLocalBusinessData(slug) : undefined;
-          if (lb) {
-            return {
-              "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              "name": lb.name,
-              "description": lb.description,
-              "url": canonicalUrl,
-              "image": heroUrl,
-              "email": "contact@i-ca.re",
-              "priceRange": "€€",
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": lb.streetAddress,
-                "postalCode": lb.postalCode,
-                "addressLocality": lb.addressLocality,
-                "addressRegion": "Nouvelle-Aquitaine",
-                "addressCountry": "FR",
-              },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": lb.latitude,
-                "longitude": lb.longitude,
-              },
-              "areaServed": { "@type": "City", "name": "Bordeaux" },
-              "openingHours": "Mo-Fr 08:00-20:00",
+          // Enrichissement rédactionnel optionnel ; l'adresse et la géolocalisation
+          // proviennent toujours de la table `projets`.
+          const copy = slug ? getProjectSchemaCopy(slug) : undefined;
+          const parsed = parseAddress(project.address ?? "");
+          const region = regionFromPostalCode(parsed.postalCode);
+
+          const address: Record<string, unknown> = {
+            "@type": "PostalAddress",
+            "addressLocality": project.city,
+            "addressCountry": "FR",
+          };
+          if (project.show_address && parsed.streetAddress) address["streetAddress"] = parsed.streetAddress;
+          if (parsed.postalCode) address["postalCode"] = parsed.postalCode;
+          if (region) address["addressRegion"] = region;
+
+          const jsonLd: Record<string, unknown> = {
+            "@context": "https://schema.org",
+            "@type": "MedicalBusiness",
+            "name": copy?.name ?? project.name,
+            "description": copy?.description ?? shortDesc,
+            "url": canonicalUrl,
+            "email": "contact@i-ca.re",
+            "address": address,
+            "areaServed": { "@type": "City", "name": project.city },
+          };
+          if (heroUrl) jsonLd["image"] = heroUrl;
+          if (project.lat != null && project.lng != null) {
+            jsonLd["geo"] = {
+              "@type": "GeoCoordinates",
+              "latitude": Number(project.lat),
+              "longitude": Number(project.lng),
             };
           }
-          return {
-            "@context": "https://schema.org",
-            "@type": "Place",
-            "name": project.name,
-            "description": shortDesc,
-            "address": {
-              "@type": "PostalAddress",
-              "streetAddress": project.show_address ? project.address : undefined,
-              "addressLocality": project.city,
-              "addressCountry": "FR",
-            },
-            "url": canonicalUrl,
-            "image": heroUrl,
-          };
+          // Pas d'horaires pour un lieu qui n'est pas encore ouvert.
+          if (project.status === "en_exploitation") jsonLd["openingHours"] = "Mo-Fr 08:00-20:00";
+          return jsonLd;
         })())}</script>
       </Helmet>
 
