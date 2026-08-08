@@ -31,8 +31,8 @@ export default function Patients() {
 
   const seoTitle =
     mode === "ouvert"
-      ? "Annuaire des praticiennes et praticiens I-CA.RE, Bordeaux"
-      : "Espace Patients I-CA.RE, En cours de lancement";
+      ? "Annuaire des praticiennes et praticiens I-CA.RE | Bordeaux"
+      : "Espace Patients I-CA.RE | En cours de lancement";
 
   const seoDesc =
     mode === "ouvert"

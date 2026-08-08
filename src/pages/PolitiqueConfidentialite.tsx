@@ -21,7 +21,7 @@ function FrVersion() {
   return (
     <Layout>
       <SeoHead
-        title="Politique de confidentialité, I‑CA.RE"
+        title="Politique de confidentialité | I‑CA.RE"
         description="Politique de confidentialité et protection des données personnelles d'I‑CA.RE, conforme au RGPD."
         path="/confidentialite"
         noIndex
@@ -208,7 +208,7 @@ function EnVersion() {
   return (
     <Layout>
       <SeoHead
-        title="Privacy Policy, I‑CA.RE"
+        title="Privacy Policy | I‑CA.RE"
         description="I‑CA.RE privacy policy and personal data protection, compliant with GDPR."
         path="/en/privacy"
         noIndex

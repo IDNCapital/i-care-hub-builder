@@ -5,7 +5,7 @@ export default function PolitiqueCookies() {
   return (
     <Layout>
       <SeoHead
-        title="Politique de cookies, I-CA.RE"
+        title="Politique de cookies | I-CA.RE"
         description="Politique de cookies du site I-CA.RE : types de cookies utilisés, finalités et gestion de vos préférences."
         path="/cookies"
         noIndex

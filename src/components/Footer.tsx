@@ -392,7 +392,7 @@ export function Footer() {
               style={{ columnGap: "10px", rowGap: "6px" }}
             >
               <span style={{ fontSize: "11px", color: COLORS.creamMuted, letterSpacing: "0.02em" }} className="inline-flex items-center gap-1">
-                © {new Date().getFullYear()} <BrandName variant="light" className="text-[11px]" />, Tous droits réservés
+                © {new Date().getFullYear()} <BrandName variant="light" className="text-[11px]" />, tous droits réservés
               </span>
               {[
                 { label: lang === "fr" ? "Mentions légales" : "Legal", href: localePath(lang, "legal") },

@@ -107,7 +107,7 @@ const App = () => (
           <meta property="og:image" content="https://i-ca.re/og-i-ca-re.png" />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
-          <meta property="og:image:alt" content="I-CA.RE | Des lieux de soin pensés comme des lieux de vie" />
+          <meta property="og:image:alt" content="I-CA.RE, Des lieux de soin pensés comme des lieux de vie" />
           <meta property="og:url" content="https://i-ca.re" />
           <meta property="og:locale" content="fr_FR" />
           {/* Twitter Card */}
@@ -115,7 +115,7 @@ const App = () => (
           <meta name="twitter:title" content="I-CA.RE | Des lieux de soin pensés comme des lieux de vie" />
           <meta name="twitter:description" content="Foncière familiale indépendante. Des cabinets à louer, pensés pour les praticiennes et praticiens, à Bordeaux et dans le Sud-Ouest." />
           <meta name="twitter:image" content="https://i-ca.re/og-i-ca-re.png" />
-          <meta name="twitter:image:alt" content="I-CA.RE | Des lieux de soin pensés comme des lieux de vie" />
+          <meta name="twitter:image:alt" content="I-CA.RE, Des lieux de soin pensés comme des lieux de vie" />
         </Helmet>
         <Toaster />
         <Sonner />

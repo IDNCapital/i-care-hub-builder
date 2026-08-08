@@ -41,14 +41,14 @@ export default function InsightsSurface() {
   const faq =
     lang === "fr"
       ? [
-          { question: "Peut-on exercer dans 11\u00a0m²\u00a0?", answer: "Oui, de nombreuses professions en consultation assise exercent très bien dans 11 à 13\u00a0m², psychologues, diététiciens, sophrologues, naturopathes. La condition clé est l'accès à une salle d'attente et des sanitaires partagés." },
+          { question: "Peut-on exercer dans 11\u00a0m²\u00a0?", answer: "Oui, de nombreuses professions en consultation assise exercent très bien dans 11 à 13\u00a0m² : psychologues, diététiciens, sophrologues, naturopathes. La condition clé est l'accès à une salle d'attente et des sanitaires partagés." },
           { question: "Quelle surface pour un ostéopathe\u00a0?", answer: "Une table de soins et une circulation confortable nécessitent 14 à 18\u00a0m²." },
           { question: "Un cabinet plus grand améliore-t-il l'expérience patient\u00a0?", answer: "Pas nécessairement. L'expérience dépend de l'atmosphère, de la propreté, de l'intimité acoustique et de la lumière naturelle, pas de la taille." },
           { question: "Comment calculer la bonne surface\u00a0?", answer: "Listez votre mobilier essentiel, ajoutez l'espace de circulation, puis vérifiez si les parties communes couvrent vos besoins restants." },
           { question: "Les espaces mutualisés sont-ils trop petits\u00a0?", answer: "Non. La surface totale effective (cabinet privatif plus parties communes) est souvent plus grande et mieux équipée qu'un cabinet indépendant." },
         ]
       : [
-          { question: "Can I practise in 11 sqm?", answer: "Yes, many seated-practice professions work very well in 11–13 sqm, psychologists, dietitians, sophrologists, naturopaths. The key is access to shared waiting room and facilities." },
+          { question: "Can I practise in 11 sqm?", answer: "Yes, many seated-practice professions work very well in 11–13 sqm: psychologists, dietitians, sophrologists, naturopaths. The key is access to shared waiting room and facilities." },
           { question: "How much space does an osteopath need?", answer: "A treatment table and adequate circulation typically require 14 to 18 sqm." },
           { question: "Does a larger office improve patient experience?", answer: "Not necessarily. Experience depends on atmosphere, cleanliness, acoustic privacy and natural light, not on size alone." },
           { question: "How do I calculate the right size?", answer: "List your essential furniture, add circulation space, then check whether shared areas cover your remaining needs." },
@@ -106,7 +106,7 @@ export default function InsightsSurface() {
 
         <section id="standalone-vs-shared">
           <h2 className="text-xl font-heading font-bold mb-3">Standalone office vs shared space: the space equation</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">A standalone office must fit everything (waiting area, facilities, storage) into your own square metres. This often means 25–40 sqm total.</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">A standalone office must fit everything (waiting area, facilities, storage), into your own square metres. This often means 25–40 sqm total.</p>
           <p className="text-muted-foreground leading-relaxed">In a shared setting, common functions are pooled. A 13 sqm private office can feel as professional as a 30 sqm standalone space.</p>
         </section>
 

@@ -45,7 +45,7 @@ export default function InsightsProfessions() {
           { question: "Comment la confidentialité est-elle assurée\u00a0?", answer: "Par l'isolation acoustique, des salles privatives, le décalage des rendez-vous et des limites opérationnelles claires." },
           { question: "Les praticiens du bien-être sont-ils acceptés\u00a0?", answer: "Oui, à condition que leur pratique soit compatible avec un cadre professionnel de santé." },
           { question: "Que se passe-t-il en cas de conflit d'agenda\u00a0?", answer: "Un système de réservation clair et des accords de planning en amont préviennent les conflits." },
-          { question: "Peut-on personnaliser un cabinet partagé\u00a0?", answer: "Oui, dans des limites convenues (cadres, petits objets, matériel personnel) en maintenant une esthétique professionnelle cohérente." },
+          { question: "Peut-on personnaliser un cabinet partagé\u00a0?", answer: "Oui, dans des limites convenues (cadres, petits objets, matériel personnel), en maintenant une esthétique professionnelle cohérente." },
         ]
       : [
           { question: "Can two practitioners share the same office?", answer: "Yes, provided they work at different times. Time-sharing is a common, cost-effective model." },
@@ -92,7 +92,7 @@ export default function InsightsProfessions() {
       >
         <section id="compatibility">
           <h2 className="text-xl font-heading font-bold mb-3">What makes professions compatible in a shared space</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">The best shared spaces bring together complementary practitioners, psychologist alongside osteopath, dietitian near naturopath. Three criteria matter:</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">The best shared spaces bring together complementary practitioners: psychologist alongside osteopath, dietitian near naturopath. Three criteria matter:</p>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
             <li><strong>Complementarity:</strong> services that complement, not duplicate</li>
             <li><strong>Schedule diversity:</strong> different peak hours for better utilisation</li>
@@ -198,7 +198,7 @@ export default function InsightsProfessions() {
     >
       <section id="compatibilite">
         <h2 className="text-xl font-heading font-bold mb-3">Qu'est-ce qui rend des professions compatibles en espace partagé</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Les espaces les plus réussis réunissent des praticiens complémentaires, psychologue aux côtés d'un ostéopathe, diététicien près d'un naturopathe. Trois critères&nbsp;:</p>
+        <p className="text-muted-foreground leading-relaxed mb-3">Les espaces les plus réussis réunissent des praticiens complémentaires : psychologue aux côtés d'un ostéopathe, diététicien près d'un naturopathe. Trois critères&nbsp;:</p>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
           <li><strong>Complémentarité&nbsp;:</strong> services qui se complètent plutôt que se dupliquent</li>
           <li><strong>Diversité des rythmes&nbsp;:</strong> pics d'activité différents</li>

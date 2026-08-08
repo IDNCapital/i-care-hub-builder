@@ -120,7 +120,7 @@ export default function PreviewPraticien() {
         let fg = "#2C2C2C";
         let content: ReactNode = (
           <>
-            <strong>🔍 APERÇU PRIVÉ</strong>, Cette fiche n'est pas publique.
+            <strong>🔍 APERÇU PRIVÉ</strong> : cette fiche n'est pas publique.
             Pour valider ou demander des modifications, répondez au message
             reçu par email.
           </>
@@ -132,7 +132,7 @@ export default function PreviewPraticien() {
             <>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <span>
-                  <strong>✓ FICHE VALIDÉE</strong>, Lien public disponible :{" "}
+                  <strong>✓ FICHE VALIDÉE</strong> : lien public disponible :{" "}
                   <span style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
                     i-ca.re/praticien/{praticien.slug}
                   </span>
@@ -165,7 +165,7 @@ export default function PreviewPraticien() {
           fg = "#FFFFFF";
           content = (
             <>
-              <strong>📄 APERÇU NON PUBLIÉ</strong>, Cette fiche existe en
+              <strong>📄 APERÇU NON PUBLIÉ</strong> : cette fiche existe en
               interne mais n'est pas en circulation publique.
             </>
           );

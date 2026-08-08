@@ -45,14 +45,14 @@ export default function InsightsCabinetMedicalBordeaux() {
           { question: "Quel budget prévoir à Bordeaux\u00a0?", answer: "En comptant loyer, dépôt, travaux de base et mobilier, prévoyez un minimum de 8\u00a0000 à 15\u00a0000\u00a0€ pour un petit cabinet, plus une trésorerie de sécurité de 3 à 6 mois." },
           { question: "Peut-on transformer un local commercial en cabinet\u00a0?", answer: "Oui, mais il faut vérifier la destination du local, le règlement de copropriété le cas échéant, et les normes ERP. Le coût des travaux se situe généralement entre 500 et 1\u00a0500\u00a0€/m²." },
           { question: "Faut-il acheter ou louer son cabinet\u00a0?", answer: "La location offre de la souplesse, surtout en début d'activité. L'achat permet de constituer un patrimoine mais mobilise un capital important. Les espaces mutualisés offrent souvent le meilleur compromis." },
-          { question: "Les espaces mutualisés conviennent-ils à toutes les professions\u00a0?", answer: "La plupart des métiers en consultation fonctionnent très bien en mutualisé, psychologie, ostéopathie, diététique, sophrologie, naturopathie, orthophonie, etc." },
+          { question: "Les espaces mutualisés conviennent-ils à toutes les professions\u00a0?", answer: "La plupart des métiers en consultation fonctionnent très bien en mutualisé : psychologie, ostéopathie, diététique, sophrologie, naturopathie, orthophonie, etc." },
         ]
       : [
           { question: "What size for a medical office?", answer: "11 to 15 sqm is sufficient for most seated-practice professions, provided you have access to a waiting room and shared facilities. Treatment-table professions need 15 to 18 sqm." },
           { question: "What budget to plan in Bordeaux?", answer: "Including rent, deposit, basic renovations and furniture, plan €8,000–15,000 minimum for a small office, plus a cash reserve of 3 to 6 months." },
           { question: "Can you convert a commercial space?", answer: "Yes, but you need to check the designated use, co-ownership rules if applicable, and ERP accessibility standards. Conversion costs typically range from €500 to €1,500/sqm." },
           { question: "Should you buy or rent?", answer: "Renting offers flexibility, especially at the start. Buying builds equity but requires significant capital. Shared spaces often offer the best compromise." },
-          { question: "Are shared spaces suitable for all professions?", answer: "Most consultation-based professions work very well in shared settings, psychology, osteopathy, dietetics, sophrology, naturopathy, speech therapy and more." },
+          { question: "Are shared spaces suitable for all professions?", answer: "Most consultation-based professions work very well in shared settings: psychology, osteopathy, dietetics, sophrology, naturopathy, speech therapy and more." },
         ];
 
   if (lang === "en") {
@@ -128,7 +128,7 @@ export default function InsightsCabinetMedicalBordeaux() {
 
         <section id="shared">
           <h2 className="text-xl font-heading font-bold mb-3">Why shared care spaces are worth considering</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">Shared care spaces pool common functions (waiting room, reception, facilities, maintenance) across several practitioners. This reduces individual costs, improves the quality of the environment and creates natural referral networks.</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">Shared care spaces pool common functions (waiting room, reception, facilities, maintenance), across several practitioners. This reduces individual costs, improves the quality of the environment and creates natural referral networks.</p>
           <p className="text-muted-foreground leading-relaxed">For practitioners starting out or seeking flexibility, shared spaces offer a lower barrier to entry without compromising professionalism.</p>
         </section>
 
@@ -146,7 +146,7 @@ export default function InsightsCabinetMedicalBordeaux() {
 
         <section id="conclusion">
           <h2 className="text-xl font-heading font-bold mb-3">A structured approach makes the difference</h2>
-          <p className="text-muted-foreground leading-relaxed">Preparing your search methodically (defining your needs, setting a realistic budget, visiting multiple options and checking all regulatory aspects) avoids the most common pitfalls. A well-prepared practitioner makes better decisions and secures a more sustainable set-up.</p>
+          <p className="text-muted-foreground leading-relaxed">Preparing your search methodically (defining your needs, setting a realistic budget, visiting multiple options and checking all regulatory aspects), avoids the most common pitfalls. A well-prepared practitioner makes better decisions and secures a more sustainable set-up.</p>
         </section>
       </InsightArticleTemplate>
     );
@@ -242,7 +242,7 @@ export default function InsightsCabinetMedicalBordeaux() {
 
       <section id="conclusion">
         <h2 className="text-xl font-heading font-bold mb-3">Une approche structurée fait la différence</h2>
-        <p className="text-muted-foreground leading-relaxed">Préparer sa recherche méthodiquement (définir ses besoins, cadrer un budget réaliste, visiter plusieurs options, vérifier tous les aspects réglementaires) évite les écueils les plus courants. Un praticien bien préparé prend de meilleures décisions et sécurise une installation plus pérenne.</p>
+        <p className="text-muted-foreground leading-relaxed">Préparer sa recherche méthodiquement (définir ses besoins, cadrer un budget réaliste, visiter plusieurs options, vérifier tous les aspects réglementaires), évite les écueils les plus courants. Un praticien bien préparé prend de meilleures décisions et sécurise une installation plus pérenne.</p>
       </section>
     </InsightArticleTemplate>
   );

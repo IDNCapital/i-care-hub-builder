@@ -229,7 +229,7 @@ export default function LocationCabinetToulouse() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="section-title"><InlineBrand>I-CA.RE arrive à Toulouse</InlineBrand></h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              Après quatre lieux exploités à Bordeaux (Nansouty, Jardin Public, Pey-Berland et Chartrons) <InlineBrand>I-CA.RE</InlineBrand> étend son modèle à Toulouse. Notre mission reste la même : transformer des rez-de-chaussée urbains sous-valorisés en espaces de soin nouvelle génération, pensés pour la confidentialité, le confort acoustique et la qualité d'accueil des patient·e·s.
+              Après quatre lieux exploités à Bordeaux (Nansouty, Jardin Public, Pey-Berland et Chartrons), <InlineBrand>I-CA.RE</InlineBrand> étend son modèle à Toulouse. Notre mission reste la même : transformer des rez-de-chaussée urbains sous-valorisés en espaces de soin nouvelle génération, pensés pour la confidentialité, le confort acoustique et la qualité d'accueil des patient·e·s.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
               La première ouverture toulousaine, située à deux pas de la place du Capitole, nous évoque naturellement notre réalisation Pey-Berland à Bordeaux : même cœur de ville, même qualité patrimoniale, même potentiel pour devenir un lieu de soin de référence. D'autres ouvertures suivront dans d'autres quartiers toulousains, pour mailler progressivement la ville rose.
@@ -530,7 +530,7 @@ export default function LocationCabinetToulouse() {
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto">
-            <h2 className="section-title text-center">Questions fréquentes, Toulouse</h2>
+            <h2 className="section-title text-center">Questions fréquentes : Toulouse</h2>
             <Accordion type="single" collapsible className="mt-10 space-y-3">
               {faqItems.map((item, i) => (
                 <AccordionItem key={i} value={`tlse-faq-${i}`} className="bg-secondary rounded-2xl px-6 border-none">
