@@ -47,7 +47,7 @@ export default function ProblematiquesIndex() {
   return (
     <Layout>
       <SeoHead
-        title="Problématiques accompagnées par nos praticiennes et praticiens — I-CA.RE Bordeaux"
+        title="Problématiques accompagnées par nos praticiennes et praticiens | I-CA.RE Bordeaux"
         description="Explorez par problématique et trouvez la praticienne ou le praticien I-CA.RE qui vous correspond à Bordeaux : stress, anxiété, sommeil, deuil, parentalité et plus."
         path="/patients/problematiques"
       />

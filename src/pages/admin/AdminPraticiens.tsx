@@ -290,7 +290,7 @@ export default function AdminPraticiens() {
   return (
     <>
       <Helmet>
-        <title>Praticiens — Admin I‑CA.RE</title>
+        <title>Praticiens | Admin I‑CA.RE</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <TooltipProvider>
@@ -493,7 +493,7 @@ export default function AdminPraticiens() {
                                   {c.rating} · {c.user_ratings_total ?? 0}
                                 </span>
                               ) : (
-                                <span className="text-muted-foreground">—</span>
+                                <span className="text-muted-foreground">, </span>
                               )}
                             </td>
                             <td className="px-4 py-3">

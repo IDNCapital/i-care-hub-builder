@@ -10,7 +10,7 @@ export default function PreviewFooterIdnV3() {
   return (
     <>
       <Helmet>
-        <title>Preview v3 — Footer compact | I-CA.RE</title>
+        <title>Preview v3 | Footer compact | I-CA.RE</title>
         <meta name="robots" content="noindex,nofollow" />
         <meta name="googlebot" content="noindex,nofollow" />
       </Helmet>
@@ -21,10 +21,10 @@ export default function PreviewFooterIdnV3() {
           <section className="bg-background pt-24 pb-16">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
               <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-4">
-                Preview interne — v3
+                Preview interne, v3
               </p>
               <h1 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-4">
-                Footer compact unifié — validation
+                Footer compact unifié, validation
               </h1>
               <p className="font-body text-base text-muted-foreground leading-relaxed">
                 Cible 320–400px desktop. 3 bandeaux empilés sans gap : liens utiles

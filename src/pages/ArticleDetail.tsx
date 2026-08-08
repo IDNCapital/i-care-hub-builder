@@ -98,7 +98,7 @@ export default function ArticleDetail() {
   return (
     <Layout>
       <SeoHead
-        title={article.meta_title ?? `${article.titre} — I-CA.RE`}
+        title={article.meta_title ?? `${article.titre} | I-CA.RE`}
         description={article.meta_description ?? article.chapo}
         path={canonicalPath}
       />

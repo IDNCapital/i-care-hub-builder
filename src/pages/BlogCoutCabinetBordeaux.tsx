@@ -93,7 +93,7 @@ export default function BlogCoutCabinetBordeaux() {
           {/* Image 1 */}
           <FadeImage
             src={cab1Image}
-            alt={lang === "fr" ? "Cabinet de consultation à Bordeaux — I-CA.RE" : "Consultation office in Bordeaux — I-CA.RE"}
+            alt={lang === "fr" ? "Cabinet de consultation à Bordeaux, I-CA.RE" : "Consultation office in Bordeaux, I-CA.RE"}
             className="w-full rounded-lg mb-10 aspect-[16/10] object-cover"
           />
 

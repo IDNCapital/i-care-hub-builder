@@ -134,7 +134,7 @@ export default function AdminDemandesInstallation() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Demandes installation — Admin I-CA.RE</title>
+        <title>Demandes installation | Admin I-CA.RE</title>
         <meta name="robots" content="noindex,nofollow" />
       </Helmet>
       <header className="border-b bg-background sticky top-0 z-10">

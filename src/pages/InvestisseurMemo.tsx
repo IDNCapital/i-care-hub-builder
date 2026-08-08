@@ -255,7 +255,7 @@ export default function InvestisseurMemo() {
     return (
       <Layout>
         <Helmet>
-          <title>Note d'investissement — I‑CA.RE</title>
+          <title>Note d'investissement | I‑CA.RE</title>
           <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <section className="pt-32 pb-20">
@@ -270,7 +270,7 @@ export default function InvestisseurMemo() {
   return (
     <Layout>
       <Helmet>
-        <title>Note d'investissement — I‑CA.RE</title>
+        <title>Note d'investissement | I‑CA.RE</title>
         <meta name="description" content="Note d'investissement I‑CA.RE : approche patrimoniale, mutualisation du risque locatif, gouvernance et feuille de route." />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
@@ -280,7 +280,7 @@ export default function InvestisseurMemo() {
         <div className="container">
           <div className="max-w-3xl">
             <span className="inline-block px-4 py-1.5 bg-primary/15 text-primary text-xs font-bold uppercase tracking-[0.1em] rounded-full mb-6">
-              Espace investisseurs — Confidentiel
+              Espace investisseurs, Confidentiel
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
               Note d'investissement

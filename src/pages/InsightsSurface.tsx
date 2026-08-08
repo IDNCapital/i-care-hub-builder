@@ -41,18 +41,18 @@ export default function InsightsSurface() {
   const faq =
     lang === "fr"
       ? [
-          { question: "Peut-on exercer dans 11\u00a0m²\u00a0?", answer: "Oui, de nombreuses professions en consultation assise exercent très bien dans 11 à 13\u00a0m² — psychologues, diététiciens, sophrologues, naturopathes. La condition clé est l'accès à une salle d'attente et des sanitaires partagés." },
+          { question: "Peut-on exercer dans 11\u00a0m²\u00a0?", answer: "Oui, de nombreuses professions en consultation assise exercent très bien dans 11 à 13\u00a0m² : psychologues, diététiciens, sophrologues, naturopathes. La condition clé est l'accès à une salle d'attente et des sanitaires partagés." },
           { question: "Quelle surface pour un ostéopathe\u00a0?", answer: "Une table de soins et une circulation confortable nécessitent 14 à 18\u00a0m²." },
-          { question: "Un cabinet plus grand améliore-t-il l'expérience patient\u00a0?", answer: "Pas nécessairement. L'expérience dépend de l'atmosphère, de la propreté, de l'intimité acoustique et de la lumière naturelle — pas de la taille." },
+          { question: "Un cabinet plus grand améliore-t-il l'expérience patient\u00a0?", answer: "Pas nécessairement. L'expérience dépend de l'atmosphère, de la propreté, de l'intimité acoustique et de la lumière naturelle, pas de la taille." },
           { question: "Comment calculer la bonne surface\u00a0?", answer: "Listez votre mobilier essentiel, ajoutez l'espace de circulation, puis vérifiez si les parties communes couvrent vos besoins restants." },
-          { question: "Les espaces mutualisés sont-ils trop petits\u00a0?", answer: "Non. La surface totale effective — cabinet privatif plus parties communes — est souvent plus grande et mieux équipée qu'un cabinet indépendant." },
+          { question: "Les espaces mutualisés sont-ils trop petits\u00a0?", answer: "Non. La surface totale effective (cabinet privatif plus parties communes) est souvent plus grande et mieux équipée qu'un cabinet indépendant." },
         ]
       : [
-          { question: "Can I practise in 11 sqm?", answer: "Yes, many seated-practice professions work very well in 11–13 sqm — psychologists, dietitians, sophrologists, naturopaths. The key is access to shared waiting room and facilities." },
+          { question: "Can I practise in 11 sqm?", answer: "Yes, many seated-practice professions work very well in 11–13 sqm: psychologists, dietitians, sophrologists, naturopaths. The key is access to shared waiting room and facilities." },
           { question: "How much space does an osteopath need?", answer: "A treatment table and adequate circulation typically require 14 to 18 sqm." },
-          { question: "Does a larger office improve patient experience?", answer: "Not necessarily. Experience depends on atmosphere, cleanliness, acoustic privacy and natural light — not on size alone." },
+          { question: "Does a larger office improve patient experience?", answer: "Not necessarily. Experience depends on atmosphere, cleanliness, acoustic privacy and natural light, not on size alone." },
           { question: "How do I calculate the right size?", answer: "List your essential furniture, add circulation space, then check whether shared areas cover your remaining needs." },
-          { question: "Are shared spaces too small?", answer: "No. The effective total space — private office plus shared areas — is often larger and better equipped than a standalone office." },
+          { question: "Are shared spaces too small?", answer: "No. The effective total space (private office plus shared areas) is often larger and better equipped than a standalone office." },
         ];
 
   if (lang === "en") {
@@ -106,14 +106,14 @@ export default function InsightsSurface() {
 
         <section id="standalone-vs-shared">
           <h2 className="text-xl font-heading font-bold mb-3">Standalone office vs shared space: the space equation</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">A standalone office must fit everything — waiting area, facilities, storage — into your own square metres. This often means 25–40 sqm total.</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">A standalone office must fit everything (waiting area, facilities, storage), into your own square metres. This often means 25–40 sqm total.</p>
           <p className="text-muted-foreground leading-relaxed">In a shared setting, common functions are pooled. A 13 sqm private office can feel as professional as a 30 sqm standalone space.</p>
         </section>
 
         <section id="common-areas">
           <h2 className="text-xl font-heading font-bold mb-3">The critical role of common areas</h2>
           <p className="text-muted-foreground leading-relaxed mb-3">A well-designed waiting room, clean facilities and a professional entrance create the first impression for every patient. They directly influence perceived quality.</p>
-          <p className="text-muted-foreground leading-relaxed">In a shared space, common areas are maintained collectively — higher quality at lower individual cost. A quality waiting room shared among five practitioners costs €1,000–2,000 each.</p>
+          <p className="text-muted-foreground leading-relaxed">In a shared space, common areas are maintained collectively, higher quality at lower individual cost. A quality waiting room shared among five practitioners costs €1,000–2,000 each.</p>
         </section>
 
         <section id="oversizing">
@@ -124,7 +124,7 @@ export default function InsightsSurface() {
 
         <section id="comfort">
           <h2 className="text-xl font-heading font-bold mb-3">What really determines comfort</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">Comfort depends on layout quality, natural light, acoustic insulation, ventilation and furniture choices — not raw square metres.</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">Comfort depends on layout quality, natural light, acoustic insulation, ventilation and furniture choices, not raw square metres.</p>
           <p className="text-muted-foreground leading-relaxed">Invest in design quality over quantity of space.</p>
         </section>
 
@@ -193,14 +193,14 @@ export default function InsightsSurface() {
 
       <section id="individuel-vs-mutualise">
         <h2 className="text-xl font-heading font-bold mb-3">Cabinet individuel vs espace mutualisé&nbsp;: l'équation de surface</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Un cabinet indépendant doit intégrer toutes les fonctions dans vos mètres carrés — souvent 25 à 40&nbsp;m² au total.</p>
+        <p className="text-muted-foreground leading-relaxed mb-3">Un cabinet indépendant doit intégrer toutes les fonctions dans vos mètres carrés, souvent 25 à 40&nbsp;m² au total.</p>
         <p className="text-muted-foreground leading-relaxed">En mutualisé, votre cabinet se concentre sur la consultation. Un cabinet de 13&nbsp;m² en mutualisé peut être aussi professionnel qu'un local de 30&nbsp;m².</p>
       </section>
 
       <section id="parties-communes">
         <h2 className="text-xl font-heading font-bold mb-3">Le rôle déterminant des parties communes</h2>
         <p className="text-muted-foreground leading-relaxed mb-3">Une salle d'attente soignée, des sanitaires accessibles, une entrée professionnelle créent la première impression. En mutualisé, la qualité est meilleure à moindre coût individuel.</p>
-        <p className="text-muted-foreground leading-relaxed">Créer une salle d'attente de qualité coûte 5&nbsp;000 à 10&nbsp;000&nbsp;€ seul — partagée entre cinq praticiens, c'est 1&nbsp;000 à 2&nbsp;000&nbsp;€ chacun.</p>
+        <p className="text-muted-foreground leading-relaxed">Créer une salle d'attente de qualité coûte 5&nbsp;000 à 10&nbsp;000&nbsp;€ seul, partagée entre cinq praticiens, c'est 1&nbsp;000 à 2&nbsp;000&nbsp;€ chacun.</p>
       </section>
 
       <section id="surdimensionnement">
@@ -211,7 +211,7 @@ export default function InsightsSurface() {
 
       <section id="confort">
         <h2 className="text-xl font-heading font-bold mb-3">Ce qui détermine réellement le confort</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Le confort dépend de l'agencement, de la lumière naturelle, de l'isolation acoustique, de la ventilation et du mobilier — pas des mètres carrés bruts.</p>
+        <p className="text-muted-foreground leading-relaxed mb-3">Le confort dépend de l'agencement, de la lumière naturelle, de l'isolation acoustique, de la ventilation et du mobilier, pas des mètres carrés bruts.</p>
         <p className="text-muted-foreground leading-relaxed">Investissez dans la qualité de conception plutôt que dans la quantité de surface.</p>
       </section>
 

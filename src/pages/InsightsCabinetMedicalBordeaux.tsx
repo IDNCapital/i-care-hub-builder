@@ -45,14 +45,14 @@ export default function InsightsCabinetMedicalBordeaux() {
           { question: "Quel budget prévoir à Bordeaux\u00a0?", answer: "En comptant loyer, dépôt, travaux de base et mobilier, prévoyez un minimum de 8\u00a0000 à 15\u00a0000\u00a0€ pour un petit cabinet, plus une trésorerie de sécurité de 3 à 6 mois." },
           { question: "Peut-on transformer un local commercial en cabinet\u00a0?", answer: "Oui, mais il faut vérifier la destination du local, le règlement de copropriété le cas échéant, et les normes ERP. Le coût des travaux se situe généralement entre 500 et 1\u00a0500\u00a0€/m²." },
           { question: "Faut-il acheter ou louer son cabinet\u00a0?", answer: "La location offre de la souplesse, surtout en début d'activité. L'achat permet de constituer un patrimoine mais mobilise un capital important. Les espaces mutualisés offrent souvent le meilleur compromis." },
-          { question: "Les espaces mutualisés conviennent-ils à toutes les professions\u00a0?", answer: "La plupart des métiers en consultation fonctionnent très bien en mutualisé — psychologie, ostéopathie, diététique, sophrologie, naturopathie, orthophonie, etc." },
+          { question: "Les espaces mutualisés conviennent-ils à toutes les professions\u00a0?", answer: "La plupart des métiers en consultation fonctionnent très bien en mutualisé : psychologie, ostéopathie, diététique, sophrologie, naturopathie, orthophonie, etc." },
         ]
       : [
           { question: "What size for a medical office?", answer: "11 to 15 sqm is sufficient for most seated-practice professions, provided you have access to a waiting room and shared facilities. Treatment-table professions need 15 to 18 sqm." },
           { question: "What budget to plan in Bordeaux?", answer: "Including rent, deposit, basic renovations and furniture, plan €8,000–15,000 minimum for a small office, plus a cash reserve of 3 to 6 months." },
           { question: "Can you convert a commercial space?", answer: "Yes, but you need to check the designated use, co-ownership rules if applicable, and ERP accessibility standards. Conversion costs typically range from €500 to €1,500/sqm." },
           { question: "Should you buy or rent?", answer: "Renting offers flexibility, especially at the start. Buying builds equity but requires significant capital. Shared spaces often offer the best compromise." },
-          { question: "Are shared spaces suitable for all professions?", answer: "Most consultation-based professions work very well in shared settings — psychology, osteopathy, dietetics, sophrology, naturopathy, speech therapy and more." },
+          { question: "Are shared spaces suitable for all professions?", answer: "Most consultation-based professions work very well in shared settings: psychology, osteopathy, dietetics, sophrology, naturopathy, speech therapy and more." },
         ];
 
   if (lang === "en") {
@@ -64,7 +64,7 @@ export default function InsightsCabinetMedicalBordeaux() {
         heroImage={peyBerlandFacade}
         heroImageAlt="Elegant heritage building for healthcare offices – I-CA.RE Bordeaux"
         articleTitle="How to find a medical or paramedical office in Bordeaux"
-        intro="Finding the right office in Bordeaux is a challenge many practitioners face. The market is tight for small spaces suited to healthcare and wellbeing professions, and the available options are not always visible or easy to evaluate. Location, size, regulatory compliance and overall budget must all be considered together — not in isolation."
+        intro="Finding the right office in Bordeaux is a challenge many practitioners face. The market is tight for small spaces suited to healthcare and wellbeing professions, and the available options are not always visible or easy to evaluate. Location, size, regulatory compliance and overall budget must all be considered together, not in isolation."
         takeaways={[
           "Favour spaces between 11 and 18 sqm suited to your actual practice needs",
           "Choose a location consistent with your patient base, not just a premium address",
@@ -93,7 +93,7 @@ export default function InsightsCabinetMedicalBordeaux() {
       >
         <section id="market">
           <h2 className="text-xl font-heading font-bold mb-3">Why the market is tight in Bordeaux</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">Bordeaux has seen sustained demand for small healthcare-suitable spaces. Units between 10 and 25 sqm are rare on the open market, and many existing premises require significant work to meet current standards — particularly accessibility and acoustic insulation.</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">Bordeaux has seen sustained demand for small healthcare-suitable spaces. Units between 10 and 25 sqm are rare on the open market, and many existing premises require significant work to meet current standards, particularly accessibility and acoustic insulation.</p>
           <p className="text-muted-foreground leading-relaxed">Most traditional commercial listings target retail or office use, not healthcare. This creates a gap: practitioners need purpose-fitted spaces, but the supply of ready-to-use offices is limited.</p>
         </section>
 
@@ -128,7 +128,7 @@ export default function InsightsCabinetMedicalBordeaux() {
 
         <section id="shared">
           <h2 className="text-xl font-heading font-bold mb-3">Why shared care spaces are worth considering</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">Shared care spaces pool common functions — waiting room, reception, facilities, maintenance — across several practitioners. This reduces individual costs, improves the quality of the environment and creates natural referral networks.</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">Shared care spaces pool common functions (waiting room, reception, facilities, maintenance), across several practitioners. This reduces individual costs, improves the quality of the environment and creates natural referral networks.</p>
           <p className="text-muted-foreground leading-relaxed">For practitioners starting out or seeking flexibility, shared spaces offer a lower barrier to entry without compromising professionalism.</p>
         </section>
 
@@ -146,7 +146,7 @@ export default function InsightsCabinetMedicalBordeaux() {
 
         <section id="conclusion">
           <h2 className="text-xl font-heading font-bold mb-3">A structured approach makes the difference</h2>
-          <p className="text-muted-foreground leading-relaxed">Preparing your search methodically — defining your needs, setting a realistic budget, visiting multiple options and checking all regulatory aspects — avoids the most common pitfalls. A well-prepared practitioner makes better decisions and secures a more sustainable set-up.</p>
+          <p className="text-muted-foreground leading-relaxed">Preparing your search methodically (defining your needs, setting a realistic budget, visiting multiple options and checking all regulatory aspects), avoids the most common pitfalls. A well-prepared practitioner makes better decisions and secures a more sustainable set-up.</p>
         </section>
       </InsightArticleTemplate>
     );
@@ -160,7 +160,7 @@ export default function InsightsCabinetMedicalBordeaux() {
       heroImage={peyBerlandFacade}
       heroImageAlt="Immeuble patrimonial élégant pour cabinets de soins – I-CA.RE Bordeaux"
       articleTitle="Comment trouver un cabinet médical ou paramédical à Bordeaux"
-      intro={<>Trouver le bon cabinet à Bordeaux est un défi que de nombreux praticiens rencontrent. Le marché est tendu pour les petites surfaces adaptées aux professions du soin et du bien-être, et les options disponibles ne sont pas toujours visibles ni faciles à évaluer. Emplacement, surface, conformité réglementaire et budget global doivent être considérés ensemble — pas séparément.</>}
+      intro={<>Trouver le bon cabinet à Bordeaux est un défi que de nombreux praticiens rencontrent. Le marché est tendu pour les petites surfaces adaptées aux professions du soin et du bien-être, et les options disponibles ne sont pas toujours visibles ni faciles à évaluer. Emplacement, surface, conformité réglementaire et budget global doivent être considérés ensemble, pas séparément.</>}
       takeaways={[
         "Privilégier des surfaces entre 11 et 18\u00a0m² adaptées à vos besoins réels",
         "Choisir un emplacement cohérent avec votre patientèle",
@@ -224,7 +224,7 @@ export default function InsightsCabinetMedicalBordeaux() {
 
       <section id="mutualise">
         <h2 className="text-xl font-heading font-bold mb-3">Pourquoi envisager un espace de soins mutualisé</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">Les espaces mutualisés partagent les fonctions communes — salle d'attente, accueil, sanitaires, entretien — entre plusieurs praticiens. Cela réduit les coûts individuels et améliore la qualité de l'environnement.</p>
+        <p className="text-muted-foreground leading-relaxed mb-3">Les espaces mutualisés partagent les fonctions communes (salle d'attente, accueil, sanitaires, entretien) entre plusieurs praticiens. Cela réduit les coûts individuels et améliore la qualité de l'environnement.</p>
         <p className="text-muted-foreground leading-relaxed">Pour les praticiens en début d'activité ou en recherche de flexibilité, les espaces mutualisés offrent un ticket d'entrée plus accessible sans compromettre le professionnalisme.</p>
       </section>
 
@@ -242,7 +242,7 @@ export default function InsightsCabinetMedicalBordeaux() {
 
       <section id="conclusion">
         <h2 className="text-xl font-heading font-bold mb-3">Une approche structurée fait la différence</h2>
-        <p className="text-muted-foreground leading-relaxed">Préparer sa recherche méthodiquement — définir ses besoins, cadrer un budget réaliste, visiter plusieurs options, vérifier tous les aspects réglementaires — évite les écueils les plus courants. Un praticien bien préparé prend de meilleures décisions et sécurise une installation plus pérenne.</p>
+        <p className="text-muted-foreground leading-relaxed">Préparer sa recherche méthodiquement (définir ses besoins, cadrer un budget réaliste, visiter plusieurs options, vérifier tous les aspects réglementaires), évite les écueils les plus courants. Un praticien bien préparé prend de meilleures décisions et sécurise une installation plus pérenne.</p>
       </section>
     </InsightArticleTemplate>
   );

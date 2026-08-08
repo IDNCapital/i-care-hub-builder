@@ -142,8 +142,8 @@ export default function TemoignagesPraticiens() {
       <SeoHead
         title={
           lang === "fr"
-            ? "Témoignages — Ce que le réseau dit de I-CA.RE"
-            : "Testimonials — What practitioners say about I-CA.RE"
+            ? "Témoignages | Ce que le réseau dit de I-CA.RE"
+            : "Testimonials | What practitioners say about I-CA.RE"
         }
         description={
           lang === "fr"

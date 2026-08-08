@@ -59,7 +59,7 @@ export default function InvestisseurVerify() {
   return (
     <Layout>
       <Helmet>
-        <title>{lang === "en" ? "Email Verification — I‑CA.RE" : "Vérification email — I‑CA.RE"}</title>
+        <title>{lang === "en" ? "Email Verification | I‑CA.RE" : "Vérification email | I‑CA.RE"}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 

@@ -146,7 +146,7 @@ export default function PraticienPublic() {
 
   const fullName = `${praticien.prenom} ${praticien.nom}`;
   const ville = cabinet?.city ?? "";
-  const title = `${fullName} — ${praticien.profession}${ville ? ` à ${ville}` : ""} · I-CA.RE`;
+  const title = `${fullName}, ${praticien.profession}${ville ? ` à ${ville}` : ""} · I-CA.RE`;
   const description = praticien.bio_courte ?? `${fullName}, ${praticien.profession}${ville ? ` à ${ville}` : ""}.`;
   const canonical = `https://i-ca.re/praticien/${praticien.slug}`;
   const image = praticien.photo_url ?? "https://i-ca.re/og-i-ca-re.png";

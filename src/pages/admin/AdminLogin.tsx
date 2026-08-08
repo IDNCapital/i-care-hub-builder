@@ -40,7 +40,7 @@ export default function AdminLogin() {
   return (
     <>
       <Helmet>
-        <title>Admin — I‑CA.RE</title>
+        <title>Admin | I‑CA.RE</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <main className="min-h-screen flex items-center justify-center bg-background px-4">

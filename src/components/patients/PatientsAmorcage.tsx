@@ -21,7 +21,7 @@ export function PatientsAmorcage({ praticiens }: Props) {
       <section className="pt-32 pb-20 bg-secondary/40">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
           <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-6">
-            Espace Patients — En cours de lancement
+            Espace Patients, En cours de lancement
           </p>
           <h1 className="font-heading text-4xl md:text-5xl lg:text-[56px] font-normal text-foreground leading-tight mb-6 text-balance">
             Un annuaire de spécialistes du soin et du bien-être à Bordeaux.

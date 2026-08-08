@@ -14,7 +14,7 @@ export default function PreviewFooterIdn() {
   return (
     <>
       <Helmet>
-        <title>Preview — Footer Famille IDN | I-CA.RE</title>
+        <title>Preview | Footer Famille IDN | I-CA.RE</title>
         <meta name="robots" content="noindex,nofollow" />
         <meta name="googlebot" content="noindex,nofollow" />
       </Helmet>
@@ -28,7 +28,7 @@ export default function PreviewFooterIdn() {
                 Preview interne
               </p>
               <h1 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-4">
-                Footer Famille IDN — validation sprint&nbsp;7
+                Footer Famille IDN, validation sprint&nbsp;7
               </h1>
               <p className="font-body text-base text-muted-foreground leading-relaxed">
                 Cette page sert uniquement à valider visuellement le composant

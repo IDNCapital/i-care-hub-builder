@@ -272,7 +272,7 @@ export default function Parrainage() {
   return (
     <Layout>
       <SeoHead
-        title="Parrainage — Recommandez une consœur ou un confrère et recevez 3 mois offerts | I-CA.RE"
+        title="Parrainage | Recommandez une consœur ou un confrère et recevez 3 mois offerts | I-CA.RE"
         description="Recommandez une praticienne ou un praticien qui signe un bail dans un cabinet I-CA.RE et bénéficiez de 3 mois de services Espace Patients premium offerts."
         path={path}
       />

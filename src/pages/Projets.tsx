@@ -130,7 +130,7 @@ export default function Projets() {
                     {heroSrc ? (
                       <FadeImage
                         src={heroSrc}
-                        alt={`${centre.name} — I-CA.RE`}
+                        alt={`${centre.name}, I-CA.RE`}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
@@ -142,7 +142,7 @@ export default function Projets() {
                         {badgeLabel(centre.status)}{(() => {
                           if (centre.status !== "coming_soon") return "";
                           const q = quarterLabel(getProject(centre.slug)?.date_ouverture_cible, lang === "fr" ? "T" : "Q");
-                          return q ? ` — ${q}` : "";
+                          return q ? `, ${q}` : "";
                         })()}
                       </span>
                     </div>
@@ -170,8 +170,7 @@ export default function Projets() {
                             ? (centre.availabilityLabelEn ?? centre.availabilityLabel)
                             : centre.availabilityLabel;
                           if (label) {
-                            const cleaned = label.replace(/\s*:\s*/, " — ");
-                            return `${t("projects.partTimePrefix")} ${cleaned}`;
+                            return `${t("projects.partTimePrefix")} ${label}`;
                           }
                           return t("projects.availableUnits");
                         })()}

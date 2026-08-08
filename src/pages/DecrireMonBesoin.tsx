@@ -141,7 +141,7 @@ export default function DecrireMonBesoin() {
   return (
     <Layout>
       <SeoHead
-        title="Décrire mon besoin — Conciergerie patients I-CA.RE"
+        title="Décrire mon besoin | Conciergerie patients I-CA.RE"
         description="Décrivez votre besoin en quelques lignes : nous vous orientons vers la praticienne ou le praticien I-CA.RE le plus adapté, sous 48h ouvrées."
         path="/patients/decrire-mon-besoin"
         noIndex

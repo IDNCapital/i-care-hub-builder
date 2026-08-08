@@ -845,7 +845,7 @@ function RefreshGoogleButton({ placeId }: { placeId: string }) {
       const d = res.details?.[0];
       if (d?.status === "refreshed") {
         toast.success(
-          `Avis rafraîchis ✓${d.rating ? ` — ${d.rating.toFixed(1)} ★ · ${d.count ?? 0} avis` : ""}`,
+          `Avis rafraîchis ✓${d.rating ? `, ${d.rating.toFixed(1)} ★ · ${d.count ?? 0} avis` : ""}`,
         );
       } else if (d?.status === "error") {
         toast.error(`Erreur Google : ${d.error ?? "inconnue"}`);

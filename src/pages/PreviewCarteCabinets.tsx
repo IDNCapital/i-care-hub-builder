@@ -16,7 +16,7 @@ export default function PreviewCarteCabinets() {
   return (
     <>
       <Helmet>
-        <title>Preview — Carte des cabinets | I-CA.RE</title>
+        <title>Preview | Carte des cabinets | I-CA.RE</title>
         <meta name="robots" content="noindex,nofollow" />
         <meta name="googlebot" content="noindex,nofollow" />
       </Helmet>
@@ -27,7 +27,7 @@ export default function PreviewCarteCabinets() {
           <section className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
             <div className="max-w-3xl mx-auto text-center mb-10">
               <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-4">
-                Preview interne — sprint 6
+                Preview interne, sprint 6
               </p>
               <h1 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-4">
                 Carte interactive des cabinets I-CA.RE

@@ -274,8 +274,8 @@ export default function Investissement() {
               <div className="w-16 h-px bg-accent mx-auto mb-8" />
               <p className="text-lg font-body text-muted-foreground leading-relaxed max-w-3xl mx-auto">
                 {lang === "en"
-                  ? "I‑CA.RE is an independent family-owned real estate firm and an affiliate brand of Groupe IDN — a family group active in real estate development, construction, asset management and investment across South-West France."
-                  : "I‑CA.RE est une foncière familiale indépendante et une marque affiliée du Groupe IDN — un groupe familial actif dans la promotion, la construction, la gestion patrimoniale et l'investissement immobilier dans le Sud-Ouest."}
+                  ? "I‑CA.RE is an independent family-owned real estate firm and an affiliate brand of Groupe IDN, a family group active in real estate development, construction, asset management and investment across South-West France."
+                  : "I‑CA.RE est une foncière familiale indépendante et une marque affiliée du Groupe IDN, un groupe familial actif dans la promotion, la construction, la gestion patrimoniale et l'investissement immobilier dans le Sud-Ouest."}
               </p>
             </div>
             <div className="bg-[hsl(var(--cream))] border border-[hsl(var(--gold)/0.4)] rounded-xl p-8 md:p-10">
