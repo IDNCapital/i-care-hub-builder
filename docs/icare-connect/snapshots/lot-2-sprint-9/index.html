@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="I-CA.RE" />
+
+    <!-- Schema.org Organization (global, non route-dependent) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "I-CA.RE",
+      "url": "https://i-ca.re",
+      "description": "I-CA.RE rénove et modernise des lieux de santé pour offrir aux professionnels un cadre de travail exemplaire.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bordeaux",
+        "addressCountry": "FR"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "contact@i-ca.re",
+        "contactType": "customer service",
+        "availableLanguage": "French"
+      }
+    }
+    </script>
+
+    <!-- Schema.org ProfessionalService (global, non route-dependent) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "I-CA.RE",
+      "description": "Rénovation et mise à disposition de cabinets médicaux et centres de santé pluridisciplinaires.",
+      "url": "https://i-ca.re",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bordeaux",
+        "addressRegion": "Nouvelle-Aquitaine",
+        "addressCountry": "FR"
+      },
+      "areaServed": ["Nouvelle-Aquitaine", "Occitanie"],
+      "serviceType": ["Immobilier de santé", "Rénovation de lieux de soin", "Aménagement de cabinets pour les professions de santé"]
+    }
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
