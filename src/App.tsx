@@ -108,7 +108,7 @@ const App = () => (
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
           <meta property="og:image:alt" content="I-CA.RE, Des lieux de soin pensés comme des lieux de vie" />
-          <meta property="og:url" content="https://i-ca.re" />
+          <meta property="og:url" content="https://i-ca.re/" />
           <meta property="og:locale" content="fr_FR" />
           {/* Twitter Card */}
           <meta name="twitter:card" content="summary_large_image" />
