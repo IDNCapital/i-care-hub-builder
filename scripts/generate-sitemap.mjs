@@ -28,6 +28,7 @@ import {
   fetchArticlesPublies,
   fetchInstallationMatrix,
 } from "./publishedRoutes.mjs";
+import { pageUrl } from "./siteUrl.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -139,7 +140,7 @@ async function main() {
     if (seenSlugs.has(slug)) continue;
     seenSlugs.add(slug);
 
-    const loc = `https://i-ca.re/praticien/${slug}`;
+    const loc = pageUrl(`/praticien/${slug}`);
     if (existingLocs.has(loc)) continue;
 
     const lastmod = toIsoDate(row.updated_at);
@@ -156,7 +157,7 @@ async function main() {
 
   // Bloc problématiques : index (toujours) + détails matchés (≥1 praticien).
   const problematiquesBlocks = [];
-  const indexLoc = "https://i-ca.re/patients/problematiques";
+  const indexLoc = pageUrl("/patients/problematiques");
   if (!existingLocs.has(indexLoc)) {
     problematiquesBlocks.push(
       `  <url>\n` +
@@ -174,7 +175,7 @@ async function main() {
     if (!slug) continue;
     if (!matchedSet.has(slug)) continue;
 
-    const loc = `https://i-ca.re/patients/problematiques/${slug}`;
+    const loc = pageUrl(`/patients/problematiques/${slug}`);
     if (existingLocs.has(loc)) continue;
 
     const lastmod = toIsoDate(pb.updated_at);
@@ -197,7 +198,7 @@ async function main() {
     if (!slug) continue;
     if (!matchedSpecialiteSet.has(slug)) continue;
 
-    const loc = `https://i-ca.re/patients/specialite/${slug}`;
+    const loc = pageUrl(`/patients/specialite/${slug}`);
     if (existingLocs.has(loc)) continue;
 
     const lastmod = toIsoDate(sp.updated_at);
@@ -214,7 +215,7 @@ async function main() {
 
   // Bloc articles : index (toujours) + détails publiés.
   const articlesBlocks = [];
-  const articlesIndexLoc = "https://i-ca.re/patients/articles";
+  const articlesIndexLoc = pageUrl("/patients/articles");
   if (!existingLocs.has(articlesIndexLoc)) {
     articlesBlocks.push(
       `  <url>\n` +
@@ -230,7 +231,7 @@ async function main() {
     const slug = (ar && ar.slug ? String(ar.slug) : "").trim();
     if (!slug) continue;
 
-    const loc = `https://i-ca.re/patients/articles/${slug}`;
+    const loc = pageUrl(`/patients/articles/${slug}`);
     if (existingLocs.has(loc)) continue;
 
     const lastmod = toIsoDate(ar.updated_at);
@@ -253,7 +254,7 @@ async function main() {
   // Bloc matrice installation.
   const installationBlocks = [];
   for (const path of installation.paths) {
-    const loc = `https://i-ca.re${path}`;
+    const loc = pageUrl(path);
     if (existingLocs.has(loc)) continue;
     installationBlocks.push(
       `  <url>\n` +

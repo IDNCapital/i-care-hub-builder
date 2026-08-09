@@ -23,6 +23,7 @@ import { fileURLToPath } from "url";
 import { existsSync } from "fs";
 import { execSync } from "child_process";
 import { JSDOM } from "jsdom";
+import { pagePath, pageUrl } from "./siteUrl.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, "..", "dist");
@@ -560,17 +561,17 @@ async function main() {
   for (const r of REDIRECTS) {
     const cleanFrom = r.from.replace(/\/$/, "");
     const stubPath = join(DIST, cleanFrom, "index.html");
-    const targetAbs = `https://i-ca.re${r.to}`;
+    const targetAbs = pageUrl(r.to);
     const stub = `<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="refresh" content="0; url=${r.to}">
+<meta http-equiv="refresh" content="0; url=${pagePath(r.to)}">
 <link rel="canonical" href="${targetAbs}">
 <title>Redirection…</title>
 </head>
 <body>
-<p>Cette page a déménagé. <a href="${r.to}">Continuer vers la nouvelle page</a>.</p>
+<p>Cette page a déménagé. <a href="${pagePath(r.to)}">Continuer vers la nouvelle page</a>.</p>
 </body>
 </html>`;
     await mkdir(dirname(stubPath), { recursive: true });
