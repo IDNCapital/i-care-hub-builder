@@ -104,7 +104,7 @@ export default function TemoignagesPraticiens() {
       lang === "fr"
         ? "Ce que le réseau de locataires dit de son cabinet I-CA.RE à Bordeaux."
         : "What I-CA.RE tenant practitioners say about their care offices in Bordeaux.",
-    url: pageUrl(`${path}`),
+    url: pageUrl(path),
   };
 
   const reviewsJsonLd = reviews.map((r) => ({

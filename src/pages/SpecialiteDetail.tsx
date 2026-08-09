@@ -68,14 +68,14 @@ export default function SpecialiteDetail() {
           "@type": "ListItem",
           position: 3,
           name: cabinetLabel ? h1 : specialite.nom,
-          item: pageUrl(`${canonicalPath}`),
+          item: pageUrl(canonicalPath),
         },
       ],
     },
     {
       "@type": "CollectionPage",
       name: h1,
-      url: pageUrl(`${canonicalPath}`),
+      url: pageUrl(canonicalPath),
       description: specialite.description_courte,
     },
   ];

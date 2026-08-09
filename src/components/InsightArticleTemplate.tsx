@@ -88,7 +88,7 @@ export function InsightArticleTemplate({
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
-  const canonical = pageUrl(`${path}`);
+  const canonical = pageUrl(path);
   const insightsPath = lang === "fr" ? "/insights" : "/en/insights";
 
   const l =
@@ -178,7 +178,7 @@ export function InsightArticleTemplate({
         "@type": "ListItem",
         position: 2,
         name: l.guides,
-        item: pageUrl(`${insightsPath}`),
+        item: pageUrl(insightsPath),
       },
       {
         "@type": "ListItem",

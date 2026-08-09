@@ -66,7 +66,7 @@ export default function ArticleDetail() {
   }
 
   const canonicalPath = `/patients/articles/${article.slug}`;
-  const canonical = pageUrl(`${canonicalPath}`);
+  const canonical = pageUrl(canonicalPath);
   const datePublication = formatDatePublication(article.published_at);
 
   const jsonLd = {

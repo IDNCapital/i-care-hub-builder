@@ -38,7 +38,7 @@ export default function ArticlesIndex() {
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Accueil", item: pageUrl("/") },
           { "@type": "ListItem", position: 2, name: "Espace Patients", item: pageUrl("/patients") },
-          { "@type": "ListItem", position: 3, name: "Articles", item: pageUrl(`${CANONICAL_PATH}`) },
+          { "@type": "ListItem", position: 3, name: "Articles", item: pageUrl(CANONICAL_PATH) },
         ],
       },
       {

@@ -84,14 +84,14 @@ export default function ProblematiqueDetail() {
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Patients", item: pageUrl("/patients") },
           { "@type": "ListItem", position: 2, name: "Problématiques", item: pageUrl("/patients/problematiques") },
-          { "@type": "ListItem", position: 3, name: problematique.nom, item: pageUrl(`${canonicalPath}`) },
+          { "@type": "ListItem", position: 3, name: problematique.nom, item: pageUrl(canonicalPath) },
         ],
       },
       {
         "@type": "MedicalCondition",
         name: problematique.nom,
         description: problematique.description_courte,
-        url: pageUrl(`${canonicalPath}`),
+        url: pageUrl(canonicalPath),
       },
       ...(matchingPraticiens.length > 0
         ? [

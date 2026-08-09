@@ -58,7 +58,7 @@ export default function SinstallerDetail() {
   const ouvertureLabel = formatDateOuverture(data.date_ouverture);
   const professionLower = data.profession_libelle.toLowerCase();
   const path = data.url_path;
-  const canonical = pageUrl(`${path}`);
+  const canonical = pageUrl(path);
   const postal = parsePostalAddress(data.cabinet_adresse, data.cabinet_ville);
   const villeAvecPreposition = aVille(nomCourt);
   const visuels = getCabinetVisuals(projetCabinet?.slug);
