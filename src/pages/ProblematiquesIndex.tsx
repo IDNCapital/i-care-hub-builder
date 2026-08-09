@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useProblematiques } from "@/hooks/useProblematiques";
 import { norm } from "@/lib/taxonomy";
+import { pageUrl } from "@/lib/siteUrl";
 
-const BASE_URL = "https://i-ca.re";
+const BASE_URL = pageUrl("/");
 
 export default function ProblematiquesIndex() {
   const { data: problematiques, loading } = useProblematiques();
@@ -28,8 +29,8 @@ export default function ProblematiquesIndex() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Patients", item: `${BASE_URL}/patients` },
-          { "@type": "ListItem", position: 2, name: "Problématiques", item: `${BASE_URL}/patients/problematiques` },
+          { "@type": "ListItem", position: 1, name: "Patients", item: pageUrl("/patients") },
+          { "@type": "ListItem", position: 2, name: "Problématiques", item: pageUrl("/patients/problematiques") },
         ],
       },
       {
@@ -38,7 +39,7 @@ export default function ProblematiquesIndex() {
           "@type": "ListItem",
           position: idx + 1,
           name: p.nom,
-          url: `${BASE_URL}/patients/problematiques/${p.slug}`,
+          url: pageUrl(`/patients/problematiques/${p.slug}`),
         })),
       },
     ],

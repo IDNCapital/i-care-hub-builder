@@ -5,8 +5,9 @@ import { SeoHead } from "@/components/SeoHead";
 import { Button } from "@/components/ui/button";
 import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
 import { supabase } from "@/integrations/supabase/client";
+import { pageUrl } from "@/lib/siteUrl";
 
-const BASE_URL = "https://i-ca.re";
+const BASE_URL = pageUrl("/");
 const CANONICAL_PATH = "/patients/articles";
 
 export default function ArticlesIndex() {
@@ -36,9 +37,9 @@ export default function ArticlesIndex() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Accueil", item: `${BASE_URL}/` },
-          { "@type": "ListItem", position: 2, name: "Espace Patients", item: `${BASE_URL}/patients` },
-          { "@type": "ListItem", position: 3, name: "Articles", item: `${BASE_URL}${CANONICAL_PATH}` },
+          { "@type": "ListItem", position: 1, name: "Accueil", item: pageUrl("/") },
+          { "@type": "ListItem", position: 2, name: "Espace Patients", item: pageUrl("/patients") },
+          { "@type": "ListItem", position: 3, name: "Articles", item: pageUrl(`${CANONICAL_PATH}`) },
         ],
       },
       {
@@ -47,7 +48,7 @@ export default function ArticlesIndex() {
           "@type": "ListItem",
           position: idx + 1,
           name: a.titre,
-          url: `${BASE_URL}/patients/articles/${a.slug}`,
+          url: pageUrl(`/patients/articles/${a.slug}`),
         })),
       },
     ],

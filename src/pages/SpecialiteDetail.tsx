@@ -10,8 +10,9 @@ import { usePraticiensPublics } from "@/hooks/usePraticiensPublics";
 import { CartePraticien } from "@/components/patients/CartePraticien";
 import { matchSpecialite, CABINETS_LABEL } from "@/lib/taxonomy";
 import NotFound from "@/pages/NotFound";
+import { pageUrl } from "@/lib/siteUrl";
 
-const BASE_URL = "https://i-ca.re";
+const BASE_URL = pageUrl("/");
 
 function truncateDesc(text: string, max = 155): string {
   if (text.length <= max) return text;
@@ -62,20 +63,20 @@ export default function SpecialiteDetail() {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Patients", item: `${BASE_URL}/patients` },
-        { "@type": "ListItem", position: 2, name: "Annuaire", item: `${BASE_URL}/patients` },
+        { "@type": "ListItem", position: 1, name: "Patients", item: pageUrl("/patients") },
+        { "@type": "ListItem", position: 2, name: "Annuaire", item: pageUrl("/patients") },
         {
           "@type": "ListItem",
           position: 3,
           name: cabinetLabel ? h1 : specialite.nom,
-          item: `${BASE_URL}${canonicalPath}`,
+          item: pageUrl(`${canonicalPath}`),
         },
       ],
     },
     {
       "@type": "CollectionPage",
       name: h1,
-      url: `${BASE_URL}${canonicalPath}`,
+      url: pageUrl(`${canonicalPath}`),
       description: specialite.description_courte,
     },
   ];
@@ -86,7 +87,7 @@ export default function SpecialiteDetail() {
         "@type": "ListItem",
         position: idx + 1,
         name: `${pr.prenom} ${pr.nom}`,
-        url: `${BASE_URL}/praticien/${pr.slug}`,
+        url: pageUrl(`/praticien/${pr.slug}`),
       })),
     });
   }

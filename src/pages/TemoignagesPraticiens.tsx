@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { localePath } from "@/lib/routes";
 import { PROJECT_IMAGES } from "@/lib/projectImages";
 import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
+import { pageUrl } from "@/lib/siteUrl";
 
 export default function TemoignagesPraticiens() {
   const { i18n } = useTranslation();
@@ -103,7 +104,7 @@ export default function TemoignagesPraticiens() {
       lang === "fr"
         ? "Ce que le réseau de locataires dit de son cabinet I-CA.RE à Bordeaux."
         : "What I-CA.RE tenant practitioners say about their care offices in Bordeaux.",
-    url: `https://i-ca.re${path}`,
+    url: pageUrl(`${path}`),
   };
 
   const reviewsJsonLd = reviews.map((r) => ({

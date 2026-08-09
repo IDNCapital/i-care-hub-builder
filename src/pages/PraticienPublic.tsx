@@ -5,6 +5,7 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { FichePraticien } from "@/components/praticiens/FichePraticien";
 import type { Praticien } from "@/pages/admin/AdminPraticiens";
+import { pageUrl } from "@/lib/siteUrl";
 
 type CabinetForLd = {
   name: string;
@@ -148,7 +149,7 @@ export default function PraticienPublic() {
   const ville = cabinet?.city ?? "";
   const title = `${fullName}, ${praticien.profession}${ville ? ` à ${ville}` : ""} · I-CA.RE`;
   const description = praticien.bio_courte ?? `${fullName}, ${praticien.profession}${ville ? ` à ${ville}` : ""}.`;
-  const canonical = `https://i-ca.re/praticien/${praticien.slug}`;
+  const canonical = pageUrl(`/praticien/${praticien.slug}`);
   const image = praticien.photo_url ?? "https://i-ca.re/og-i-ca-re.png";
 
   // Quartier derived from cabinet name (strips "I-CA.RE" prefix)

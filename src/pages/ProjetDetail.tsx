@@ -30,6 +30,7 @@ import { isPipelineCabinet } from "@/lib/installation";
 import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
+import { pageUrl } from "@/lib/siteUrl";
 
 /**
  * OG images dédiées (1200×630) pour les pages /projets/[cabinet] exploitées.
@@ -167,7 +168,7 @@ export default function ProjetDetail() {
       />
       <Helmet>
         <script type="application/ld+json">{JSON.stringify((() => {
-          const canonicalUrl = `https://i-ca.re${lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}`;
+          const canonicalUrl = pageUrl(`${lang === "fr" ? `)/projets/${slug}` : `/en/projects/${slug}`}`;
           const heroPath = getProjectHero(project.slug, project.hero_image_url);
           const heroUrl = heroPath ? `https://i-ca.re${heroPath}` : undefined;
           // Enrichissement rédactionnel optionnel ; l'adresse et la géolocalisation
@@ -463,7 +464,7 @@ export default function ProjetDetail() {
         <SectionPraticiensDuCabinet
           cabinetSlug={slug}
           cabinetNomCourt={project.name.replace(/^Cabinet I[‑-]CA\.RE\s*/i, "").trim() || project.name}
-          cabinetUrl={`https://i-ca.re${lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}`}
+          cabinetUrl={pageUrl(`${lang === "fr" ? `)/projets/${slug}` : `/en/projects/${slug}`}`}
         />
       )}
 
