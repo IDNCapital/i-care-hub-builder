@@ -33,7 +33,8 @@ const OPTIONAL = process.env.PRERENDER_OPTIONAL === "true";
 // Cette table s'etend a chaque nouvelle famille d'URL, au meme titre que la
 // passe ROUTES. Une route qui ne correspond a aucune entree n'est pas
 // controlee (son rapport vaut "n/a").
-// Statut sprint 8 : avertissement seulement, aucune entree dans criticalFails.
+// Statut sprint 9 : controle bloquant. Une route controlee non conforme, ou un
+// bloc JSON-LD illisible quel que soit le type de route, fait echouer le build.
 const JSONLD_EXPECTATIONS = [
   { match: (p) => p === "/" || p === "/en", label: "accueil", expect: ["Organization", "ProfessionalService"] },
   { match: (p) => /^(\/en)?\/(projets|projects)\/./.test(p), label: "cabinet", expect: ["MedicalBusiness", "Organization"] },
@@ -80,20 +81,25 @@ function collectJsonLdTypes(doc) {
 function checkJsonLd(doc, routePath) {
   const { types, errors } = collectJsonLdTypes(doc);
   const found = [...types].sort();
-  const rule = JSONLD_EXPECTATIONS.find((r) => r.match(routePath));
+  const unreadable = errors.includes("JSON-LD illisible");
+  // Normalisation pour la recherche de regle uniquement : le rapport continue
+  // d'afficher le chemin tel qu'il est declare dans ROUTES.
+  const lookupPath = routePath !== "/" ? routePath.replace(/\/$/, "") : routePath;
+  const rule = JSONLD_EXPECTATIONS.find((r) => r.match(lookupPath));
   if (!rule) {
-    return { label: found.length ? `n/a (trouves : ${found.join(", ")})` : "n/a", errors, checked: false, conform: false, found };
+    return { label: found.length ? `n/a (trouves : ${found.join(", ")})` : "n/a", errors, checked: false, conform: false, found, unreadable, missing: [] };
   }
   const missing = rule.expect.filter((t) => !types.has(t));
   const label = missing.length === 0
     ? `✓ ${rule.expect.join("+")}`
     : `✗ manque ${missing.join(", ")} (trouves : ${found.length ? found.join(", ") : "aucun"})`;
   if (missing.length > 0) errors.push(`JSON-LD ${rule.label} : manque ${missing.join(", ")}`);
-  return { label, errors, checked: true, conform: missing.length === 0, found };
+  return { label, errors, checked: true, conform: missing.length === 0, found, unreadable, missing };
 }
 
 // ── Route definitions ───────────────────────────────────────────────
-// type: "strategic" = must be indexed, "legal" = must have noindex
+// type: "strategic" = must be indexed, "legal" = must have noindex,
+// "dormant" = volontairement desindexee et hors sitemap, doit porter un noindex
 const ROUTES = [
   // FR strategic
   { path: "/", type: "strategic" },
@@ -116,7 +122,9 @@ const ROUTES = [
   { path: "/insights/transformer-local-en-cabinet", type: "strategic" },
   { path: "/insights/professions-partage-cabinet", type: "strategic" },
   { path: "/insights/louer-ou-acheter-cabinet", type: "strategic" },
-  { path: "/investissement", type: "strategic" },
+  // Page investisseur volontairement desindexee et hors sitemap, reactivable.
+  // Decision doctrine V1.4.
+  { path: "/investissement", type: "dormant" },
   { path: "/notre-approche", type: "strategic" },
   { path: "/contact", type: "strategic" },
   { path: "/questions-frequentes", type: "strategic" },
@@ -152,7 +160,9 @@ const ROUTES = [
   { path: "/en/insights/converting-commercial-space", type: "strategic" },
   { path: "/en/insights/professions-sharing-office", type: "strategic" },
   { path: "/en/insights/rent-or-buy-office", type: "strategic" },
-  { path: "/en/investment", type: "strategic" },
+  // Page investisseur volontairement desindexee et hors sitemap, reactivable.
+  // Decision doctrine V1.4.
+  { path: "/en/investment", type: "dormant" },
   { path: "/en/our-approach", type: "strategic" },
   { path: "/en/contact", type: "strategic" },
   { path: "/en/faq", type: "strategic" },
@@ -320,13 +330,13 @@ function validateRouteType(html, route) {
   const errors = [];
   const noindex = doc.querySelector('meta[name="robots"][content*="noindex"]');
 
-  if (route.type === "legal") {
-    if (!noindex) errors.push("Legal page missing noindex");
+  if (route.type === "legal" || route.type === "dormant") {
+    if (!noindex) errors.push(`${route.type === "legal" ? "Legal" : "Dormant"} page missing noindex`);
   } else {
     if (noindex) errors.push("Strategic page has noindex — should NOT");
   }
 
-  // JSON-LD : avertissement seulement (voir JSONLD_EXPECTATIONS)
+  // JSON-LD : controle bloquant depuis le sprint 9 (voir JSONLD_EXPECTATIONS)
   errors.push(...checkJsonLd(doc, route.path).errors);
 
   return errors;
@@ -513,7 +523,7 @@ async function main() {
       entry.h1 = !!doc.querySelector("h1")?.textContent?.trim();
 
       const noindex = doc.querySelector('meta[name="robots"][content*="noindex"]');
-      entry.noindex = route.type === "legal"
+      entry.noindex = route.type === "legal" || route.type === "dormant"
         ? (noindex ? "✓ present" : "✗ MISSING")
         : (noindex ? "✗ UNEXPECTED" : "✓ absent");
 
@@ -522,6 +532,8 @@ async function main() {
       entry.jsonLdChecked = jsonLdResult.checked;
       entry.jsonLdConform = jsonLdResult.conform;
       entry.jsonLdFound = jsonLdResult.found;
+      entry.jsonLdUnreadable = jsonLdResult.unreadable;
+      entry.jsonLdMissing = jsonLdResult.missing;
       if (process.env.JSONLD_SURVEY === "true") {
         console.log(`[jsonld-survey] ${route.path} :: ${jsonLdResult.found.join(", ") || "aucun"}`);
       }
@@ -590,12 +602,27 @@ async function main() {
   }
   console.log("══════════════════════════════════════════════════════════════");
 
-  // Synthese JSON-LD (avertissement seulement en sprint 8)
+  // Synthese JSON-LD (controle bloquant depuis le sprint 9)
   const jsonLdChecked = report.filter((r) => r.jsonLdChecked);
   const jsonLdConform = jsonLdChecked.filter((r) => r.jsonLdConform);
   console.log(
     `[prerender] JSON-LD : ${jsonLdChecked.length} route(s) controlee(s), ${jsonLdConform.length} conforme(s), ${jsonLdChecked.length - jsonLdConform.length} non conforme(s).`
   );
+
+  // Echecs JSON-LD bloquants : non conformite sur route controlee, ou bloc illisible
+  // quel que soit le type de route.
+  const jsonLdFails = report.filter(
+    (r) => (r.jsonLdChecked && r.jsonLdConform === false) || r.jsonLdUnreadable
+  );
+  if (jsonLdFails.length > 0) {
+    console.error(`\n[prerender] JSON-LD NON CONFORME sur ${jsonLdFails.length} route(s) :`);
+    for (const f of jsonLdFails) {
+      const detail = f.jsonLdUnreadable
+        ? "bloc JSON-LD illisible"
+        : `types manquants : ${(f.jsonLdMissing || []).join(", ")}`;
+      console.error(`  - ${f.url} (${f.type}) : ${detail}`);
+    }
+  }
 
   // Check for critical failures on strategic pages
   const criticalFails = report.filter(
@@ -614,6 +641,11 @@ async function main() {
   );
 
   // Fail on critical SEO issues on strategic pages (even if prerender succeeded)
+  if (jsonLdFails.length > 0 && !OPTIONAL) {
+    console.error(`\n[prerender] BUILD FAILED: ${jsonLdFails.length} route(s) avec un JSON-LD non conforme ou illisible.`);
+    process.exit(1);
+  }
+
   if (criticalFails.length > 0 && !OPTIONAL) {
     console.error(`\n[prerender] BUILD FAILED: ${criticalFails.length} strategic page(s) missing critical SEO elements.`);
     process.exit(1);
@@ -624,8 +656,8 @@ async function main() {
     process.exit(1);
   }
 
-  if (fail > 0 || criticalFails.length > 0) {
-    console.warn(`\n[prerender] PRERENDER_OPTIONAL=true → continuing despite ${fail} failures and ${criticalFails.length} critical issues.`);
+  if (fail > 0 || criticalFails.length > 0 || jsonLdFails.length > 0) {
+    console.warn(`\n[prerender] PRERENDER_OPTIONAL=true → continuing despite ${fail} failures, ${criticalFails.length} critical issues and ${jsonLdFails.length} JSON-LD issues.`);
   }
 
   process.exit(0);
