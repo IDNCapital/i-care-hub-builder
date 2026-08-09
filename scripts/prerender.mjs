@@ -33,7 +33,8 @@ const OPTIONAL = process.env.PRERENDER_OPTIONAL === "true";
 // Cette table s'etend a chaque nouvelle famille d'URL, au meme titre que la
 // passe ROUTES. Une route qui ne correspond a aucune entree n'est pas
 // controlee (son rapport vaut "n/a").
-// Statut sprint 8 : avertissement seulement, aucune entree dans criticalFails.
+// Statut sprint 9 : controle bloquant. Une route controlee non conforme, ou un
+// bloc JSON-LD illisible quel que soit le type de route, fait echouer le build.
 const JSONLD_EXPECTATIONS = [
   { match: (p) => p === "/" || p === "/en", label: "accueil", expect: ["Organization", "ProfessionalService"] },
   { match: (p) => /^(\/en)?\/(projets|projects)\/./.test(p), label: "cabinet", expect: ["MedicalBusiness", "Organization"] },
@@ -80,20 +81,25 @@ function collectJsonLdTypes(doc) {
 function checkJsonLd(doc, routePath) {
   const { types, errors } = collectJsonLdTypes(doc);
   const found = [...types].sort();
-  const rule = JSONLD_EXPECTATIONS.find((r) => r.match(routePath));
+  const unreadable = errors.includes("JSON-LD illisible");
+  // Normalisation pour la recherche de regle uniquement : le rapport continue
+  // d'afficher le chemin tel qu'il est declare dans ROUTES.
+  const lookupPath = routePath !== "/" ? routePath.replace(/\/$/, "") : routePath;
+  const rule = JSONLD_EXPECTATIONS.find((r) => r.match(lookupPath));
   if (!rule) {
-    return { label: found.length ? `n/a (trouves : ${found.join(", ")})` : "n/a", errors, checked: false, conform: false, found };
+    return { label: found.length ? `n/a (trouves : ${found.join(", ")})` : "n/a", errors, checked: false, conform: false, found, unreadable, missing: [] };
   }
   const missing = rule.expect.filter((t) => !types.has(t));
   const label = missing.length === 0
     ? `✓ ${rule.expect.join("+")}`
     : `✗ manque ${missing.join(", ")} (trouves : ${found.length ? found.join(", ") : "aucun"})`;
   if (missing.length > 0) errors.push(`JSON-LD ${rule.label} : manque ${missing.join(", ")}`);
-  return { label, errors, checked: true, conform: missing.length === 0, found };
+  return { label, errors, checked: true, conform: missing.length === 0, found, unreadable, missing };
 }
 
 // ── Route definitions ───────────────────────────────────────────────
-// type: "strategic" = must be indexed, "legal" = must have noindex
+// type: "strategic" = must be indexed, "legal" = must have noindex,
+// "dormant" = volontairement desindexee et hors sitemap, doit porter un noindex
 const ROUTES = [
   // FR strategic
   { path: "/", type: "strategic" },
@@ -116,7 +122,9 @@ const ROUTES = [
   { path: "/insights/transformer-local-en-cabinet", type: "strategic" },
   { path: "/insights/professions-partage-cabinet", type: "strategic" },
   { path: "/insights/louer-ou-acheter-cabinet", type: "strategic" },
-  { path: "/investissement", type: "strategic" },
+  // Page investisseur volontairement desindexee et hors sitemap, reactivable.
+  // Decision doctrine V1.4.
+  { path: "/investissement", type: "dormant" },
   { path: "/notre-approche", type: "strategic" },
   { path: "/contact", type: "strategic" },
   { path: "/questions-frequentes", type: "strategic" },
@@ -152,7 +160,9 @@ const ROUTES = [
   { path: "/en/insights/converting-commercial-space", type: "strategic" },
   { path: "/en/insights/professions-sharing-office", type: "strategic" },
   { path: "/en/insights/rent-or-buy-office", type: "strategic" },
-  { path: "/en/investment", type: "strategic" },
+  // Page investisseur volontairement desindexee et hors sitemap, reactivable.
+  // Decision doctrine V1.4.
+  { path: "/en/investment", type: "dormant" },
   { path: "/en/our-approach", type: "strategic" },
   { path: "/en/contact", type: "strategic" },
   { path: "/en/faq", type: "strategic" },
