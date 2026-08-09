@@ -330,13 +330,13 @@ function validateRouteType(html, route) {
   const errors = [];
   const noindex = doc.querySelector('meta[name="robots"][content*="noindex"]');
 
-  if (route.type === "legal") {
-    if (!noindex) errors.push("Legal page missing noindex");
+  if (route.type === "legal" || route.type === "dormant") {
+    if (!noindex) errors.push(`${route.type === "legal" ? "Legal" : "Dormant"} page missing noindex`);
   } else {
     if (noindex) errors.push("Strategic page has noindex — should NOT");
   }
 
-  // JSON-LD : avertissement seulement (voir JSONLD_EXPECTATIONS)
+  // JSON-LD : controle bloquant depuis le sprint 9 (voir JSONLD_EXPECTATIONS)
   errors.push(...checkJsonLd(doc, route.path).errors);
 
   return errors;
@@ -523,7 +523,7 @@ async function main() {
       entry.h1 = !!doc.querySelector("h1")?.textContent?.trim();
 
       const noindex = doc.querySelector('meta[name="robots"][content*="noindex"]');
-      entry.noindex = route.type === "legal"
+      entry.noindex = route.type === "legal" || route.type === "dormant"
         ? (noindex ? "✓ present" : "✗ MISSING")
         : (noindex ? "✗ UNEXPECTED" : "✓ absent");
 
@@ -532,6 +532,8 @@ async function main() {
       entry.jsonLdChecked = jsonLdResult.checked;
       entry.jsonLdConform = jsonLdResult.conform;
       entry.jsonLdFound = jsonLdResult.found;
+      entry.jsonLdUnreadable = jsonLdResult.unreadable;
+      entry.jsonLdMissing = jsonLdResult.missing;
       if (process.env.JSONLD_SURVEY === "true") {
         console.log(`[jsonld-survey] ${route.path} :: ${jsonLdResult.found.join(", ") || "aucun"}`);
       }
@@ -600,12 +602,27 @@ async function main() {
   }
   console.log("══════════════════════════════════════════════════════════════");
 
-  // Synthese JSON-LD (avertissement seulement en sprint 8)
+  // Synthese JSON-LD (controle bloquant depuis le sprint 9)
   const jsonLdChecked = report.filter((r) => r.jsonLdChecked);
   const jsonLdConform = jsonLdChecked.filter((r) => r.jsonLdConform);
   console.log(
     `[prerender] JSON-LD : ${jsonLdChecked.length} route(s) controlee(s), ${jsonLdConform.length} conforme(s), ${jsonLdChecked.length - jsonLdConform.length} non conforme(s).`
   );
+
+  // Echecs JSON-LD bloquants : non conformite sur route controlee, ou bloc illisible
+  // quel que soit le type de route.
+  const jsonLdFails = report.filter(
+    (r) => (r.jsonLdChecked && r.jsonLdConform === false) || r.jsonLdUnreadable
+  );
+  if (jsonLdFails.length > 0) {
+    console.error(`\n[prerender] JSON-LD NON CONFORME sur ${jsonLdFails.length} route(s) :`);
+    for (const f of jsonLdFails) {
+      const detail = f.jsonLdUnreadable
+        ? "bloc JSON-LD illisible"
+        : `types manquants : ${(f.jsonLdMissing || []).join(", ")}`;
+      console.error(`  - ${f.url} (${f.type}) : ${detail}`);
+    }
+  }
 
   // Check for critical failures on strategic pages
   const criticalFails = report.filter(
@@ -624,6 +641,11 @@ async function main() {
   );
 
   // Fail on critical SEO issues on strategic pages (even if prerender succeeded)
+  if (jsonLdFails.length > 0 && !OPTIONAL) {
+    console.error(`\n[prerender] BUILD FAILED: ${jsonLdFails.length} route(s) avec un JSON-LD non conforme ou illisible.`);
+    process.exit(1);
+  }
+
   if (criticalFails.length > 0 && !OPTIONAL) {
     console.error(`\n[prerender] BUILD FAILED: ${criticalFails.length} strategic page(s) missing critical SEO elements.`);
     process.exit(1);
@@ -634,8 +656,8 @@ async function main() {
     process.exit(1);
   }
 
-  if (fail > 0 || criticalFails.length > 0) {
-    console.warn(`\n[prerender] PRERENDER_OPTIONAL=true → continuing despite ${fail} failures and ${criticalFails.length} critical issues.`);
+  if (fail > 0 || criticalFails.length > 0 || jsonLdFails.length > 0) {
+    console.warn(`\n[prerender] PRERENDER_OPTIONAL=true → continuing despite ${fail} failures, ${criticalFails.length} critical issues and ${jsonLdFails.length} JSON-LD issues.`);
   }
 
   process.exit(0);
