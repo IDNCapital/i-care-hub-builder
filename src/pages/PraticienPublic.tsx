@@ -185,6 +185,9 @@ export default function PraticienPublic() {
         <meta name="description" content={description} />
         <meta name="robots" content="index,follow" />
         <link rel="canonical" href={canonical} />
+        {/* Fiche uniquement francaise : autoreference fr + x-default, aucun hreflang en. */}
+        <link rel="alternate" hrefLang="fr" href={canonical} />
+        <link rel="alternate" hrefLang="x-default" href={canonical} />
         <meta property="og:type" content="profile" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
