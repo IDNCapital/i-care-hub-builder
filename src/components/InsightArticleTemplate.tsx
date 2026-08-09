@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { Helmet } from "react-helmet-async";
+import { pageUrl } from "@/lib/siteUrl";
 
 /* ── Types ─────────────────────────────────────────────── */
 
@@ -87,8 +88,7 @@ export function InsightArticleTemplate({
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
-  const BASE_URL = "https://i-ca.re";
-  const canonical = `${BASE_URL}${path}`;
+  const canonical = pageUrl(path);
   const insightsPath = lang === "fr" ? "/insights" : "/en/insights";
 
   const l =
@@ -155,11 +155,11 @@ export function InsightArticleTemplate({
     ...(heroImage ? { image: heroImage } : {}),
     ...(datePublished ? { datePublished } : {}),
     ...(dateModified ? { dateModified } : {}),
-    author: { "@type": "Organization", name: "I-CA.RE", url: BASE_URL },
+    author: { "@type": "Organization", name: "I-CA.RE", url: pageUrl("/") },
     publisher: {
       "@type": "Organization",
       name: "I-CA.RE",
-      url: BASE_URL,
+      url: pageUrl("/"),
     },
   };
 
@@ -172,13 +172,13 @@ export function InsightArticleTemplate({
         "@type": "ListItem",
         position: 1,
         name: l.home,
-        item: BASE_URL + (lang === "fr" ? "/" : "/en/"),
+        item: pageUrl(lang === "fr" ? "/" : "/en/"),
       },
       {
         "@type": "ListItem",
         position: 2,
         name: l.guides,
-        item: `${BASE_URL}${insightsPath}`,
+        item: pageUrl(insightsPath),
       },
       {
         "@type": "ListItem",

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { usePraticiensCabinet } from "@/hooks/usePraticiensCabinet";
 import { CartePraticienPublic } from "@/components/CartePraticienPublic";
+import { pageUrl } from "@/lib/siteUrl";
 
 interface Props {
   cabinetSlug: string;
@@ -46,7 +47,7 @@ export function SectionPraticiensDuCabinet({
       "@type": "Person",
       name: `${p.prenom} ${p.nom}`,
       jobTitle: p.profession,
-      url: `https://i-ca.re/praticien/${p.slug}`,
+      url: pageUrl(`/praticien/${p.slug}`),
       ...(p.photo_url ? { image: p.photo_url } : {}),
     })),
   };

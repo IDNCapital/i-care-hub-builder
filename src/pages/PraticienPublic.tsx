@@ -5,6 +5,7 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { FichePraticien } from "@/components/praticiens/FichePraticien";
 import type { Praticien } from "@/pages/admin/AdminPraticiens";
+import { pageUrl } from "@/lib/siteUrl";
 
 type CabinetForLd = {
   name: string;
@@ -148,7 +149,7 @@ export default function PraticienPublic() {
   const ville = cabinet?.city ?? "";
   const title = `${fullName}, ${praticien.profession}${ville ? ` à ${ville}` : ""} · I-CA.RE`;
   const description = praticien.bio_courte ?? `${fullName}, ${praticien.profession}${ville ? ` à ${ville}` : ""}.`;
-  const canonical = `https://i-ca.re/praticien/${praticien.slug}`;
+  const canonical = pageUrl(`/praticien/${praticien.slug}`);
   const image = praticien.photo_url ?? "https://i-ca.re/og-i-ca-re.png";
 
   // Quartier derived from cabinet name (strips "I-CA.RE" prefix)
@@ -184,6 +185,9 @@ export default function PraticienPublic() {
         <meta name="description" content={description} />
         <meta name="robots" content="index,follow" />
         <link rel="canonical" href={canonical} />
+        {/* Fiche uniquement francaise : autoreference fr + x-default, aucun hreflang en. */}
+        <link rel="alternate" hrefLang="fr" href={canonical} />
+        <link rel="alternate" hrefLang="x-default" href={canonical} />
         <meta property="og:type" content="profile" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />

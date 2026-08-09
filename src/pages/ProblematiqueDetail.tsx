@@ -12,8 +12,8 @@ import { usePraticiensPublics } from "@/hooks/usePraticiensPublics";
 import { CartePraticien } from "@/components/patients/CartePraticien";
 import { norm, getPraticienProblematiqueTags } from "@/lib/taxonomy";
 import NotFound from "@/pages/NotFound";
+import { pageUrl } from "@/lib/siteUrl";
 
-const BASE_URL = "https://i-ca.re";
 
 function truncateDesc(text: string, max = 155): string {
   if (text.length <= max) return text;
@@ -82,16 +82,16 @@ export default function ProblematiqueDetail() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Patients", item: `${BASE_URL}/patients` },
-          { "@type": "ListItem", position: 2, name: "Problématiques", item: `${BASE_URL}/patients/problematiques` },
-          { "@type": "ListItem", position: 3, name: problematique.nom, item: `${BASE_URL}${canonicalPath}` },
+          { "@type": "ListItem", position: 1, name: "Patients", item: pageUrl("/patients") },
+          { "@type": "ListItem", position: 2, name: "Problématiques", item: pageUrl("/patients/problematiques") },
+          { "@type": "ListItem", position: 3, name: problematique.nom, item: pageUrl(canonicalPath) },
         ],
       },
       {
         "@type": "MedicalCondition",
         name: problematique.nom,
         description: problematique.description_courte,
-        url: `${BASE_URL}${canonicalPath}`,
+        url: pageUrl(canonicalPath),
       },
       ...(matchingPraticiens.length > 0
         ? [
@@ -101,7 +101,7 @@ export default function ProblematiqueDetail() {
                 "@type": "ListItem",
                 position: idx + 1,
                 name: `${pr.prenom} ${pr.nom}`,
-                url: `${BASE_URL}/praticien/${pr.slug}`,
+                url: pageUrl(`/praticien/${pr.slug}`),
               })),
             },
           ]

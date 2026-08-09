@@ -7,6 +7,7 @@ import { useProfessionsInstallation, useCabinetsPipeline } from "@/hooks/useInst
 import { cabinetNomCourt, formatDateOuverture, installationUrl } from "@/lib/installation";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { CabinetVisuel } from "@/components/CabinetVisuel";
+import { pageUrl } from "@/lib/siteUrl";
 
 export default function SinstallerIndex() {
   const { data: professions = [] } = useProfessionsInstallation();
@@ -16,8 +17,8 @@ export default function SinstallerIndex() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Accueil", item: "https://i-ca.re/" },
-      { "@type": "ListItem", position: 2, name: "S'installer", item: "https://i-ca.re/sinstaller" },
+      { "@type": "ListItem", position: 1, name: "Accueil", item: pageUrl("/") },
+      { "@type": "ListItem", position: 2, name: "S'installer", item: pageUrl("/sinstaller") },
     ],
   };
 
@@ -25,7 +26,7 @@ export default function SinstallerIndex() {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "S'installer en cabinet I-CA.RE",
-    url: "https://i-ca.re/sinstaller",
+    url: pageUrl("/sinstaller"),
     description:
       "Les cabinets I-CA.RE ouvrent en Nouvelle-Aquitaine et en Occitanie. Trouvez l'espace adapté à votre pratique.",
   };

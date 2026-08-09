@@ -8,8 +8,8 @@ import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import { formatDatePublication } from "@/components/ArticleCard";
 import { supabase } from "@/integrations/supabase/client";
 import NotFound from "@/pages/NotFound";
+import { pageUrl } from "@/lib/siteUrl";
 
-const BASE_URL = "https://i-ca.re";
 
 interface ArticleRow {
   slug: string;
@@ -66,7 +66,7 @@ export default function ArticleDetail() {
   }
 
   const canonicalPath = `/patients/articles/${article.slug}`;
-  const canonical = `${BASE_URL}${canonicalPath}`;
+  const canonical = pageUrl(canonicalPath);
   const datePublication = formatDatePublication(article.published_at);
 
   const jsonLd = {
@@ -78,17 +78,17 @@ export default function ArticleDetail() {
         description: article.meta_description ?? article.chapo,
         datePublished: article.published_at ?? undefined,
         dateModified: article.updated_at,
-        author: { "@type": "Organization", name: "I-CA.RE", url: BASE_URL },
-        publisher: { "@type": "Organization", name: "I-CA.RE", url: BASE_URL },
+        author: { "@type": "Organization", name: "I-CA.RE", url: pageUrl("/") },
+        publisher: { "@type": "Organization", name: "I-CA.RE", url: pageUrl("/") },
         mainEntityOfPage: canonical,
         url: canonical,
       },
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Accueil", item: `${BASE_URL}/` },
-          { "@type": "ListItem", position: 2, name: "Espace Patients", item: `${BASE_URL}/patients` },
-          { "@type": "ListItem", position: 3, name: "Articles", item: `${BASE_URL}/patients/articles` },
+          { "@type": "ListItem", position: 1, name: "Accueil", item: pageUrl("/") },
+          { "@type": "ListItem", position: 2, name: "Espace Patients", item: pageUrl("/patients") },
+          { "@type": "ListItem", position: 3, name: "Articles", item: pageUrl("/patients/articles") },
           { "@type": "ListItem", position: 4, name: article.titre, item: canonical },
         ],
       },

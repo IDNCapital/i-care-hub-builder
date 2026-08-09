@@ -13,6 +13,7 @@ import { CabinetVisuel } from "@/components/CabinetVisuel";
 import { getCabinetVisuals } from "@/lib/projectImages";
 import { ICARE_TELEPHONE_E164 } from "@/lib/contact";
 import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
+import { pageUrl } from "@/lib/siteUrl";
 
 function parsePostalAddress(address: string | null, city: string) {
   if (!address) return { streetAddress: "", postalCode: "", addressLocality: city };
@@ -57,7 +58,7 @@ export default function SinstallerDetail() {
   const ouvertureLabel = formatDateOuverture(data.date_ouverture);
   const professionLower = data.profession_libelle.toLowerCase();
   const path = data.url_path;
-  const canonical = `https://i-ca.re${path}`;
+  const canonical = pageUrl(path);
   const postal = parsePostalAddress(data.cabinet_adresse, data.cabinet_ville);
   const villeAvecPreposition = aVille(nomCourt);
   const visuels = getCabinetVisuals(projetCabinet?.slug);
@@ -79,9 +80,9 @@ export default function SinstallerDetail() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Accueil", item: "https://i-ca.re/" },
-      { "@type": "ListItem", position: 2, name: "S'installer", item: "https://i-ca.re/sinstaller" },
-      { "@type": "ListItem", position: 3, name: data.profession_libelle, item: `https://i-ca.re/sinstaller/${data.profession_slug}` },
+      { "@type": "ListItem", position: 1, name: "Accueil", item: pageUrl("/") },
+      { "@type": "ListItem", position: 2, name: "S'installer", item: pageUrl("/sinstaller") },
+      { "@type": "ListItem", position: 3, name: data.profession_libelle, item: pageUrl(`/sinstaller/${data.profession_slug}`) },
       { "@type": "ListItem", position: 4, name: nomCourt, item: canonical },
     ],
   };
@@ -96,7 +97,7 @@ export default function SinstallerDetail() {
     name: data.cabinet_nom_complet,
     // image émise uniquement si vraie photo du cabinet (pas de fallback générique)
     ...(visuels.isGeneric ? {} : { image: `https://i-ca.re${visuels.hero}` }),
-    ...(projetCabinet ? { url: `https://i-ca.re/projets/${projetCabinet.slug}` } : {}),
+    ...(projetCabinet ? { url: pageUrl(`/projets/${projetCabinet.slug}`) } : {}),
     telephone: ICARE_TELEPHONE_E164,
     address: {
       "@type": "PostalAddress",
@@ -118,7 +119,7 @@ export default function SinstallerDetail() {
     parentOrganization: {
       "@type": "Organization",
       name: "I-CA.RE",
-      url: "https://i-ca.re",
+      url: pageUrl("/"),
     },
   };
 
@@ -129,7 +130,7 @@ export default function SinstallerDetail() {
     provider: {
       "@type": "Organization",
       name: "I-CA.RE",
-      url: "https://i-ca.re",
+      url: pageUrl("/"),
       telephone: ICARE_TELEPHONE_E164,
     },
     areaServed: {
