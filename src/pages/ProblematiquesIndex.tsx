@@ -8,7 +8,6 @@ import { useProblematiques } from "@/hooks/useProblematiques";
 import { norm } from "@/lib/taxonomy";
 import { pageUrl } from "@/lib/siteUrl";
 
-const BASE_URL = pageUrl("/");
 
 export default function ProblematiquesIndex() {
   const { data: problematiques, loading } = useProblematiques();

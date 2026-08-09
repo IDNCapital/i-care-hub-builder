@@ -12,7 +12,6 @@ import { matchSpecialite, CABINETS_LABEL } from "@/lib/taxonomy";
 import NotFound from "@/pages/NotFound";
 import { pageUrl } from "@/lib/siteUrl";
 
-const BASE_URL = pageUrl("/");
 
 function truncateDesc(text: string, max = 155): string {
   if (text.length <= max) return text;

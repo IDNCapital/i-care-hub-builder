@@ -10,7 +10,6 @@ import { supabase } from "@/integrations/supabase/client";
 import NotFound from "@/pages/NotFound";
 import { pageUrl } from "@/lib/siteUrl";
 
-const BASE_URL = pageUrl("/");
 
 interface ArticleRow {
   slug: string;

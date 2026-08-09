@@ -88,7 +88,6 @@ export function InsightArticleTemplate({
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
-  const BASE_URL = pageUrl("/");
   const canonical = pageUrl(`${path}`);
   const insightsPath = lang === "fr" ? "/insights" : "/en/insights";
 
@@ -173,7 +172,7 @@ export function InsightArticleTemplate({
         "@type": "ListItem",
         position: 1,
         name: l.home,
-        item: BASE_URL + (lang === "fr" ? "/" : "/en/"),
+        item: pageUrl(lang === "fr" ? "/" : "/en/"),
       },
       {
         "@type": "ListItem",

@@ -7,7 +7,6 @@ import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
 import { supabase } from "@/integrations/supabase/client";
 import { pageUrl } from "@/lib/siteUrl";
 
-const BASE_URL = pageUrl("/");
 const CANONICAL_PATH = "/patients/articles";
 
 export default function ArticlesIndex() {
