@@ -1,9 +1,9 @@
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { getEquivalentPath } from "@/lib/routes";
+import { assetUrl, pageUrl } from "@/lib/siteUrl";
 
-const BASE_URL = "https://i-ca.re";
-const DEFAULT_OG_IMAGE = `${BASE_URL}/og-i-ca-re.png`;
+const DEFAULT_OG_IMAGE = assetUrl("/og-i-ca-re.png");
 
 interface SeoHeadProps {
   title: string;
@@ -39,7 +39,7 @@ export function SeoHead({
   const { i18n } = useTranslation();
   const lang = i18n.language === "en" ? "en" : "fr";
 
-  const canonical = `${BASE_URL}${path}`;
+  const canonical = pageUrl(path);
   const frPath = lang === "fr" ? path : getEquivalentPath(path, "fr");
   const enPath = lang === "en" ? path : getEquivalentPath(path, "en");
   const image = ogImage || DEFAULT_OG_IMAGE;
@@ -55,9 +55,9 @@ export function SeoHead({
       <link rel="canonical" href={canonical} />
 
       {/* Hreflang */}
-      {frPath && <link rel="alternate" hrefLang="fr" href={`${BASE_URL}${frPath}`} />}
-      {enPath && <link rel="alternate" hrefLang="en" href={`${BASE_URL}${enPath}`} />}
-      <link rel="alternate" hrefLang="x-default" href={`${BASE_URL}${xDefaultPath}`} />
+      {frPath && <link rel="alternate" hrefLang="fr" href={pageUrl(frPath)} />}
+      {enPath && <link rel="alternate" hrefLang="en" href={pageUrl(enPath)} />}
+      <link rel="alternate" hrefLang="x-default" href={pageUrl(xDefaultPath)} />
 
       {/* Open Graph */}
       <meta property="og:type" content="website" />
