@@ -58,9 +58,10 @@ async function verifyAdminToken(token: string | null, secret: string): Promise<b
   }
 }
 
-type Praticien = { id: string; slug: string; google_place_id: string };
+type Cible = { slug: string; google_place_id: string; source: "praticien" | "cabinet" };
 type Detail = {
   slug: string;
+  source: "praticien" | "cabinet";
   status: "refreshed" | "skipped_cache_fresh" | "error";
   rating?: number;
   count?: number;
@@ -99,7 +100,7 @@ function normalizeReviews(reviews: unknown): Array<Record<string, unknown>> {
 async function refreshOne(
   supabase: ReturnType<typeof createClient>,
   apiKey: string,
-  prat: Praticien,
+  prat: Cible,
   force: boolean,
 ): Promise<Detail> {
   try {
@@ -112,7 +113,7 @@ async function refreshOne(
       if (cur?.last_updated_at) {
         const ageMs = Date.now() - new Date(cur.last_updated_at).getTime();
         if (ageMs < CACHE_TTL_MS) {
-          return { slug: prat.slug, status: "skipped_cache_fresh" };
+          return { slug: prat.slug, source: prat.source, status: "skipped_cache_fresh" };
         }
       }
     }
@@ -140,6 +141,7 @@ async function refreshOne(
     console.log(`[refresh] ${prat.slug} ✓ rating=${row.rating} count=${row.user_ratings_total}`);
     return {
       slug: prat.slug,
+      source: prat.source,
       status: "refreshed",
       rating: row.rating ?? undefined,
       count: row.user_ratings_total ?? undefined,
@@ -152,7 +154,7 @@ async function refreshOne(
       .from("avis_google_cache")
       .update({ last_error: msg, last_error_at: new Date().toISOString() })
       .eq("place_id", prat.google_place_id);
-    return { slug: prat.slug, status: "error", error: msg };
+    return { slug: prat.slug, source: prat.source, status: "error", error: msg };
   }
 }
 
@@ -206,7 +208,7 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
 
-  // Load praticiens
+  // Chargement des praticiennes et praticiens
   let query = supabase
     .from("praticiens")
     .select("id,slug,google_place_id")
@@ -223,20 +225,49 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
-  const prats = (pratsRaw ?? []) as Praticien[];
+
+  // Chargement des cabinets (table projets), place_id lus en base
+  let cabQuery = supabase
+    .from("projets")
+    .select("slug,google_place_id")
+    .not("google_place_id", "is", null);
+
+  if (bodyPlaceId) cabQuery = cabQuery.eq("google_place_id", bodyPlaceId);
+
+  const { data: cabsRaw, error: cabErr } = await cabQuery;
+  if (cabErr) {
+    return new Response(JSON.stringify({ error: cabErr.message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  const cibles: Cible[] = [];
+  const vus = new Set<string>();
+  for (const p of (pratsRaw ?? []) as Array<{ slug: string; google_place_id: string }>) {
+    if (!p.google_place_id || vus.has(p.google_place_id)) continue;
+    vus.add(p.google_place_id);
+    cibles.push({ slug: p.slug, google_place_id: p.google_place_id, source: "praticien" });
+  }
+  for (const c of (cabsRaw ?? []) as Array<{ slug: string; google_place_id: string }>) {
+    if (!c.google_place_id || vus.has(c.google_place_id)) continue;
+    vus.add(c.google_place_id);
+    cibles.push({ slug: c.slug, google_place_id: c.google_place_id, source: "cabinet" });
+  }
 
   // Force refresh when targeting a specific place_id (manual mode) OR when admin without filter? -> spec: targeted = force.
   const force = bodyPlaceId !== null;
 
   const details: Detail[] = [];
-  for (const p of prats) {
-    if (!p.google_place_id) continue;
+  for (const p of cibles) {
     const d = await refreshOne(supabase, apiKey, p, force);
     details.push(d);
   }
 
   const summary = {
-    total_praticiens: prats.length,
+    total_cibles: cibles.length,
+    total_praticiens: cibles.filter((c) => c.source === "praticien").length,
+    total_cabinets: cibles.filter((c) => c.source === "cabinet").length,
     refreshed: details.filter((d) => d.status === "refreshed").length,
     skipped_cache_fresh: details.filter((d) => d.status === "skipped_cache_fresh").length,
     errors: details.filter((d) => d.status === "error").length,
