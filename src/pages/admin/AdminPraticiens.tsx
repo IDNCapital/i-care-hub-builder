@@ -29,6 +29,7 @@ import {
   LogOut,
   Pencil,
   Plus,
+  RefreshCw,
   Search,
   Star,
   Webhook,
@@ -142,6 +143,7 @@ export default function AdminPraticiens() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editing, setEditing] = useState<Praticien | null>(null);
   const [batchExtracting, setBatchExtracting] = useState(false);
+  const [refreshingAvis, setRefreshingAvis] = useState(false);
   const tagsReviewFilter = searchParams.get("filter") === "tags-review";
 
   const fetchAll = async () => {
@@ -231,10 +233,59 @@ export default function AdminPraticiens() {
     return { total, validees, enAttente };
   }, [praticiens]);
 
+  /**
+   * Indicateur de fraîcheur : date du plus ancien last_updated_at du cache
+   * d'avis. C'est la ligne la plus en retard qui donne l'état réel du cache.
+   */
+  const avisPlusAncien = useMemo(() => {
+    let min: number | null = null;
+    cache.forEach((row) => {
+      const t = new Date(row.last_updated_at).getTime();
+      if (Number.isNaN(t)) return;
+      if (min === null || t < min) min = t;
+    });
+    if (min === null) return null;
+    return new Intl.DateTimeFormat("fr-FR", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(new Date(min));
+  }, [cache]);
+
   const handleLogout = async () => {
     await adminLogout();
     toast.success("Déconnecté");
     navigate("/admin/login");
+  };
+
+  /**
+   * Rafraîchissement manuel du cache d'avis Google.
+   *
+   * Appelle l'Edge Function refresh-google-reviews avec le token HMAC admin
+   * (header x-admin-token posé par callAdminFunction). Sans place_id dans le
+   * corps, la fonction traite l'ensemble des cibles, praticiennes, praticiens
+   * et cabinets, en respectant son TTL de cache.
+   */
+  const handleRefreshAvis = async () => {
+    setRefreshingAvis(true);
+    try {
+      const res = await callAdminFunction<{
+        summary?: {
+          total_cibles?: number;
+          refreshed?: number;
+          skipped_cache_fresh?: number;
+          errors?: number;
+        };
+      }>("refresh-google-reviews", {});
+      const s = res?.summary;
+      toast.success(
+        `Avis rafraîchis · ${s?.refreshed ?? 0} mis à jour · ${s?.skipped_cache_fresh ?? 0} déjà frais · ${s?.errors ?? 0} erreurs`,
+      );
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur de rafraîchissement");
+    }
+    setRefreshingAvis(false);
+    await fetchAll();
   };
 
   const handleBatchExtract = async () => {
@@ -334,6 +385,27 @@ export default function AdminPraticiens() {
                   )}
                   Réextraire les tags
                 </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={handleRefreshAvis}
+                    variant="outline"
+                    size="sm"
+                    disabled={refreshingAvis}
+                    title="Rappelle refresh-google-reviews pour les praticiennes, praticiens et cabinets"
+                  >
+                    {refreshingAvis ? (
+                      <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+                    ) : (
+                      <RefreshCw className="w-4 h-4 mr-1.5" />
+                    )}
+                    Rafraîchir les avis
+                  </Button>
+                  <span className="text-xs text-muted-foreground whitespace-nowrap">
+                    {avisPlusAncien
+                      ? `Cache le plus ancien : ${avisPlusAncien}`
+                      : "Cache vide"}
+                  </span>
+                </div>
                 <Button onClick={() => navigate("/admin/idn-os-webhooks")} variant="outline" size="sm">
                   <Webhook className="w-4 h-4 mr-1.5" /> Webhooks IDN OS
                 </Button>

@@ -31,6 +31,7 @@ import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
 import { pageUrl } from "@/lib/siteUrl";
+import { SectionAvisGoogle } from "@/components/avis/SectionAvisGoogle";
 
 /**
  * OG images dédiées (1200×630) pour les pages /projets/[cabinet] exploitées.
@@ -406,6 +407,19 @@ export default function ProjetDetail() {
           </div>
         </div>
       </section>
+
+      {/*
+        Avis Google du cabinet. Couverture stricte : ligne de cache présente,
+        note non NULL et au moins un avis. Les cabinets sans fiche Google ne
+        rendent donc aucune section, pas même un titre.
+      */}
+      <SectionAvisGoogle
+        placeId={project.google_place_id}
+        nomPourLien={project.name}
+        lang={lang}
+        exigerAuMoinsUnAvis
+        className="container max-w-3xl section-padding"
+      />
 
       {lang === "fr" && isPipelineCabinet(project.status) && project.slug_installation && (
         <section className="section-padding bg-secondary">

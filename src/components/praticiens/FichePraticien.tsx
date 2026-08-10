@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { ExternalLink, MapPin, Star } from "lucide-react";
+import { ExternalLink, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Praticien } from "@/pages/admin/AdminPraticiens";
-import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
+import { SectionAvisGoogle } from "@/components/avis/SectionAvisGoogle";
 
 type Cabinet = {
   slug: string;
@@ -13,71 +13,16 @@ type Cabinet = {
   show_address: boolean;
 };
 
-type CachedReview = {
-  author?: string;
-  rating?: number;
-  text?: string;
-  published_at?: string;
-  profile_photo_url?: string;
-};
-
-type AvisCacheRow = {
-  place_id: string;
-  rating: number | null;
-  user_ratings_total: number | null;
-  google_display_name: string | null;
-  last_updated_at: string;
-  google_url: string | null;
-  reviews: CachedReview[] | null;
-};
-
 const COLORS = {
   anthracite: "#2C2C2C",
   green: "#90A997",
   forest: "#1E392B",
   cream: "#F6F5F0",
-  gold: "#C2A46C",
-  sageLight: "#E2EAE5",
   textMuted: "#6B6B6B",
 };
 
 function initiales(prenom: string, nom: string) {
   return `${(prenom?.[0] ?? "").toUpperCase()}${(nom?.[0] ?? "").toUpperCase()}`;
-}
-
-function authorInitials(name: string) {
-  const parts = name.trim().split(/\s+/);
-  return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase() || "?";
-}
-
-function formatRelativeFr(iso?: string): string {
-  if (!iso) return "";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "";
-  const diffMs = Date.now() - d.getTime();
-  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  if (days < 1) return "aujourd'hui";
-  if (days < 7) return `il y a ${days} j`;
-  if (days < 30) {
-    const w = Math.floor(days / 7);
-    return `il y a ${w} sem.`;
-  }
-  if (days < 365) {
-    const m = Math.floor(days / 30);
-    return `il y a ${m} mois`;
-  }
-  const y = Math.floor(days / 365);
-  return `il y a ${y} an${y > 1 ? "s" : ""}`;
-}
-
-function formatDateShortFr(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "";
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  }).format(d);
 }
 
 /** Tiny markdown renderer: paragraphs, **bold**, "- item" lists. */
@@ -140,84 +85,6 @@ function renderInline(s: string): ReactNode {
   });
 }
 
-function StarsRow({ value, size = 16 }: { value: number; size?: number }) {
-  const full = Math.floor(value);
-  const hasHalf = value - full >= 0.25 && value - full < 0.75;
-  const total = 5;
-  return (
-    <div className="inline-flex items-center gap-0.5" aria-label={`${value} sur 5`}>
-      {Array.from({ length: total }).map((_, i) => {
-        const fill = i < full || (i === full && hasHalf);
-        return (
-          <Star
-            key={i}
-            style={{
-              width: size,
-              height: size,
-              color: COLORS.gold,
-              fill: fill ? COLORS.gold : "transparent",
-            }}
-          />
-        );
-      })}
-    </div>
-  );
-}
-
-function ReviewItem({ review }: { review: CachedReview }) {
-  const [expanded, setExpanded] = useState(false);
-  const text = review.text ?? "";
-  const long = text.length > 240;
-  const author = review.author ?? "Anonyme";
-  return (
-    <div className="py-4">
-      <div className="flex items-start gap-3">
-        {review.profile_photo_url ? (
-          <img
-            src={review.profile_photo_url}
-            alt=""
-            className="w-8 h-8 rounded-full object-cover shrink-0"
-          />
-        ) : (
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0"
-            style={{ backgroundColor: COLORS.sageLight, color: COLORS.forest }}
-          >
-            {authorInitials(author)}
-          </div>
-        )}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold text-[0.95rem]" style={{ color: COLORS.anthracite }}>
-              {author}
-            </span>
-            {typeof review.rating === "number" && <StarsRow value={review.rating} size={13} />}
-          </div>
-          <div className="text-[0.85rem] mt-0.5" style={{ color: COLORS.textMuted }}>
-            {formatRelativeFr(review.published_at)}
-          </div>
-          <p
-            className={`text-[0.95rem] leading-[1.6] mt-2 whitespace-pre-line ${expanded || !long ? "" : "line-clamp-3"}`}
-            style={{ color: COLORS.anthracite }}
-          >
-            {text}
-          </p>
-          {long && (
-            <button
-              type="button"
-              onClick={() => setExpanded((e) => !e)}
-              className="text-[0.85rem] mt-1.5 font-medium hover:underline"
-              style={{ color: COLORS.green }}
-            >
-              {expanded ? "Voir moins" : "Voir plus"}
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function FichePraticien({
   praticien,
   isPreview = false,
@@ -226,7 +93,6 @@ export function FichePraticien({
   isPreview?: boolean;
 }) {
   const [cabinet, setCabinet] = useState<Cabinet | null>(null);
-  const [cache, setCache] = useState<AvisCacheRow | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -242,25 +108,6 @@ export function FichePraticien({
       cancelled = true;
     };
   }, [praticien.cabinet_slug]);
-
-  useEffect(() => {
-    if (!praticien.google_place_id) {
-      setCache(null);
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      const { data } = await supabase
-        .from("avis_google_cache")
-        .select("place_id,rating,user_ratings_total,google_display_name,last_updated_at,google_url,reviews")
-        .eq("place_id", praticien.google_place_id!)
-        .maybeSingle();
-      if (!cancelled) setCache((data ?? null) as AvisCacheRow | null);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [praticien.google_place_id]);
 
   const surtitre = useMemo(() => {
     const s = praticien.specialites?.[0] ?? praticien.profession;
@@ -296,20 +143,6 @@ export function FichePraticien({
       .replace(/\s+/g, "-");
     return cleaned;
   }, [cabinet]);
-
-  const showReviewsBlock =
-    !!praticien.google_place_id && !!cache && cache.rating != null;
-  const topReviews: CachedReview[] = useMemo(() => {
-    if (!cache?.reviews) return [];
-    return [...cache.reviews]
-      .filter((r) => r.text)
-      .sort((a, b) => {
-        const da = a.published_at ? new Date(a.published_at).getTime() : 0;
-        const db = b.published_at ? new Date(b.published_at).getTime() : 0;
-        return db - da;
-      })
-      .slice(0, 3);
-  }, [cache]);
 
   const ctaLabel = praticien.lien_rdv ? "PRENDRE RENDEZ-VOUS" : "PRENDRE CONTACT";
 
@@ -431,82 +264,12 @@ export function FichePraticien({
               </div>
             )}
 
-            {/* Avis Google */}
-            {showReviewsBlock && cache && (
-              <section className="mt-12">
-                <h2
-                  className="font-heading"
-                  style={{ fontSize: "1.5rem", color: COLORS.anthracite }}
-                >
-                  Avis Google
-                </h2>
-                <div className="mt-4 flex items-center gap-3">
-                  <StarsRow value={cache.rating ?? 0} size={18} />
-                  <span
-                    className="font-heading"
-                    style={{ fontSize: "2rem", color: COLORS.anthracite, lineHeight: 1 }}
-                  >
-                    {(cache.rating ?? 0).toFixed(1).replace(".", ",")}
-                  </span>
-                </div>
-                <div className="mt-1" style={{ fontSize: "0.9rem", color: COLORS.textMuted }}>
-                  {cache.user_ratings_total ?? 0} avis Google
-                </div>
+            {/* Avis Google : composant partagé avec les fiches cabinet. */}
+            <SectionAvisGoogle
+              placeId={praticien.google_place_id}
+              nomPourLien={`${praticien.prenom} ${praticien.nom}`}
+            />
 
-                {topReviews.length > 0 && (
-                  <div className="mt-4">
-                    {topReviews.map((r, i) => (
-                      <div
-                        key={i}
-                        style={{
-                          borderTop:
-                            i === 0 ? "none" : `1px solid rgba(144, 169, 151, 0.2)`,
-                        }}
-                      >
-                        <ReviewItem review={r} />
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div
-                  className="mt-6 pt-4 flex flex-col gap-2"
-                  style={{
-                    borderTop: `1px solid rgba(144, 169, 151, 0.2)`,
-                    fontSize: "0.8rem",
-                    color: COLORS.textMuted,
-                  }}
-                >
-                  <span>
-                    {cache.google_display_name ? (
-                      <>
-                        Avis Google sur le profil <em>{cache.google_display_name}</em>
-                      </>
-                    ) : (
-                      <>Avis Google</>
-                    )}{" "}
-                    · Mis à jour le {formatDateShortFr(cache.last_updated_at)}
-                  </span>
-                  {(() => {
-                    const mapsUrl = googleMapsPlaceUrl(
-                      cache.google_display_name || `${praticien.prenom} ${praticien.nom}`,
-                      praticien.google_place_id,
-                    );
-                    return mapsUrl ? (
-                      <a
-                        href={mapsUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                        style={{ color: COLORS.green }}
-                      >
-                        Voir tous les avis sur Google →
-                      </a>
-                    ) : null;
-                  })()}
-                </div>
-              </section>
-            )}
 
             {/* Cabinet */}
             <section className="mt-12 pt-8" style={{ borderTop: `1px solid rgba(144, 169, 151, 0.25)` }}>
