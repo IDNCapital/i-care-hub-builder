@@ -15,7 +15,7 @@ function cap(s: string): string {
 
 /**
  * Maillage interne : 1 lien /sinstaller par profession active, pour un cabinet donné.
- * Doctrine pattern B — utilisé sur /projets/[pipeline], /location-cabinet-toulouse,
+ * Doctrine pattern B : utilisé sur /projets/[pipeline], /location-cabinet-toulouse,
  * /location-cabinet-bordeaux. FR-only (la matrice /sinstaller est FR-only).
  */
 export function SinstallerLinksCabinet({

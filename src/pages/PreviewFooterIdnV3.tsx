@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { FooterFamilleIdn } from "@/components/FooterFamilleIdn";
 
 /**
- * /preview-footer-idn-v3 — preview du footer compact unifié (v3).
+ * /preview-footer-idn-v3 : preview du footer compact unifié (v3).
  * noindex,nofollow + Disallow robots.txt.
  */
 export default function PreviewFooterIdnV3() {

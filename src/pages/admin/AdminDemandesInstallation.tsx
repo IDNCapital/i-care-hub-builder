@@ -196,9 +196,9 @@ export default function AdminDemandesInstallation() {
                     <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{new Date(d.created_at).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })}</td>
                     <td className="px-4 py-3 font-medium">{d.nom}</td>
                     <td className="px-4 py-3 text-muted-foreground">{d.email}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{d.telephone ?? "—"}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{d.telephone ?? "-"}</td>
                     <td className="px-4 py-3 text-muted-foreground">{d.profession_slug}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{d.ville_slug ?? "—"}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{d.ville_slug ?? "-"}</td>
                     <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                       <Select
                         value={d.statut}

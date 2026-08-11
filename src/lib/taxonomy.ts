@@ -1,7 +1,7 @@
 // src/lib/taxonomy.ts
 // SOURCE DE VÉRITÉ UNIQUE pour la taxonomie de l'Espace Patients I-CA.RE.
 // Toute modification ici impacte le filtre /patients ET l'extraction LLM.
-// Le miroir Edge Function est dans supabase/functions/_shared/taxonomy.ts —
+// Le miroir Edge Function est dans supabase/functions/_shared/taxonomy.ts :
 // quand vous modifiez ce fichier, propagez la même modification dans le miroir
 // ET incrémentez TAXONOMY_VERSION dans les deux fichiers.
 
@@ -158,7 +158,7 @@ export const PUBLIC_CIBLE_GROUPS: Record<string, string[]> = {
   "Sportifs": ["sportifs"],
 };
 
-// Termes implicites — silencieusement absorbés par l'extraction.
+// Termes implicites, silencieusement absorbés par l'extraction.
 // Ne sont ni filtrés-in dans le résultat final, ni capturés comme candidats.
 // "adultes" est le public par défaut, jamais explicité dans la taxonomie.
 export const IMPLICIT_TERMS: Record<"specialites" | "problematiques" | "publics_cibles", string[]> = {
@@ -340,7 +340,7 @@ export function matchSpecialite(
 }
 
 /**
- * Helper centralisé — Lot 16.0-bis.
+ * Helper centralisé (Lot 16.0-bis).
  *
  * Règle de fusion canonique des tags problématiques d'un praticien pour
  * TOUTE lecture (matching /patients, pages problématique, etc.) :

@@ -99,7 +99,7 @@ const App = () => (
             name="description"
             content="I-CA.RE rénove et modernise des lieux de santé pour offrir aux professionnels un cadre de travail exemplaire et aux habitants un accès facilité à des soins de qualité."
           />
-          {/* Open Graph (default — pages may override) */}
+          {/* Open Graph (default: pages may override) */}
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="I-CA.RE" />
           <meta property="og:title" content="I-CA.RE | Des lieux de soin pensés comme des lieux de vie" />
@@ -128,13 +128,13 @@ const App = () => (
               {/* Fiche publique praticien (langue-agnostique pour V1) */}
               <Route path="/praticien/:slug" element={<PraticienPublic />} />
 
-              {/* Preview interne footer Famille IDN — sprint 7 (noindex,nofollow) */}
+              {/* Preview interne footer Famille IDN : sprint 7 (noindex,nofollow) */}
               <Route path="/preview-footer-idn" element={<PreviewFooterIdn />} />
 
-              {/* Preview v3 footer compact unifié — sprint 7 (noindex,nofollow) */}
+              {/* Preview v3 footer compact unifié : sprint 7 (noindex,nofollow) */}
               <Route path="/preview-footer-idn-v3" element={<PreviewFooterIdnV3 />} />
 
-              {/* Preview interne carte des cabinets — sprint 6 (noindex,nofollow) */}
+              {/* Preview interne carte des cabinets : sprint 6 (noindex,nofollow) */}
               <Route path="/preview-carte-cabinets" element={<PreviewCarteCabinets />} />
 
               {/* Admin routes (hors i18n) */}

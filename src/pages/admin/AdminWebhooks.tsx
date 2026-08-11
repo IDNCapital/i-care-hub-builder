@@ -20,7 +20,7 @@ export default function AdminWebhooks() {
   const navigate = useNavigate();
   const [rows, setRows] = useState<AuditRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({ sent: 0, failed: 0, rate: "—" });
+  const [stats, setStats] = useState({ sent: 0, failed: 0, rate: "-" });
 
   useEffect(() => {
     (async () => {
@@ -49,10 +49,10 @@ export default function AdminWebhooks() {
         setStats({
           sent,
           failed,
-          rate: total > 0 ? `${Math.round((sent / total) * 100)}%` : "—",
+          rate: total > 0 ? `${Math.round((sent / total) * 100)}%` : "-",
         });
       } catch {
-        // silent — page reste en état vide
+        // silent : page reste en état vide
       } finally {
         setLoading(false);
       }
@@ -148,10 +148,10 @@ export default function AdminWebhooks() {
                         {new Date(row.created_at).toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}
                       </td>
                       <td className="py-2 pr-4">{badgeForType(row.event_type)}</td>
-                      <td className="py-2 pr-4 font-mono text-xs">{row.function_name || "—"}</td>
+                      <td className="py-2 pr-4 font-mono text-xs">{row.function_name || "-"}</td>
                       <td className="py-2 pr-4 max-w-[300px] truncate">{row.description}</td>
                       <td className="py-2 text-xs text-muted-foreground max-w-[200px] truncate">
-                        {row.payload_json ? JSON.stringify(row.payload_json) : "—"}
+                        {row.payload_json ? JSON.stringify(row.payload_json) : "-"}
                       </td>
                     </tr>
                   ))}

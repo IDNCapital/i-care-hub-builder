@@ -189,7 +189,7 @@ export const Header = memo(function Header() {
         {isOpen && (
           <div className="lg:hidden py-4 animate-fade-in">
             <div className="flex flex-col space-y-2">
-              {/* Praticiens — collapsible */}
+              {/* Praticiens : collapsible */}
               <button
                 type="button"
                 onClick={() => setPractitionersOpen((v) => !v)}

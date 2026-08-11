@@ -170,9 +170,9 @@ export default function AdminDemandes() {
                     <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{new Date(d.created_at).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })}</td>
                     <td className="px-4 py-3 font-medium">{d.prenom} {d.nom}</td>
                     <td className="px-4 py-3 text-muted-foreground">{d.email}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{d.cabinet_prefere ?? "—"}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{d.cabinet_prefere ?? "-"}</td>
                     <td className="px-4 py-3"><Badge variant="outline" className={STATUT_COLORS[d.statut]}>{STATUT_LABELS[d.statut]}</Badge></td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground">{d.webhook_status ?? "—"}{d.webhook_attempts > 0 ? ` (${d.webhook_attempts})` : ""}</td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground">{d.webhook_status ?? "-"}{d.webhook_attempts > 0 ? ` (${d.webhook_attempts})` : ""}</td>
                   </tr>
                 ))}
               </tbody>
@@ -210,7 +210,7 @@ export default function AdminDemandes() {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Webhook CRM</p>
-                  <p className="text-sm">Statut : <strong>{selected.webhook_status ?? "—"}</strong> · {selected.webhook_attempts} tentative(s)</p>
+                  <p className="text-sm">Statut : <strong>{selected.webhook_status ?? "-"}</strong> · {selected.webhook_attempts} tentative(s)</p>
                   {selected.webhook_last_error && <p className="text-xs text-destructive mt-1">{selected.webhook_last_error}</p>}
                 </div>
                 <hr />

@@ -11,7 +11,7 @@ interface Props {
 }
 
 /**
- * Section secondaire orientée patient — affichée en bas des pages
+ * Section secondaire orientée patient, affichée en bas des pages
  * /projets/[slug]. Masquée si aucun praticien validé.
  * Inclut un schema.org MedicalBusiness avec serviceProvider.
  */

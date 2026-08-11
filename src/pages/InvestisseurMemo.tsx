@@ -35,7 +35,7 @@ function useInvestorAccess(): AccessState {
       return;
     }
 
-    // If only legacy access (no real token), deny — legacy is no longer trusted
+    // If only legacy access (no real token), deny: legacy is no longer trusted
     if (!token) {
       sessionStorage.removeItem("icare_investor_access");
       setState("denied");
@@ -57,7 +57,7 @@ function useInvestorAccess(): AccessState {
         if (result.valid) {
           setState("granted");
         } else {
-          // Token invalid or expired — clear it
+          // Token invalid or expired: clear it
           localStorage.removeItem("icare_investor_token");
           setState("denied");
         }

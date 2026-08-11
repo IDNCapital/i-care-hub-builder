@@ -162,7 +162,7 @@ export default function TemoignagesPraticiens() {
         ))}
       </Helmet>
 
-      {/* ─── Section 1 — Hero ────────────────────────── */}
+      {/* ─── Section 1 : Hero ────────────────────────── */}
       <section className="bg-background pt-32 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
           <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-6">
@@ -181,7 +181,7 @@ export default function TemoignagesPraticiens() {
         </div>
       </section>
 
-      {/* ─── Section 2 — Long testimonials ───────────── */}
+      {/* ─── Section 2 : Long testimonials ───────────── */}
       <section className="bg-background py-16 md:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <div className="text-center mb-12">
@@ -215,7 +215,7 @@ export default function TemoignagesPraticiens() {
         </div>
       </section>
 
-      {/* ─── Section 3 — Google reviews ──────────────── */}
+      {/* ─── Section 3 : Google reviews ──────────────── */}
       <section className="bg-muted/30 py-16 md:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <div className="text-center mb-10">
@@ -269,7 +269,7 @@ export default function TemoignagesPraticiens() {
         </div>
       </section>
 
-      {/* ─── Section 4 — Video placeholders ──────────── */}
+      {/* ─── Section 4 : Video placeholders ──────────── */}
       <section className="bg-background py-12 md:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
           <div className="text-center mb-8">
@@ -309,7 +309,7 @@ export default function TemoignagesPraticiens() {
         </div>
       </section>
 
-      {/* ─── Section 5 — Final CTA (sage) ────────────── */}
+      {/* ─── Section 5 : Final CTA (sage) ────────────── */}
       <section className="py-20 md:py-24 bg-primary">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
           <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-background mb-6">

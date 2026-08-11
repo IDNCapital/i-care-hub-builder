@@ -226,7 +226,7 @@ export function PatientsOuvert({ praticiens }: Props) {
       }
       // Bloc Cabinet (OR interne)
       if (cabinets.size && !cabinets.has(p.cabinet_slug)) return false;
-      // Bloc Type de soin — match si AU MOINS UNE specialité du praticien
+      // Bloc Type de soin : match si AU MOINS UNE specialité du praticien
       // appartient à AU MOINS UN groupe sélectionné. Source = specialites_derivees
       // (extraites par IA depuis la bio), avec fallback sur l'array brut.
       if (selectedTypes.length) {
@@ -241,7 +241,7 @@ export function PatientsOuvert({ praticiens }: Props) {
         );
         if (!ok) return false;
       }
-      // Bloc Besoin — fusion dérivés + manuels via helper centralisé (lot 16.0-bis).
+      // Bloc Besoin : fusion dérivés + manuels via helper centralisé (lot 16.0-bis).
       if (selectedBesoins.length) {
         const pbs = getPraticienProblematiqueTags(p);
         const ok = pbs.some((pb) =>
@@ -251,7 +251,7 @@ export function PatientsOuvert({ praticiens }: Props) {
         );
         if (!ok) return false;
       }
-      // Bloc Public — match si AU MOINS UN public_derive du praticien
+      // Bloc Public : match si AU MOINS UN public_derive du praticien
       // appartient à AU MOINS UN groupe sélectionné.
       if (selectedPublics.length) {
         const pubs = p.publics_derives ?? [];

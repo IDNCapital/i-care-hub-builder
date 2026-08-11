@@ -41,7 +41,7 @@ const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 function fail(message) {
   if (OPTIONAL) {
-    console.warn(`[generate-sitemap] ⚠ ${message} — PRERENDER_OPTIONAL=true, skipping.`);
+    console.warn(`[generate-sitemap] ⚠ ${message}: PRERENDER_OPTIONAL=true, skipping.`);
     process.exit(0);
   }
   console.error(`[generate-sitemap] ✗ ${message}`);
@@ -295,7 +295,7 @@ async function main() {
   }
 
   if (!existsSync(join(ROOT, "dist"))) {
-    return fail("dist/ directory not found — run vite build first.");
+    return fail("dist/ directory not found: run vite build first.");
   }
 
   await writeFile(DIST_SITEMAP, finalXml, "utf8");

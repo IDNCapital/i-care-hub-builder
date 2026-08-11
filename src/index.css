@@ -43,7 +43,7 @@
 
     --radius: 0.5rem;
 
-    /* Shadows — soft and minimal */
+    /* Shadows: soft and minimal */
     --shadow-soft: 0 2px 12px -2px hsl(0 0% 17% / 0.05);
     --shadow-card: 0 4px 20px -4px hsl(0 0% 17% / 0.07);
     --shadow-elevated: 0 8px 30px -8px hsl(0 0% 17% / 0.1);
@@ -119,7 +119,7 @@
     box-shadow: var(--shadow-elevated);
   }
 
-  /* Animations — slow, calm fades only */
+  /* Animations: slow, calm fades only */
   .animate-fade-up {
     animation: fadeUp 0.8s ease-out forwards;
   }
@@ -144,7 +144,7 @@
     transform: translateY(-2px);
   }
 
-  /* Section titles — Playfair Display */
+  /* Section titles: Playfair Display */
   .section-title {
     @apply text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-4;
     font-family: 'Playfair Display', Georgia, serif;
@@ -178,7 +178,7 @@
   }
 
 
-  /* Header blur — reduced on mobile for performance */
+  /* Header blur: reduced on mobile for performance */
   .header-blur {
     background: rgba(246, 245, 240, 0.80);
     backdrop-filter: blur(6px);
@@ -295,7 +295,7 @@ button[data-state]:focus-visible {
   }
 }
 
-/* Carte cabinets — harmonisation des tuiles OSM avec la charte (sauge/crème) */
+/* Carte cabinets : harmonisation des tuiles OSM avec la charte (sauge/crème) */
 .i-care-tiles {
   /* Désature les tuiles, ajoute une teinte chaude et adoucit le contraste
      pour rester cohérent avec la palette sauge/crème du site. */

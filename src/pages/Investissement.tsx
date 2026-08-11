@@ -64,7 +64,7 @@ export default function Investissement() {
 
   const parc = STATIC_CENTRES.filter((c) => ["chartrons", "nansouty", "jardin-public", "pey-berland"].includes(c.id));
 
-  // Source: Charte graphique Groupe IDN édition 2026 — Cartographie de l'écosystème.
+  // Source: Charte graphique Groupe IDN édition 2026, Cartographie de l'écosystème.
   // IDN Capital = marque centrale ; les 5 autres sont les marques affiliées.
   const idnCentral = "IDN Capital";
   const idnAffiliates = ["Rivage", "IDNéa", "I‑CA.RE", "INside BAT", "co-liv.ing"];

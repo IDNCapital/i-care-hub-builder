@@ -57,7 +57,7 @@ export default function Patients() {
         <PatientsAmorcage praticiens={praticiens} />
       )}
 
-      {/* Carte interactive des cabinets — conservée dans les deux modes */}
+      {/* Carte interactive des cabinets, conservée dans les deux modes */}
       <CarteCabinetsSection
         background="secondary"
         title={lang === "fr" ? "Trouver un cabinet près de chez vous" : "Find an office near you"}

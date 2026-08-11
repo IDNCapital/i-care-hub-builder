@@ -87,7 +87,7 @@ export default function Projets() {
         }
       />
 
-      {/* Centre Cards — by region */}
+      {/* Centre Cards: by region */}
       <section className="section-padding bg-background">
         <div className="container space-y-16">
           {(["bordeaux", "toulouse"] as const).map((region) => {
@@ -125,7 +125,7 @@ export default function Projets() {
                   key={centre.id}
                   className="group bg-background rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-elevated hover:-translate-y-1 transition-all duration-300"
                 >
-                  {/* Image — clickable */}
+                  {/* Image: clickable */}
                   <Link to={centre.slug ? `${localePath(lang, "projects")}/${centre.slug}` : localePath(lang, "contact")} className="block relative aspect-[4/3] overflow-hidden">
                     {heroSrc ? (
                       <FadeImage

@@ -1,5 +1,5 @@
 /**
- * CarteCabinetsSection — Wrapper réutilisable pour embarquer la carte
+ * CarteCabinetsSection : Wrapper réutilisable pour embarquer la carte
  * interactive sur les pages publiques (home, /projets, /patients).
  *
  * Lazy import + Suspense : Leaflet (~150kB) ne se charge que si la

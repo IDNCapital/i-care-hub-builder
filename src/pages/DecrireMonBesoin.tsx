@@ -181,7 +181,7 @@ export default function DecrireMonBesoin() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-              {/* Honeypot — caché aux humains, visible aux bots */}
+              {/* Honeypot : caché aux humains, visible aux bots */}
               <div
                 aria-hidden="true"
                 style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}

@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { FooterFamilleIdn } from "@/components/FooterFamilleIdn";
 
 /**
- * /preview-footer-idn — page de validation visuelle du footer "Famille IDN"
+ * /preview-footer-idn : page de validation visuelle du footer "Famille IDN"
  * avant déploiement sprint 7.
  *
  * - noindex,nofollow (Helmet) + Disallow dans robots.txt

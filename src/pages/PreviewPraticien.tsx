@@ -113,7 +113,7 @@ export default function PreviewPraticien() {
         </title>
       </Helmet>
 
-      {/* Bandeau sticky — variantes selon statut_validation */}
+      {/* Bandeau sticky : variantes selon statut_validation */}
       {(() => {
         const statut = praticien.statut_validation;
         let bg = "#C2A46C";
@@ -190,7 +190,7 @@ export default function PreviewPraticien() {
 
       <FichePraticien praticien={praticien} isPreview />
 
-      {/* Carte d'action — uniquement pour brouillon / preview_envoyee */}
+      {/* Carte d'action : uniquement pour brouillon / preview_envoyee */}
       {(praticien.statut_validation === "brouillon" ||
         praticien.statut_validation === "preview_envoyee") && (
       <section style={{ backgroundColor: "#F6F5F0", paddingBottom: 64 }}>

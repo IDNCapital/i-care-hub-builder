@@ -1,4 +1,4 @@
-// Page en sommeil depuis le 17/07/2026 (Sprint 16) — route retirée de App.tsx,
+// Page en sommeil depuis le 17/07/2026 (Sprint 16) : route retirée de App.tsx,
 // réactivable en la remettant + prerender + sitemap.
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -243,7 +243,7 @@ export default function Parrainage() {
       return;
     }
 
-    // TODO: Lovable Emails — send internal notification to nicolas@i-ca.re
+    // TODO: Lovable Emails (send internal notification to nicolas@i-ca.re)
     // and acknowledgement email to the sponsor (parrain_email).
     setSubmittedFilleulNom(payload.filleul_nom);
     setSuccess(true);
@@ -265,7 +265,7 @@ export default function Parrainage() {
     },
   };
 
-  // Shared input class — I-CA.RE charter
+  // Shared input class: I-CA.RE charter
   const inputClass =
     "w-full px-4 py-3 bg-background border border-[#BFBFBF] rounded-md font-body text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors";
 
@@ -280,7 +280,7 @@ export default function Parrainage() {
         <script type="application/ld+json">{JSON.stringify(webPageJsonLd)}</script>
       </Helmet>
 
-      {/* ── Section 1 — Hero ───────────────────── */}
+      {/* ── Section 1 : Hero ───────────────────── */}
       <section className="bg-background pt-24 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
           <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-6">
@@ -304,7 +304,7 @@ export default function Parrainage() {
         </div>
       </section>
 
-      {/* ── Section 2 — Mécanique en une phrase ── */}
+      {/* ── Section 2 : Mécanique en une phrase ── */}
       <section className="py-20" style={{ backgroundColor: "#E2EAE5" }}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
           <p className="font-body text-xs md:text-sm uppercase font-bold tracking-[0.15em] text-primary mb-6">
@@ -320,7 +320,7 @@ export default function Parrainage() {
         </div>
       </section>
 
-      {/* ── Section 3 — Récompense détaillée ───── */}
+      {/* ── Section 3 : Récompense détaillée ───── */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <div className="text-center mb-12">
@@ -368,7 +368,7 @@ export default function Parrainage() {
         </div>
       </section>
 
-      {/* ── Section 4 — Conditions précises ────── */}
+      {/* ── Section 4 : Conditions précises ────── */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
           <div className="text-center mb-10">
@@ -396,7 +396,7 @@ export default function Parrainage() {
         </div>
       </section>
 
-      {/* ── Section 5 — FAQ ─────────────────────── */}
+      {/* ── Section 5 : FAQ ─────────────────────── */}
       <section className="py-20" style={{ backgroundColor: "#E2EAE5" }}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
           <div className="text-center mb-10">
@@ -428,7 +428,7 @@ export default function Parrainage() {
         </div>
       </section>
 
-      {/* ── Section 6 — Formulaire ──────────────── */}
+      {/* ── Section 6 : Formulaire ──────────────── */}
       <section id="formulaire" className="py-20 bg-primary">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
           <div className="bg-background rounded-xl p-8 md:p-12 shadow-elevated">

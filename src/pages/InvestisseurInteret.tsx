@@ -85,7 +85,7 @@ export default function InvestisseurInteret() {
       const result = await res.json();
 
       if (result.status === "already_verified" && result.access_token) {
-        // Already verified — store token and redirect
+        // Already verified: store token and redirect
         localStorage.setItem("icare_investor_token", result.access_token);
         toast.success(t("interestForm.successExisting"));
         navigate(localePath(lang, "investmentMemo"));

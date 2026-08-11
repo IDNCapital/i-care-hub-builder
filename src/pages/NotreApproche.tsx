@@ -21,7 +21,7 @@ export default function NotreApproche() {
         path={lang === "fr" ? "/notre-approche" : "/en/our-approach"}
       />
 
-      {/* 1 — Vision */}
+      {/* 1. Vision */}
       <section className="pt-32 pb-20 bg-secondary">
         <div className="container">
           <div className="max-w-3xl">
@@ -37,7 +37,7 @@ export default function NotreApproche() {
         </div>
       </section>
 
-      {/* 2 — Founders intro */}
+      {/* 2. Founders intro */}
       <section className="section-padding">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-20">
@@ -100,7 +100,7 @@ export default function NotreApproche() {
         </div>
       </section>
 
-      {/* 3 — Synthesis */}
+      {/* 3. Synthesis */}
       <section className="section-padding bg-secondary">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
@@ -124,7 +124,7 @@ export default function NotreApproche() {
         </div>
       </section>
 
-      {/* 4 — CTA */}
+      {/* 4. CTA */}
       <section className="section-padding">
         <div className="container">
           <div className="cta-section text-center">

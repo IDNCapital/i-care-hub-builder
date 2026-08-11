@@ -37,7 +37,7 @@ function lastLog(p: Praticien): LogEntry | null {
 }
 
 function formatDate(iso: string | null | undefined): string {
-  if (!iso) return "—";
+  if (!iso) return "-";
   try {
     return new Date(iso).toLocaleString("fr-FR", {
       dateStyle: "short",
@@ -49,7 +49,7 @@ function formatDate(iso: string | null | undefined): string {
 }
 
 function summarizeLog(entry: LogEntry | null): string {
-  if (!entry) return "—";
+  if (!entry) return "-";
   const bits: string[] = [];
   if (entry.reason) bits.push(entry.reason);
   if (entry.error) bits.push(entry.error);
@@ -59,7 +59,7 @@ function summarizeLog(entry: LogEntry | null): string {
       `${entry.specialites_count ?? 0} spé · ${entry.problematiques_count ?? 0} pb`,
     );
   }
-  return bits.length ? bits.join(", ") : entry.status ?? "—";
+  return bits.length ? bits.join(", ") : entry.status ?? "-";
 }
 
 export default function AdminExtractions() {

@@ -109,7 +109,7 @@ export default function BlogTrouverCabinet() {
             </p>
           </div>
 
-          {/* Image 1 — after introduction */}
+          {/* Image 1: after introduction */}
           <div className="mb-16 rounded-xl overflow-hidden">
             <FadeImage
               src={cab1Image}
@@ -273,7 +273,7 @@ export default function BlogTrouverCabinet() {
             </div>
           </section>
 
-          {/* Section 4 — Lieux I-CA.RE */}
+          {/* Section 4 : Lieux I-CA.RE */}
           <section className="mb-16">
             <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6">
               {lang === "fr"
@@ -281,7 +281,7 @@ export default function BlogTrouverCabinet() {
                 : <><BrandName /> spaces in Bordeaux</>}
             </h2>
 
-            {/* Image 2 — I-CA.RE space */}
+            {/* Image 2: I-CA.RE space */}
             <div className="mb-8 rounded-xl overflow-hidden">
               <FadeImage
                 src={facadeImage}
@@ -337,7 +337,7 @@ export default function BlogTrouverCabinet() {
             </div>
           </section>
 
-          {/* Section 5 — Conclusion */}
+          {/* Section 5 : Conclusion */}
           <section className="mb-16">
             <h2 className="text-2xl md:text-3xl font-heading font-bold mb-6">
               {lang === "fr" ? "Conclusion" : "Conclusion"}

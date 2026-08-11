@@ -49,12 +49,12 @@ export function TestimonialCard({
         )}
       </div>
 
-      {/* Name — Playfair Regular */}
+      {/* Name: Playfair Regular */}
       <h3 className="font-heading font-normal text-2xl text-foreground mb-1 leading-tight">
         {testimonial.praticien_nom}
       </h3>
 
-      {/* Profession — Lato */}
+      {/* Profession: Lato */}
       {testimonial.praticien_profession && (
         <p className="font-body text-sm text-muted-foreground mb-5">
           {testimonial.praticien_profession}
@@ -64,12 +64,12 @@ export function TestimonialCard({
       {/* Sage rule */}
       <div className="w-12 h-px bg-primary/40 mb-5" aria-hidden="true" />
 
-      {/* Quote — Playfair Italic */}
+      {/* Quote: Playfair Italic */}
       <blockquote className="font-heading italic text-lg md:text-xl text-foreground/85 leading-[1.7] mb-6">
         « {testimonial.citation_longue} »
       </blockquote>
 
-      {/* Cabinet link — Playfair Italic */}
+      {/* Cabinet link: Playfair Italic */}
       <p className="font-heading italic text-base text-muted-foreground">
         {lang === "fr" ? "Locataire à " : "Tenant at "}
         <Link

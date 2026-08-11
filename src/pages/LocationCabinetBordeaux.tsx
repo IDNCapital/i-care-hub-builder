@@ -123,7 +123,7 @@ export default function LocationCabinetBordeaux() {
         </div>
       </section>
 
-      {/* ── SECTION 1 — Introduction ── */}
+      {/* ── SECTION 1 : Introduction ── */}
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
@@ -141,7 +141,7 @@ export default function LocationCabinetBordeaux() {
         </div>
       </section>
 
-      {/* ── SECTION 2 — Nos cabinets ── */}
+      {/* ── SECTION 2 : Nos cabinets ── */}
       <section className="section-padding bg-muted/50">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -225,7 +225,7 @@ export default function LocationCabinetBordeaux() {
         </section>
       )}
 
-      {/* ── SECTION 3 — Pourquoi rejoindre ── */}
+      {/* ── SECTION 3 : Pourquoi rejoindre ── */}
       <section className="section-padding">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -245,7 +245,7 @@ export default function LocationCabinetBordeaux() {
         </div>
       </section>
 
-      {/* ── SECTION 4 — Exemples avec photos ── */}
+      {/* ── SECTION 4 : Exemples avec photos ── */}
       <section className="section-padding bg-muted/50">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -287,7 +287,7 @@ export default function LocationCabinetBordeaux() {
         </div>
       </section>
 
-      {/* ── SECTION 5 — FAQ ── */}
+      {/* ── SECTION 5 : FAQ ── */}
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto">
@@ -308,7 +308,7 @@ export default function LocationCabinetBordeaux() {
         </div>
       </section>
 
-      {/* ── SECTION 6 — CTA final ── */}
+      {/* ── SECTION 6 : CTA final ── */}
       <section className="section-padding bg-foreground">
         <div className="container">
           <div className="max-w-2xl mx-auto text-center">

@@ -1,5 +1,5 @@
 /**
- * CarteCabinets — Carte interactive Leaflet des cabinets I-CA.RE.
+ * CarteCabinets : Carte interactive Leaflet des cabinets I-CA.RE.
  *
  * Features:
  * - Filtre par ville (pills) avec compteurs dynamiques

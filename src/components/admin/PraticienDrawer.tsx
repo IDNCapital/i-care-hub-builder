@@ -710,7 +710,7 @@ export function PraticienDrawer({
         </div>
       </section>
 
-      {/* I. Zone de danger — suppression définitive (uniquement si fiche existante) */}
+      {/* I. Zone de danger : suppression définitive (uniquement si fiche existante) */}
       {form.id && (() => {
         const isLive = form.statut_validation === "validee" || form.actif === true;
         const tooltipMsg = isLive
@@ -920,7 +920,7 @@ function DerivedTagsBlock({
   const status = praticien.tags_extraction_status ?? "pending";
   const extractedAt = praticien.tags_extracted_at
     ? new Date(praticien.tags_extracted_at).toLocaleString("fr-FR")
-    : "—";
+    : "-";
   const onClick = async () => {
     setLoading(true);
     try {

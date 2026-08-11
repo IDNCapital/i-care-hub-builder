@@ -369,7 +369,7 @@ export default function LocationCabinetToulouse() {
         </div>
       </section>
 
-      {/* Formulaire — Liste d'intérêt Toulouse */}
+      {/* Formulaire : Liste d'intérêt Toulouse */}
       <section id="liste-interet" className="section-padding bg-foreground">
         <div className="container">
           <div className="max-w-2xl mx-auto">

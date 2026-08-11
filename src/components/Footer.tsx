@@ -1,10 +1,10 @@
 /**
- * Footer — Footer unifié I-CA.RE (v3 compact, 3 bandeaux).
+ * Footer : Footer unifié I-CA.RE (v3 compact, 3 bandeaux).
  *
  * Bandeaux empilés sans gap :
- *   A — anthracite : 4 colonnes liens utiles + brand bloc
- *   B — crème     : signature Famille IDN sur UNE ligne (Groupe IDN)
- *   C — anthracite : copyright + ID(N) Capital + liens légaux
+ *   A (anthracite) : 4 colonnes liens utiles + brand bloc
+ *   B (crème)     : signature Famille IDN sur UNE ligne (Groupe IDN)
+ *   C (anthracite) : copyright + ID(N) Capital + liens légaux
  *
  * Logo I-CA.RE : utilise toujours le composant centralisé <BrandName />.
  */
@@ -31,7 +31,7 @@ const COLORS = {
 
 /* ─────────────── Compositions CSS des marques affiliées Groupe IDN ─────────────── */
 
-/** ID(N) Capital — variant light (cream bg) / dark (anthracite bg) */
+/** ID(N) Capital : variant light (cream bg) / dark (anthracite bg) */
 function LogoIdnCapital({
   variant = "light",
   sizeEm = 1,
@@ -214,7 +214,7 @@ export function Footer() {
 
   return (
     <footer aria-label="Pied de page I-CA.RE" className="font-sans">
-      {/* ── BANDEAU A — anthracite, liens utiles ─────────────── */}
+      {/* ── BANDEAU A : anthracite, liens utiles ─────────────── */}
       <section
         style={{ backgroundColor: COLORS.anthracite, color: COLORS.cream }}
         className="px-4 sm:px-6 lg:px-8"
@@ -302,7 +302,7 @@ export function Footer() {
         </div>
       </section>
 
-      {/* ── BANDEAU B — crème, signature Famille IDN sur UNE ligne ─────────── */}
+      {/* ── BANDEAU B : crème, signature Famille IDN sur UNE ligne ─────────── */}
       <section
         aria-label="Famille de marques Groupe IDN"
         style={{ backgroundColor: COLORS.cream, color: COLORS.anthracite }}
@@ -359,7 +359,7 @@ export function Footer() {
         </div>
       </section>
 
-      {/* ── BANDEAU C — anthracite, copyright + légal sur UNE ligne ─────────── */}
+      {/* ── BANDEAU C : anthracite, copyright + légal sur UNE ligne ─────────── */}
       <section
         style={{ backgroundColor: COLORS.anthracite, color: COLORS.cream }}
         className="px-4 sm:px-6 lg:px-8"

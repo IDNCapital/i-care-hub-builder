@@ -133,7 +133,7 @@ const ROUTES = [
   { path: "/patients", type: "strategic" },
   { path: "/patients/problematiques", type: "strategic" },
   { path: "/patients/articles", type: "strategic" },
-  // FR installation matrix — index seul ; les combinaisons profession × ville
+  // FR installation matrix : index seul ; les combinaisons profession × ville
   // sont ajoutées dynamiquement depuis la base (voir fetchInstallationMatrix).
   { path: "/sinstaller", type: "strategic" },
   // FR legal
@@ -184,7 +184,7 @@ const REDIRECTS = [
   { from: "/en/setting-up-practice", to: "/en/health-professionals" },
   { from: "/en/finding-medical-office-bordeaux", to: "/en/office-rental-bordeaux" },
   { from: "/praticien/vanessa-marty", to: "/patients" },
-  // Parrainage mis en sommeil (Sprint 16, 17/07/2026) — page retirée de App.tsx et du sitemap.
+  // Parrainage mis en sommeil (Sprint 16, 17/07/2026) : page retirée de App.tsx et du sitemap.
   { from: "/parrainage", to: "/professionnels" },
   { from: "/en/referral", to: "/en/health-professionals" },
 ];
@@ -334,7 +334,7 @@ function validateRouteType(html, route) {
   if (route.type === "legal" || route.type === "dormant") {
     if (!noindex) errors.push(`${route.type === "legal" ? "Legal" : "Dormant"} page missing noindex`);
   } else {
-    if (noindex) errors.push("Strategic page has noindex — should NOT");
+    if (noindex) errors.push("Strategic page has noindex: should NOT");
   }
 
   // JSON-LD : controle bloquant depuis le sprint 9 (voir JSONLD_EXPECTATIONS)
@@ -430,14 +430,14 @@ async function main() {
         process.exit(1);
       }
       if (OPTIONAL) {
-        console.warn(`${msg} — PRERENDER_OPTIONAL=true, skipping dynamic routes.`);
+        console.warn(`${msg}: PRERENDER_OPTIONAL=true, skipping dynamic routes.`);
       } else {
         console.error(msg);
         process.exit(1);
       }
     }
   } else {
-    const msg = "[prerender] Missing VITE_SUPABASE_URL or VITE_SUPABASE_PUBLISHABLE_KEY — dynamic routes skipped.";
+    const msg = "[prerender] Missing VITE_SUPABASE_URL or VITE_SUPABASE_PUBLISHABLE_KEY: dynamic routes skipped.";
     if (OPTIONAL) {
       console.warn(msg);
     } else {

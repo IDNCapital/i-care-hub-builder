@@ -162,7 +162,7 @@ export function HeroSlideshow({ lang }: Props) {
         );
       })}
 
-      {/* Overlay — anthracite gradient */}
+      {/* Overlay: anthracite gradient */}
       <div
         className="absolute inset-0"
         style={{

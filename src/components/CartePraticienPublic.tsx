@@ -10,7 +10,7 @@ export interface CartePraticienPublicProps {
 }
 
 /**
- * Carte publique d'un praticien — utilisée sur les pages /projets/[cabinet]
+ * Carte publique d'un praticien, utilisée sur les pages /projets/[cabinet]
  * et l'index /patients. Photo carrée 1:1, nom Playfair, spécialité Inter,
  * 1-2 badges de problématiques principales en sauge clair.
  */

@@ -9,7 +9,7 @@ const CarteCabinets = lazy(() =>
 );
 
 /**
- * /preview-carte-cabinets — preview de la carte interactive des cabinets.
+ * /preview-carte-cabinets : preview de la carte interactive des cabinets.
  * noindex,nofollow + Disallow robots.txt. Pas encore en prod.
  */
 export default function PreviewCarteCabinets() {

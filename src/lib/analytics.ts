@@ -1,4 +1,4 @@
-// Google Tag Manager Container ID — replace with your actual ID
+// Google Tag Manager Container ID: replace with your actual ID
 export const GTM_ID = "GTM-W5VF94T3";
 
 // Consent-gated GTM loader

@@ -169,7 +169,7 @@ export async function fetchInstallationMatrix() {
  * Pre-compute per-praticien normalized tag Set.
  *
  * Règle de fusion canonique (dupliqué de src/lib/taxonomy.ts
- * getPraticienProblematiqueTags, à garder synchronisé — contexte Node build) :
+ * getPraticienProblematiqueTags, à garder synchronisé, contexte Node build) :
  * (problematiques_derivees non vide ? problematiques_derivees : problematiques)
  * UNION problematiques_manuelles, dédoublonné après norm().
  */
