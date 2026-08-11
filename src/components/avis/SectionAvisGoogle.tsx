@@ -42,10 +42,10 @@ export type AvisGoogleCacheRow = {
 };
 
 const COLORS = {
-  anthracite: "#2C2C2C",
-  green: "#90A997",
+  anthracite: "#2B2B2B",
+  green: "#9EB8A5",
   forest: "#1E392B",
-  gold: "#C2A46C",
+  gold: "#D9C7A1",
   sageLight: "#E2EAE5",
   textMuted: "#6B6B6B",
 };

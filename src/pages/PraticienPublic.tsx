@@ -97,7 +97,7 @@ export default function PraticienPublic() {
           className="max-w-md w-full text-center bg-white"
           style={{ border: "1px solid #E2EAE5", padding: 32, borderRadius: 12 }}
         >
-          <h2 className="font-heading" style={{ fontSize: "1.5rem", color: "#2C2C2C" }}>
+          <h2 className="font-heading" style={{ fontSize: "1.5rem", color: "#2B2B2B" }}>
             Le contenu n'a pas pu être chargé.
           </h2>
           <p className="font-sans mt-3" style={{ color: "#6B6B6B", fontSize: "0.95rem" }}>
@@ -106,7 +106,7 @@ export default function PraticienPublic() {
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="inline-block mt-6 rounded font-sans font-bold uppercase tracking-[0.1em] text-[12px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#90A997]"
+            className="inline-block mt-6 rounded font-sans font-bold uppercase tracking-[0.1em] text-[12px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#9EB8A5]"
             style={{ backgroundColor: "#D9C7A1", color: "#2B2B2B", padding: "12px 24px" }}
           >
             Réessayer
@@ -130,13 +130,13 @@ export default function PraticienPublic() {
           className="max-w-md w-full text-center bg-white"
           style={{ border: "1px solid #E2EAE5", padding: 32, borderRadius: 12 }}
         >
-          <h1 className="font-heading" style={{ fontSize: "1.5rem", color: "#2C2C2C" }}>
+          <h1 className="font-heading" style={{ fontSize: "1.5rem", color: "#2B2B2B" }}>
             Cette fiche n'est pas disponible.
           </h1>
           <Link
             to="/"
             className="inline-block mt-5 hover:underline"
-            style={{ color: "#90A997", fontSize: "0.95rem" }}
+            style={{ color: "#9EB8A5", fontSize: "0.95rem" }}
           >
             Retour à l'accueil →
           </Link>
@@ -210,8 +210,8 @@ export default function PraticienPublic() {
             type="button"
             onClick={handleBack}
             aria-label="Revenir à la page précédente"
-            className="inline-flex items-center gap-2 text-sm font-medium hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#90A997] rounded"
-            style={{ color: "#2C2C2C" }}
+            className="inline-flex items-center gap-2 text-sm font-medium hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#9EB8A5] rounded"
+            style={{ color: "#2B2B2B" }}
           >
             <ArrowLeft className="w-4 h-4" />
             Retour

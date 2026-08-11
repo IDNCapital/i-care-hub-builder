@@ -14,8 +14,8 @@ type Cabinet = {
 };
 
 const COLORS = {
-  anthracite: "#2C2C2C",
-  green: "#90A997",
+  anthracite: "#2B2B2B",
+  green: "#9EB8A5",
   forest: "#1E392B",
   cream: "#F6F5F0",
   textMuted: "#6B6B6B",
