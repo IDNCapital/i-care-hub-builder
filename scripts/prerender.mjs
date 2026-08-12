@@ -136,6 +136,9 @@ const ROUTES = [
   // FR installation matrix : index seul ; les combinaisons profession × ville
   // sont ajoutées dynamiquement depuis la base (voir fetchInstallationMatrix).
   { path: "/sinstaller", type: "strategic" },
+  // Page ressources volontairement desindexee et hors sitemap au lot 1 du sprint 12 :
+  // liens entrants, JSON-LD et indexation viennent au lot 3.
+  { path: "/ressources/exercer-en-lieu-pluridisciplinaire", type: "dormant" },
   // FR legal
   { path: "/mentions-legales", type: "legal" },
   { path: "/confidentialite", type: "legal" },

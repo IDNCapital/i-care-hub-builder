@@ -42,6 +42,7 @@ import SpecialiteDetail from "./pages/SpecialiteDetail";
 import TemoignagesPraticiens from "./pages/TemoignagesPraticiens";
 import SinstallerIndex from "./pages/SinstallerIndex";
 import SinstallerDetail from "./pages/SinstallerDetail";
+import RessourcesLieuPluridisciplinaire from "./pages/RessourcesLieuPluridisciplinaire";
 import { CookieBanner } from "./components/CookieBanner";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { useAnalytics } from "./hooks/useAnalytics";
@@ -272,6 +273,11 @@ const App = () => (
                 <Route path="/temoignages-praticiens" element={<TemoignagesPraticiens />} />
                 <Route path="/sinstaller" element={<SinstallerIndex />} />
                 <Route path="/sinstaller/:profession/:ville" element={<SinstallerDetail />} />
+                {/* Ressources : route dormante (Sprint 12, lot 1), noindex et hors sitemap */}
+                <Route
+                  path="/ressources/exercer-en-lieu-pluridisciplinaire"
+                  element={<RessourcesLieuPluridisciplinaire />}
+                />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
             </Routes>
