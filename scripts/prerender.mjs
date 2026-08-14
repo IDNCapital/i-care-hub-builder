@@ -40,7 +40,10 @@ const JSONLD_EXPECTATIONS = [
   { match: (p) => p === "/" || p === "/en", label: "accueil", expect: ["Organization", "ProfessionalService"] },
   { match: (p) => /^(\/en)?\/(projets|projects)\/./.test(p), label: "cabinet", expect: ["MedicalBusiness", "Organization"] },
   { match: (p) => /^\/praticien\/./.test(p), label: "praticien", expect: ["Person", "Organization"] },
-  { match: (p) => /^(\/en)?\/insights\/./.test(p), label: "insight", expect: ["Article", "BreadcrumbList", "FAQPage"] },
+  // FAQPage retire au lot 1-ter du sprint 12 : le balisage etait faux, les
+  // reponses ne figurant pas dans le HTML servi, et sans effet depuis le retrait
+  // des resultats enrichis FAQ par Google. Attente relevee sur le HTML servi.
+  { match: (p) => /^(\/en)?\/insights\/./.test(p), label: "insight", expect: ["Article", "BreadcrumbList"] },
   { match: (p) => /^\/patients\/problematiques\/./.test(p), label: "problematique", expect: ["MedicalCondition", "ItemList", "BreadcrumbList"] },
   { match: (p) => /^\/patients\/specialite\/./.test(p), label: "specialite", expect: ["CollectionPage", "ItemList", "BreadcrumbList"] },
   { match: (p) => /^\/patients\/articles\/./.test(p), label: "article patients", expect: ["Article", "BreadcrumbList"] },

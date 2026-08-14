@@ -130,20 +130,6 @@ export function InsightArticleTemplate({
             "Every set-up project depends on your activity, budget and how much you want to share. The simplest step is often to compare your needs with a space that's already designed for care.",
         };
 
-  /* ── FAQ JSON-LD ──────────────────────────────────────── */
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faq.map((item) => ({
-      "@type": "Question",
-      name: typeof item.question === "string" ? item.question : "",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: typeof item.answer === "string" ? item.answer : "",
-      },
-    })),
-  };
-
   /* ── Article JSON-LD ─────────────────────────────────── */
   const articleJsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -193,7 +179,6 @@ export function InsightArticleTemplate({
     <Layout>
       <SeoHead title={title} description={description} path={path} />
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
       </Helmet>

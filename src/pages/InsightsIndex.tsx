@@ -115,17 +115,6 @@ export default function InsightsIndex() {
 
   const faqItems = FAQ_ITEMS[lang];
 
-  /* FAQ JSON-LD */
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqItems.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: { "@type": "Answer", text: item.a },
-    })),
-  };
-
   return (
     <Layout>
       <SeoHead
@@ -135,10 +124,6 @@ export default function InsightsIndex() {
           : "Practical guides for care, allied health and wellbeing practitioners: finding an office, understanding costs, choosing the right size and setting up with confidence."}
         path={lang === "fr" ? "/insights" : "/en/insights"}
       />
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
-      </Helmet>
-
       <div className="pt-28 pb-14">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
           <h1 className="text-3xl md:text-4xl font-heading font-bold mb-4">
