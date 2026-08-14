@@ -75,8 +75,14 @@ export interface PositionOrdinale {
  * et aucune formulation générale n'est admise.
  */
 export interface ObligationContrat {
-  /** Professions visées par cette obligation, telles que nommées par le texte. */
-  professions: string[];
+  /**
+   * Profession visée par cette obligation, telle que nommée par le texte. Au
+   * singulier : un texte qui vise plusieurs professions produit autant d'entrées,
+   * l'autorité destinataire et le délai pouvant différer de l'une à l'autre. La
+   * source, elle, n'est écrite qu'une fois dans la bibliographie et se référence
+   * par identifiant.
+   */
+  profession: string;
   /**
    * Instance destinataire du contrat pour cette profession, telle qu'elle se
    * nomme elle-même. Toutes les professions ne relèvent pas d'un ordre.

@@ -176,8 +176,10 @@ const QUESTIONS: {
   cle: string;
   question: string;
   reponse: string;
-  /** Phrase deictique : elle ne s'affiche que si positionsOrdinales est renseigne. */
-  reponseSiPositions?: string;
+  /** Phrase deictique : elle ne s'affiche que si la liste nommee est renseignee. */
+  reponseSi?: { liste: "positionsOrdinales" | "obligationsContrat"; texte: string };
+  /** Suite de la reponse, toujours affichee, apres la phrase conditionnelle. */
+  reponseFin?: string;
 }[] = [
   {
     cle: "installation-praticiens-non-reglementes",
@@ -191,8 +193,11 @@ const QUESTIONS: {
     question: "La règle est-elle la même pour toutes les professions de santé ?",
     reponse:
       "Non. Chaque profession a ses propres textes, et toutes ne relèvent pas d’un ordre. Les obligations, l’autorité destinataire et les délais diffèrent d’une profession à l’autre, et certains ont changé récemment.",
-    reponseSiPositions:
-      "Les textes applicables et les positions publiées, avec leur date, figurent dans la section « Ce que vous vérifiez de votre côté ».",
+    reponseSi: {
+      liste: "positionsOrdinales",
+      texte:
+        "Les textes applicables et les positions publiées, avec leur date, figurent dans la section « Ce que vous vérifiez de votre côté ».",
+    },
   },
   {
     cle: "salles-attente-separees",
@@ -210,7 +215,14 @@ const QUESTIONS: {
     cle: "ordre-examen-bail",
     question: "Mon ordre doit-il examiner mon bail ?",
     reponse:
-      "Cela dépend de votre profession. Selon les textes qui vous sont applicables, votre contrat peut devoir être communiqué à un ordre ou à une autre autorité, et un projet peut parfois être soumis avant signature. Les textes, l’autorité destinataire et les délais figurent plus haut, profession par profession. La démarche vous appartient : nous ne saisissons aucune instance en votre nom.",
+      "Cela dépend de votre profession. Selon les textes qui vous sont applicables, votre contrat peut devoir être communiqué à un ordre ou à une autre autorité, et un projet peut parfois être soumis avant signature.",
+    reponseSi: {
+      liste: "obligationsContrat",
+      texte:
+        "Les textes, l’autorité destinataire et les délais figurent plus haut, profession par profession.",
+    },
+    reponseFin:
+      "La démarche vous appartient : nous ne saisissons aucune instance en votre nom.",
   },
   {
     cle: "bail-commercial-local-commercial",
@@ -317,6 +329,10 @@ export default function RessourcesLieuPluridisciplinaire() {
   const obligations = deontologie.obligationsContrat;
   const instances = deontologie.instancesCompetentes.filter((i) => i.dateVerification);
   const checklist = deontologie.checklistAvantSignature;
+
+  /** Une phrase deictique ne s'affiche que si la liste vers laquelle elle pointe est remplie. */
+  const listeRenseignee = (liste: "positionsOrdinales" | "obligationsContrat") =>
+    liste === "positionsOrdinales" ? positions.length > 0 : obligations.length > 0;
 
   const sourcesFaq = (cle: string) =>
     deontologie.referencesFaq.find((r) => r.cle === cle)?.sources ?? [];
@@ -521,9 +537,9 @@ export default function RessourcesLieuPluridisciplinaire() {
                         >
                           {obligation.intitule}
                         </a>
-                        {obligation.professions.length > 0 && (
+                        {obligation.profession && (
                           <span className="block text-sm text-[#6B6B6B]">
-                            {obligation.professions.join(", ")}
+                            {obligation.profession}
                           </span>
                         )}
                         {obligation.autorite && (
@@ -648,9 +664,10 @@ export default function RessourcesLieuPluridisciplinaire() {
                   >
                     {[
                       item.reponse,
-                      item.reponseSiPositions && positions.length > 0
-                        ? item.reponseSiPositions
+                      item.reponseSi && listeRenseignee(item.reponseSi.liste)
+                        ? item.reponseSi.texte
                         : null,
+                      item.reponseFin,
                     ]
                       .filter(Boolean)
                       .join(" ")}
