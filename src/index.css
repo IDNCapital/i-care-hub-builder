@@ -276,16 +276,6 @@ button[data-state]:focus-visible {
   }
 }
 
-@keyframes accordion-down {
-  from { height: 0; }
-  to { height: var(--radix-accordion-content-height); }
-}
-
-@keyframes accordion-up {
-  from { height: var(--radix-accordion-content-height); }
-  to { height: 0; }
-}
-
 @keyframes heroKenBurns {
   0% {
     transform: translate3d(0, 0, 0) scale(1.08);

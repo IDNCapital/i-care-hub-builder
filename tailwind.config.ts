@@ -65,13 +65,16 @@ export default {
         "3xl": "1.5rem",
       },
       keyframes: {
+        // Repli par la ligne de grille : indépendant de la hauteur mesurée par
+        // Radix, qui vaut zéro dès que l'état fermé est réellement replié.
+        // Consommé par src/components/ui/accordion.tsx, seul usage.
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: { gridTemplateRows: "0fr" },
+          to: { gridTemplateRows: "1fr" },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: { gridTemplateRows: "1fr" },
+          to: { gridTemplateRows: "0fr" },
         },
         "fade-up": {
           "0%": { opacity: "0", transform: "translateY(16px)" },
