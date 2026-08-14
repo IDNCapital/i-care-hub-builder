@@ -67,10 +67,21 @@ export interface PositionOrdinale {
   sources: string[];
 }
 
-/** Une obligation de communication ou d'avis portant sur le contrat. */
+/**
+ * Une obligation de communication ou d'avis portant sur le contrat.
+ *
+ * Une entrée par profession, jamais une entrée pour plusieurs : les textes,
+ * l'autorité destinataire et les délais diffèrent d'une profession à l'autre,
+ * et aucune formulation générale n'est admise.
+ */
 export interface ObligationContrat {
   /** Professions visées par cette obligation, telles que nommées par le texte. */
   professions: string[];
+  /**
+   * Instance destinataire du contrat pour cette profession, telle qu'elle se
+   * nomme elle-même. Toutes les professions ne relèvent pas d'un ordre.
+   */
+  autorite: string;
   /** Article et intitulé, repris du corpus. */
   intitule: string;
   url: string;
@@ -81,10 +92,23 @@ export interface ObligationContrat {
   sources: string[];
 }
 
-/** Coordonnées d'un conseil départemental compétent. */
-export interface ConseilDepartemental {
+/** Niveau auquel siège l'instance compétente. Il ne se déduit pas de la profession. */
+export type NiveauInstance = "national" | "regional" | "interregional" | "departemental";
+
+/**
+ * Coordonnées d'une instance compétente.
+ *
+ * La compétence n'est pas toujours départementale : elle est régionale ou
+ * interrégionale pour certaines professions. Et certaines professions ne
+ * relèvent d'aucune instance.
+ */
+export interface InstanceCompetente {
   ordre: string;
   departement: "Gironde" | "Haute-Garonne";
+  /** Niveau de l'instance, à afficher tel quel : il change d'une profession à l'autre. */
+  niveau: NiveauInstance;
+  /** Professions pour lesquelles cette instance est compétente. */
+  professions: string[];
   adresse: string;
   telephone: string;
   email: string;
@@ -120,7 +144,7 @@ export interface DonneesDeontologie {
   niveauxIntegration: NiveauIntegration[];
   positionsOrdinales: PositionOrdinale[];
   obligationsContrat: ObligationContrat[];
-  conseilsDepartementaux: ConseilDepartemental[];
+  instancesCompetentes: InstanceCompetente[];
   checklistAvantSignature: QuestionChecklist[];
   referencesFaq: ReferencesFaq[];
 }
@@ -133,7 +157,7 @@ export const deontologie: DonneesDeontologie = {
   niveauxIntegration: [],
   positionsOrdinales: [],
   obligationsContrat: [],
-  conseilsDepartementaux: [],
+  instancesCompetentes: [],
   checklistAvantSignature: [],
   referencesFaq: [],
 };

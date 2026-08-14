@@ -10,7 +10,7 @@ import { SeoHead } from "@/components/SeoHead";
 import { InlineBrand } from "@/components/BrandName";
 import { localePath } from "@/lib/routes";
 import { deontologie, resoudreSources } from "@/lib/deontologie";
-import type { StatutJuridique } from "@/lib/deontologie";
+import type { NiveauInstance, StatutJuridique } from "@/lib/deontologie";
 import { Armchair, CalendarCheck, DoorClosed, Signpost, Volume2 } from "lucide-react";
 
 /**
@@ -68,9 +68,9 @@ const STATUTS: { cle: StatutJuridique["cle"]; titre: string; prose: string }[] =
   },
   {
     cle: "pratiques-non-reglementees",
-    titre: "Les pratiques non réglementées",
+    titre: "Les activités qui ne constituent pas une profession de santé réglementée",
     prose:
-      "Ni titre protégé, ni code de déontologie opposable, ni instance disciplinaire. Leur présentation au public doit rester exacte et ne pas laisser croire à un soin médical.",
+      "Leur exercice n’est généralement pas subordonné à la possession d’un diplôme d’État spécifique, sous réserve des autres qualifications que le praticien détient par ailleurs. Leur présentation au public doit rester exacte quant à la qualification réellement détenue, à la nature non médicale de la prestation et aux bénéfices qui peuvent raisonnablement en être attendus.",
   },
 ];
 
@@ -86,7 +86,7 @@ const SEPARATIONS = [
   {
     icone: Armchair,
     texte:
-      "Les salles d’attente peuvent être séparées, avec des espaces distincts et fléchés par praticien.",
+      "Les salles d’attente peuvent être sectorisées, avec des espaces distincts et fléchés par praticien. L’affectation des espaces dépend du site et figure au plan annexé au bail.",
   },
   {
     icone: Signpost,
@@ -96,7 +96,7 @@ const SEPARATIONS = [
   {
     icone: Volume2,
     texte:
-      "Les bureaux sont acoustiquement isolés, et les rangements permettent la fermeture des dossiers.",
+      "Les bureaux sont séparés par des cloisons à isolement acoustique renforcé, et les rangements permettent la fermeture des dossiers. Les dispositions constructives retenues figurent sur la fiche du lieu concerné, remise avec le bail.",
   },
   {
     icone: CalendarCheck,
@@ -110,6 +110,9 @@ const SEPARATIONS_CITATION =
 
 const BAIL_TITRE = "Ce que prévoit notre bail";
 
+const BAIL_INTRO =
+  "Ce qui suit décrit notre modèle contractuel. Ce n’est pas l’énoncé d’interdictions légales qui s’imposeraient à toutes les professions.";
+
 const BAIL_COURANT = [
   "Un bail individuel par praticien, à son nom propre ou à celui de sa structure d’exercice. Pas de convention d’exercice, pas de sous-location en cascade.",
   "Un loyer fixe, indépendant du chiffre d’affaires. Aucune redevance assise sur les honoraires, à aucun moment du contrat.",
@@ -119,7 +122,7 @@ const BAIL_COURANT = [
 
 const BAIL_MIS_EN_VALEUR = [
   "Une destination contractuelle précise : un cabinet professionnel autonome, et non une destination générique autorisant toute activité commerciale.",
-  "Un bail écrit, remis dans une forme directement transmissible à votre conseil départemental, et suffisamment tôt pour que vous puissiez demander un avis ordinal avant de signer.",
+  "Un bail écrit, remis suffisamment tôt pour que vous puissiez accomplir vos propres démarches avant de signer. Lorsque les textes applicables à votre profession prévoient la communication du contrat ou permettent l’examen préalable d’un projet, nous vous remettons les documents nécessaires afin que vous accomplissiez personnellement cette démarche auprès de l’instance compétente.",
 ];
 
 const BAIL_CLOTURE =
@@ -138,34 +141,34 @@ const PALIERS_TITRE = "Les paliers d’intégration";
 const REGLE_TITRE = "La règle propre à votre profession";
 
 const REGLE_PROSE =
-  "Chaque profession a ses propres textes et son propre ordre. Les positions publiées diffèrent sensiblement de l’un à l’autre, et certaines ont été modifiées récemment. Une position ordinale porte une date : elle peut évoluer, et c’est sa version en vigueur au moment de votre installation qui compte.";
+  "Chaque profession a ses propres textes, et toutes ne relèvent pas d’un ordre professionnel : certaines relèvent d’une autre autorité, d’autres d’aucune. Les positions publiées, lorsqu’elles existent, diffèrent sensiblement de l’une à l’autre, et certaines ont été modifiées récemment. Une position publiée par un ordre porte une date : elle peut évoluer, et c’est sa version en vigueur au moment de votre installation qui compte. Elle éclaire la pratique de l’instance concernée, elle ne vaut pas règle générale.";
 
 const CONTRAT_TITRE = "Le contrat";
 
 const CONTRAT_PROSE =
-  "Pour plusieurs professions, le code de la santé publique impose de communiquer à votre conseil départemental le contrat qui vous assure l’usage du local, et permet de lui soumettre un projet de contrat avant signature.";
+  "Selon votre profession, votre contrat ou votre projet d’installation peut devoir être communiqué à un ordre professionnel ou à une autre autorité compétente. Certaines professions ne relèvent d’aucun ordre. Les textes, l’autorité destinataire et les délais diffèrent d’une profession à l’autre.";
 
 /** Phrase deictique : elle ne s'affiche que si obligationsContrat est renseigne. */
 const CONTRAT_PROSE_LISTE =
-  "Les articles, les professions concernées et les délais figurent ci-dessous.";
+  "Ils figurent ci-dessous, profession par profession.";
 
 const CONTRAT_PROSE_FIN = "Cette démarche vous appartient.";
 
 const APPRECIATION_TITRE = "L’appréciation locale";
 
 const APPRECIATION_PROSE =
-  "Elle appartient au conseil départemental auprès duquel vous êtes inscrit.";
+  "Elle appartient à l’instance compétente pour votre profession, lorsqu’il en existe une. Selon les professions, cette instance est départementale, régionale ou interrégionale.";
 
-/** Phrase deictique : elle ne s'affiche que si conseilsDepartementaux est renseigne. */
+/** Phrase deictique : elle ne s'affiche que si instancesCompetentes est renseigne. */
 const APPRECIATION_PROSE_LISTE =
-  "Les coordonnées ci-dessous sont celles des conseils compétents en Gironde et en Haute-Garonne, à la date de vérification indiquée.";
+  "Les coordonnées ci-dessous sont celles des instances compétentes pour la Gironde et la Haute-Garonne, avec leur niveau et leur date de vérification.";
 
 const CHECKLIST_TITRE = "Avant de signer";
 
 const CHECKLIST_PROSE = "Les questions à poser, dans l’ordre où elles se posent.";
 
 const VERIFICATIONS_CLOTURE =
-  "Nous ne demandons à personne de passer outre l’avis de son ordre. Si une réserve est formulée sur une clause de notre bail, nous en étudions l’ajustement avant signature.";
+  "Nous ne demandons à personne de passer outre l’avis de l’autorité dont il relève. Si une réserve est formulée sur une clause de notre bail, nous en étudions l’ajustement avant signature.";
 
 const FAQ_TITRE = "Questions fréquentes";
 
@@ -181,13 +184,13 @@ const QUESTIONS: {
     question:
       "Puis-je m’installer dans un lieu où exercent des praticiens non réglementés ?",
     reponse:
-      "Aucun texte national n’interdit par principe à un professionnel de santé d’exercer dans le même immeuble qu’un praticien non réglementé. La réponse dépend de votre profession, du degré de partage des espaces et de la manière dont le lieu se présente au public. Elle appartient à votre ordre, qui l’apprécie sur la configuration réelle. Nous vous remettons le bail et les plans pour que vous puissiez la lui poser.",
+      "Il n’existe pas de régime juridique unique applicable à toutes les professions et à toutes les formes de partage de locaux. La compatibilité d’une installation dépend des textes propres à chaque profession, de la configuration des espaces et, le cas échéant, de l’appréciation de l’autorité compétente. Nous vous remettons le bail et les plans pour que vous puissiez lui poser la question.",
   },
   {
     cle: "regle-identique-toutes-professions",
     question: "La règle est-elle la même pour toutes les professions de santé ?",
     reponse:
-      "Non. Chaque profession a ses propres textes et son propre ordre, et les positions publiées diffèrent sensiblement de l’une à l’autre. Certaines ont changé récemment.",
+      "Non. Chaque profession a ses propres textes, et toutes ne relèvent pas d’un ordre. Les obligations, l’autorité destinataire et les délais diffèrent d’une profession à l’autre, et certains ont changé récemment.",
     reponseSiPositions:
       "Les textes applicables et les positions publiées, avec leur date, figurent dans la section « Ce que vous vérifiez de votre côté ».",
   },
@@ -195,19 +198,19 @@ const QUESTIONS: {
     cle: "salles-attente-separees",
     question: "Les salles d’attente sont-elles séparées ?",
     reponse:
-      "Nos lieux permettent des espaces d’attente distincts et fléchés par praticien, et la possibilité de réaffecter une zone lorsque l’exigence d’un nouvel occupant le demande. La configuration exacte se lit sur les plans du lieu concerné, que nous remettons avec le bail.",
+      "Nos lieux permettent des espaces d’attente distincts et fléchés par praticien, et la possibilité de réaffecter une zone lorsque l’exigence d’un nouvel occupant le demande. L’affectation des espaces dépend du site : elle se lit sur le plan annexé au bail du lieu concerné, que nous remettons avant signature.",
   },
   {
     cle: "separation-suffit-question-deontologique",
     question: "Cette séparation suffit-elle à lever la question déontologique ?",
     reponse:
-      "Non. La séparation des attentes et des affichages est un aménagement matériel, rien de plus. Elle ne vaut pas appréciation ordinale, et des configurations dotées de salles d’attente séparées ont fait l’objet de refus d’installation. Seul votre ordre apprécie votre situation, au vu de votre profession et de la configuration réelle du lieu.",
+      "Non. La sectorisation des attentes et des affichages est une mesure d’organisation, prudente et utile, mais elle ne neutralise pas les règles propres à chaque profession. La compatibilité d’une installation s’apprécie sur l’ensemble de la configuration, sur ce que le lieu donne à voir et sur les textes applicables à votre profession. Cette appréciation appartient à l’autorité dont vous relevez, pas à nous, et elle ne se déduit pas d’un plan.",
   },
   {
     cle: "ordre-examen-bail",
     question: "Mon ordre doit-il examiner mon bail ?",
     reponse:
-      "Pour plusieurs professions, le code de la santé publique impose de communiquer au conseil départemental le contrat qui assure l’usage du local, et permet de lui soumettre un projet de contrat avant signature. Les articles, les professions concernées et les délais figurent plus haut. La démarche vous appartient : nous ne saisissons aucun ordre en votre nom.",
+      "Cela dépend de votre profession. Selon les textes qui vous sont applicables, votre contrat peut devoir être communiqué à un ordre ou à une autre autorité, et un projet peut parfois être soumis avant signature. Les textes, l’autorité destinataire et les délais figurent plus haut, profession par profession. La démarche vous appartient : nous ne saisissons aucune instance en votre nom.",
   },
   {
     cle: "bail-commercial-local-commercial",
@@ -226,22 +229,30 @@ const QUESTIONS: {
     cle: "plaque-signaletique-commune",
     question: "Y a-t-il une plaque ou une signalétique commune ?",
     reponse:
-      "L’affichage, la signalétique intérieure et les plaques sont individuels : nom, titre exact et qualité de chaque praticien. Le lieu porte un nom d’adresse, jamais une dénomination qui agrégerait les professions présentes ou laisserait croire à une équipe constituée. Toute mention vous concernant reprend ce que vous nous indiquez.",
+      "L’affichage, la signalétique intérieure et les plaques sont individuels : nom, titre exact et qualité de chaque praticien. Le lieu porte un nom d’adresse, jamais une dénomination qui agrégerait les professions présentes ou laisserait croire à une équipe constituée. Avant toute signalétique ou mention publique vous concernant, nous vérifions le titre employé, les justificatifs de qualification lorsqu’ils sont requis, l’inscription ou l’enregistrement applicable, l’assurance de responsabilité civile professionnelle, et la cohérence entre l’activité annoncée et la destination du bail. Cette vérification ne fait de nous ni une autorité professionnelle ni un garant : elle limite le risque d’une présentation inexacte.",
   },
   {
     cle: "lien-juridique-entre-praticiens",
     question: "Suis-je juridiquement lié aux autres praticiens du lieu ?",
     reponse:
-      "Non. Chaque praticien signe un bail individuel, à son nom propre ou à celui de sa structure d’exercice. Il n’existe ni société d’exercice commune, ni partage d’honoraires, ni recette mutualisée. Sont mutualisés des charges de fonctionnement et des espaces communs, rien d’autre.",
+      "La seule occupation d’un même site ne crée pas, par elle-même, une association professionnelle, une société d’exercice ou une responsabilité commune entre praticiens. Chaque praticien signe un bail individuel, à son nom propre ou à celui de sa structure d’exercice, et il n’existe ni société d’exercice commune, ni partage d’honoraires, ni recette mutualisée. Chaque occupant demeure toutefois tenu par son propre contrat et par les règles applicables aux espaces communs, aux charges et au règlement intérieur.",
   },
 ];
 
 const MENTION_PIED =
-  "Cette page décrit l’offre immobilière d’I-CA.RE et renvoie à des textes publics ainsi qu’à des positions professionnelles publiées, reproduits avec leur date. Elle ne constitue ni un conseil juridique, ni un avis déontologique, ni une garantie de conformité. I-CA.RE est bailleur : nous ne sommes partie à aucune relation ordinale, nous ne saisissons aucun ordre au nom de qui que ce soit, et l’appréciation de votre situation appartient à votre conseil départemental d’inscription.";
+  "Cette page décrit l’offre immobilière d’I-CA.RE et renvoie à des textes publics ainsi qu’à des positions professionnelles publiées, reproduits avec leur date. Elle ne constitue ni un conseil juridique, ni un avis déontologique, ni une garantie de conformité. I-CA.RE est bailleur : nous ne sommes partie à aucune relation ordinale, nous ne saisissons aucun ordre au nom de qui que ce soit, et l’appréciation de votre situation appartient à l’autorité compétente pour votre profession, lorsqu’il en existe une.";
 
 const CTA_CONTACT = "Nous écrire";
 
 const CTA_LIEUX = "Voir les lieux disponibles";
+
+/** Libellé du niveau d'une instance. Vocabulaire repris de la copie de la section. */
+const LIBELLE_NIVEAU: Record<NiveauInstance, string> = {
+  national: "instance nationale",
+  regional: "instance régionale",
+  interregional: "instance interrégionale",
+  departemental: "instance départementale",
+};
 
 /** Références discrètes en pied de bloc. Rien ne s'affiche si la liste est vide. */
 function Sources({ ids }: { ids: string[] }) {
@@ -304,7 +315,7 @@ export default function RessourcesLieuPluridisciplinaire() {
   const niveaux = deontologie.niveauxIntegration;
   const positions = deontologie.positionsOrdinales;
   const obligations = deontologie.obligationsContrat;
-  const conseils = deontologie.conseilsDepartementaux.filter((c) => c.dateVerification);
+  const instances = deontologie.instancesCompetentes.filter((i) => i.dateVerification);
   const checklist = deontologie.checklistAvantSignature;
 
   const sourcesFaq = (cle: string) =>
@@ -395,9 +406,10 @@ export default function RessourcesLieuPluridisciplinaire() {
       <section id="bail" className="py-16 md:py-20 bg-secondary">
         <div className="container">
           <div className="max-w-4xl">
-            <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-10">
+            <h2 className="font-heading font-normal text-3xl md:text-4xl text-foreground mb-6">
               {BAIL_TITRE}
             </h2>
+            <p className="text-foreground leading-relaxed mb-10">{BAIL_INTRO}</p>
             <div className="grid gap-6 md:grid-cols-2">
               {BAIL_COURANT.map((point) => (
                 <p key={point} className="text-foreground leading-relaxed">
@@ -514,6 +526,11 @@ export default function RessourcesLieuPluridisciplinaire() {
                             {obligation.professions.join(", ")}
                           </span>
                         )}
+                        {obligation.autorite && (
+                          <span className="block text-sm text-[#6B6B6B]">
+                            {obligation.autorite}
+                          </span>
+                        )}
                         {obligation.delai && (
                           <span className="block text-sm text-[#6B6B6B]">
                             {obligation.delai}
@@ -536,43 +553,51 @@ export default function RessourcesLieuPluridisciplinaire() {
                   {APPRECIATION_TITRE}
                 </h3>
                 <p className="text-foreground leading-relaxed">
-                  {[APPRECIATION_PROSE, conseils.length > 0 ? APPRECIATION_PROSE_LISTE : null]
+                  {[APPRECIATION_PROSE, instances.length > 0 ? APPRECIATION_PROSE_LISTE : null]
                     .filter(Boolean)
                     .join(" ")}
                 </p>
-                {conseils.length > 0 && (
+                {instances.length > 0 && (
                   <ul className="mt-6 space-y-4">
-                    {conseils.map((conseil) => (
-                      <li key={`${conseil.ordre}-${conseil.departement}`}>
+                    {instances.map((instance) => (
+                      <li key={`${instance.ordre}-${instance.departement}`}>
                         <span className="block font-sans font-bold text-foreground">
-                          {conseil.ordre}, {conseil.departement}
+                          {instance.ordre}, {instance.departement}
                         </span>
-                        {conseil.adresse && (
-                          <span className="block text-foreground">{conseil.adresse}</span>
+                        <span className="block text-sm text-[#6B6B6B]">
+                          {LIBELLE_NIVEAU[instance.niveau]}
+                        </span>
+                        {instance.professions.length > 0 && (
+                          <span className="block text-sm text-[#6B6B6B]">
+                            {instance.professions.join(", ")}
+                          </span>
                         )}
-                        {conseil.telephone && (
-                          <span className="block text-foreground">{conseil.telephone}</span>
+                        {instance.adresse && (
+                          <span className="block text-foreground">{instance.adresse}</span>
                         )}
-                        {conseil.email && (
+                        {instance.telephone && (
+                          <span className="block text-foreground">{instance.telephone}</span>
+                        )}
+                        {instance.email && (
                           <a
-                            href={`mailto:${conseil.email}`}
+                            href={`mailto:${instance.email}`}
                             className="block text-foreground underline underline-offset-2"
                           >
-                            {conseil.email}
+                            {instance.email}
                           </a>
                         )}
-                        {conseil.url && (
+                        {instance.url && (
                           <a
-                            href={conseil.url}
+                            href={instance.url}
                             className="block text-foreground underline underline-offset-2"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            {conseil.url}
+                            {instance.url}
                           </a>
                         )}
                         <span className="block text-sm text-[#6B6B6B]">
-                          Coordonnées vérifiées le {conseil.dateVerification}
+                          Coordonnées vérifiées le {instance.dateVerification}
                         </span>
                       </li>
                     ))}
