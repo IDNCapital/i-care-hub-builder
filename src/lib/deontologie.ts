@@ -156,15 +156,35 @@ export interface DonneesDeontologie {
 }
 
 export const deontologie: DonneesDeontologie = {
-  dateMiseAJour: "",
+  dateMiseAJour: "14 août 2026",
   mentionTransparence: "",
   bibliographie: {},
   statuts: [],
-  niveauxIntegration: [],
+  niveauxIntegration: [
+    { rang: 1, intitule: "Même immeuble", lecture: "Cabinets autonomes, baux distincts, patientèles et signalétiques séparées." },
+    { rang: 2, intitule: "Parties communes", lecture: "Entrée, couloirs, sanitaires ou espace de convivialité partagés." },
+    { rang: 3, intitule: "Espace d’attente", lecture: "Attente commune, ou sectorisée par groupes de cabinets." },
+    { rang: 4, intitule: "Accueil et prise de rendez-vous", lecture: "Une personne ou un outil commun pour recevoir et planifier." },
+    { rang: 5, intitule: "Cabinet utilisé à tour de rôle", lecture: "Une même pièce occupée successivement par plusieurs praticiens." },
+    { rang: 6, intitule: "Marque, dossier ou parcours commun", lecture: "Une présentation ou une organisation qui donne le lieu comme un ensemble." },
+  ],
   positionsOrdinales: [],
   obligationsContrat: [],
   instancesCompetentes: [],
-  checklistAvantSignature: [],
+  checklistAvantSignature: [
+    { rang: 1, intitule: "Quelle est ma profession, et quel titre exact puis-je employer ?" },
+    { rang: 2, intitule: "Mon exercice suppose-t-il une inscription ou un enregistrement, et est-il à jour ?" },
+    { rang: 3, intitule: "Le cabinet qui m’est proposé est-il privatif et fermable ?" },
+    { rang: 4, intitule: "Qui partage l’espace d’attente, et pour quelles activités ?" },
+    { rang: 5, intitule: "Cet espace peut-il être sectorisé, et le plan annexé au bail le prévoit-il ?" },
+    { rang: 6, intitule: "Les conversations sont-elles audibles depuis l’attente ou depuis le cabinet voisin ?" },
+    { rang: 7, intitule: "Qui accède aux agendas, aux dossiers et aux outils informatiques ?" },
+    { rang: 8, intitule: "La signalétique et l’annuaire du lieu m’identifient-ils individuellement ?" },
+    { rang: 9, intitule: "Le loyer dépend-il de mon activité, de mes honoraires ou du nombre de patients ?" },
+    { rang: 10, intitule: "Mon contrat doit-il être transmis à une instance, et laquelle ?" },
+    { rang: 11, intitule: "La copropriété, l’urbanisme, le classement ERP et l’accessibilité sont-ils réglés pour ce local ?" },
+    { rang: 12, intitule: "L’appellation du lieu peut-elle laisser croire à une équipe de soins constituée ?" },
+  ],
   referencesFaq: [],
 };
 

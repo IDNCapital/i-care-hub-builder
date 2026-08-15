@@ -200,6 +200,18 @@ export default function Professionnels() {
               : <>Browse our <Link to={localePath(lang, "professionals")} className="text-primary underline underline-offset-4 hover:text-primary/80">resources for setting up as a practitioner</Link>.</>
             }
           </p>
+          {/* Page ressources monolingue francaise : lien borne a la langue. */}
+          {lang === "fr" && (
+            <p className="text-center text-muted-foreground mt-2">
+              Avant de signer, les questions à poser selon votre profession.{" "}
+              <Link
+                to="/ressources/exercer-en-lieu-pluridisciplinaire"
+                className="text-primary underline underline-offset-4 hover:text-primary/80"
+              >
+                Exercer en lieu pluridisciplinaire
+              </Link>
+            </p>
+          )}
         </div>
       </section>
 

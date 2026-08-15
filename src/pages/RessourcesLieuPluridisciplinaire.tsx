@@ -16,11 +16,13 @@ import { Armchair, CalendarCheck, DoorClosed, Signpost, Volume2 } from "lucide-r
 /**
  * Ressources : exercer en bureau privé dans un lieu pluridisciplinaire.
  *
- * Route dormante (Lot 1, Sprint 12) : noindex, hors sitemap, sans lien entrant.
+ * Route publique depuis le lot 3 du sprint 12 : indexable, au sitemap, liee
+ * depuis les fiches projet francaises et depuis /professionnels.
  * Page monolingue française, montée dans le seul groupe de routes FR : la langue
  * des cibles de lien est donc fixée à "fr" plutôt que lue de i18n.
  *
- * Toute donnée juridique vient de src/lib/deontologie.ts, livré vide au Lot 1.
+ * Toute donnée juridique vient de src/lib/deontologie.ts. Les blocs juridiques y
+ * sont encore vides, donc masqués : ils attendent la validation du conseil.
  * Une entrée non renseignée masque son bloc, titre compris. Aucun texte de repli.
  *
  * La copie vit en constantes et non en texte JSX : le retour à la ligne du source
@@ -31,9 +33,9 @@ const CANONICAL_PATH = "/ressources/exercer-en-lieu-pluridisciplinaire";
 
 const TITLE = "Exercer en bureau privé dans un lieu pluridisciplinaire | I-CA.RE";
 
-/** Description provisoire fournie hors développement, remplacée au Lot 3. */
+/** Description definitive, arretee hors developpement. */
 const DESCRIPTION =
-  "Bureaux privés en lieu de soin pluriprofessionnel : ce que nous séparons, ce que prévoit notre bail, et à qui poser la question déontologique.";
+  "Bureaux privés en lieu de soin pluriprofessionnel : ce que nous séparons, ce que prévoit notre bail, et les questions à poser avant de signer.";
 
 const SURTITRE = "Ressources";
 
@@ -137,6 +139,9 @@ const PALIERS_PROSE =
   "L’appréciation ne porte pas sur la proximité physique en elle-même, mais sur le degré d’intégration du lieu et sur ce qu’il donne à voir. Les configurations se lisent par paliers, de la simple adresse commune au dossier ou au parcours commun.";
 
 const PALIERS_TITRE = "Les paliers d’intégration";
+
+const PALIERS_CLOTURE =
+  "Plus le degré d’intégration est élevé, plus la question mérite d’être posée avant de signer.";
 
 const REGLE_TITRE = "La règle propre à votre profession";
 
@@ -339,7 +344,7 @@ export default function RessourcesLieuPluridisciplinaire() {
 
   return (
     <Layout>
-      <SeoHead title={TITLE} description={DESCRIPTION} path={CANONICAL_PATH} noIndex />
+      <SeoHead title={TITLE} description={DESCRIPTION} path={CANONICAL_PATH} />
 
       {/* D.1 En-tête */}
       <section id="entete" className="pt-28 pb-12 md:pt-32 md:pb-16 bg-background">
@@ -479,6 +484,7 @@ export default function RessourcesLieuPluridisciplinaire() {
                     </li>
                   ))}
                 </ul>
+                <p className="text-foreground leading-relaxed mt-6">{PALIERS_CLOTURE}</p>
               </div>
             )}
 
@@ -628,9 +634,20 @@ export default function RessourcesLieuPluridisciplinaire() {
                   {CHECKLIST_TITRE}
                 </h3>
                 <p className="text-foreground leading-relaxed mb-4">{CHECKLIST_PROSE}</p>
-                <ol className="space-y-2 text-foreground">
+                {/* Marqueur discret et filet entre les items : une liste de verification
+                    se parcourt du regard. Pas de numero, le compte ne s'affiche pas. */}
+                <ol className="text-foreground">
                   {checklist.map((question) => (
-                    <li key={question.rang}>{question.intitule}</li>
+                    <li
+                      key={question.rang}
+                      className="flex gap-3 border-t border-primary/25 py-3 first:border-t-0 first:pt-0"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="mt-[0.6rem] h-1.5 w-1.5 shrink-0 rounded-[1px] bg-primary"
+                      />
+                      <span className="leading-relaxed">{question.intitule}</span>
+                    </li>
                   ))}
                 </ol>
               </div>
