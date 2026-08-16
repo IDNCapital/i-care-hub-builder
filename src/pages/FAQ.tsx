@@ -73,7 +73,7 @@ export default function FAQ() {
                   </AccordionTrigger>
                   <AccordionContent
                     forceMount
-                    className="text-muted-foreground leading-relaxed pb-5 data-[state=closed]:hidden"
+                    className="text-muted-foreground leading-relaxed pb-5"
                   >
                     <InlineBrand>{item.a}</InlineBrand>
                   </AccordionContent>

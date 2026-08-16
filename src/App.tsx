@@ -197,7 +197,6 @@ const App = () => (
                 <Route path="/legal" element={<MentionsLegales />} />
                 <Route path="/privacy" element={<PolitiqueConfidentialite />} />
                 <Route path="/cookies" element={<PolitiqueCookies />} />
-                <Route path="/practitioners" element={<Professionnels />} />
                 <Route path="/office-rental-bordeaux" element={<LocationCabinetBordeaux />} />
                 <Route path="/office-rental-toulouse" element={<LocationCabinetToulouse />} />
                 <Route path="/faq" element={<FAQ />} />
@@ -273,7 +272,7 @@ const App = () => (
                 <Route path="/temoignages-praticiens" element={<TemoignagesPraticiens />} />
                 <Route path="/sinstaller" element={<SinstallerIndex />} />
                 <Route path="/sinstaller/:profession/:ville" element={<SinstallerDetail />} />
-                {/* Ressources : route dormante (Sprint 12, lot 1), noindex et hors sitemap */}
+                {/* Ressources : publiée au lot 3 du sprint 12, prérendue en strategic, au sitemap, sans noindex */}
                 <Route
                   path="/ressources/exercer-en-lieu-pluridisciplinaire"
                   element={<RessourcesLieuPluridisciplinaire />}

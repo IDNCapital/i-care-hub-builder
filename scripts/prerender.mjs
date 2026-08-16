@@ -44,6 +44,13 @@ const JSONLD_EXPECTATIONS = [
   // reponses ne figurant pas dans le HTML servi, et sans effet depuis le retrait
   // des resultats enrichis FAQ par Google. Attente relevee sur le HTML servi.
   { match: (p) => /^(\/en)?\/insights\/./.test(p), label: "insight", expect: ["Article", "BreadcrumbList"] },
+  // Index des guides : depuis le retrait du FAQPage au lot 1-ter, ces deux pages
+  // n'emettent aucun balisage propre et ne servent que les deux blocs statiques
+  // d'index.html. Attente relevee sur dist/insights/index.html et son homologue
+  // anglais, et non supposee. Elle est satisfaite par toute page du site : elle
+  // ne discrimine rien, elle ferme un angle mort de controle en versant ces deux
+  // routes dans le compte des controlees, ou elles ne figuraient pas.
+  { match: (p) => p === "/insights" || p === "/en/insights", label: "index guides", expect: ["Organization", "ProfessionalService"] },
   { match: (p) => /^\/patients\/problematiques\/./.test(p), label: "problematique", expect: ["MedicalCondition", "ItemList", "BreadcrumbList"] },
   { match: (p) => /^\/patients\/specialite\/./.test(p), label: "specialite", expect: ["CollectionPage", "ItemList", "BreadcrumbList"] },
   { match: (p) => /^\/patients\/articles\/./.test(p), label: "article patients", expect: ["Article", "BreadcrumbList"] },

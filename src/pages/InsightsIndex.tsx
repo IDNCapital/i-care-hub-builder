@@ -6,7 +6,6 @@ import { localePath } from "@/lib/routes";
 import { ArrowRight, MapPin, Euro, Ruler, Building2, Users, KeyRound } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BrandName } from "@/components/BrandName";
-import { Helmet } from "react-helmet-async";
 
 interface GuideLink {
   routeKey: string;

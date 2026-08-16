@@ -677,7 +677,7 @@ export default function RessourcesLieuPluridisciplinaire() {
                   </AccordionTrigger>
                   <AccordionContent
                     forceMount
-                    className="text-foreground leading-relaxed pb-5 data-[state=closed]:hidden"
+                    className="text-foreground leading-relaxed pb-5"
                   >
                     {[
                       item.reponse,
