@@ -467,7 +467,7 @@ export default function ProjetDetail() {
               <p className="text-sm text-muted-foreground mb-8">
                 La mixité d’un lieu soulève des questions propres à chaque profession.{" "}
                 <Link
-                  to="/ressources/exercer-en-lieu-pluridisciplinaire"
+                  to="/ressources/exercer-en-lieu-pluridisciplinaire/"
                   className="text-primary underline underline-offset-4 hover:text-primary/80"
                 >
                   Exercer en lieu pluridisciplinaire

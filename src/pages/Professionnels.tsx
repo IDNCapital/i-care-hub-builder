@@ -205,7 +205,7 @@ export default function Professionnels() {
             <p className="text-center text-muted-foreground mt-2">
               Avant de signer, les questions à poser selon votre profession.{" "}
               <Link
-                to="/ressources/exercer-en-lieu-pluridisciplinaire"
+                to="/ressources/exercer-en-lieu-pluridisciplinaire/"
                 className="text-primary underline underline-offset-4 hover:text-primary/80"
               >
                 Exercer en lieu pluridisciplinaire
