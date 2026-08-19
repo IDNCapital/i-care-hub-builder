@@ -167,7 +167,7 @@ const BRANDS_INLINE: Brand[] = [
     ),
     href: "/",
     external: false,
-    label: "I-CA.RE",
+    label: "I‑CA.RE",
     tagline: "Immobilier de soin, paramédical et bien-être",
   },
   { key: "insidebat", Logo: LogoInsideBat, href: "https://insidebat.fr", external: true, label: "INside BAT", tagline: "Construction intérieure et second œuvre" },
@@ -213,7 +213,7 @@ export function Footer() {
   };
 
   return (
-    <footer aria-label="Pied de page I-CA.RE" className="font-sans">
+    <footer aria-label="Pied de page I‑CA.RE" className="font-sans">
       {/* ── BANDEAU A : anthracite, liens utiles ─────────────── */}
       <section
         style={{ backgroundColor: COLORS.anthracite, color: COLORS.cream }}

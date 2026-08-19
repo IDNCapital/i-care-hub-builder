@@ -25,7 +25,7 @@ export function LinkedInLink({
       href="https://www.linkedin.com/company/i-ca-re/"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Page LinkedIn de I-CA.RE"
+      aria-label="Page LinkedIn de I‑CA.RE"
       className={cn(
         "group inline-flex items-center gap-2 min-w-[40px] min-h-[40px] justify-center",
         "rounded-sm focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",

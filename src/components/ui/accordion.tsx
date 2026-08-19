@@ -27,7 +27,14 @@ const AccordionTrigger = React.forwardRef<
       )}
       {...props}
     >
-      {children}
+      {/* Le contenu du declencheur est regroupe dans un item flex unique. Rendu
+          par InlineBrand, il compte plusieurs noeuds, et justify-between les
+          repartissait alors sur toute la largeur : le libelle, la marque et la
+          ponctuation se retrouvaient separes par de larges blancs. flex-1 lui
+          fait occuper la largeur restante, le chevron reste colle a droite.
+          Le chevron demeure enfant direct du declencheur, donc les selecteurs
+          des appelants qui le visent en >svg continuent de porter. */}
+      <span className="flex-1">{children}</span>
       <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
