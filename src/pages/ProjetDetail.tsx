@@ -32,6 +32,7 @@ import { FormulaireInteretInstallation } from "@/components/FormulaireInteretIns
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
 import { pageUrl } from "@/lib/siteUrl";
 import { SectionAvisGoogle } from "@/components/avis/SectionAvisGoogle";
+import { marqueAffichee } from "@/lib/brand";
 
 /**
  * OG images dédiées (1200×630) pour les pages /projets/[cabinet] exploitées.
@@ -235,7 +236,7 @@ export default function ProjetDetail() {
               <span className={`text-sm font-medium px-4 py-1.5 rounded-full ${statusColor()}`}>{statusLabels[project.status]}</span>
               <span className="text-sm font-medium px-4 py-1.5 rounded-full bg-background/20 text-background backdrop-blur">{typologyLabels[project.typology]}</span>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-background mb-2">{project.name}</h1>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-background mb-2">{marqueAffichee(project.name)}</h1>
             <div className="flex items-center gap-2 text-background/80">
               <MapPin className="w-5 h-5" />
               <span className="text-lg">{project.city}{project.show_address && project.address ? `, ${project.address}` : ""}</span>
@@ -330,7 +331,7 @@ export default function ProjetDetail() {
             <div className="lg:col-span-2">
               <h2 className="text-3xl font-semibold mb-6">{t("projectDetail.conceptTitle")}</h2>
               <div className="prose prose-lg max-w-none text-muted-foreground">
-                <p className="text-lg leading-relaxed whitespace-pre-line">{description}</p>
+                <p className="text-lg leading-relaxed whitespace-pre-line">{marqueAffichee(description)}</p>
               </div>
 
               <div className="mt-10 bg-secondary rounded-2xl p-6">

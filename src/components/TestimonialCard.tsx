@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { marqueAffichee } from "@/lib/brand";
 
 export interface TestimonialCardData {
   id: string;
@@ -66,7 +67,7 @@ export function TestimonialCard({
 
       {/* Quote: Playfair Italic */}
       <blockquote className="font-heading italic text-lg md:text-xl text-foreground/85 leading-[1.7] mb-6">
-        « {testimonial.citation_longue} »
+        « {marqueAffichee(testimonial.citation_longue)} »
       </blockquote>
 
       {/* Cabinet link: Playfair Italic */}
@@ -76,7 +77,7 @@ export function TestimonialCard({
           to={projectPath}
           className="text-foreground hover:text-primary underline-offset-4 hover:underline transition-colors"
         >
-          {testimonial.cabinet_nom_affichage}
+          {marqueAffichee(testimonial.cabinet_nom_affichage)}
         </Link>
       </p>
     </article>

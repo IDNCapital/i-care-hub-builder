@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import { marqueAffichee } from "@/lib/brand";
 
 export interface GoogleReviewCardData {
   id: string;
@@ -69,7 +70,7 @@ export function GoogleReviewCard({
           <span className="font-medium">{labelGoogleReview}</span>
         </div>
         <span className="text-xs text-muted-foreground text-right leading-tight">
-          {review.cabinet_nom_affichage}
+          {marqueAffichee(review.cabinet_nom_affichage)}
         </span>
       </div>
 

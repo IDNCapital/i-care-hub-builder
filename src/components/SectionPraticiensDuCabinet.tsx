@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { usePraticiensCabinet } from "@/hooks/usePraticiensCabinet";
 import { CartePraticienPublic } from "@/components/CartePraticienPublic";
 import { pageUrl } from "@/lib/siteUrl";
+import { marqueAffichee } from "@/lib/brand";
 
 interface Props {
   cabinetSlug: string;
@@ -66,7 +67,7 @@ export function SectionPraticiensDuCabinet({
             Le réseau présent dans ce lieu
           </h2>
           <p className="font-body text-base text-muted-foreground leading-relaxed">
-            Les spécialistes accueillant des consultations ouvertes au public à {cabinetNomCourt}.
+            Les spécialistes accueillant des consultations ouvertes au public à {marqueAffichee(cabinetNomCourt)}.
           </p>
         </div>
 

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Praticien } from "@/pages/admin/AdminPraticiens";
 import { SectionAvisGoogle } from "@/components/avis/SectionAvisGoogle";
+import { marqueAffichee } from "@/lib/brand";
 
 type Cabinet = {
   slug: string;
@@ -260,7 +261,7 @@ export function FichePraticien({
             {/* Bio */}
             {praticien.bio_longue && (
               <div className="mt-8" style={{ fontSize: "1rem" }}>
-                {renderMarkdown(praticien.bio_longue)}
+                {renderMarkdown(marqueAffichee(praticien.bio_longue))}
               </div>
             )}
 
@@ -286,7 +287,7 @@ export function FichePraticien({
                     className="hover:underline"
                     style={{ color: COLORS.green, fontSize: "1rem" }}
                   >
-                    {cabinet.name}
+                    {marqueAffichee(cabinet.name)}
                   </Link>
                 </p>
               ) : (

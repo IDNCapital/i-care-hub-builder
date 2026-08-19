@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useProfessionsInstallation } from "@/hooks/useInstallation";
 import { installationUrl } from "@/lib/installation";
+import { marqueAffichee } from "@/lib/brand";
 
 interface SinstallerLinksCabinetProps {
   slugInstallation: string;
@@ -30,7 +31,7 @@ export function SinstallerLinksCabinet({
   return (
     <div className={className}>
       <h3 className="text-lg md:text-xl font-heading font-normal mb-5">
-        S'installer à {cabinetLabel} selon votre profession
+        S'installer à {marqueAffichee(cabinetLabel)} selon votre profession
       </h3>
       <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2">
         {professions.map((p) => (

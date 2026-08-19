@@ -20,6 +20,7 @@ import { Crosshair } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
 import { openingForecastLabel } from "@/lib/centres";
+import { marqueAffichee } from "@/lib/brand";
 
 const SAGE = "#9EB8A5";
 const SAGE_LIGHT = "#E2EAE5";
@@ -515,7 +516,7 @@ export function CarteCabinets({
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <div className="font-heading text-[18px] text-foreground leading-tight">
-                          {c.name}
+                          {marqueAffichee(c.name)}
                         </div>
                         <div className="font-sans text-[14px] text-muted-foreground mt-1 leading-snug">
                           {c.address}
