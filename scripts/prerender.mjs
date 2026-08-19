@@ -4,10 +4,10 @@
  * Generates static HTML for strategic routes so crawlers (including AI bots)
  * can read SEO tags, H1, content, and JSON-LD without executing JavaScript.
  *
- * Chromium resolution order:
+ * Chromium resolution order (chaque branche prise est journalisee) :
  *   1. PUPPETEER_EXECUTABLE_PATH env var
- *   2. Puppeteer's bundled browser
- *   3. Common system paths
+ *   2. puppeteer.executablePath(), le navigateur que Puppeteer a telecharge
+ *   3. Common system paths, en dernier recours et signale comme tel
  *
  * Build behaviour:
  *   - Default: fails the build if prerender cannot run (exit 1)
@@ -21,7 +21,6 @@ import { readFile, writeFile, mkdir } from "fs/promises";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { existsSync } from "fs";
-import { execSync } from "child_process";
 import { JSDOM } from "jsdom";
 import { pagePath, pageUrl } from "./siteUrl.mjs";
 
@@ -202,37 +201,72 @@ const REDIRECTS = [
   { from: "/en/referral", to: "/en/health-professionals" },
 ];
 
-// ── Chromium resolution ─────────────────────────────────────────────
+// ── Resolution du navigateur ────────────────────────────────────────
+// Chaque branche prise s'ecrit dans le journal, y compris l'echec d'une
+// branche et son motif : un build doit pouvoir se relire.
+//
+// La branche qui interrogeait `npx puppeteer browsers installed` a ete
+// RETIREE au Sprint 13 lot 5, et non corrigee. Le motif n'est pas qu'elle
+// etait cassee, c'est ce qu'elle etait : analyser la sortie humaine d'un
+// outil en ligne de commande alors qu'une interface programmatique existe.
+// Ce format n'est pas une interface, et la meme fonction s'y etait trompee
+// deux fois. Sur le nom de la sous-commande d'abord : `installed` n'existe
+// pas, @puppeteer/browsers ne declare que `install`, `clear` et `list`, et
+// yargs rend alors 0 avec zero octet, donc sans lever. Sur la forme de la
+// ligne ensuite : `list` rend `chrome@VERSION (plateforme) CHEMIN`, et la
+// regex ignorait le champ de plateforme. La corriger aurait reconduit la
+// fragilite un cran plus loin. `puppeteer.executablePath()` rend le meme
+// chemin, sans aucun parsing.
+//
+// Le `catch` silencieux disparait avec elle. A noter pour la prochaine
+// fois : il n'a PAS masque l'echec du run #183, puisqu'il ne s'est jamais
+// declenche, la commande inconnue ne levant pas. Il aurait masque le
+// suivant.
 function findChromium() {
-  // 1. Explicit env var
-  if (process.env.PUPPETEER_EXECUTABLE_PATH) {
-    const p = process.env.PUPPETEER_EXECUTABLE_PATH;
-    if (existsSync(p)) return p;
-    console.warn(`[prerender] PUPPETEER_EXECUTABLE_PATH=${p} not found, trying alternatives…`);
+  // 1. Chemin impose par l'environnement.
+  const impose = process.env.PUPPETEER_EXECUTABLE_PATH;
+  if (impose) {
+    if (existsSync(impose)) {
+      console.log(`[prerender] Navigateur, branche 1 : PUPPETEER_EXECUTABLE_PATH → ${impose}`);
+      return impose;
+    }
+    console.warn(`[prerender] Navigateur, branche 1 ecartee : PUPPETEER_EXECUTABLE_PATH=${impose} est absent du disque.`);
   }
 
-  // 2. Puppeteer bundled browser
+  // 2. Le navigateur que Puppeteer a telecharge, resolu par son interface.
+  //    C'est celui que `npx puppeteer browsers install chrome` depose en CI.
   try {
-    const result = execSync("npx puppeteer browsers installed", {
-      encoding: "utf-8",
-      timeout: 10000,
-    }).trim();
-    const match = result.match(/chrome@[^\s]+\s+(.+)/);
-    if (match && existsSync(match[1])) return match[1];
-  } catch { /* ignore */ }
+    const chemin = puppeteer.executablePath();
+    if (existsSync(chemin)) {
+      console.log(`[prerender] Navigateur, branche 2 : puppeteer.executablePath() → ${chemin}`);
+      return chemin;
+    }
+    console.warn(`[prerender] Navigateur, branche 2 ecartee : puppeteer.executablePath() rend ${chemin}, absent du disque.`);
+  } catch (err) {
+    console.warn(`[prerender] Navigateur, branche 2 ecartee : puppeteer.executablePath() a leve ${String(err && err.message).split("\n")[0]}`);
+  }
 
-  // 3. Common system paths
-  const candidates = [
+  // 3. Chemins systeme. On y arrive quand le navigateur du build est
+  //    introuvable : la resolution n'est alors plus deterministe, et le
+  //    journal doit le dire.
+  const candidats = [
     "/usr/bin/chromium-browser",
     "/usr/bin/chromium",
     "/usr/bin/google-chrome-stable",
     "/usr/bin/google-chrome",
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
   ];
-  for (const c of candidates) {
-    if (existsSync(c)) return c;
+  for (const candidat of candidats) {
+    if (existsSync(candidat)) {
+      console.warn(
+        `[prerender] Navigateur, branche 3 : chemin systeme → ${candidat}. ` +
+          "Le navigateur installe par le build est introuvable, la resolution n'est donc pas deterministe.",
+      );
+      return candidat;
+    }
   }
 
+  console.error("[prerender] Navigateur : aucune des trois branches n'a abouti.");
   return null;
 }
 
