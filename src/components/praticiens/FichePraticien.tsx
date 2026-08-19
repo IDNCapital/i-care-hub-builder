@@ -249,7 +249,7 @@ export function FichePraticien({
                 <span>
                   {[
                     adresseLigne,
-                    quartier ? `Cabinet I-CA.RE ${quartier}` : "",
+                    quartier ? `Cabinet I‑CA.RE ${quartier}` : "",
                   ]
                     .map((s) => (s ?? "").trim())
                     .filter((s) => s.length > 0)

@@ -156,7 +156,7 @@ export default function DecrireMonBesoin() {
           </h1>
           <p className="font-heading italic text-xl text-muted-foreground leading-relaxed text-balance max-w-2xl mx-auto">
             En quelques lignes, dites-nous ce que vous cherchez. Notre équipe vous oriente
-            vers la praticienne ou le praticien I-CA.RE le plus adapté, sous 48h ouvrées.
+            vers la praticienne ou le praticien I‑CA.RE le plus adapté, sous 48h ouvrées.
           </p>
         </div>
       </section>

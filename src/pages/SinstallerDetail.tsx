@@ -287,7 +287,7 @@ export default function SinstallerDetail() {
             <div>
               <h3 className="text-lg font-heading font-normal mb-3">Visibilité dans le réseau I‑CA.RE</h3>
               <p className="text-sm text-muted-foreground">
-                Référencement dans l'annuaire patient I-CA.RE et mise en avant via le réseau de cabinets.
+                Référencement dans l'annuaire patient I‑CA.RE et mise en avant via le réseau de cabinets.
               </p>
             </div>
           </div>

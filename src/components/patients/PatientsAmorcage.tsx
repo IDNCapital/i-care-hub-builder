@@ -76,7 +76,7 @@ export function PatientsAmorcage({ praticiens }: Props) {
           </h2>
           <p className="font-body text-base md:text-lg text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
             Décrivez-nous votre besoin en quelques lignes. Nous vous orienterons
-            vers la praticienne ou le praticien I-CA.RE le plus adapté, sans
+            vers la praticienne ou le praticien I‑CA.RE le plus adapté, sans
             engagement et en toute confidentialité.
           </p>
           <Button variant="gold" size="lg" asChild>

@@ -200,7 +200,7 @@ export default function ProblematiqueDetail() {
             Vous cherchez la bonne personne pour vous accompagner&nbsp;?
           </h2>
           <p className="font-sans text-base md:text-lg text-[#6B6B6B] leading-relaxed mb-10 max-w-2xl mx-auto">
-            Décrivez-nous votre besoin en quelques lignes. Nous vous orienterons vers la praticienne ou le praticien I-CA.RE le plus adapté.
+            Décrivez-nous votre besoin en quelques lignes. Nous vous orienterons vers la praticienne ou le praticien I‑CA.RE le plus adapté.
           </p>
           <Button variant="gold" size="lg" asChild>
             <a href="/patients/decrire-mon-besoin">Décrire mon besoin</a>

@@ -151,7 +151,7 @@ export default function ArticleDetail() {
               Vous souhaitez être orientée ou orienté&nbsp;?
             </h2>
             <p className="font-sans text-base text-[#6B6B6B] leading-relaxed mb-8 max-w-xl mx-auto">
-              Décrivez-nous votre besoin en quelques lignes. Nous vous indiquerons la praticienne ou le praticien I-CA.RE le plus adapté.
+              Décrivez-nous votre besoin en quelques lignes. Nous vous indiquerons la praticienne ou le praticien I‑CA.RE le plus adapté.
             </p>
             <Button variant="gold" size="lg" asChild>
               <a href="/patients/decrire-mon-besoin">Décrire mon besoin</a>

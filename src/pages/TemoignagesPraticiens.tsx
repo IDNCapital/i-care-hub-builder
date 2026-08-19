@@ -13,6 +13,7 @@ import { localePath } from "@/lib/routes";
 import { PROJECT_IMAGES } from "@/lib/projectImages";
 import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
 import { pageUrl } from "@/lib/siteUrl";
+import { marqueAffichee } from "@/lib/brand";
 
 export default function TemoignagesPraticiens() {
   const { i18n } = useTranslation();
@@ -175,8 +176,8 @@ export default function TemoignagesPraticiens() {
           </h1>
           <p className="font-heading italic text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-[640px] mx-auto">
             {lang === "fr"
-              ? "Nos locataires partagent leur expérience de leur cabinet et de la communauté I-CA.RE. Témoignages institutionnels et avis Google publics."
-              : "Our tenants share their experience of their office and the I-CA.RE community. Institutional testimonials and public Google reviews."}
+              ? "Nos locataires partagent leur expérience de leur cabinet et de la communauté I‑CA.RE. Témoignages institutionnels et avis Google publics."
+              : "Our tenants share their experience of their office and the I‑CA.RE community. Institutional testimonials and public Google reviews."}
           </p>
         </div>
       </section>
@@ -301,7 +302,7 @@ export default function TemoignagesPraticiens() {
                   <p className="font-body text-sm uppercase tracking-[0.15em] font-bold">
                     {lang === "fr" ? "Disponible prochainement" : "Available soon"}
                   </p>
-                  <p className="text-xs text-background/80 mt-2">{v.label}</p>
+                  <p className="text-xs text-background/80 mt-2">{marqueAffichee(v.label)}</p>
                 </div>
               </div>
             ))}
