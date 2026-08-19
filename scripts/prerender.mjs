@@ -142,6 +142,18 @@ const ROUTES = [
   { path: "/patients", type: "strategic" },
   { path: "/patients/problematiques", type: "strategic" },
   { path: "/patients/articles", type: "strategic" },
+  // Conciergerie patient, formulaire de conversion de l'Espace Patients, lie
+  // depuis 54 pages servies. Elle etait declaree dans App.tsx mais absente de
+  // cette table, donc jamais prerendue : elle repondait 404 a froid ET au clic,
+  // les points d'appel servis etant tous des <a href> nus. Une route absente de
+  // ROUTES n'est pas controlee, elle est ignoree : le controle couvre ce qui est
+  // declare, pas ce qui existe.
+  //
+  // Type "dormant" faute de mieux : sa definition correspond aux trois faits,
+  // noindex volontaire, hors sitemap, desindexation deliberee. Le mot est
+  // trompeur pour autant, la page n'ayant rien d'endormi. A relire comme
+  // "active, mais volontairement hors index".
+  { path: "/patients/decrire-mon-besoin", type: "dormant" },
   // FR installation matrix : index seul ; les combinaisons profession × ville
   // sont ajoutées dynamiquement depuis la base (voir fetchInstallationMatrix).
   { path: "/sinstaller", type: "strategic" },

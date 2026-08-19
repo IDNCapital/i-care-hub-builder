@@ -212,7 +212,6 @@ const App = () => (
                 <Route path="/insights/professions-sharing-office" element={<InsightsProfessions />} />
                 <Route path="/insights/rent-or-buy-office" element={<InsightsLouerAcheter />} />
                 <Route path="/patients" element={<Patients />} />
-                <Route path="/patients/decrire-mon-besoin" element={<DecrireMonBesoin />} />
                 <Route path="/practitioner-testimonials" element={<TemoignagesPraticiens />} />
                 <Route path="*" element={<NotFound />} />
               </Routes></LangSync>} />
