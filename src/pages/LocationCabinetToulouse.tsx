@@ -185,7 +185,7 @@ export default function LocationCabinetToulouse() {
           {toulouseCapitoleHero ? (
             <FadeImage
               src={toulouseCapitoleHero}
-              alt="Façade I-CA.RE Toulouse Capitole, cabinets paramédicaux à louer"
+              alt="Façade I‑CA.RE Toulouse Capitole, cabinets paramédicaux à louer"
               className="w-full h-full object-cover"
               loading="eager"
               fadeDuration={500}
@@ -275,7 +275,7 @@ export default function LocationCabinetToulouse() {
                 {toulouseCapitoleHero ? (
                   <FadeImage
                     src={toulouseCapitoleHero}
-                    alt="I-CA.RE Toulouse Capitole, façade brique"
+                    alt="I‑CA.RE Toulouse Capitole, façade brique"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     fadeDuration={400}
                   />

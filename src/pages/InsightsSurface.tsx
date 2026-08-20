@@ -62,7 +62,7 @@ export default function InsightsSurface() {
         description="From 11 to 18 sqm depending on your profession: realistic minimum areas, the role of shared spaces, oversizing traps and concrete examples by practice type."
         path="/en/insights/medical-office-size"
         heroImage={jardinPublicCab1}
-        heroImageAlt="Well-designed consultation room – I-CA.RE Bordeaux"
+        heroImageAlt="Well-designed consultation room – I‑CA.RE Bordeaux"
         articleTitle="What size do you need for a medical or paramedical office"
         intro="Choosing the right size for your office is one of the most impactful decisions you'll make. Too large, and you overspend every month. Too small, and you compromise comfort. The answer depends on your profession, whether you work with equipment, and whether you have access to shared common areas."
         takeaways={[
@@ -149,7 +149,7 @@ export default function InsightsSurface() {
       description="De 11 à 18 m² selon votre métier : surfaces minimales réalistes, rôle des parties communes, piège du surdimensionnement et exemples concrets par type d'exercice."
       path="/insights/surface-cabinet-medical"
       heroImage={jardinPublicCab1}
-      heroImageAlt="Cabinet de consultation bien agencé – I-CA.RE Bordeaux"
+      heroImageAlt="Cabinet de consultation bien agencé – I‑CA.RE Bordeaux"
       articleTitle="Quelle surface faut-il pour un cabinet médical ou paramédical"
       intro={<>Choisir la bonne surface pour son cabinet est l'une des décisions les plus impactantes. Trop grand, vous surpayez chaque mois. Trop petit, vous compromettez le confort. La réponse dépend de votre métier, de votre mode d'exercice et de l'accès à des espaces communs partagés.</>}
       takeaways={[

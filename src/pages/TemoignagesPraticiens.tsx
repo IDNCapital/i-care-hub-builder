@@ -13,7 +13,6 @@ import { localePath } from "@/lib/routes";
 import { PROJECT_IMAGES } from "@/lib/projectImages";
 import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
 import { pageUrl } from "@/lib/siteUrl";
-import { marqueAffichee } from "@/lib/brand";
 
 export default function TemoignagesPraticiens() {
   const { i18n } = useTranslation();
@@ -83,12 +82,12 @@ export default function TemoignagesPraticiens() {
   const videoPlaceholders = [
     {
       slug: "i-ca-re-nansouty",
-      label: "I-CA.RE Nansouty",
+      label: "I‑CA.RE Nansouty",
       img: PROJECT_IMAGES["i-ca-re-nansouty"]?.hero,
     },
     {
       slug: "i-ca-re-pey-berland",
-      label: "I-CA.RE Pey-Berland",
+      label: "I‑CA.RE Pey-Berland",
       img: PROJECT_IMAGES["i-ca-re-pey-berland"]?.hero,
     },
   ];
@@ -302,7 +301,7 @@ export default function TemoignagesPraticiens() {
                   <p className="font-body text-sm uppercase tracking-[0.15em] font-bold">
                     {lang === "fr" ? "Disponible prochainement" : "Available soon"}
                   </p>
-                  <p className="text-xs text-background/80 mt-2">{marqueAffichee(v.label)}</p>
+                  <p className="text-xs text-background/80 mt-2">{v.label}</p>
                 </div>
               </div>
             ))}

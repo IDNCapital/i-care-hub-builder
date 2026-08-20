@@ -62,7 +62,7 @@ export default function InsightsCabinetMedicalBordeaux() {
         description="A practical guide for care and wellbeing practitioners looking for an office in Bordeaux: location, size, budget, regulations, shared spaces."
         path="/en/insights/medical-office-bordeaux"
         heroImage={peyBerlandFacade}
-        heroImageAlt="Elegant heritage building for healthcare offices – I-CA.RE Bordeaux"
+        heroImageAlt="Elegant heritage building for healthcare offices – I‑CA.RE Bordeaux"
         articleTitle="How to find a medical or paramedical office in Bordeaux"
         intro="Finding the right office in Bordeaux is a challenge many practitioners face. The market is tight for small spaces suited to healthcare and wellbeing professions, and the available options are not always visible or easy to evaluate. Location, size, regulatory compliance and overall budget must all be considered together, not in isolation."
         takeaways={[
@@ -158,7 +158,7 @@ export default function InsightsCabinetMedicalBordeaux() {
       description="Guide pratique pour les praticiens du soin et du bien-être qui cherchent un cabinet à Bordeaux : emplacement, surface, budget, normes, lieux mutualisés."
       path="/insights/cabinet-medical-bordeaux"
       heroImage={peyBerlandFacade}
-      heroImageAlt="Immeuble patrimonial élégant pour cabinets de soins – I-CA.RE Bordeaux"
+      heroImageAlt="Immeuble patrimonial élégant pour cabinets de soins – I‑CA.RE Bordeaux"
       articleTitle="Comment trouver un cabinet médical ou paramédical à Bordeaux"
       intro={<>Trouver le bon cabinet à Bordeaux est un défi que de nombreux praticiens rencontrent. Le marché est tendu pour les petites surfaces adaptées aux professions du soin et du bien-être, et les options disponibles ne sont pas toujours visibles ni faciles à évaluer. Emplacement, surface, conformité réglementaire et budget global doivent être considérés ensemble, pas séparément.</>}
       takeaways={[

@@ -281,7 +281,7 @@ export function CarteCabinets({
         zoom={12}
         scrollWheelZoom={false}
         style={{ width: "100%", height: "100%" }}
-        aria-label="Carte des cabinets I-CA.RE"
+        aria-label="Carte des cabinets I‑CA.RE"
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'

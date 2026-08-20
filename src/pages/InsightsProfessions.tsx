@@ -62,7 +62,7 @@ export default function InsightsProfessions() {
         description="Psychologists, osteopaths, dietitians, sophrologists, naturopaths and more: which care and wellbeing professions work best in shared offices of 11 to 18 sqm."
         path="/en/insights/professions-sharing-office"
         heroImage={peyBerlandCab2}
-        heroImageAlt="Professional shared consultation space – I-CA.RE Bordeaux"
+        heroImageAlt="Professional shared consultation space – I‑CA.RE Bordeaux"
         articleTitle="Which professions can share an office or care space"
         intro="Sharing an office between care and wellbeing practitioners is an efficient, increasingly popular model. But not all professions are equally suited. Success depends on complementarity of services, compatibility of schedules and respect for confidentiality."
         takeaways={[
@@ -168,7 +168,7 @@ export default function InsightsProfessions() {
       description="Psychologues, ostéopathes, diététiciens, sophrologues, naturopathes… Complémentarité, rythmes et confidentialité dans des cabinets partagés de 11 à 18 m²."
       path="/insights/professions-partage-cabinet"
       heroImage={peyBerlandCab2}
-      heroImageAlt="Espace de consultation partagé professionnel – I-CA.RE Bordeaux"
+      heroImageAlt="Espace de consultation partagé professionnel – I‑CA.RE Bordeaux"
       articleTitle="Quelles professions peuvent partager un cabinet ou un espace de soins"
       intro={<>Le partage de cabinet entre praticiens du soin et du bien-être est un modèle efficace et de plus en plus courant. Mais toutes les professions ne s'y prêtent pas de la même façon. Le succès repose sur la complémentarité des services, la compatibilité des rythmes et le respect de la confidentialité.</>}
       takeaways={[

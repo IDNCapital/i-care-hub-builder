@@ -130,7 +130,7 @@ export default function Projets() {
                     {heroSrc ? (
                       <FadeImage
                         src={heroSrc}
-                        alt={`${centre.name}, I-CA.RE`}
+                        alt={`${centre.name}, I‑CA.RE`}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (

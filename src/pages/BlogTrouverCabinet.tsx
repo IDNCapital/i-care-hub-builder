@@ -115,8 +115,8 @@ export default function BlogTrouverCabinet() {
               src={cab1Image}
               alt={
                 lang === "fr"
-                  ? "Cabinet de consultation I-CA.RE à Bordeaux"
-                  : "I-CA.RE consultation office in Bordeaux"
+                  ? "Cabinet de consultation I‑CA.RE à Bordeaux"
+                  : "I‑CA.RE consultation office in Bordeaux"
               }
               className="w-full h-auto aspect-[16/9] object-cover"
             />
@@ -287,8 +287,8 @@ export default function BlogTrouverCabinet() {
                 src={facadeImage}
                 alt={
                   lang === "fr"
-                    ? "Façade d'un lieu I-CA.RE à Bordeaux"
-                    : "Facade of an I-CA.RE space in Bordeaux"
+                    ? "Façade d'un lieu I‑CA.RE à Bordeaux"
+                    : "Facade of an I‑CA.RE space in Bordeaux"
                 }
                 className="w-full h-auto aspect-[16/9] object-cover"
               />

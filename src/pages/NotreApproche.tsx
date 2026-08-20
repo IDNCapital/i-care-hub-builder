@@ -53,8 +53,8 @@ export default function NotreApproche() {
               src={SECTION_IMAGES.portraitDuo}
               alt={
                 lang === "fr"
-                  ? "Nicolas Idelot et Jazmin Cousins, fondateurs d'I-CA.RE"
-                  : "Nicolas Idelot and Jazmin Cousins, founders of I-CA.RE"
+                  ? "Nicolas Idelot et Jazmin Cousins, fondateurs d'I‑CA.RE"
+                  : "Nicolas Idelot and Jazmin Cousins, founders of I‑CA.RE"
               }
               className="rounded-3xl shadow-elevated w-full object-cover object-[center_25%] aspect-[4/5] md:aspect-[3/2]"
             />

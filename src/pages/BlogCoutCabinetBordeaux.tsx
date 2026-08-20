@@ -93,7 +93,7 @@ export default function BlogCoutCabinetBordeaux() {
           {/* Image 1 */}
           <FadeImage
             src={cab1Image}
-            alt={lang === "fr" ? "Cabinet de consultation à Bordeaux, I-CA.RE" : "Consultation office in Bordeaux, I-CA.RE"}
+            alt={lang === "fr" ? "Cabinet de consultation à Bordeaux, I‑CA.RE" : "Consultation office in Bordeaux, I‑CA.RE"}
             className="w-full rounded-lg mb-10 aspect-[16/10] object-cover"
           />
 
@@ -200,7 +200,7 @@ export default function BlogCoutCabinetBordeaux() {
           {/* Image 2 */}
           <FadeImage
             src={jardinAttenteImage}
-            alt={lang === "fr" ? "Salle d'attente dans un lieu de soin I-CA.RE à Bordeaux" : "Waiting room in an I-CA.RE care space in Bordeaux"}
+            alt={lang === "fr" ? "Salle d'attente dans un lieu de soin I‑CA.RE à Bordeaux" : "Waiting room in an I‑CA.RE care space in Bordeaux"}
             className="w-full rounded-lg mb-10 aspect-[16/10] object-cover"
           />
 

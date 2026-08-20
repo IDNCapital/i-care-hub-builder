@@ -62,7 +62,7 @@ export default function InsightsBudget() {
         description="Rent, deposit, renovations, furniture, insurance, cash reserve: a detailed, realistic breakdown of costs for opening a medical or paramedical office in Bordeaux."
         path="/en/insights/office-budget-bordeaux"
         heroImage={nansoutyFacade}
-        heroImageAlt="I-CA.RE Nansouty healthcare building facade in Bordeaux"
+        heroImageAlt="I‑CA.RE Nansouty healthcare building facade in Bordeaux"
         articleTitle="What budget to plan for opening a medical or paramedical office in Bordeaux"
         intro="How much does it really cost to set up as a practitioner in Bordeaux? The answer goes well beyond rent. Between deposit, renovations, furniture, insurance and cash reserves, the total budget can vary significantly depending on whether you choose a standalone office or a shared care space."
         takeaways={[
@@ -167,7 +167,7 @@ export default function InsightsBudget() {
       description="Loyer, dépôt, travaux, mobilier, assurances, trésorerie : un tour d'horizon détaillé et réaliste des coûts pour ouvrir un cabinet médical ou paramédical à Bordeaux."
       path="/insights/budget-cabinet-bordeaux"
       heroImage={nansoutyFacade}
-      heroImageAlt="Façade I-CA.RE Nansouty – espace de soins à Bordeaux"
+      heroImageAlt="Façade I‑CA.RE Nansouty – espace de soins à Bordeaux"
       articleTitle="Quel budget prévoir pour ouvrir un cabinet médical ou paramédical à Bordeaux"
       intro={<>Combien coûte réellement une installation à Bordeaux&nbsp;? La réponse va bien au-delà du loyer. Entre dépôt de garantie, travaux, mobilier, assurances et trésorerie de sécurité, le budget total peut varier considérablement selon que vous choisissez un cabinet indépendant ou un espace mutualisé.</>}
       takeaways={[

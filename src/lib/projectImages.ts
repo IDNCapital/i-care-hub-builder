@@ -142,12 +142,12 @@ export interface HeroSlide {
 
 /** Full set for desktop (6 slides, alternating facade ↔ interior) */
 export const HOME_HERO_SLIDES: HeroSlide[] = [
-  { src: chartronsInsertionFacade, altFr: "Façade du futur cabinet I-CA.RE Chartrons à Bordeaux (insertion 3D)", altEn: "Facade of the future I-CA.RE Chartrons practice in Bordeaux (3D rendering)" },
-  { src: heroHomeReelleAttente1,   altFr: "Salle d'attente d'un cabinet I-CA.RE à Bordeaux",                     altEn: "Waiting room of an I-CA.RE practice in Bordeaux" },
-  { src: chartronsProjectionCab1,  altFr: "Projection d'un cabinet du futur I-CA.RE Chartrons",                   altEn: "Rendering of a practice room, future I-CA.RE Chartrons" },
-  { src: heroHomeReelleCabinet1,   altFr: "Cabinet de consultation I-CA.RE à Bordeaux",                           altEn: "I-CA.RE consultation room in Bordeaux" },
+  { src: chartronsInsertionFacade, altFr: "Façade du futur cabinet I‑CA.RE Chartrons à Bordeaux (insertion 3D)", altEn: "Facade of the future I‑CA.RE Chartrons practice in Bordeaux (3D rendering)" },
+  { src: heroHomeReelleAttente1,   altFr: "Salle d'attente d'un cabinet I‑CA.RE à Bordeaux",                     altEn: "Waiting room of an I‑CA.RE practice in Bordeaux" },
+  { src: chartronsProjectionCab1,  altFr: "Projection d'un cabinet du futur I‑CA.RE Chartrons",                   altEn: "Rendering of a practice room, future I‑CA.RE Chartrons" },
+  { src: heroHomeReelleCabinet1,   altFr: "Cabinet de consultation I‑CA.RE à Bordeaux",                           altEn: "I‑CA.RE consultation room in Bordeaux" },
   { src: chartronsProjectionCab2,  altFr: "Projection d'un espace de consultation, futur cabinet Chartrons",      altEn: "Rendering of a consultation space, future Chartrons practice" },
-  { src: heroHomeReelleAttente2,   altFr: "Espace d'accueil d'un cabinet I-CA.RE à Bordeaux",                     altEn: "Reception area of an I-CA.RE practice in Bordeaux" },
+  { src: heroHomeReelleAttente2,   altFr: "Espace d'accueil d'un cabinet I‑CA.RE à Bordeaux",                     altEn: "Reception area of an I‑CA.RE practice in Bordeaux" },
 ];
 
 /** Reduced set for mobile (4 slides) */

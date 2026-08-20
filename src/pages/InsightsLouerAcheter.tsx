@@ -62,7 +62,7 @@ export default function InsightsLouerAcheter() {
         description="Flexibility, equity, professional maturity, shared spaces: the concrete criteria for choosing between renting and buying a medical or paramedical office."
         path="/en/insights/rent-or-buy-office"
         heroImage={jardinPublicAttente}
-        heroImageAlt="Welcoming waiting room in a shared care space – I-CA.RE Bordeaux"
+        heroImageAlt="Welcoming waiting room in a shared care space – I‑CA.RE Bordeaux"
         articleTitle="Should you rent or buy your medical or paramedical office"
         intro="Rent or buy? It's one of the most frequently asked questions when setting up. There is no universal right answer, the best choice depends on your career stage, financial situation and long-term vision. What matters is making a decision based on professional needs, not property market pressure."
         takeaways={[
@@ -170,7 +170,7 @@ export default function InsightsLouerAcheter() {
       description="Souplesse, patrimoine, maturité professionnelle, espaces mutualisés : les critères concrets pour choisir entre location et achat d'un cabinet."
       path="/insights/louer-ou-acheter-cabinet"
       heroImage={jardinPublicAttente}
-      heroImageAlt="Salle d'attente accueillante dans un espace de soins partagé – I-CA.RE Bordeaux"
+      heroImageAlt="Salle d'attente accueillante dans un espace de soins partagé – I‑CA.RE Bordeaux"
       articleTitle="Faut-il louer ou acheter son cabinet médical ou paramédical"
       intro={<>Louer ou acheter&nbsp;? C'est l'une des questions les plus posées lors d'une installation. Il n'y a pas de réponse universelle, le meilleur choix dépend de votre stade de carrière, de votre situation financière et de votre vision à long terme. L'important est de décider sur la base de vos besoins professionnels, pas de la pression du marché.</>}
       takeaways={[
