@@ -29,6 +29,44 @@ const DIST = join(__dirname, "..", "dist");
 const PORT = 45678;
 const OPTIONAL = process.env.PRERENDER_OPTIONAL === "true";
 
+// ── Reprise par route ───────────────────────────────────────────────
+// Une capture echoue parfois : la page est prise dans son etat de chargement,
+// ni canonical, ni h1, ni JSON-LD propre. Le controle a eu raison deux fois de
+// la refuser (run #183 sur /projets/i-ca-re-le-bouscat, build local du lot 4
+// sur /patients/articles/burn-out-reconnaitre-les-signes).
+//
+// LA CAUSE N'EST PAS ETABLIE, et ce lot ne pretend pas la corriger : il absorbe
+// l'alea. Deux candidates au 20/08/2026. Une course entre la requete Supabase
+// et networkidle0. Ou une fragilite de react-helmet-async 2.0.5 sous React
+// 19.2.1, qui n'injecterait rien dans le head : la signature du run #183
+// comportait "Missing canonical" et "Missing hreflang", qui viennent de Helmet
+// et non de la donnee, et la meme bibliotheque a montre deux autres
+// manifestations, le head fige en navigation cliente et une non-injection au
+// premier rendu observee en local. Un lot de diagnostic est ouvert.
+// On absorbe donc l'alea, sans toucher a la severite : une route qui echoue a
+// TOUS ses essais fait echouer le build, exactement comme avant, en rendant son
+// erreur d'origine et non un message de reprise.
+//
+// La reprise couvre AUSSI les captures qui levent, timeout de navigation,
+// selecteur jamais apparu, connexion fermee. Une exception est une forme plus
+// forte de ne pas satisfaire le controle, pas une forme differente. Le budget
+// global borne le cas ou elles seraient toutes permanentes.
+//
+// 3 essais : la frequence observee est d'environ 0,1 % par capture, 3 essais
+// independants ramenent le residuel sous 10^-9 par route. Au-dela on paie sans
+// gagner.
+// 1000 ms : l'echec est une requete qui retombe trop tard, une pause courte
+// suffit a laisser passer le a-coup.
+// Budget global de 10 : sans lui, un defaut PERMANENT touchant les 188 routes
+// couterait 3 x 20 s de timeout chacune, soit plus de trois heures, et une
+// reprise transformerait un defaut permanent en attente longue. Le budget borne
+// le pire cas a environ 3,5 min ajoutees, sur les 15 min que le workflow
+// accorde et les 7 a 8 min que prend un build vert. Il vaut cinquante fois la
+// frequence observee, donc il ne mord jamais en regime normal.
+const ESSAIS_MAX = 3;
+const ATTENTE_REPRISE_MS = 1000;
+const BUDGET_REPRISES = 10;
+
 // ── JSON-LD expectations per URL family ─────────────────────────────
 // Cette table s'etend a chaque nouvelle famille d'URL, au meme titre que la
 // passe ROUTES. Une route qui ne correspond a aucune entree n'est pas
@@ -525,7 +563,39 @@ async function main() {
 
   let ok = 0;
   let fail = 0;
+  let routesReprises = 0;
+  let routesSauvees = 0;
+  let reprisesConsommees = 0;
   const report = [];
+
+  // Un essai de capture : rend le HTML et les erreurs de controle, sans ecrire
+  // sur le disque. L'ecriture n'a lieu qu'une fois le verdict rendu, pour ne
+  // jamais laisser sur le disque une capture qu'une reprise a remplacee.
+  async function tenterCapture(route) {
+    let page = null;
+    try {
+      page = await browser.newPage();
+      await page.goto(`http://localhost:${PORT}${route.path}`, {
+        waitUntil: "networkidle0",
+        timeout: 20000,
+      });
+      await page.waitForSelector("title", { timeout: 5000 });
+      const brut = await page.content();
+      const html = deduplicateHtml(brut);
+      return { html, erreurs: [...validateHtml(html, route), ...validateRouteType(html, route)], leve: null };
+    } catch (err) {
+      // Une exception est une forme PLUS FORTE de ne pas satisfaire le controle,
+      // pas une forme differente : timeout de navigation, selecteur jamais
+      // apparu, connexion fermee. Elle est donc reprise comme les autres. On la
+      // conserve telle quelle pour que le verdict final rende l'erreur d'origine
+      // et non un message de reprise.
+      return { html: null, erreurs: [err.message], leve: err };
+    } finally {
+      // La fermeture peut lever a son tour si la connexion est deja tombee :
+      // elle ne doit jamais masquer l'erreur d'origine.
+      if (page) await page.close().catch(() => {});
+    }
+  }
 
   for (const route of allRoutes) {
     const entry = {
@@ -543,18 +613,44 @@ async function main() {
     };
 
     try {
-      const page = await browser.newPage();
-      await page.goto(`http://localhost:${PORT}${route.path}`, {
-        waitUntil: "networkidle0",
-        timeout: 20000,
-      });
-      await page.waitForSelector("title", { timeout: 5000 });
+      // Essais bornes. Un essai n'est accepte que si le controle ne remonte
+      // AUCUNE erreur : c'est le meme controle qu'avant, applique plus tot.
+      let resultat = null;
+      let essaisFaits = 0;
+      for (let essai = 1; essai <= ESSAIS_MAX; essai++) {
+        essaisFaits = essai;
+        resultat = await tenterCapture(route);
+        if (resultat.erreurs.length === 0) break;
+        // Reprise seulement s'il reste un essai ET du budget global.
+        if (essai === ESSAIS_MAX) break;
+        if (reprisesConsommees >= BUDGET_REPRISES) {
+          console.warn(
+            `[prerender] ↻ ${route.path} : budget de reprises epuise (${BUDGET_REPRISES}), essai ${essai} conserve tel quel.`,
+          );
+          break;
+        }
+        reprisesConsommees++;
+        console.log(
+          `[prerender] ↻ ${route.path} : essai ${essai} refuse (${resultat.erreurs.join(", ")}), reprise ${essai + 1}/${ESSAIS_MAX}.`,
+        );
+        await new Promise((r) => setTimeout(r, ATTENTE_REPRISE_MS));
+      }
+      if (essaisFaits > 1) {
+        routesReprises++;
+        if (resultat.erreurs.length === 0) routesSauvees++;
+      }
 
-      let html = await page.content();
-      await page.close();
+      if (resultat.leve) {
+        // Essais epuises sur une exception : rien a ecrire, et on rend l'erreur
+        // d'origine, exactement comme avant ce lot.
+        console.error(`[prerender] ✗ ${route.path}: ${resultat.leve.message}`);
+        entry.errors.push(resultat.leve.message);
+        fail++;
+        report.push(entry);
+        continue;
+      }
 
-      // Deduplicate SEO tags
-      html = deduplicateHtml(html);
+      let html = resultat.html;
 
       // Determine output path
       const clean = route.path.replace(/\/$/, "") || "/index";
@@ -568,10 +664,11 @@ async function main() {
       console.log(`[prerender] ✓ ${route.path} → ${outPath.replace(DIST, "dist")}`);
       entry.prerendered = true;
 
-      // Validate
-      const baseErrors = validateHtml(html, route);
-      const typeErrors = validateRouteType(html, route);
-      entry.errors = [...baseErrors, ...typeErrors];
+      // Verdict final : celui du dernier essai retenu. Un ⚠ n'est emis que la,
+      // donc une route sauvee par une reprise n'en produit aucun. C'est la
+      // ligne de synthese des reprises, et elle seule, qui garde la trace de
+      // l'incident : une reprise silencieuse effacerait la mesure.
+      entry.errors = [...resultat.erreurs];
 
       // Parse for report
       const dom = new JSDOM(html);
@@ -661,6 +758,14 @@ async function main() {
     );
   }
   console.log("══════════════════════════════════════════════════════════════");
+
+  // Synthese des reprises. Imprimee MEME a zero : c'est la mesure de frequence
+  // de la course Supabase / networkidle0, et le seul moyen de savoir dans trois
+  // mois si elle s'aggrave avec le nombre de routes.
+  console.log(
+    `[prerender] Reprises : ${routesReprises} route(s) reprise(s), ${routesSauvees} sauvee(s) a la reprise, ` +
+      `${reprisesConsommees} essai(s) supplementaire(s) sur un budget de ${BUDGET_REPRISES}.`,
+  );
 
   // Synthese JSON-LD (controle bloquant depuis le sprint 9)
   const jsonLdChecked = report.filter((r) => r.jsonLdChecked);
