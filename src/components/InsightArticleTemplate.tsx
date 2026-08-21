@@ -298,7 +298,7 @@ export function InsightArticleTemplate({
                   <AccordionTrigger className="text-left text-sm sm:text-base font-semibold">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent>
+                  <AccordionContent forceMount>
                     <div className="text-muted-foreground leading-relaxed text-sm sm:text-base">
                       {item.answer}
                     </div>

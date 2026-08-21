@@ -197,7 +197,10 @@ export default function InsightsIndex() {
                   <AccordionTrigger className="text-left text-sm sm:text-base font-heading font-semibold">
                     {item.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed text-sm sm:text-base">
+                  <AccordionContent
+                    forceMount
+                    className="text-muted-foreground leading-relaxed text-sm sm:text-base"
+                  >
                     {item.a}
                   </AccordionContent>
                 </AccordionItem>
