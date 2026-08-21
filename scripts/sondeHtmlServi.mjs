@@ -26,14 +26,33 @@ import { regleJsonLd } from "./jsonLdExpectations.mjs";
 
 const BASE = process.env.SONDE_BASE_URL || "https://i-ca.re";
 const CONCURRENCE = Number(process.env.SONDE_CONCURRENCE || 6);
+// Un 503 n'est pas « mal repondu », c'est « pas repondu ». GitHub Pages en rend
+// pendant un deploiement, et le premier passage de cette sonde en CI a echoue sur
+// deux d'entre eux alors que les pages etaient saines. Une sonde qui crie au loup
+// se fait ignorer, donc on reessaie les statuts transitoires avant de conclure.
+// On ne reessaie JAMAIS un 200 dont le contenu est fautif : celui-la est un fait.
+const ESSAIS = Number(process.env.SONDE_ESSAIS || 3);
+const TRANSITOIRES = new Set([408, 425, 429, 500, 502, 503, 504]);
+const pause = (ms) => new Promise((r) => setTimeout(r, ms));
 const SITEMAP = `${BASE.replace(/\/$/, "")}/sitemap.xml`;
 
 const sansCommentaires = (s) => s.replace(/<!--[\s\S]*?-->/g, "");
 const attr = (balise, nom) => (balise.match(new RegExp(`${nom}="([^"]*)"`, "i")) || [])[1] ?? null;
 
 async function texte(url) {
-  const res = await fetch(url, { headers: { "User-Agent": "i-ca.re-sonde-html-servi" }, redirect: "manual" });
-  return { statut: res.status, corps: res.ok ? await res.text() : "" };
+  let dernier = { statut: 0, corps: "", essais: 0 };
+  for (let n = 1; n <= ESSAIS; n++) {
+    try {
+      const res = await fetch(url, { headers: { "User-Agent": "i-ca.re-sonde-html-servi" }, redirect: "manual" });
+      dernier = { statut: res.status, corps: res.ok ? await res.text() : "", essais: n };
+    } catch (err) {
+      dernier = { statut: 0, corps: "", essais: n, erreur: err?.message || String(err) };
+    }
+    if (dernier.statut === 200) return dernier;
+    if (dernier.statut !== 0 && !TRANSITOIRES.has(dernier.statut)) return dernier;
+    if (n < ESSAIS) await pause(1500 * n);
+  }
+  return dernier;
 }
 
 /** Analyse une page servie et rend la liste de ce qui manque ou contredit. */
@@ -108,22 +127,25 @@ async function main() {
 
   const fautives = [];
   let injoignables = 0;
+  let reprises = 0;
   let i = 0;
   await Promise.all(
     Array.from({ length: Math.min(CONCURRENCE, urls.length) }, async () => {
       while (i < urls.length) {
         const url = urls[i++];
         try {
-          const { statut, corps } = await texte(url);
+          const { statut, corps, essais, erreur } = await texte(url);
           if (statut !== 200) {
-            fautives.push({ url, griefs: [`HTTP ${statut}`] });
+            const cause = statut === 0 ? `requete en echec : ${erreur}` : `HTTP ${statut}`;
+            fautives.push({ url, griefs: [`${cause}, apres ${essais} essai(s)`] });
             injoignables++;
             continue;
           }
+          if (essais > 1) reprises++;
           const griefs = analyser(url, corps);
           if (griefs.length) fautives.push({ url, griefs });
         } catch (err) {
-          fautives.push({ url, griefs: [`requete en echec : ${err?.message || err}`] });
+          fautives.push({ url, griefs: [`erreur inattendue : ${err?.message || err}`] });
           injoignables++;
         }
       }
@@ -136,7 +158,7 @@ async function main() {
     for (const g of f.griefs) console.error(`[sonde]     ${g}`);
   }
   console.log(
-    `[sonde] ${urls.length - fautives.length}/${urls.length} conforme(s), ${fautives.length} fautive(s), dont ${injoignables} injoignable(s).`,
+    `[sonde] ${urls.length - fautives.length}/${urls.length} conforme(s), ${fautives.length} fautive(s), dont ${injoignables} injoignable(s) ; ${reprises} URL(s) sauvee(s) par une reprise.`,
   );
   if (fautives.length) {
     console.error("[sonde] ECHEC : le HTML servi ne porte pas ce qu'il devrait.");
