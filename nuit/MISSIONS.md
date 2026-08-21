@@ -1,0 +1,6 @@
+# MISSIONS DE NUIT · i-care-hub-builder · mis à jour le 2026-08-21 par l'assistant Websites
+# Une ligne par mission. Format : [classe] [priorité] objectif | critère d'arrêt | test de réussite | rollback
+# Interdits : aucune écriture hors de la branche nuit/<date>, aucune base, aucun Lovable, aucun secret, aucune mise en ligne.
+[XS] [1] Inventorier les 43 pages de src/pages avec, pour chacune, la route, la présence de title, meta description, canonical, OG et JSON-LD attendu (jsonLdExpectations.mjs) ; rendre un tableau dans nuit/INVENTAIRE_META_<date>.md, sans modifier aucune page | aucun | tableau complet, une ligne par page, commandes citées | aucun, lecture
+[S] [2] Centraliser le helper norm() dupliqué entre scripts/publishedRoutes.mjs et src/lib/taxonomy.ts en un module unique importable des deux côtés, sans changer son comportement | la suite de tests ou checkRoutesConcordance.mjs échoue après la modification | tests verts, concordance des routes inchangée, diff limité aux deux fichiers plus le module | git revert
+[XS] [3] Lister par nom (jamais par valeur) les secrets référencés par les 24 Edge Functions (Deno.env.get) et rendre nuit/SECRETS_PAR_NOM_<date>.md | une valeur apparaîtrait dans une sortie : arrêt immédiat | liste de noms, zéro valeur, commande grep citée | aucun, lecture
