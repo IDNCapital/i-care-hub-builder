@@ -78,6 +78,16 @@ export async function fetchSpecialites() {
  * All published articles (RLS filters statut='publie').
  * Returns [{slug, updated_at}].
  */
+/**
+ * Avis Google mis en avant, actifs. Meme filtre que la requete de la page
+ * /temoignages-praticiens : c'est ce qui permet au controle de dire combien de
+ * blocs Review la page DOIT porter, sans demander son avis a la page.
+ */
+export async function fetchAvisMisEnAvant() {
+  const url = `${base()}/rest/v1/avis_google_mis_en_avant?select=id&actif=eq.true`;
+  return fetchJson(url);
+}
+
 export async function fetchArticlesPublies() {
   const url =
     `${base()}/rest/v1/articles` +

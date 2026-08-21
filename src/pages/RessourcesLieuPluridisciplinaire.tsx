@@ -9,6 +9,7 @@ import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
 import { InlineBrand } from "@/components/BrandName";
 import { localePath } from "@/lib/routes";
+import { pageUrl } from "@/lib/siteUrl";
 import { deontologie, resoudreSources } from "@/lib/deontologie";
 import type { NiveauInstance, StatutJuridique } from "@/lib/deontologie";
 import { Armchair, CalendarCheck, DoorClosed, Signpost, Volume2 } from "lucide-react";
@@ -342,9 +343,52 @@ export default function RessourcesLieuPluridisciplinaire() {
   const sourcesFaq = (cle: string) =>
     deontologie.referencesFaq.find((r) => r.cle === cle)?.sources ?? [];
 
+  // Meme balisage que les guides /insights/, qui portent Article et
+  // BreadcrumbList : meme nature de contenu, meme traitement. Cette page etait
+  // la seule page editoriale du site a ne porter que les deux blocs statiques
+  // d'index.html. Aucune date n'est declaree, comme pour les guides : une date
+  // ecrite en dur se perime sans que rien ne le signale.
+  const canonical = pageUrl(CANONICAL_PATH);
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: H1,
+    description: DESCRIPTION,
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+    url: canonical,
+    inLanguage: "fr-FR",
+    author: { "@type": "Organization", name: "I-CA.RE", url: pageUrl("/") },
+    publisher: { "@type": "Organization", name: "I-CA.RE", url: pageUrl("/") },
+  };
+  // Fil d'Ariane conforme aux liens entrants reels : la page est liee depuis
+  // /professionnels et depuis les fiches projet francaises. Il n'existe pas
+  // d'index /ressources, le deuxieme niveau est donc /professionnels.
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: pageUrl("/") },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Professionnels",
+        item: pageUrl(localePath("fr", "professionals")),
+      },
+      { "@type": "ListItem", position: 3, name: H1, item: canonical },
+    ],
+  };
+
   return (
     <Layout>
       <SeoHead title={TITLE} description={DESCRIPTION} path={CANONICAL_PATH} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
 
       {/* D.1 En-tête */}
       <section id="entete" className="pt-28 pb-12 md:pt-32 md:pb-16 bg-background">

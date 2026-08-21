@@ -89,6 +89,10 @@ const JSONLD_EXPECTATIONS = [
   // routes dans le compte des controlees, ou elles ne figuraient pas.
   { match: (p) => p === "/insights" || p === "/en/insights", label: "index guides", expect: ["Organization", "ProfessionalService"] },
   { match: (p) => /^\/patients\/problematiques\/./.test(p), label: "problematique", expect: ["MedicalCondition", "ItemList", "BreadcrumbList"] },
+  // Page ressources : alignee sur les guides au lot 3 du sprint 14. Elle ne
+  // portait que les deux blocs statiques d'index.html, alors que c'est la page
+  // la plus engageante du parc, et un guide de meme nature.
+  { match: (p) => p === "/ressources/exercer-en-lieu-pluridisciplinaire", label: "ressources", expect: ["Article", "BreadcrumbList"] },
   { match: (p) => /^\/patients\/specialite\/./.test(p), label: "specialite", expect: ["CollectionPage", "ItemList", "BreadcrumbList"] },
   { match: (p) => /^\/patients\/articles\/./.test(p), label: "article patients", expect: ["Article", "BreadcrumbList"] },
   { match: (p) => /^\/sinstaller\/[^/]+\/./.test(p), label: "matrice installation", expect: ["MedicalBusiness", "Service", "BreadcrumbList"] },
@@ -195,8 +199,8 @@ const ROUTES = [
   // FR installation matrix : index seul ; les combinaisons profession × ville
   // sont ajoutées dynamiquement depuis la base (voir fetchInstallationMatrix).
   { path: "/sinstaller", type: "strategic" },
-  // Page ressources, publiee au lot 3 du sprint 12. Elle n'emet aucun JSON-LD
-  // propre et ne figure donc dans aucune entree de JSONLD_EXPECTATIONS.
+  // Page ressources, publiee au lot 3 du sprint 12, alignee sur le balisage des
+  // guides au lot 3 du sprint 14. Son attente figure dans JSONLD_EXPECTATIONS.
   { path: "/ressources/exercer-en-lieu-pluridisciplinaire", type: "strategic" },
   // FR legal
   { path: "/mentions-legales", type: "legal" },
@@ -411,6 +415,11 @@ const ATTENTES_DOM = [
     selecteur: "[data-avis-mis-en-avant]",
     label: "avis Google mis en avant",
   },
+  {
+    match: (p) => p === "/patients/problematiques",
+    selecteur: "[data-problematiques-publiees]",
+    label: "index des problematiques publiees",
+  },
 ];
 
 function attenteDom(routePath) {
@@ -485,16 +494,14 @@ function validateRouteType(html, route) {
     if (!porte) errors.push("JSON-LD cabinet : bloc serviceProvider absent");
   }
 
-  // Filet des avis mis en avant. La page declare, par son marqueur, combien
-  // d'avis sa requete a rendus ; autant de blocs Review doivent etre presents.
-  // ATTENTION a sa portee : contrairement au filet serviceProvider, il est derive
-  // de l'etat DECLARE par la page et non d'une source independante, le prerendu ne
-  // lisant pas la table avis_google_mis_en_avant. Il attrape le cas reel, un
-  // marqueur present sans ses blocs. L'absence totale de marqueur, elle, est deja
-  // refusee en amont par l'attente declaree de ATTENTES_DOM.
-  const marqueurAvis = doc.querySelector("[data-avis-mis-en-avant]");
-  if (marqueurAvis) {
-    const attendus = Number(marqueurAvis.getAttribute("data-avis-mis-en-avant")) || 0;
+  // Filet des avis mis en avant, desormais derive de la SOURCE et non de la page.
+  // Le compte vient de fetchAvisMisEnAvant, meme filtre que la requete de la page,
+  // si bien que le controle peut dire combien de blocs Review sont dus sans
+  // demander son avis a la page qu'il controle. La version precedente lisait le
+  // marqueur data-avis-mis-en-avant, donc une requete de page en echec silencieux
+  // rendait un marqueur a zero et le filet le validait. Le marqueur reste, mais
+  // pour ce a quoi il sert vraiment : faire attendre la capture, voir ATTENTES_DOM.
+  if (route.attendAvis !== undefined) {
     const rendus = [...doc.querySelectorAll('script[type="application/ld+json"]')].filter((el) => {
       try {
         return JSON.parse(el.textContent)?.["@type"] === "Review";
@@ -502,8 +509,8 @@ function validateRouteType(html, route) {
         return false;
       }
     }).length;
-    if (rendus !== attendus) {
-      errors.push(`JSON-LD avis : ${rendus} bloc(s) Review pour ${attendus} avis declare(s)`);
+    if (rendus !== route.attendAvis) {
+      errors.push(`JSON-LD avis : ${rendus} bloc(s) Review pour ${route.attendAvis} avis actif(s) en base`);
     }
   }
 
@@ -532,6 +539,9 @@ async function main() {
   // MEME source que les routes dynamiques, fetchPraticiensPublies, et non devine :
   // c'est ce qui rend l'attente du bloc serviceProvider exigible sans supposition.
   const cabinetsAvecPraticiens = new Set();
+  // Nombre d'avis Google actifs, lu a la source. Vaut null si la lecture n'a pas
+  // eu lieu, auquel cas le filet ne s'applique pas plutot que de compter zero.
+  let nbAvisMisEnAvant = null;
   if (process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
     try {
       const {
@@ -542,6 +552,7 @@ async function main() {
         matchSpecialites,
         fetchArticlesPublies,
         fetchInstallationMatrix,
+        fetchAvisMisEnAvant,
       } = await import("./publishedRoutes.mjs");
       const praticiens = await fetchPraticiensPublies();
       for (const p of praticiens) {
@@ -554,6 +565,7 @@ async function main() {
       const matchedSp = matchSpecialites(specialites, praticiens);
       const articles = await fetchArticlesPublies();
       const installation = await fetchInstallationMatrix();
+      nbAvisMisEnAvant = (await fetchAvisMisEnAvant()).length;
 
       const seenP = new Set();
       for (const p of praticiens) {
@@ -627,12 +639,17 @@ async function main() {
   // de ProjetDetail. C'est exactement ce qui a laisse passer un bloc sur 691.
   const allRoutes = [...ROUTES, ...dynamicRoutes].map((r) => {
     const m = r.path.match(/^(?:\/en)?\/(?:projets|projects)\/([^/]+)$/);
-    return m && cabinetsAvecPraticiens.has(m[1])
-      ? { ...r, attendServiceProvider: true }
-      : r;
+    if (m && cabinetsAvecPraticiens.has(m[1])) return { ...r, attendServiceProvider: true };
+    const p = r.path !== "/" ? r.path.replace(/\/$/, "") : r.path;
+    if (nbAvisMisEnAvant !== null && (p === "/temoignages-praticiens" || p === "/en/practitioner-testimonials")) {
+      return { ...r, attendAvis: nbAvisMisEnAvant };
+    }
+    return r;
   });
   const nbFilet = allRoutes.filter((r) => r.attendServiceProvider).length;
+  const nbFiletAvis = allRoutes.filter((r) => r.attendAvis !== undefined).length;
   console.log(`[prerender] Filet serviceProvider : ${nbFilet} route(s) cabinet concernee(s).`);
+  console.log(`[prerender] Filet Review : ${nbFiletAvis} route(s), ${nbAvisMisEnAvant ?? "n/a"} avis actif(s) lu(s) a la source.`);
 
   // 1. Serve dist/ locally
   //

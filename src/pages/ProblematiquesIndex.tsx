@@ -5,22 +5,34 @@ import { SeoHead } from "@/components/SeoHead";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useProblematiques } from "@/hooks/useProblematiques";
-import { norm } from "@/lib/taxonomy";
+import { usePraticiensPublics } from "@/hooks/usePraticiensPublics";
+import { matchProblematique, norm } from "@/lib/taxonomy";
 import { pageUrl } from "@/lib/siteUrl";
 
 
 export default function ProblematiquesIndex() {
   const { data: problematiques, loading } = useProblematiques();
+  const { data: praticiens, loading: loadingPraticiens } = usePraticiensPublics();
   const [query, setQuery] = useState("");
+
+  // N'exposer que les problématiques RÉELLEMENT prérendues. Le prérendu ne
+  // produit une page de détail que si au moins une praticienne ou un praticien
+  // y correspond, et l'index en listait neuf de plus : neuf liens vers des 404
+  // depuis une page stratégique. La liste se remplit d'elle-même à mesure que
+  // des praticiennes et des praticiens s'associent, sans intervention.
+  const publiees = useMemo(
+    () => problematiques.filter((p) => praticiens.some((pr) => matchProblematique(pr, p))),
+    [problematiques, praticiens],
+  );
 
   const filtered = useMemo(() => {
     const q = norm(query.trim());
-    if (!q) return problematiques;
-    return problematiques.filter((p) => {
+    if (!q) return publiees;
+    return publiees.filter((p) => {
       if (norm(p.nom).includes(q)) return true;
       return (p.synonymes ?? []).some((s) => norm(s).includes(q));
     });
-  }, [problematiques, query]);
+  }, [publiees, query]);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -34,7 +46,7 @@ export default function ProblematiquesIndex() {
       },
       {
         "@type": "ItemList",
-        itemListElement: problematiques.map((p, idx) => ({
+        itemListElement: publiees.map((p, idx) => ({
           "@type": "ListItem",
           position: idx + 1,
           name: p.nom,
@@ -51,12 +63,20 @@ export default function ProblematiquesIndex() {
         description="Explorez par problématique et trouvez la praticienne ou le praticien I-CA.RE qui vous correspond à Bordeaux : stress, anxiété, sommeil, deuil, parentalité et plus."
         path="/patients/problematiques"
       />
-      {problematiques.length > 0 && (
+      {publiees.length > 0 && (
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+      )}
+      {/* Marqueur data-problematiques-publiees : nombre de problématiques
+          réellement listées, une fois les DEUX requêtes abouties. La liste et son
+          ItemList n'existent que tant que la page rend, et elles dépendent
+          maintenant des praticiennes et praticiens autant que des problématiques.
+          Le prérendu attend ce fait déclaré, jamais une durée. Voir ATTENTES_DOM
+          dans scripts/prerender.mjs. */}
+      {!loading && !loadingPraticiens && (
+        <div hidden data-problematiques-publiees={publiees.length} />
       )}
 
       {/* Hero compact */}
@@ -99,7 +119,7 @@ export default function ProblematiquesIndex() {
             />
           </div>
 
-          {loading ? (
+          {loading || loadingPraticiens ? (
             <div className="py-20 flex items-center justify-center">
               <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
             </div>

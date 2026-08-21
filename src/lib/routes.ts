@@ -92,9 +92,21 @@ export function getEquivalentPath(
     ? (enMatch[1] || "/").replace(/^\//, "")
     : currentPath.replace(/^\//, "");
 
+  // Parcours par chemin le PLUS LONG d'abord, et non dans l'ordre de declaration.
+  // Sans ce tri, la cle generique gagne avant la cle specifique : `insights` est
+  // declaree avant `insightsCabinetMedical`, son test startsWith("insights/")
+  // reussit en premier, et la fonction recopie alors le slug tel quel dans
+  // l'autre langue. Elle rendait ainsi /insights/cabinet-medical-bordeaux pour
+  // hreflang="fr" depuis la page anglaise, une URL qui n'existe pas. Meme piege
+  // latent sur `investment`, qui masque investmentInterest, investmentMemo et
+  // investmentVerify. Le tri rend le resultat independant de l'ordre du litteral,
+  // donc une cle ajoutee plus tard ne peut plus rouvrir le defaut.
   const currentRoutes = routeMap[currentLang];
+  const parEspeceDecroissante = Object.entries(currentRoutes).sort(
+    ([, a], [, b]) => (b?.length ?? 0) - (a?.length ?? 0),
+  );
 
-  for (const [key, routePath] of Object.entries(currentRoutes)) {
+  for (const [key, routePath] of parEspeceDecroissante) {
     if (!routePath) continue;
 
     if (rest === routePath) {

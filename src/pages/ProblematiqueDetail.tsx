@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useProblematiques } from "@/hooks/useProblematiques";
 import { usePraticiensPublics } from "@/hooks/usePraticiensPublics";
 import { CartePraticien } from "@/components/patients/CartePraticien";
-import { norm, getPraticienProblematiqueTags } from "@/lib/taxonomy";
+import { matchProblematique } from "@/lib/taxonomy";
 import NotFound from "@/pages/NotFound";
 import { pageUrl } from "@/lib/siteUrl";
 
@@ -53,11 +53,7 @@ export default function ProblematiqueDetail() {
 
   const matchingPraticiens = useMemo(() => {
     if (!problematique) return [];
-    const targets = [problematique.nom, ...(problematique.synonymes ?? [])].map(norm);
-    return praticiens.filter((pr) => {
-      const source = getPraticienProblematiqueTags(pr);
-      return source.some((tag) => targets.includes(norm(tag)));
-    });
+    return praticiens.filter((pr) => matchProblematique(pr, problematique));
   }, [praticiens, problematique]);
 
   if (loadingP || loadingPr) {
@@ -114,7 +110,6 @@ export default function ProblematiqueDetail() {
       <SeoHead title={title} description={description} path={canonicalPath} />
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 

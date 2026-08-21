@@ -362,6 +362,30 @@ export interface PraticienForProblematiqueTags {
   problematiques_manuelles?: string[] | null;
 }
 
+export interface ProblematiqueForMatch {
+  nom: string;
+  synonymes?: string[] | null;
+}
+
+/**
+ * Matching partagé pour les pages /patients/problematiques/[slug] ET pour
+ * l'index qui y mène.
+ *
+ * Même règle que matchProblematiques() de scripts/publishedRoutes.mjs, qui
+ * décide quelles pages de détail sont réellement prérendues. L'index doit s'y
+ * conformer : lister une problématique sans praticienne ni praticien revenait à
+ * proposer un lien vers une 404 depuis une page stratégique.
+ */
+export function matchProblematique(
+  praticien: PraticienForProblematiqueTags,
+  problematique: ProblematiqueForMatch,
+): boolean {
+  const targets = [problematique.nom, ...(problematique.synonymes ?? [])].map(norm);
+  return getPraticienProblematiqueTags(praticien).some((tag) =>
+    targets.includes(norm(tag)),
+  );
+}
+
 export function getPraticienProblematiqueTags(
   praticien: PraticienForProblematiqueTags,
 ): string[] {

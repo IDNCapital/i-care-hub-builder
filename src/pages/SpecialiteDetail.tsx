@@ -97,7 +97,6 @@ export default function SpecialiteDetail() {
       <SeoHead title={title} description={description} path={canonicalPath} noIndex={noIndex} />
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
