@@ -20,7 +20,7 @@ import handler from "serve-handler";
 import { readFile, writeFile, mkdir } from "fs/promises";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import { existsSync } from "fs";
+import { existsSync, statSync } from "fs";
 import { JSDOM } from "jsdom";
 import { pagePath, pageUrl } from "./siteUrl.mjs";
 
@@ -326,8 +326,14 @@ function deduplicateHtml(html) {
   const doc = dom.window.document;
   const head = doc.head;
 
-  // Keep only the LAST of each: title, meta[name=description], link[rel=canonical]
-  deduplicateTag(head, "title");
+  // Le <title> garde la PREMIERE occurrence, tout le reste la DERNIERE.
+  // L'asymetrie vient de React 19, qui insere chaque <title> AVANT le
+  // premier titre deja present (mountHoistable : head.insertBefore(instance,
+  // querySelector("head > title"))) et se contente d'ajouter en fin pour
+  // <meta> et <link>. La page, montee en dernier, arrive donc en TETE pour le
+  // titre et en QUEUE pour le reste. Tant que react-helmet-async posait le
+  // head, tout arrivait en fin et une regle unique suffisait.
+  deduplicateTagKeepFirst(head, "title");
   deduplicateMetaByName(head, "description");
   deduplicateMetaByName(head, "twitter:title");
   deduplicateMetaByName(head, "twitter:description");
@@ -354,11 +360,10 @@ function deduplicateHtml(html) {
   return dom.serialize();
 }
 
-function deduplicateTag(head, tagName) {
+// Garde la PREMIERE occurrence. Reservee au <title>, voir deduplicateHtml.
+function deduplicateTagKeepFirst(head, tagName) {
   const els = head.querySelectorAll(tagName);
-  if (els.length > 1) {
-    for (let i = 0; i < els.length - 1; i++) els[i].remove();
-  }
+  for (let i = 1; i < els.length; i++) els[i].remove();
 }
 
 function deduplicateMetaByName(head, name) {
@@ -545,12 +550,36 @@ async function main() {
   const allRoutes = [...ROUTES, ...dynamicRoutes];
 
   // 1. Serve dist/ locally
-  const server = createServer((req, res) =>
-    handler(req, res, {
-      public: DIST,
-      rewrites: [{ source: "**", destination: "/index.html" }],
-    })
-  );
+  //
+  // La coquille SPA est lue UNE FOIS, avant toute capture, et servie depuis la
+  // memoire. Elle ne peut pas etre relue dans dist/ a chaque requete : la
+  // premiere route de ROUTES est "/", sa capture ECRASE dist/index.html, et les
+  // 187 routes suivantes booteraient alors sur un <head> portant deja le titre,
+  // la canonical, les hreflang et les og de l'accueil.
+  //
+  // Tant que react-helmet-async posait le head, elle balayait ces balises au
+  // demarrage : updateTags() reclame tout [data-rh] present et retire ce qu'elle
+  // ne reemet pas. Rendues nativement par React 19, elles ne portent plus de
+  // marqueur et rien ne les retire. La deduplication masque le probleme pour les
+  // proprietes qu'elle traite, en gardant celle de la page, mais pas pour
+  // og:image:width, og:image:height, og:image:alt et twitter:image:alt, ni pour
+  // un hreflang que la page n'emet pas elle-meme.
+  const SHELL = await readFile(join(DIST, "index.html"), "utf-8");
+  const estUnFichier = (chemin) => {
+    const cible = join(DIST, chemin);
+    return existsSync(cible) && !statSync(cible).isDirectory();
+  };
+  const server = createServer((req, res) => {
+    let chemin;
+    try {
+      chemin = decodeURIComponent(new URL(req.url, "http://localhost").pathname);
+    } catch {
+      chemin = "/";
+    }
+    if (estUnFichier(chemin)) return handler(req, res, { public: DIST });
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+    res.end(SHELL);
+  });
   await new Promise((resolve) => server.listen(PORT, resolve));
   console.log(`[prerender] Serving dist/ on http://localhost:${PORT}`);
 
@@ -579,7 +608,11 @@ async function main() {
         waitUntil: "networkidle0",
         timeout: 20000,
       });
-      await page.waitForSelector("title", { timeout: 5000 });
+      // Attendre la canonical, et non <title> : index.html porte desormais un
+      // titre de repli, donc waitForSelector("title") serait satisfait avant
+      // que React ait monte quoi que ce soit. La canonical n'existe que si la
+      // page a rendu, et le controle l'exige deja sur toute route capturee.
+      await page.waitForSelector('link[rel="canonical"]', { timeout: 5000 });
       const brut = await page.content();
       const html = deduplicateHtml(brut);
       return { html, erreurs: [...validateHtml(html, route), ...validateRouteType(html, route)], leve: null };

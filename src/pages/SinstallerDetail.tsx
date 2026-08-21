@@ -147,7 +147,11 @@ export default function SinstallerDetail() {
         path={path}
         ogImage={`https://i-ca.re/og/og-${ville}.png`}
       />
-      <Helmet>
+      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
+          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
+          et la capture du prerendu, qui n'attend plus que la canonical rendue
+          nativement par React, part avant elle. Disparait au lot 2. */}
+      <Helmet defer={false}>
         <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(localBusinessJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(serviceJsonLd)}</script>

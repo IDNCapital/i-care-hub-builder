@@ -108,9 +108,7 @@ export default function PreviewPraticien() {
       <Helmet>
         <meta name="robots" content="noindex,nofollow,noarchive" />
         <meta name="googlebot" content="noindex,nofollow,noarchive" />
-        <title>
-          Aperçu fiche, {praticien.prenom} {praticien.nom} · I-CA.RE
-        </title>
+        <title>{`Aperçu fiche, ${praticien.prenom} ${praticien.nom} · I-CA.RE`}</title>
       </Helmet>
 
       {/* Bandeau sticky : variantes selon statut_validation */}

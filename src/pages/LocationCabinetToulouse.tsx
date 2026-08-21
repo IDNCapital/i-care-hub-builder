@@ -175,7 +175,11 @@ export default function LocationCabinetToulouse() {
         description={t("seo.locationToulouseDesc")}
         path={lang === "fr" ? "/location-cabinet-toulouse" : "/en/office-rental-toulouse"}
       />
-      <Helmet>
+      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
+          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
+          et la capture du prerendu, qui n'attend plus que la canonical rendue
+          nativement par React, part avant elle. Disparait au lot 2. */}
+      <Helmet defer={false}>
         <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
       </Helmet>
 

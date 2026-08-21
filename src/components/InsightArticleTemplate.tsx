@@ -178,7 +178,11 @@ export function InsightArticleTemplate({
   return (
     <Layout>
       <SeoHead title={title} description={description} path={path} />
-      <Helmet>
+      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
+          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
+          et la capture du prerendu, qui n'attend plus que la canonical rendue
+          nativement par React, part avant elle. Disparait au lot 2. */}
+      <Helmet defer={false}>
         <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
       </Helmet>

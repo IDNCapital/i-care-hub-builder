@@ -6,6 +6,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { FichePraticien } from "@/components/praticiens/FichePraticien";
 import type { Praticien } from "@/pages/admin/AdminPraticiens";
 import { pageUrl } from "@/lib/siteUrl";
+import {
+  DEFAULT_OG_IMAGE_ALT,
+  DEFAULT_OG_IMAGE_HEIGHT,
+  DEFAULT_OG_IMAGE_WIDTH,
+} from "@/components/SeoHead";
 
 type CabinetForLd = {
   name: string;
@@ -122,10 +127,8 @@ export default function PraticienPublic() {
         className="min-h-screen flex items-center justify-center px-6"
         style={{ backgroundColor: "#F6F5F0" }}
       >
-        <Helmet>
-          <title>Fiche indisponible · I-CA.RE</title>
-          <meta name="robots" content="noindex,follow" />
-        </Helmet>
+        <title>Fiche indisponible · I-CA.RE</title>
+        <meta name="robots" content="noindex,follow" />
         <div
           className="max-w-md w-full text-center bg-white"
           style={{ border: "1px solid #E2EAE5", padding: 32, borderRadius: 12 }}
@@ -180,25 +183,42 @@ export default function PraticienPublic() {
 
   return (
     <>
-      <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta name="robots" content="index,follow" />
-        <link rel="canonical" href={canonical} />
-        {/* Fiche uniquement francaise : autoreference fr + x-default, aucun hreflang en. */}
-        <link rel="alternate" hrefLang="fr" href={canonical} />
-        <link rel="alternate" hrefLang="x-default" href={canonical} />
-        <meta property="og:type" content="profile" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={image} />
-        <meta property="og:url" content={canonical} />
-        <meta property="og:site_name" content="I-CA.RE" />
-        <meta property="og:locale" content="fr_FR" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={image} />
+      {/* title, meta et link sont rendus nativement par React 19. Le
+          script JSON-LD reste dans un <Helmet> : React ne hisse pas les
+          script[type="application/ld+json"], il les laisse dans le corps.
+          Arbitrage du corps remis au lot 2. */}
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta name="robots" content="index,follow" />
+      <link rel="canonical" href={canonical} />
+      {/* Fiche uniquement francaise : autoreference fr + x-default, aucun hreflang en. */}
+      <link rel="alternate" hrefLang="fr" href={canonical} />
+      <link rel="alternate" hrefLang="x-default" href={canonical} />
+      <meta property="og:type" content="profile" />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={image} />
+      {/* Dimensions et alternative heritees jusqu'ici du <Helmet> racine
+          d'App.tsx, retire au meme lot. Elles decrivent l'image par defaut
+          et non la photo de la fiche : valeur reprise telle quelle pour que
+          le retrait ne change aucune balise servie. Defaut signale, a
+          arbitrer au lot 2. */}
+      <meta property="og:image:width" content={String(DEFAULT_OG_IMAGE_WIDTH)} />
+      <meta property="og:image:height" content={String(DEFAULT_OG_IMAGE_HEIGHT)} />
+      <meta property="og:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
+      <meta property="og:url" content={canonical} />
+      <meta property="og:site_name" content="I-CA.RE" />
+      <meta property="og:locale" content="fr_FR" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={image} />
+      <meta name="twitter:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
+      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
+          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
+          et la capture du prerendu, qui n'attend plus que la canonical rendue
+          nativement par React, part avant elle. Disparait au lot 2. */}
+      <Helmet defer={false}>
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
       <div

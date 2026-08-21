@@ -1,9 +1,20 @@
-import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { getEquivalentPath } from "@/lib/routes";
 import { assetUrl, pageUrl } from "@/lib/siteUrl";
 
 const DEFAULT_OG_IMAGE = assetUrl("/og-i-ca-re.png");
+
+// Dimensions et alternative textuelle de l'image par defaut. Elles etaient
+// portees par le <Helmet> racine d'App.tsx, retire au meme lot. Sans Helmet,
+// React 19 rend ces balises nativement et ne deduplique pas : une valeur par
+// defaut posee a la racine s'AJOUTERAIT a celle de la page au lieu de lui ceder
+// la place. Le seul emetteur possible est donc la page elle-meme.
+// Exportees parce que PraticienPublic, qui n'utilise pas SeoHead, en heritait
+// aussi par la racine.
+export const DEFAULT_OG_IMAGE_WIDTH = 1200;
+export const DEFAULT_OG_IMAGE_HEIGHT = 630;
+export const DEFAULT_OG_IMAGE_ALT =
+  "I-CA.RE, Des lieux de soin pensés comme des lieux de vie";
 
 interface SeoHeadProps {
   title: string;
@@ -25,6 +36,11 @@ interface SeoHeadProps {
 /**
  * Unified SEO head component.
  * Adds: title, meta description, canonical, OG tags, hreflang alternates.
+ *
+ * Rendu nativement : depuis React 19, <title>, <meta> et <link> sont hisses
+ * dans le <head> depuis n'importe ou dans l'arbre, sans bibliotheque tierce.
+ * React ne deduplique pas ; la deduplication du HTML servi est faite par
+ * deduplicateHtml() dans scripts/prerender.mjs.
  */
 export function SeoHead({
   title,
@@ -43,11 +59,18 @@ export function SeoHead({
   const frPath = lang === "fr" ? path : getEquivalentPath(path, "fr");
   const enPath = lang === "en" ? path : getEquivalentPath(path, "en");
   const image = ogImage || DEFAULT_OG_IMAGE;
+  // Les dimensions et l'alternative decrivent l'image effectivement posee :
+  // celles de la page quand elle les fournit, celles de l'image par defaut
+  // sinon. Une page qui donne son ogImage sans donner ses dimensions retombe
+  // donc sur 1200x630, ce qui est exactement ce dont elle heritait de la racine.
+  const imageWidth = ogImageWidth ?? DEFAULT_OG_IMAGE_WIDTH;
+  const imageHeight = ogImageHeight ?? DEFAULT_OG_IMAGE_HEIGHT;
+  const imageAlt = ogImageAlt ?? DEFAULT_OG_IMAGE_ALT;
   // x-default falls back to FR when available, otherwise to the current path.
   const xDefaultPath = frPath ?? path;
 
   return (
-    <Helmet>
+    <>
       <title>{title}</title>
       <meta name="description" content={description} />
 
@@ -65,15 +88,9 @@ export function SeoHead({
       <meta property="og:description" content={description} />
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={image} />
-      {ogImage && ogImageWidth ? (
-        <meta property="og:image:width" content={String(ogImageWidth)} />
-      ) : null}
-      {ogImage && ogImageHeight ? (
-        <meta property="og:image:height" content={String(ogImageHeight)} />
-      ) : null}
-      {ogImage && ogImageAlt ? (
-        <meta property="og:image:alt" content={ogImageAlt} />
-      ) : null}
+      <meta property="og:image:width" content={String(imageWidth)} />
+      <meta property="og:image:height" content={String(imageHeight)} />
+      <meta property="og:image:alt" content={imageAlt} />
       <meta property="og:site_name" content="I-CA.RE" />
       <meta property="og:locale" content={lang === "fr" ? "fr_FR" : "en_GB"} />
 
@@ -82,11 +99,9 @@ export function SeoHead({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-      {ogImage && ogImageAlt ? (
-        <meta name="twitter:image:alt" content={ogImageAlt} />
-      ) : null}
+      <meta name="twitter:image:alt" content={imageAlt} />
 
       {noIndex && <meta name="robots" content="noindex, nofollow" />}
-    </Helmet>
+    </>
   );
 }
