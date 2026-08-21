@@ -8,7 +8,7 @@ interface ChargementPageProps {
 
 /**
  * État de chargement / d'échec de requête partagé par les pages dynamiques.
- * Ne rend AUCUN Helmet, SeoHead, JSON-LD ni meta : le head prérendu reste intact.
+ * Ne rend AUCUN SeoHead, JSON-LD ni meta : le head prérendu reste intact.
  */
 export function ChargementPage({ mode }: ChargementPageProps) {
   if (mode === "loading") {

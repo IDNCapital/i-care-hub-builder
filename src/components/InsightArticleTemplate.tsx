@@ -11,7 +11,6 @@ import {
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
-import { Helmet } from "react-helmet-async";
 import { pageUrl } from "@/lib/siteUrl";
 
 /* ── Types ─────────────────────────────────────────────── */
@@ -178,14 +177,14 @@ export function InsightArticleTemplate({
   return (
     <Layout>
       <SeoHead title={title} description={description} path={path} />
-      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
-          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
-          et la capture du prerendu, qui n'attend plus que la canonical rendue
-          nativement par React, part avant elle. Disparait au lot 2. */}
-      <Helmet defer={false}>
-        <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
-      </Helmet>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
 
       <article>
         {/* ── Hero ──────────────────────────────────── */}

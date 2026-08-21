@@ -1,7 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link, Navigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { useState, useEffect } from "react";
@@ -254,10 +253,8 @@ export default function InvestisseurMemo() {
   if (accessState === "loading") {
     return (
       <Layout>
-        <Helmet>
-          <title>Note d'investissement | I‑CA.RE</title>
-          <meta name="robots" content="noindex, nofollow" />
-        </Helmet>
+        <title>Note d'investissement | I‑CA.RE</title>
+        <meta name="robots" content="noindex, nofollow" />
         <section className="pt-32 pb-20">
           <div className="container flex justify-center">
             <Loader2 className="w-10 h-10 text-primary animate-spin" />
@@ -269,11 +266,9 @@ export default function InvestisseurMemo() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>Note d'investissement | I‑CA.RE</title>
-        <meta name="description" content="Note d'investissement I‑CA.RE : approche patrimoniale, mutualisation du risque locatif, gouvernance et feuille de route." />
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+      <title>Note d'investissement | I‑CA.RE</title>
+      <meta name="description" content="Note d'investissement I‑CA.RE : approche patrimoniale, mutualisation du risque locatif, gouvernance et feuille de route." />
+      <meta name="robots" content="noindex, nofollow" />
 
       {/* Header */}
       <section className="pt-32 pb-16 bg-secondary">

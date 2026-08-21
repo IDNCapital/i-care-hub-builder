@@ -1,6 +1,5 @@
 import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
-import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { MapPin, ArrowRight } from "lucide-react";
 import { useProfessionsInstallation, useCabinetsPipeline } from "@/hooks/useInstallation";
@@ -38,14 +37,14 @@ export default function SinstallerIndex() {
         description="Les cabinets I-CA.RE ouvrent en Nouvelle-Aquitaine et en Occitanie. Découvrez les opportunités d'installation pour les professions du soin, du paramédical et du bien-être."
         path="/sinstaller"
       />
-      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
-          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
-          et la capture du prerendu, qui n'attend plus que la canonical rendue
-          nativement par React, part avant elle. Disparait au lot 2. */}
-      <Helmet defer={false}>
-        <script type="application/ld+json">{JSON.stringify(webPageJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
-      </Helmet>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
 
       {/* Hero */}
       <section className="pt-32 pb-16 bg-secondary">

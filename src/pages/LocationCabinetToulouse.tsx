@@ -28,7 +28,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ArrowRight, MapPin, TreePine, Volume2, Loader2 } from "lucide-react";
-import { Helmet } from "react-helmet-async";
 import { InlineBrand } from "@/components/BrandName";
 import { ICARE_TELEPHONE_AFFICHAGE } from "@/lib/contact";
 import { useCabinetsPipeline, useProfessions } from "@/hooks/useInstallation";
@@ -175,13 +174,10 @@ export default function LocationCabinetToulouse() {
         description={t("seo.locationToulouseDesc")}
         path={lang === "fr" ? "/location-cabinet-toulouse" : "/en/office-rental-toulouse"}
       />
-      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
-          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
-          et la capture du prerendu, qui n'attend plus que la canonical rendue
-          nativement par React, part avant elle. Disparait au lot 2. */}
-      <Helmet defer={false}>
-        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
-      </Helmet>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
 
       {/* HERO */}
       <section className="relative min-h-[70vh] flex items-center pt-20">

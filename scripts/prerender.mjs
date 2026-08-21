@@ -387,6 +387,37 @@ function deduplicateLinkByRel(head, rel) {
   }
 }
 
+// ── Attentes DOM par route ──────────────────────────────────────────
+// Un fait DECLARE, jamais un delai. Depuis le lot 2 le JSON-LD est rendu dans
+// le CORPS : il n'existe que tant que son composant rend. Un composant qui rend
+// null en attendant sa requete est, vu du DOM, indiscernable d'un composant qui
+// a fini et n'a rien a montrer. La capture ne peut donc pas savoir si elle doit
+// attendre, et elle partait parfois trop tot : /en/projects/i-ca-re-nansouty
+// perdait son bloc sur 1 capture sur 8, mesure sur 8 captures avec la coquille
+// pristine. Tant que react-helmet-async ecrivait dans le head, la balise y
+// restait une fois posee et la course etait invisible.
+//
+// Le composant declare donc son etat par un attribut, et la capture attend cet
+// attribut. Pas de seuil de temps regle a la main, et l'attente echoue si le
+// fait ne vient jamais, ce que la reprise par route absorbe comme le reste.
+const ATTENTES_DOM = [
+  {
+    match: (p) => /^(\/en)?\/(projets|projects)\/./.test(p),
+    selecteur: "[data-praticiens-cabinet]",
+    label: "section praticiens du cabinet",
+  },
+  {
+    match: (p) => p === "/temoignages-praticiens" || p === "/en/practitioner-testimonials",
+    selecteur: "[data-avis-mis-en-avant]",
+    label: "avis Google mis en avant",
+  },
+];
+
+function attenteDom(routePath) {
+  const p = routePath !== "/" ? routePath.replace(/\/$/, "") : routePath;
+  return ATTENTES_DOM.find((a) => a.match(p)) || null;
+}
+
 // ── Validation ──────────────────────────────────────────────────────
 function validateHtml(html, route) {
   const dom = new JSDOM(html);
@@ -442,6 +473,40 @@ function validateRouteType(html, route) {
   // JSON-LD : controle bloquant depuis le sprint 9 (voir JSONLD_EXPECTATIONS)
   errors.push(...checkJsonLd(doc, route.path).errors);
 
+  if (route.attendServiceProvider) {
+    const porte = [...doc.querySelectorAll('script[type="application/ld+json"]')].some((el) => {
+      try {
+        const j = JSON.parse(el.textContent);
+        return Array.isArray(j?.serviceProvider) && j.serviceProvider.length > 0;
+      } catch {
+        return false;
+      }
+    });
+    if (!porte) errors.push("JSON-LD cabinet : bloc serviceProvider absent");
+  }
+
+  // Filet des avis mis en avant. La page declare, par son marqueur, combien
+  // d'avis sa requete a rendus ; autant de blocs Review doivent etre presents.
+  // ATTENTION a sa portee : contrairement au filet serviceProvider, il est derive
+  // de l'etat DECLARE par la page et non d'une source independante, le prerendu ne
+  // lisant pas la table avis_google_mis_en_avant. Il attrape le cas reel, un
+  // marqueur present sans ses blocs. L'absence totale de marqueur, elle, est deja
+  // refusee en amont par l'attente declaree de ATTENTES_DOM.
+  const marqueurAvis = doc.querySelector("[data-avis-mis-en-avant]");
+  if (marqueurAvis) {
+    const attendus = Number(marqueurAvis.getAttribute("data-avis-mis-en-avant")) || 0;
+    const rendus = [...doc.querySelectorAll('script[type="application/ld+json"]')].filter((el) => {
+      try {
+        return JSON.parse(el.textContent)?.["@type"] === "Review";
+      } catch {
+        return false;
+      }
+    }).length;
+    if (rendus !== attendus) {
+      errors.push(`JSON-LD avis : ${rendus} bloc(s) Review pour ${attendus} avis declare(s)`);
+    }
+  }
+
   return errors;
 }
 
@@ -463,6 +528,10 @@ async function main() {
   // ── Dynamic routes: praticiens publiés + détails problématiques matchés ──
   // Fetch avant lancement du navigateur pour un mode d'échec clair.
   const dynamicRoutes = [];
+  // Cabinets ayant au moins une praticienne ou un praticien valide. Derive de la
+  // MEME source que les routes dynamiques, fetchPraticiensPublies, et non devine :
+  // c'est ce qui rend l'attente du bloc serviceProvider exigible sans supposition.
+  const cabinetsAvecPraticiens = new Set();
   if (process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
     try {
       const {
@@ -475,6 +544,10 @@ async function main() {
         fetchInstallationMatrix,
       } = await import("./publishedRoutes.mjs");
       const praticiens = await fetchPraticiensPublies();
+      for (const p of praticiens) {
+        const cs = (p?.cabinet_slug ?? "").toString().trim();
+        if (cs) cabinetsAvecPraticiens.add(cs);
+      }
       const problematiques = await fetchProblematiques();
       const matched = matchProblematiques(problematiques, praticiens);
       const specialites = await fetchSpecialites();
@@ -547,7 +620,19 @@ async function main() {
       process.exit(1);
     }
   }
-  const allRoutes = [...ROUTES, ...dynamicRoutes];
+  // Une page cabinet dont le cabinet a des praticiennes ou des praticiens DOIT
+  // porter le bloc MedicalBusiness a serviceProvider de SectionPraticiensDuCabinet.
+  // Sans ce filet, son absence passe : l'attente declaree pour ces routes est
+  // MedicalBusiness + Organization, et elle est deja satisfaite par le bloc propre
+  // de ProjetDetail. C'est exactement ce qui a laisse passer un bloc sur 691.
+  const allRoutes = [...ROUTES, ...dynamicRoutes].map((r) => {
+    const m = r.path.match(/^(?:\/en)?\/(?:projets|projects)\/([^/]+)$/);
+    return m && cabinetsAvecPraticiens.has(m[1])
+      ? { ...r, attendServiceProvider: true }
+      : r;
+  });
+  const nbFilet = allRoutes.filter((r) => r.attendServiceProvider).length;
+  console.log(`[prerender] Filet serviceProvider : ${nbFilet} route(s) cabinet concernee(s).`);
 
   // 1. Serve dist/ locally
   //
@@ -613,6 +698,9 @@ async function main() {
       // que React ait monte quoi que ce soit. La canonical n'existe que si la
       // page a rendu, et le controle l'exige deja sur toute route capturee.
       await page.waitForSelector('link[rel="canonical"]', { timeout: 5000 });
+      // Puis les attentes DECLAREES de la route, s'il y en a. Voir ATTENTES_DOM.
+      const attente = attenteDom(route.path);
+      if (attente) await page.waitForSelector(attente.selecteur, { timeout: 5000 });
       const brut = await page.content();
       const html = deduplicateHtml(brut);
       return { html, erreurs: [...validateHtml(html, route), ...validateRouteType(html, route)], leve: null };

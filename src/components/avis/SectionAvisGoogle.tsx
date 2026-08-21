@@ -19,7 +19,7 @@ import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
  * exige en plus au moins un avis exploitable, ce qui interdit toute section
  * vide sur les cabinets sans fiche Google.
  *
- * Le composant ne rend ni Helmet, ni meta, ni JSON-LD : les avis collectés
+ * Le composant ne rend ni meta, ni JSON-LD : les avis collectés
  * par un tiers ne sont pas balisés.
  */
 

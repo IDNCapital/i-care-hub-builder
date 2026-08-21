@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
 import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import {
@@ -168,12 +167,9 @@ export default function ProjetDetail() {
         path={lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}
         {...(PROJECT_OG_IMAGES[project.slug] ?? {})}
       />
-      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
-          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
-          et la capture du prerendu, qui n'attend plus que la canonical rendue
-          nativement par React, part avant elle. Disparait au lot 2. */}
-      <Helmet defer={false}>
-        <script type="application/ld+json">{JSON.stringify((() => {
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify((() => {
           const canonicalUrl = pageUrl(lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`);
           const heroPath = getProjectHero(project.slug, project.hero_image_url);
           const heroUrl = heroPath ? `https://i-ca.re${heroPath}` : undefined;
@@ -213,8 +209,8 @@ export default function ProjetDetail() {
           // Pas d'horaires pour un lieu qui n'est pas encore ouvert.
           if (project.status === "en_exploitation") jsonLd["openingHours"] = "Mo-Fr 08:00-20:00";
           return jsonLd;
-        })())}</script>
-      </Helmet>
+        })()) }}
+      />
 
       <section className="relative h-[60vh] min-h-[400px]">
         {heroSrc ? (

@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -114,10 +113,8 @@ export default function InvestisseurInteret() {
   if (emailSent) {
     return (
       <Layout>
-        <Helmet>
-          <title>{lang === "en" ? "Check Your Email | I-CA.RE" : "Vérifiez vos emails | I-CA.RE"}</title>
-          <meta name="robots" content="noindex, nofollow" />
-        </Helmet>
+        <title>{lang === "en" ? "Check Your Email | I-CA.RE" : "Vérifiez vos emails | I-CA.RE"}</title>
+        <meta name="robots" content="noindex, nofollow" />
         <section className="pt-32 pb-20">
           <div className="container">
             <div className="max-w-lg mx-auto text-center">
@@ -158,13 +155,11 @@ export default function InvestisseurInteret() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{lang === "en" ? "Express Your Interest | I-CA.RE Investment" : "Manifester mon intérêt | Investissement I-CA.RE"}</title>
-        <meta name="description" content={lang === "en"
-          ? "Complete a short form to receive the I-CA.RE investment memo and access detailed financial model information."
-          : "Remplissez un formulaire court pour recevoir la note d'investissement I-CA.RE et accéder aux informations détaillées de notre modèle financier."
-        } />
-      </Helmet>
+      <title>{lang === "en" ? "Express Your Interest | I-CA.RE Investment" : "Manifester mon intérêt | Investissement I-CA.RE"}</title>
+      <meta name="description" content={lang === "en"
+        ? "Complete a short form to receive the I-CA.RE investment memo and access detailed financial model information."
+        : "Remplissez un formulaire court pour recevoir la note d'investissement I-CA.RE et accéder aux informations détaillées de notre modèle financier."
+      } />
 
       <section className="pt-32 pb-8">
         <div className="container">

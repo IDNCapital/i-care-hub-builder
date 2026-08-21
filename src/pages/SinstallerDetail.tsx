@@ -1,6 +1,5 @@
 import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
-import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
 import { MapPin, ChevronRight } from "lucide-react";
 import NotFound from "@/pages/NotFound";
@@ -147,15 +146,18 @@ export default function SinstallerDetail() {
         path={path}
         ogImage={`https://i-ca.re/og/og-${ville}.png`}
       />
-      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
-          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
-          et la capture du prerendu, qui n'attend plus que la canonical rendue
-          nativement par React, part avant elle. Disparait au lot 2. */}
-      <Helmet defer={false}>
-        <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(localBusinessJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(serviceJsonLd)}</script>
-      </Helmet>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
 
       {/* Breadcrumb visuel */}
       <nav aria-label="Fil d'Ariane" className="container pt-28 pb-4">

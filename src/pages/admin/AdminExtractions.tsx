@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -222,10 +221,8 @@ export default function AdminExtractions() {
 
   return (
     <>
-      <Helmet>
-        <title>Extractions | Admin I‑CA.RE</title>
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+      <title>Extractions | Admin I‑CA.RE</title>
+      <meta name="robots" content="noindex, nofollow" />
       <main className="min-h-screen bg-background">
         <header className="border-b bg-card sticky top-0 z-10">
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">

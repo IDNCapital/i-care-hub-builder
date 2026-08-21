@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { Loader2, LogOut, Search, Inbox } from "lucide-react";
 import { toast } from "sonner";
@@ -133,10 +132,8 @@ export default function AdminDemandesInstallation() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <title>Demandes installation | Admin I-CA.RE</title>
-        <meta name="robots" content="noindex,nofollow" />
-      </Helmet>
+      <title>Demandes installation | Admin I-CA.RE</title>
+      <meta name="robots" content="noindex,nofollow" />
       <header className="border-b bg-background sticky top-0 z-10">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div>

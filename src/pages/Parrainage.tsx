@@ -1,7 +1,6 @@
 // Page en sommeil depuis le 17/07/2026 (Sprint 16) : route retirée de App.tsx,
 // réactivable en la remettant + prerender + sitemap.
 import { useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import {
   UserCircle2,
@@ -276,13 +275,10 @@ export default function Parrainage() {
         description="Recommandez une praticienne ou un praticien qui signe un bail dans un cabinet I-CA.RE et bénéficiez de 3 mois de services Espace Patients premium offerts."
         path={path}
       />
-      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
-          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
-          et la capture du prerendu, qui n'attend plus que la canonical rendue
-          nativement par React, part avant elle. Disparait au lot 2. */}
-      <Helmet defer={false}>
-        <script type="application/ld+json">{JSON.stringify(webPageJsonLd)}</script>
-      </Helmet>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
+      />
 
       {/* ── Section 1 : Hero ───────────────────── */}
       <section className="bg-background pt-24 pb-16">

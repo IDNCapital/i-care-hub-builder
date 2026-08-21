@@ -1,5 +1,4 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Helmet } from "react-helmet-async";
 import { useParams, Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -46,11 +45,9 @@ export default function PreviewPraticien() {
         className="min-h-screen flex items-center justify-center"
         style={{ backgroundColor: "#F6F5F0" }}
       >
-        <Helmet>
-          <meta name="robots" content="noindex,nofollow,noarchive" />
-          <meta name="googlebot" content="noindex,nofollow,noarchive" />
-          <title>Aperçu fiche · I-CA.RE</title>
-        </Helmet>
+        <meta name="robots" content="noindex,nofollow,noarchive" />
+        <meta name="googlebot" content="noindex,nofollow,noarchive" />
+        <title>Aperçu fiche · I-CA.RE</title>
         <div className="flex items-center gap-2 text-sm" style={{ color: "#6B6B6B" }}>
           <Loader2 className="w-4 h-4 animate-spin" /> Chargement de l'aperçu…
         </div>
@@ -64,11 +61,9 @@ export default function PreviewPraticien() {
         className="min-h-screen flex items-center justify-center px-6"
         style={{ backgroundColor: "#F6F5F0" }}
       >
-        <Helmet>
-          <meta name="robots" content="noindex,nofollow,noarchive" />
-          <meta name="googlebot" content="noindex,nofollow,noarchive" />
-          <title>Lien expiré · I-CA.RE</title>
-        </Helmet>
+        <meta name="robots" content="noindex,nofollow,noarchive" />
+        <meta name="googlebot" content="noindex,nofollow,noarchive" />
+        <title>Lien expiré · I-CA.RE</title>
         <div
           className="max-w-md w-full text-center bg-white"
           style={{
@@ -105,11 +100,9 @@ export default function PreviewPraticien() {
 
   return (
     <>
-      <Helmet>
-        <meta name="robots" content="noindex,nofollow,noarchive" />
-        <meta name="googlebot" content="noindex,nofollow,noarchive" />
-        <title>{`Aperçu fiche, ${praticien.prenom} ${praticien.nom} · I-CA.RE`}</title>
-      </Helmet>
+      <meta name="robots" content="noindex,nofollow,noarchive" />
+      <meta name="googlebot" content="noindex,nofollow,noarchive" />
+      <title>{`Aperçu fiche, ${praticien.prenom} ${praticien.nom} · I-CA.RE`}</title>
 
       {/* Bandeau sticky : variantes selon statut_validation */}
       {(() => {

@@ -5,12 +5,11 @@ import { assetUrl, pageUrl } from "@/lib/siteUrl";
 const DEFAULT_OG_IMAGE = assetUrl("/og-i-ca-re.png");
 
 // Dimensions et alternative textuelle de l'image par defaut. Elles etaient
-// portees par le <Helmet> racine d'App.tsx, retire au meme lot. Sans Helmet,
-// React 19 rend ces balises nativement et ne deduplique pas : une valeur par
-// defaut posee a la racine s'AJOUTERAIT a celle de la page au lieu de lui ceder
-// la place. Le seul emetteur possible est donc la page elle-meme.
-// Exportees parce que PraticienPublic, qui n'utilise pas SeoHead, en heritait
-// aussi par la racine.
+// portees par un composant racine, retire au lot 1 : React 19 rend ces balises
+// nativement et ne deduplique pas, une valeur par defaut posee a la racine
+// s'AJOUTERAIT a celle de la page au lieu de lui ceder la place. Le seul
+// emetteur possible est donc la page elle-meme. Exportees parce que
+// PraticienPublic, qui n'utilise pas SeoHead, en heritait aussi.
 export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 export const DEFAULT_OG_IMAGE_HEIGHT = 630;
 export const DEFAULT_OG_IMAGE_ALT =

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -340,10 +339,8 @@ export default function AdminPraticiens() {
 
   return (
     <>
-      <Helmet>
-        <title>Praticiens | Admin I‑CA.RE</title>
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+      <title>Praticiens | Admin I‑CA.RE</title>
+      <meta name="robots" content="noindex, nofollow" />
       <TooltipProvider>
         <main className="min-h-screen bg-background">
           {/* Header */}

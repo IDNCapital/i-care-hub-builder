@@ -12,7 +12,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { InlineBrand } from "@/components/BrandName";
-import { Helmet } from "react-helmet-async";
 
 export default function FAQ() {
   const { t, i18n } = useTranslation();
@@ -41,13 +40,10 @@ export default function FAQ() {
         description={t("seo.faqDesc")}
         path={lang === "fr" ? "/questions-frequentes" : "/en/faq"}
       />
-      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
-          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
-          et la capture du prerendu, qui n'attend plus que la canonical rendue
-          nativement par React, part avant elle. Disparait au lot 2. */}
-      <Helmet defer={false}>
-        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
-      </Helmet>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
 
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container">

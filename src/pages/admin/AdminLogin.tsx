@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,10 +38,8 @@ export default function AdminLogin() {
 
   return (
     <>
-      <Helmet>
-        <title>Admin | I‑CA.RE</title>
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+      <title>Admin | I‑CA.RE</title>
+      <meta name="robots" content="noindex, nofollow" />
       <main className="min-h-screen flex items-center justify-center bg-background px-4">
         <Card className="w-full max-w-sm p-8">
           <div className="flex flex-col items-center mb-6">

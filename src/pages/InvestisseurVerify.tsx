@@ -1,7 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
@@ -58,10 +57,8 @@ export default function InvestisseurVerify() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>{lang === "en" ? "Email Verification | I‑CA.RE" : "Vérification email | I‑CA.RE"}</title>
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+      <title>{lang === "en" ? "Email Verification | I‑CA.RE" : "Vérification email | I‑CA.RE"}</title>
+      <meta name="robots" content="noindex, nofollow" />
 
       <section className="pt-32 pb-20">
         <div className="container">

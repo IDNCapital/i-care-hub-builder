@@ -3,7 +3,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Index from "./pages/Index";
@@ -91,177 +90,175 @@ function FrRedirect() {
 }
 
 const App = () => (
-  <HelmetProvider>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AnalyticsProvider>
-            <Routes>
-              {/* Preview privée praticien (langue-agnostique, hors i18n) */}
-              <Route path="/preview/:slug/:token" element={<PreviewPraticien />} />
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <AnalyticsProvider>
+          <Routes>
+            {/* Preview privée praticien (langue-agnostique, hors i18n) */}
+            <Route path="/preview/:slug/:token" element={<PreviewPraticien />} />
 
-              {/* Fiche publique praticien (langue-agnostique pour V1) */}
-              <Route path="/praticien/:slug" element={<PraticienPublic />} />
+            {/* Fiche publique praticien (langue-agnostique pour V1) */}
+            <Route path="/praticien/:slug" element={<PraticienPublic />} />
 
-              {/* Preview interne footer Famille IDN : sprint 7 (noindex,nofollow) */}
-              <Route path="/preview-footer-idn" element={<PreviewFooterIdn />} />
+            {/* Preview interne footer Famille IDN : sprint 7 (noindex,nofollow) */}
+            <Route path="/preview-footer-idn" element={<PreviewFooterIdn />} />
 
-              {/* Preview v3 footer compact unifié : sprint 7 (noindex,nofollow) */}
-              <Route path="/preview-footer-idn-v3" element={<PreviewFooterIdnV3 />} />
+            {/* Preview v3 footer compact unifié : sprint 7 (noindex,nofollow) */}
+            <Route path="/preview-footer-idn-v3" element={<PreviewFooterIdnV3 />} />
 
-              {/* Preview interne carte des cabinets : sprint 6 (noindex,nofollow) */}
-              <Route path="/preview-carte-cabinets" element={<PreviewCarteCabinets />} />
+            {/* Preview interne carte des cabinets : sprint 6 (noindex,nofollow) */}
+            <Route path="/preview-carte-cabinets" element={<PreviewCarteCabinets />} />
 
-              {/* Admin routes (hors i18n) */}
-              <Route path="/admin/login" element={<AdminLogin />} />
+            {/* Admin routes (hors i18n) */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route
+              path="/admin/praticiens"
+              element={
+                <AdminGuard>
+                  <AdminPraticiens />
+                </AdminGuard>
+              }
+            />
+            <Route
+              path="/admin/demandes"
+              element={
+                <AdminGuard>
+                  <AdminDemandes />
+                </AdminGuard>
+              }
+            />
+            <Route
+              path="/admin/demandes-installation"
+              element={
+                <AdminGuard>
+                  <AdminDemandesInstallation />
+                </AdminGuard>
+              }
+            />
+            <Route
+              path="/admin/idn-os-webhooks"
+              element={
+                <AdminGuard>
+                  <AdminWebhooks />
+                </AdminGuard>
+              }
+            />
+            <Route
+              path="/admin/extractions"
+              element={
+                <AdminGuard>
+                  <AdminExtractions />
+                </AdminGuard>
+              }
+            />
+            <Route path="/admin" element={<Navigate to="/admin/praticiens" replace />} />
+
+            {/* EN routes (prefixed) */}
+            <Route path="/en/*" element={<LangSync lang="en"><Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/projects" element={<Projets />} />
+              <Route path="/projects/:slug" element={<ProjetDetail />} />
+              <Route path="/health-professionals" element={<Professionnels />} />
+              <Route path="/investment" element={<Investissement />} />
+              <Route path="/investment/interest" element={<InvestisseurInteret />} />
+              <Route path="/investment/memo" element={<InvestisseurMemo />} />
+              <Route path="/investment/verify" element={<InvestisseurVerify />} />
+              <Route path="/our-approach" element={<NotreApproche />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/legal" element={<MentionsLegales />} />
+              <Route path="/privacy" element={<PolitiqueConfidentialite />} />
+              <Route path="/cookies" element={<PolitiqueCookies />} />
+              <Route path="/office-rental-bordeaux" element={<LocationCabinetBordeaux />} />
+              <Route path="/office-rental-toulouse" element={<LocationCabinetToulouse />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/blog/finding-office-bordeaux-practitioner" element={<Navigate to="/en/insights/medical-office-bordeaux" replace />} />
+              <Route path="/blog/consultation-office-cost-bordeaux" element={<Navigate to="/en/insights/office-budget-bordeaux" replace />} />
+              <Route path="/setting-up-practice" element={<Navigate to="/en/health-professionals" replace />} />
+              <Route path="/finding-medical-office-bordeaux" element={<Navigate to="/en/office-rental-bordeaux" replace />} />
+              <Route path="/insights/medical-office-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
+              <Route path="/insights" element={<InsightsIndex />} />
+              <Route path="/insights/office-budget-bordeaux" element={<InsightsBudget />} />
+              <Route path="/insights/medical-office-size" element={<InsightsSurface />} />
+              <Route path="/insights/converting-commercial-space" element={<InsightsTransformer />} />
+              <Route path="/insights/professions-sharing-office" element={<InsightsProfessions />} />
+              <Route path="/insights/rent-or-buy-office" element={<InsightsLouerAcheter />} />
+              <Route path="/patients" element={<Patients />} />
+              <Route path="/practitioner-testimonials" element={<TemoignagesPraticiens />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes></LangSync>} />
+
+            {/* Legacy /fr/* redirects → root */}
+            <Route path="/fr/*" element={<FrRedirect />} />
+
+            {/* Legacy redirects (old URLs without prefix) */}
+            <Route path="/vision" element={<Navigate to="/notre-approche" replace />} />
+            <Route path="/a-propos" element={<Navigate to="/notre-approche" replace />} />
+            <Route path="/collectivites" element={<Navigate to="/notre-approche" replace />} />
+            <Route path="/investisseurs" element={<Navigate to="/investissement" replace />} />
+            <Route path="/methode" element={<Navigate to="/notre-approche" replace />} />
+            <Route path="/praticiens" element={<Navigate to="/professionnels" replace />} />
+            <Route path="/realisations" element={<Navigate to="/projets" replace />} />
+            <Route path="/nos-offres" element={<Navigate to="/professionnels" replace />} />
+
+            {/* Blog → Insights 301 redirects */}
+            <Route path="/blog/trouver-cabinet-bordeaux-praticien" element={<Navigate to="/insights/cabinet-medical-bordeaux" replace />} />
+            <Route path="/blog/combien-coute-cabinet-consultation-bordeaux" element={<Navigate to="/insights/budget-cabinet-bordeaux" replace />} />
+            <Route path="/blog" element={<Navigate to="/insights" replace />} />
+
+            {/* FR routes (root, no prefix) */}
+            <Route path="/*" element={<LangSync lang="fr"><Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/projets" element={<Projets />} />
+              <Route path="/projets/:slug" element={<ProjetDetail />} />
+              <Route path="/professionnels" element={<Professionnels />} />
+              <Route path="/investissement" element={<Investissement />} />
+              <Route path="/investissement/interet" element={<InvestisseurInteret />} />
+              <Route path="/investissement/memo" element={<InvestisseurMemo />} />
+              <Route path="/investissement/verify" element={<InvestisseurVerify />} />
+              <Route path="/notre-approche" element={<NotreApproche />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/mentions-legales" element={<MentionsLegales />} />
+              <Route path="/confidentialite" element={<PolitiqueConfidentialite />} />
+              <Route path="/cookies" element={<PolitiqueCookies />} />
+              <Route path="/location-cabinet-bordeaux" element={<LocationCabinetBordeaux />} />
+              <Route path="/location-cabinet-toulouse" element={<LocationCabinetToulouse />} />
+              <Route path="/questions-frequentes" element={<FAQ />} />
+              <Route path="/installer-cabinet-praticien" element={<Navigate to="/sinstaller" replace />} />
+              <Route path="/trouver-cabinet-medical-bordeaux" element={<Navigate to="/location-cabinet-bordeaux" replace />} />
+              <Route path="/insights/cabinet-medical-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
+              <Route path="/insights" element={<InsightsIndex />} />
+              <Route path="/insights/budget-cabinet-bordeaux" element={<InsightsBudget />} />
+              <Route path="/insights/surface-cabinet-medical" element={<InsightsSurface />} />
+              <Route path="/insights/transformer-local-en-cabinet" element={<InsightsTransformer />} />
+              <Route path="/insights/professions-partage-cabinet" element={<InsightsProfessions />} />
+              <Route path="/insights/louer-ou-acheter-cabinet" element={<InsightsLouerAcheter />} />
+              <Route path="/patients" element={<Patients />} />
+              <Route path="/patients/decrire-mon-besoin" element={<DecrireMonBesoin />} />
+              <Route path="/patients/problematiques" element={<ProblematiquesIndex />} />
+              <Route path="/patients/problematiques/:slug" element={<ProblematiqueDetail />} />
+              <Route path="/patients/articles" element={<ArticlesIndex />} />
+              <Route path="/patients/articles/:slug" element={<ArticleDetail />} />
+              <Route path="/patients/specialite/:slug" element={<SpecialiteDetail />} />
+              <Route path="/temoignages-praticiens" element={<TemoignagesPraticiens />} />
+              <Route path="/sinstaller" element={<SinstallerIndex />} />
+              <Route path="/sinstaller/:profession/:ville" element={<SinstallerDetail />} />
+              {/* Ressources : publiée au lot 3 du sprint 12, prérendue en strategic, au sitemap, sans noindex */}
               <Route
-                path="/admin/praticiens"
-                element={
-                  <AdminGuard>
-                    <AdminPraticiens />
-                  </AdminGuard>
-                }
+                path="/ressources/exercer-en-lieu-pluridisciplinaire"
+                element={<RessourcesLieuPluridisciplinaire />}
               />
-              <Route
-                path="/admin/demandes"
-                element={
-                  <AdminGuard>
-                    <AdminDemandes />
-                  </AdminGuard>
-                }
-              />
-              <Route
-                path="/admin/demandes-installation"
-                element={
-                  <AdminGuard>
-                    <AdminDemandesInstallation />
-                  </AdminGuard>
-                }
-              />
-              <Route
-                path="/admin/idn-os-webhooks"
-                element={
-                  <AdminGuard>
-                    <AdminWebhooks />
-                  </AdminGuard>
-                }
-              />
-              <Route
-                path="/admin/extractions"
-                element={
-                  <AdminGuard>
-                    <AdminExtractions />
-                  </AdminGuard>
-                }
-              />
-              <Route path="/admin" element={<Navigate to="/admin/praticiens" replace />} />
-
-              {/* EN routes (prefixed) */}
-              <Route path="/en/*" element={<LangSync lang="en"><Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/projects" element={<Projets />} />
-                <Route path="/projects/:slug" element={<ProjetDetail />} />
-                <Route path="/health-professionals" element={<Professionnels />} />
-                <Route path="/investment" element={<Investissement />} />
-                <Route path="/investment/interest" element={<InvestisseurInteret />} />
-                <Route path="/investment/memo" element={<InvestisseurMemo />} />
-                <Route path="/investment/verify" element={<InvestisseurVerify />} />
-                <Route path="/our-approach" element={<NotreApproche />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/legal" element={<MentionsLegales />} />
-                <Route path="/privacy" element={<PolitiqueConfidentialite />} />
-                <Route path="/cookies" element={<PolitiqueCookies />} />
-                <Route path="/office-rental-bordeaux" element={<LocationCabinetBordeaux />} />
-                <Route path="/office-rental-toulouse" element={<LocationCabinetToulouse />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/blog/finding-office-bordeaux-practitioner" element={<Navigate to="/en/insights/medical-office-bordeaux" replace />} />
-                <Route path="/blog/consultation-office-cost-bordeaux" element={<Navigate to="/en/insights/office-budget-bordeaux" replace />} />
-                <Route path="/setting-up-practice" element={<Navigate to="/en/health-professionals" replace />} />
-                <Route path="/finding-medical-office-bordeaux" element={<Navigate to="/en/office-rental-bordeaux" replace />} />
-                <Route path="/insights/medical-office-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
-                <Route path="/insights" element={<InsightsIndex />} />
-                <Route path="/insights/office-budget-bordeaux" element={<InsightsBudget />} />
-                <Route path="/insights/medical-office-size" element={<InsightsSurface />} />
-                <Route path="/insights/converting-commercial-space" element={<InsightsTransformer />} />
-                <Route path="/insights/professions-sharing-office" element={<InsightsProfessions />} />
-                <Route path="/insights/rent-or-buy-office" element={<InsightsLouerAcheter />} />
-                <Route path="/patients" element={<Patients />} />
-                <Route path="/practitioner-testimonials" element={<TemoignagesPraticiens />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes></LangSync>} />
-
-              {/* Legacy /fr/* redirects → root */}
-              <Route path="/fr/*" element={<FrRedirect />} />
-
-              {/* Legacy redirects (old URLs without prefix) */}
-              <Route path="/vision" element={<Navigate to="/notre-approche" replace />} />
-              <Route path="/a-propos" element={<Navigate to="/notre-approche" replace />} />
-              <Route path="/collectivites" element={<Navigate to="/notre-approche" replace />} />
-              <Route path="/investisseurs" element={<Navigate to="/investissement" replace />} />
-              <Route path="/methode" element={<Navigate to="/notre-approche" replace />} />
-              <Route path="/praticiens" element={<Navigate to="/professionnels" replace />} />
-              <Route path="/realisations" element={<Navigate to="/projets" replace />} />
-              <Route path="/nos-offres" element={<Navigate to="/professionnels" replace />} />
-
-              {/* Blog → Insights 301 redirects */}
-              <Route path="/blog/trouver-cabinet-bordeaux-praticien" element={<Navigate to="/insights/cabinet-medical-bordeaux" replace />} />
-              <Route path="/blog/combien-coute-cabinet-consultation-bordeaux" element={<Navigate to="/insights/budget-cabinet-bordeaux" replace />} />
-              <Route path="/blog" element={<Navigate to="/insights" replace />} />
-
-              {/* FR routes (root, no prefix) */}
-              <Route path="/*" element={<LangSync lang="fr"><Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/projets" element={<Projets />} />
-                <Route path="/projets/:slug" element={<ProjetDetail />} />
-                <Route path="/professionnels" element={<Professionnels />} />
-                <Route path="/investissement" element={<Investissement />} />
-                <Route path="/investissement/interet" element={<InvestisseurInteret />} />
-                <Route path="/investissement/memo" element={<InvestisseurMemo />} />
-                <Route path="/investissement/verify" element={<InvestisseurVerify />} />
-                <Route path="/notre-approche" element={<NotreApproche />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/mentions-legales" element={<MentionsLegales />} />
-                <Route path="/confidentialite" element={<PolitiqueConfidentialite />} />
-                <Route path="/cookies" element={<PolitiqueCookies />} />
-                <Route path="/location-cabinet-bordeaux" element={<LocationCabinetBordeaux />} />
-                <Route path="/location-cabinet-toulouse" element={<LocationCabinetToulouse />} />
-                <Route path="/questions-frequentes" element={<FAQ />} />
-                <Route path="/installer-cabinet-praticien" element={<Navigate to="/sinstaller" replace />} />
-                <Route path="/trouver-cabinet-medical-bordeaux" element={<Navigate to="/location-cabinet-bordeaux" replace />} />
-                <Route path="/insights/cabinet-medical-bordeaux" element={<InsightsCabinetMedicalBordeaux />} />
-                <Route path="/insights" element={<InsightsIndex />} />
-                <Route path="/insights/budget-cabinet-bordeaux" element={<InsightsBudget />} />
-                <Route path="/insights/surface-cabinet-medical" element={<InsightsSurface />} />
-                <Route path="/insights/transformer-local-en-cabinet" element={<InsightsTransformer />} />
-                <Route path="/insights/professions-partage-cabinet" element={<InsightsProfessions />} />
-                <Route path="/insights/louer-ou-acheter-cabinet" element={<InsightsLouerAcheter />} />
-                <Route path="/patients" element={<Patients />} />
-                <Route path="/patients/decrire-mon-besoin" element={<DecrireMonBesoin />} />
-                <Route path="/patients/problematiques" element={<ProblematiquesIndex />} />
-                <Route path="/patients/problematiques/:slug" element={<ProblematiqueDetail />} />
-                <Route path="/patients/articles" element={<ArticlesIndex />} />
-                <Route path="/patients/articles/:slug" element={<ArticleDetail />} />
-                <Route path="/patients/specialite/:slug" element={<SpecialiteDetail />} />
-                <Route path="/temoignages-praticiens" element={<TemoignagesPraticiens />} />
-                <Route path="/sinstaller" element={<SinstallerIndex />} />
-                <Route path="/sinstaller/:profession/:ville" element={<SinstallerDetail />} />
-                {/* Ressources : publiée au lot 3 du sprint 12, prérendue en strategic, au sitemap, sans noindex */}
-                <Route
-                  path="/ressources/exercer-en-lieu-pluridisciplinaire"
-                  element={<RessourcesLieuPluridisciplinaire />}
-                />
-                <Route path="*" element={<NotFound />} />
-              </Routes></LangSync>} />
-            </Routes>
-            <ScrollToTop />
-            <CookieBanner />
-          </AnalyticsProvider>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </HelmetProvider>
+              <Route path="*" element={<NotFound />} />
+            </Routes></LangSync>} />
+          </Routes>
+          <ScrollToTop />
+          <CookieBanner />
+        </AnalyticsProvider>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
 );
 
 export default App;

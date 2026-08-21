@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Loader2, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -183,10 +182,9 @@ export default function PraticienPublic() {
 
   return (
     <>
-      {/* title, meta et link sont rendus nativement par React 19. Le
-          script JSON-LD reste dans un <Helmet> : React ne hisse pas les
-          script[type="application/ld+json"], il les laisse dans le corps.
-          Arbitrage du corps remis au lot 2. */}
+      {/* Le head est rendu nativement par React 19. Le JSON-LD, lui, reste
+          dans le corps : React ne hisse que les balises de metadonnees, pas
+          les balises de script. Les robots le lisent ou qu'il soit. */}
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="robots" content="index,follow" />
@@ -198,11 +196,10 @@ export default function PraticienPublic() {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
-      {/* Dimensions et alternative heritees jusqu'ici du <Helmet> racine
-          d'App.tsx, retire au meme lot. Elles decrivent l'image par defaut
-          et non la photo de la fiche : valeur reprise telle quelle pour que
-          le retrait ne change aucune balise servie. Defaut signale, a
-          arbitrer au lot 2. */}
+      {/* Heritees de la racine retiree au lot 1. Elles decrivent l'image par
+          defaut et non la photo de la fiche : valeur reprise telle quelle pour
+          que le retrait ne change aucune balise servie. Defaut connu, non
+          corrige, a arbitrer au lot 3. */}
       <meta property="og:image:width" content={String(DEFAULT_OG_IMAGE_WIDTH)} />
       <meta property="og:image:height" content={String(DEFAULT_OG_IMAGE_HEIGHT)} />
       <meta property="og:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
@@ -214,13 +211,10 @@ export default function PraticienPublic() {
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
       <meta name="twitter:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
-      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
-          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
-          et la capture du prerendu, qui n'attend plus que la canonical rendue
-          nativement par React, part avant elle. Disparait au lot 2. */}
-      <Helmet defer={false}>
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      </Helmet>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div
         className="w-full"
         style={{ backgroundColor: "#F6F5F0", borderBottom: "1px solid #E2EAE5" }}

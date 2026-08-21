@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import { usePraticiensCabinet } from "@/hooks/usePraticiensCabinet";
 import { CartePraticienPublic } from "@/components/CartePraticienPublic";
 import { pageUrl } from "@/lib/siteUrl";
@@ -23,8 +22,15 @@ export function SectionPraticiensDuCabinet({
 }: Props) {
   const { data: praticiens, loading } = usePraticiensCabinet(cabinetSlug);
 
+  // Marqueur data-praticiens-cabinet : il porte le nombre de fiches rendues,
+  // et vaut "0" quand la requete a abouti sans resultat. Sans lui, deux etats
+  // sont indiscernables depuis le DOM, "la requete court encore" et "elle a
+  // fini, il n'y a personne", et le prerendu ne peut pas savoir s'il doit
+  // attendre. Le JSON-LD de cette section vit dans le corps depuis le lot 2 :
+  // il n'existe que tant que la section rend, la capture doit donc attendre un
+  // fait declare et non une duree. Voir ATTENTES_DOM dans scripts/prerender.mjs.
   if (loading) return null;
-  if (praticiens.length === 0) return null;
+  if (praticiens.length === 0) return <div hidden data-praticiens-cabinet="0" />;
 
   const max = Math.min(praticiens.length, 8);
   const visibles = praticiens.slice(0, max);
@@ -54,14 +60,14 @@ export function SectionPraticiensDuCabinet({
   };
 
   return (
-    <section className="section-padding bg-secondary/40 border-t border-border">
-      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
-          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
-          et la capture du prerendu, qui n'attend plus que la canonical rendue
-          nativement par React, part avant elle. Disparait au lot 2. */}
-      <Helmet defer={false}>
-        <script type="application/ld+json">{JSON.stringify(medicalBusinessLd)}</script>
-      </Helmet>
+    <section
+      className="section-padding bg-secondary/40 border-t border-border"
+      data-praticiens-cabinet={visibles.length}
+    >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalBusinessLd) }}
+      />
       <div className="container">
         <div className="max-w-3xl mx-auto text-center mb-10">
           <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-4">

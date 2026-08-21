@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { Loader2, LogOut, Search, Webhook, Building2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -109,7 +108,8 @@ export default function AdminDemandes() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet><title>Demandes conciergerie | Admin I-CA.RE</title><meta name="robots" content="noindex,nofollow" /></Helmet>
+      <title>Demandes conciergerie | Admin I-CA.RE</title>
+      <meta name="robots" content="noindex,nofollow" />
       <header className="border-b bg-background sticky top-0 z-10">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div>

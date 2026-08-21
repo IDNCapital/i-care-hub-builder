@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { PlayCircle } from "lucide-react";
 import { Layout } from "@/components/Layout";
@@ -153,18 +152,24 @@ export default function TemoignagesPraticiens() {
         }
         path={path}
       />
-      {/* defer={false} : ecriture synchrone. Par defaut react-helmet-async differe
-          son ecriture d'une frame (handleStateChangeOnClient -> requestAnimationFrame)
-          et la capture du prerendu, qui n'attend plus que la canonical rendue
-          nativement par React, part avant elle. Disparait au lot 2. */}
-      <Helmet defer={false}>
-        <script type="application/ld+json">{JSON.stringify(aboutPageJsonLd)}</script>
-        {reviewsJsonLd.map((schema, i) => (
-          <script key={i} type="application/ld+json">
-            {JSON.stringify(schema)}
-          </script>
-        ))}
-      </Helmet>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageJsonLd) }}
+      />
+      {reviewsJsonLd.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
+      {/* Marqueur data-avis-mis-en-avant : nombre d'avis rendus une fois la
+          requete aboutie. Les blocs Review ci-dessus sortent de `reviews`, qui
+          part vide, donc ils n'existent pas tant que la requete court. Rendus
+          dans le corps, ils n'existent que tant que la page rend : le prerendu
+          doit attendre un fait declare et non une duree. Voir ATTENTES_DOM dans
+          scripts/prerender.mjs. */}
+      {!loading && <div hidden data-avis-mis-en-avant={reviews.length} />}
 
       {/* ─── Section 1 : Hero ────────────────────────── */}
       <section className="bg-background pt-32 pb-16">

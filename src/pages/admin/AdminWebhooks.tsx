@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { Loader2, LogOut, ArrowLeft, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -74,10 +73,8 @@ export default function AdminWebhooks() {
 
   return (
     <>
-      <Helmet>
-        <title>Webhooks IDN OS | Admin I-CA.RE</title>
-        <meta name="robots" content="noindex,nofollow" />
-      </Helmet>
+      <title>Webhooks IDN OS | Admin I-CA.RE</title>
+      <meta name="robots" content="noindex,nofollow" />
       <div className="min-h-screen bg-background text-foreground">
         <header className="border-b bg-card">
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">

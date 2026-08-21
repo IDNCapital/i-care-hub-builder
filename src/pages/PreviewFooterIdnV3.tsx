@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/Header";
 import { FooterFamilleIdn } from "@/components/FooterFamilleIdn";
 
@@ -9,11 +8,9 @@ import { FooterFamilleIdn } from "@/components/FooterFamilleIdn";
 export default function PreviewFooterIdnV3() {
   return (
     <>
-      <Helmet>
-        <title>Preview v3 | Footer compact | I-CA.RE</title>
-        <meta name="robots" content="noindex,nofollow" />
-        <meta name="googlebot" content="noindex,nofollow" />
-      </Helmet>
+      <title>Preview v3 | Footer compact | I-CA.RE</title>
+      <meta name="robots" content="noindex,nofollow" />
+      <meta name="googlebot" content="noindex,nofollow" />
 
       <div className="min-h-screen flex flex-col">
         <Header />

@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { Suspense, lazy } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -15,11 +14,9 @@ const CarteCabinets = lazy(() =>
 export default function PreviewCarteCabinets() {
   return (
     <>
-      <Helmet>
-        <title>Preview | Carte des cabinets | I-CA.RE</title>
-        <meta name="robots" content="noindex,nofollow" />
-        <meta name="googlebot" content="noindex,nofollow" />
-      </Helmet>
+      <title>Preview | Carte des cabinets | I-CA.RE</title>
+      <meta name="robots" content="noindex,nofollow" />
+      <meta name="googlebot" content="noindex,nofollow" />
 
       <div className="min-h-screen flex flex-col">
         <Header />

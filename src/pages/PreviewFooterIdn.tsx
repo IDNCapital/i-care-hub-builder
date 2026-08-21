@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/Header";
 import { FooterFamilleIdn } from "@/components/FooterFamilleIdn";
 
@@ -6,18 +5,16 @@ import { FooterFamilleIdn } from "@/components/FooterFamilleIdn";
  * /preview-footer-idn : page de validation visuelle du footer "Famille IDN"
  * avant déploiement sprint 7.
  *
- * - noindex,nofollow (Helmet) + Disallow dans robots.txt
+ * - noindex,nofollow + Disallow dans robots.txt
  * - Affiche un contenu sobre puis le composant FooterFamilleIdn en bas de page,
  *   pour valider la transition visuelle palette I-CA.RE → palette écosystème IDN.
  */
 export default function PreviewFooterIdn() {
   return (
     <>
-      <Helmet>
-        <title>Preview | Footer Famille IDN | I-CA.RE</title>
-        <meta name="robots" content="noindex,nofollow" />
-        <meta name="googlebot" content="noindex,nofollow" />
-      </Helmet>
+      <title>Preview | Footer Famille IDN | I-CA.RE</title>
+      <meta name="robots" content="noindex,nofollow" />
+      <meta name="googlebot" content="noindex,nofollow" />
 
       <div className="min-h-screen flex flex-col">
         <Header />
