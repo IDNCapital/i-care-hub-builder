@@ -224,6 +224,34 @@ const REDIRECTS = [
   // Parrainage mis en sommeil (Sprint 16, 17/07/2026) : page retirée de App.tsx et du sitemap.
   { from: "/parrainage", to: "/professionnels" },
   { from: "/en/referral", to: "/en/health-professionals" },
+
+  // Anciennes URLs du site precedent, lot 5 du sprint 14. Elles etaient
+  // redirigees COTE CLIENT seulement, par un <Navigate> d'App.tsx : une
+  // personne arrivait a destination, un robot recevait un 404. Mesure du
+  // 21/08/2026 sur le site servi : les treize rendaient 404, avec et sans slash
+  // final. Les cibles ci-dessous sont celles que declarent les <Navigate>
+  // existants, relevees et non devinees.
+  { from: "/vision", to: "/notre-approche" },
+  { from: "/a-propos", to: "/notre-approche" },
+  { from: "/collectivites", to: "/notre-approche" },
+  { from: "/methode", to: "/notre-approche" },
+  { from: "/praticiens", to: "/professionnels" },
+  { from: "/nos-offres", to: "/professionnels" },
+  { from: "/realisations", to: "/projets" },
+  { from: "/blog", to: "/insights" },
+  // Cible volontairement desindexee : /investissement est "dormant", noindex et
+  // hors sitemap. La souche dit quand meme ou la page a bougé, ce qui laisse un
+  // robot consolider les deux et les retirer ensemble, plutot que de garder une
+  // ancienne URL en 404 sans explication.
+  { from: "/investisseurs", to: "/investissement" },
+
+  // Anciennes URLs d'articles, meme cas et meme mesure. Elles figuraient dans
+  // ECARTS_DECLARES de checkRoutesConcordance.mjs comme divergences acceptees :
+  // poser leur souche est ce qui permet de les en retirer.
+  { from: "/blog/trouver-cabinet-bordeaux-praticien", to: "/insights/cabinet-medical-bordeaux" },
+  { from: "/blog/combien-coute-cabinet-consultation-bordeaux", to: "/insights/budget-cabinet-bordeaux" },
+  { from: "/en/blog/finding-office-bordeaux-practitioner", to: "/en/insights/medical-office-bordeaux" },
+  { from: "/en/blog/consultation-office-cost-bordeaux", to: "/en/insights/office-budget-bordeaux" },
 ];
 
 // ── Resolution du navigateur ────────────────────────────────────────

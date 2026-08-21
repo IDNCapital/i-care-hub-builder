@@ -46,10 +46,6 @@ const ECARTS_DECLARES = [
   { chemin: "/en/investment/interest", absentDe: ["prerendu", "sitemap"], motif: "idem /investissement/interet, cote anglais" },
   { chemin: "/en/investment/memo", absentDe: ["prerendu", "sitemap"], motif: "idem /investissement/memo, cote anglais" },
   { chemin: "/en/investment/verify", absentDe: ["prerendu", "sitemap"], motif: "idem /investissement/verify, cote anglais" },
-  { chemin: "/blog/trouver-cabinet-bordeaux-praticien", absentDe: ["prerendu", "sitemap"], motif: "ancienne URL, redirigee cote client vers /insights/cabinet-medical-bordeaux" },
-  { chemin: "/blog/combien-coute-cabinet-consultation-bordeaux", absentDe: ["prerendu", "sitemap"], motif: "ancienne URL, redirigee cote client vers /insights/budget-cabinet-bordeaux" },
-  { chemin: "/en/blog/finding-office-bordeaux-practitioner", absentDe: ["prerendu", "sitemap"], motif: "ancienne URL anglaise, redirigee cote client" },
-  { chemin: "/en/blog/consultation-office-cost-bordeaux", absentDe: ["prerendu", "sitemap"], motif: "ancienne URL anglaise, redirigee cote client" },
 ];
 
 const norm = (p) => {
