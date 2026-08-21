@@ -298,7 +298,10 @@ export default function LocationCabinetBordeaux() {
                   <AccordionTrigger className="text-left text-base font-medium">
                     {item.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                  <AccordionContent
+                    forceMount
+                    className="text-muted-foreground leading-relaxed"
+                  >
                     {item.a}
                   </AccordionContent>
                 </AccordionItem>

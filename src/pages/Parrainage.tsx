@@ -419,7 +419,10 @@ export default function Parrainage() {
                 <AccordionTrigger className="font-body font-bold text-base md:text-[1.05rem] text-foreground hover:no-underline py-5 text-left [&>svg]:text-primary [&>svg]:h-5 [&>svg]:w-5">
                   {item.q}
                 </AccordionTrigger>
-                <AccordionContent className="font-body text-base text-muted-foreground leading-[1.65] pb-5">
+                <AccordionContent
+                  forceMount
+                  className="font-body text-base text-muted-foreground leading-[1.65] pb-5"
+                >
                   {item.r}
                 </AccordionContent>
               </AccordionItem>

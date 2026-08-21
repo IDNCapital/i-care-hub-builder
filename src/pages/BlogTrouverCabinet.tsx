@@ -362,7 +362,10 @@ export default function BlogTrouverCabinet() {
                   <AccordionTrigger className="text-left font-heading font-semibold text-base">
                     {item.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                  <AccordionContent
+                    forceMount
+                    className="text-muted-foreground leading-relaxed"
+                  >
                     {item.a}
                   </AccordionContent>
                 </AccordionItem>
