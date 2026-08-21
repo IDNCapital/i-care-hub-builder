@@ -114,7 +114,13 @@ export default function LocationCabinetToulouse() {
       if (data?.error === "rate_limited") { toast.error("Une demande a déjà été envoyée récemment. Réessayez dans un instant."); return; }
       if (data?.error) throw new Error(data.error);
       toast.success("Merci ! Nous vous recontactons dès qu'un cabinet correspondant à votre projet est disponible.");
-      Analytics.formSubmission("installation_toulouse", "/location-cabinet-toulouse");
+      // Chemin ecrit en dur cote francais alors que la page est bilingue : une
+      // soumission anglaise etait attribuee a la page francaise. Meme expression que
+      // celle passee a SeoHead.
+      Analytics.formSubmission(
+        "installation_toulouse",
+        lang === "fr" ? "/location-cabinet-toulouse" : "/en/office-rental-toulouse",
+      );
       setForm({ firstName: "", lastName: "", email: "", phone: "", profession: "", neighbourhood: "", days: "", dateInstall: "", message: "" });
       setConsent(false);
     } catch (err) {

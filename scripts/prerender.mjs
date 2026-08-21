@@ -23,6 +23,7 @@ import { fileURLToPath } from "url";
 import { existsSync, statSync } from "fs";
 import { JSDOM } from "jsdom";
 import { pagePath, pageUrl } from "./siteUrl.mjs";
+import { JSONLD_EXPECTATIONS } from "./jsonLdExpectations.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, "..", "dist");
@@ -67,36 +68,6 @@ const ESSAIS_MAX = 3;
 const ATTENTE_REPRISE_MS = 1000;
 const BUDGET_REPRISES = 10;
 
-// ── JSON-LD expectations per URL family ─────────────────────────────
-// Cette table s'etend a chaque nouvelle famille d'URL, au meme titre que la
-// passe ROUTES. Une route qui ne correspond a aucune entree n'est pas
-// controlee (son rapport vaut "n/a").
-// Statut sprint 9 : controle bloquant. Une route controlee non conforme, ou un
-// bloc JSON-LD illisible quel que soit le type de route, fait echouer le build.
-const JSONLD_EXPECTATIONS = [
-  { match: (p) => p === "/" || p === "/en", label: "accueil", expect: ["Organization", "ProfessionalService"] },
-  { match: (p) => /^(\/en)?\/(projets|projects)\/./.test(p), label: "cabinet", expect: ["MedicalBusiness", "Organization"] },
-  { match: (p) => /^\/praticien\/./.test(p), label: "praticien", expect: ["Person", "Organization"] },
-  // FAQPage retire au lot 1-ter du sprint 12 : le balisage etait faux, les
-  // reponses ne figurant pas dans le HTML servi, et sans effet depuis le retrait
-  // des resultats enrichis FAQ par Google. Attente relevee sur le HTML servi.
-  { match: (p) => /^(\/en)?\/insights\/./.test(p), label: "insight", expect: ["Article", "BreadcrumbList"] },
-  // Index des guides : depuis le retrait du FAQPage au lot 1-ter, ces deux pages
-  // n'emettent aucun balisage propre et ne servent que les deux blocs statiques
-  // d'index.html. Attente relevee sur dist/insights/index.html et son homologue
-  // anglais, et non supposee. Elle est satisfaite par toute page du site : elle
-  // ne discrimine rien, elle ferme un angle mort de controle en versant ces deux
-  // routes dans le compte des controlees, ou elles ne figuraient pas.
-  { match: (p) => p === "/insights" || p === "/en/insights", label: "index guides", expect: ["Organization", "ProfessionalService"] },
-  { match: (p) => /^\/patients\/problematiques\/./.test(p), label: "problematique", expect: ["MedicalCondition", "ItemList", "BreadcrumbList"] },
-  // Page ressources : alignee sur les guides au lot 3 du sprint 14. Elle ne
-  // portait que les deux blocs statiques d'index.html, alors que c'est la page
-  // la plus engageante du parc, et un guide de meme nature.
-  { match: (p) => p === "/ressources/exercer-en-lieu-pluridisciplinaire", label: "ressources", expect: ["Article", "BreadcrumbList"] },
-  { match: (p) => /^\/patients\/specialite\/./.test(p), label: "specialite", expect: ["CollectionPage", "ItemList", "BreadcrumbList"] },
-  { match: (p) => /^\/patients\/articles\/./.test(p), label: "article patients", expect: ["Article", "BreadcrumbList"] },
-  { match: (p) => /^\/sinstaller\/[^/]+\/./.test(p), label: "matrice installation", expect: ["MedicalBusiness", "Service", "BreadcrumbList"] },
-];
 
 // Collecte a plat de tous les @type declares dans les blocs JSON-LD du document.
 // Descend uniquement dans les tableaux et dans @graph, pas dans les proprietes

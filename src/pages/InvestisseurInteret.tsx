@@ -93,7 +93,10 @@ export default function InvestisseurInteret() {
 
       if (result.status === "verification_sent" || result.status === "email_already_sent") {
         setEmailSent(true);
-        Analytics.formSubmission("investor_interest", `/${lang}/investment/interest`);
+        // localePath et non un gabarit : `/${lang}/investment/interest` rendait
+        // "/fr/investment/interest" cote francais, un chemin qu'aucune page ne porte,
+        // la route reelle etant /investissement/interet.
+        Analytics.formSubmission("investor_interest", localePath(lang, "investmentInterest"));
       } else if (result.error) {
         throw new Error(result.error);
       }

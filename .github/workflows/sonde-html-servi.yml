@@ -1,0 +1,45 @@
+name: Sonde du HTML servi
+
+# Pourquoi ce job existe. Douze pages sont sorties de l'index de Google avec la
+# mention « Page en double sans URL canonique selectionnee par l'utilisateur »,
+# et le defaut n'a ete compris que trois semaines plus tard, dans un rapport
+# d'indexation. Rien ne disait, au moment ou cela se produit, qu'un <head>
+# manque en production. Ce job le dit.
+#
+# Il CONSTATE. Il ne repare pas, ne republie pas, ne relance aucun build. Son
+# echec est la notification : rien d'autre n'est a construire.
+#
+# Il n'execute aucun JavaScript : il lit l'octet servi, comme un robot qui
+# n'ouvrirait pas de moteur de rendu.
+
+on:
+  schedule:
+    # 06:12 UTC, tous les jours. Le defaut a tenu plusieurs jours, une passe
+    # quotidienne suffit. Minute decalee pour eviter la bousculade de l'heure ronde.
+    - cron: "12 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sonde-html-servi
+  cancel-in-progress: false
+
+jobs:
+  sonde:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      # Aucune dependance : la sonde n'utilise que fetch et le module
+      # scripts/jsonLdExpectations.mjs du depot. Pas de bun install, pas de build.
+      - name: Sonder le HTML servi en production
+        run: node scripts/sondeHtmlServi.mjs
