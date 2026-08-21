@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Répertoire de travail de l'assistant Websites, qui travaille sur ses propres
+# branches nuit/<date> : rien de ce qu'il y dépose n'a vocation à vivre sur main.
+nuit/
