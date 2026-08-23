@@ -11,13 +11,9 @@
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-// dupliqué de src/lib/taxonomy.ts (contexte Node build), à garder synchronisé
-export function norm(s) {
-  return String(s ?? "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
+// Module unique, partagé avec le client : plus de copie à garder synchronisée.
+// Le ré-export préserve `publishedRoutes.norm`, qu'importent les autres scripts.
+export { norm } from "../src/lib/norm.js";
 
 export async function fetchJson(url) {
   if (!SUPABASE_URL || !SUPABASE_KEY) {

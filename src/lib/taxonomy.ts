@@ -10,12 +10,12 @@ export const TAXONOMY_VERSION = "0quater-2026-07-17.1";
 /**
  * Normalisation utilitaire : minuscules + retrait des diacritiques.
  * Utilisée pour comparer libellés utilisateur ↔ termes de la taxonomie.
+ *
+ * L'implémentation vit dans ./norm.js, module unique partagé avec les scripts
+ * de build Node (scripts/publishedRoutes.mjs), qui en portaient une copie.
+ * Le ré-export préserve `taxonomy.norm` : aucun des appelants ne change.
  */
-export const norm = (s: string) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+export { norm } from "./norm.js";
 
 /**
  * Libellés d'affichage des cabinets I-CA.RE (slug → nom court).
