@@ -5,17 +5,20 @@
 // quand vous modifiez ce fichier, propagez la même modification dans le miroir
 // ET incrémentez TAXONOMY_VERSION dans les deux fichiers.
 
+import { norm } from "./norm.js";
+
 export const TAXONOMY_VERSION = "0quater-2026-07-17.1";
 
 /**
  * Normalisation utilitaire : minuscules + retrait des diacritiques.
  * Utilisée pour comparer libellés utilisateur ↔ termes de la taxonomie.
+ *
+ * Ré-export NU du corps unique de ./norm.js, que scripts/publishedRoutes.mjs
+ * importe tel quel : ni enveloppe, ni valeur par défaut, ni `?? ""`. Le contrat
+ * reste STRICT, exactement celui que ce fichier portait déjà, et les gardes se
+ * posent aux appels ci-dessous.
  */
-export const norm = (s: string) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+export { norm };
 
 /**
  * Libellés d'affichage des cabinets I-CA.RE (slug → nom court).
@@ -329,13 +332,25 @@ export function matchSpecialite(
   if (specialite.cabinet_slug && praticien.cabinet_slug !== specialite.cabinet_slug) {
     return false;
   }
-  const targets = [specialite.nom, ...(specialite.synonymes ?? [])].map(norm);
+  // Gardes du contrat strict de norm(). Les colonnes nom, synonymes, profession,
+  // specialites et specialites_derivees viennent de Supabase : leurs types
+  // TypeScript décrivent le schéma, pas ce que la ligne porte vraiment, et un
+  // null au milieu d'un tableau jsonb ferait lever norm(). On filtre donc AVANT
+  // l'appel. Côté client le filtre est SILENCIEUX, contrairement aux scripts de
+  // build : faire échouer le rendu d'une page parce qu'une ligne porte un tag
+  // vide n'aurait aucun sens pour la personne qui la consulte, alors que la
+  // passe de build, elle, doit refuser de publier une liste calculée de travers.
+  const targets = [specialite.nom, ...(specialite.synonymes ?? [])]
+    .filter((v): v is string => typeof v === "string")
+    .map(norm);
   const derived = praticien.specialites_derivees ?? [];
   const raw = praticien.specialites ?? [];
   const specSource = derived.length > 0 ? derived : raw;
   const candidates: string[] = [];
-  if (praticien.profession) candidates.push(praticien.profession);
-  candidates.push(...specSource);
+  if (typeof praticien.profession === "string" && praticien.profession) {
+    candidates.push(praticien.profession);
+  }
+  candidates.push(...specSource.filter((v): v is string => typeof v === "string"));
   return candidates.some((c) => targets.includes(norm(c)));
 }
 
@@ -380,7 +395,12 @@ export function matchProblematique(
   praticien: PraticienForProblematiqueTags,
   problematique: ProblematiqueForMatch,
 ): boolean {
-  const targets = [problematique.nom, ...(problematique.synonymes ?? [])].map(norm);
+  // Garde du contrat strict de norm(), même motif qu'en matchSpecialite : nom et
+  // synonymes viennent de la base. Les tags, eux, sortent de
+  // getPraticienProblematiqueTags qui ne rend que des chaînes non vides.
+  const targets = [problematique.nom, ...(problematique.synonymes ?? [])]
+    .filter((v): v is string => typeof v === "string")
+    .map(norm);
   return getPraticienProblematiqueTags(praticien).some((tag) =>
     targets.includes(norm(tag)),
   );
@@ -396,7 +416,10 @@ export function getPraticienProblematiqueTags(
   const seen = new Set<string>();
   const out: string[] = [];
   for (const tag of [...source, ...manual]) {
-    if (!tag) continue;
+    // `if (!tag)` écartait déjà null, undefined et la chaîne vide ; le test de
+    // type écarte en plus les valeurs non chaîne, sur lesquelles le contrat
+    // strict de norm() lève. Filtre silencieux, voir matchSpecialite.
+    if (typeof tag !== "string" || !tag) continue;
     const key = norm(tag);
     if (seen.has(key)) continue;
     seen.add(key);

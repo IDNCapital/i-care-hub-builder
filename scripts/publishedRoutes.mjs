@@ -11,12 +11,81 @@
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-// dupliqué de src/lib/taxonomy.ts (contexte Node build), à garder synchronisé
-export function norm(s) {
-  return String(s ?? "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+// Re-export NU du corps unique de src/lib/norm.js, charge tel quel : module
+// JavaScript avec extension explicite, donc importable sans compilation depuis
+// ce script Node ESM comme depuis le client Vite. Fin du doublon.
+//
+// Le contrat de norm() DEVIENT STRICT ici : ce script rendait auparavant "" sur
+// null, undefined et tout non-chaine. C'etait le mode d'echec muet a supprimer,
+// puisque norm() decide quelles pages problematique et specialite sont publiees.
+// Les gardes ci-dessous rendent ce contrat tenable sur donnees reelles.
+import { norm } from "../src/lib/norm.js";
+export { norm };
+
+// -- Gardes des valeurs venues de la base ----------------------------
+// Une garde qui se contenterait de filtrer reproduirait exactement ce qu'on a
+// refuse au contrat tolerant : un echec muet. Elle COMPTE donc ce qu'elle
+// filtre, dit sur quelle colonne et pour quel identifiant, jamais le contenu,
+// et fait echouer la passe. Elle la fait echouer EN FIN DE PASSE, une fois la
+// liste complete des routes publiees imprimee : la preuve doit rester lisible
+// quand la garde se declenche.
+//
+// Ce qui est filtre, ce sont les valeurs NON CHAINE. La chaine vide, elle,
+// passe a norm() sans lever et reste ecartee par les .filter(Boolean)
+// existants, exactement comme avant ce lot.
+const gardes = [];
+
+/** Releve des declenchements, copie defensive. */
+export function relevesGardes() {
+  return gardes.map((g) => ({ ...g }));
+}
+
+/** Remet le releve a zero. Utile a un appelant qui enchaine deux passes. */
+export function reinitialiserGardes() {
+  gardes.length = 0;
+}
+
+/**
+ * Imprime le releve et dit si la passe doit echouer.
+ * Rend true si au moins une valeur a ete filtree, false sinon.
+ */
+export function echouerSiGardesDeclenchees(prefixe = "[publishedRoutes]") {
+  if (gardes.length === 0) return false;
+  const total = gardes.reduce((n, g) => n + g.filtrees, 0);
+  console.error(
+    `${prefixe} GARDE DECLENCHEE : ${total} valeur(s) non chaine filtree(s) avant norm(), ` +
+      `sur ${gardes.length} ligne(s).`,
+  );
+  for (const g of gardes) {
+    console.error(
+      `${prefixe}   colonne ${g.colonne}, identifiant ${g.identifiant}, ${g.filtrees} valeur(s) filtree(s)`,
+    );
+  }
+  return true;
+}
+
+/**
+ * Identifiant de releve d'une ligne praticien : son slug, qui est une URL
+ * publique du site. Aucune autre colonne ne sort d'ici.
+ */
+function slugDe(pr) {
+  const s = (pr?.slug ?? "").toString().trim();
+  return s || "slug absent";
+}
+
+/**
+ * Normalise une liste de valeurs venues de la base, en ecartant et en comptant
+ * celles qui ne sont pas des chaines. `identifiant` est un slug public.
+ */
+function normListeGardee(valeurs, colonne, identifiant) {
+  const retenues = [];
+  let filtrees = 0;
+  for (const v of valeurs) {
+    if (typeof v === "string") retenues.push(norm(v));
+    else filtrees++;
+  }
+  if (filtrees > 0) gardes.push({ colonne, identifiant, filtrees });
+  return retenues;
 }
 
 export async function fetchJson(url) {
@@ -190,9 +259,12 @@ export function praticiensNormTagSets(praticiens) {
     const manual = Array.isArray(pr.problematiques_manuelles) ? pr.problematiques_manuelles : [];
     const source = derived.length > 0 ? derived : raw;
     const set = new Set();
-    for (const tag of [...source, ...manual]) {
-      if (!tag) continue;
-      set.add(norm(tag));
+    // Garde : `if (!tag)` ecartait deja null, undefined et "". Le passage par
+    // normListeGardee ecarte EN PLUS les valeurs non chaine, sur lesquelles le
+    // contrat strict leve, et les compte.
+    const tags = [...source, ...manual].filter((tag) => Boolean(tag));
+    for (const t of normListeGardee(tags, "problematiques/problematiques_derivees/problematiques_manuelles", slugDe(pr))) {
+      set.add(t);
     }
     return set;
   });
@@ -208,9 +280,14 @@ export function matchProblematiques(problematiques, praticiens) {
   for (const pb of problematiques) {
     const slug = (pb && pb.slug ? String(pb.slug) : "").trim();
     if (!slug) continue;
-    const targets = [pb.nom, ...(Array.isArray(pb.synonymes) ? pb.synonymes : [])]
-      .map(norm)
-      .filter(Boolean);
+    // Garde : nom et synonymes viennent de la base. normListeGardee ecarte et
+    // compte les valeurs non chaine ; le .filter(Boolean) qui suit reste celui
+    // d'avant le lot et ecarte les chaines vides, comme il le faisait deja.
+    const targets = normListeGardee(
+      [pb.nom, ...(Array.isArray(pb.synonymes) ? pb.synonymes : [])],
+      "problematiques.nom/synonymes",
+      slug,
+    ).filter(Boolean);
     const hasMatch = tagSets.some((tagSet) => targets.some((t) => tagSet.has(t)));
     if (hasMatch) matched.push(pb);
   }
@@ -228,8 +305,17 @@ export function praticiensNormSpecialiteSets(praticiens) {
     const raw = Array.isArray(pr.specialites) ? pr.specialites : [];
     const specSource = derived.length > 0 ? derived : raw;
     const set = new Set();
-    if (pr.profession) set.add(norm(pr.profession));
-    for (const s of specSource) set.add(norm(s));
+    // Garde : profession, specialites et specialites_derivees viennent de la
+    // base. Avant ce lot, un null de specSource entrait dans le Set sous la
+    // forme "" ; il est desormais ecarte et compte.
+    if (pr.profession) {
+      for (const t of normListeGardee([pr.profession], "praticiens.profession", slugDe(pr))) {
+        set.add(t);
+      }
+    }
+    for (const t of normListeGardee(specSource, "specialites/specialites_derivees", slugDe(pr))) {
+      set.add(t);
+    }
     return set;
   });
 }
@@ -249,9 +335,12 @@ export function matchSpecialites(specialites, praticiens) {
       ? praticiens.filter((pr) => pr.cabinet_slug === sp.cabinet_slug)
       : praticiens;
     const candSets = praticiensNormSpecialiteSets(scoped);
-    const targets = [sp.nom, ...(Array.isArray(sp.synonymes) ? sp.synonymes : [])]
-      .map(norm)
-      .filter(Boolean);
+    // Garde, meme motif que matchProblematiques.
+    const targets = normListeGardee(
+      [sp.nom, ...(Array.isArray(sp.synonymes) ? sp.synonymes : [])],
+      "specialites.nom/synonymes",
+      slug,
+    ).filter(Boolean);
     const hasMatch = candSets.some((set) => targets.some((t) => set.has(t)));
     if (hasMatch) matched.push(sp);
   }
