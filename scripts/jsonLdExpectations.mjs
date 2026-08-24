@@ -28,6 +28,13 @@ export const JSONLD_EXPECTATIONS = [
   // ne discrimine rien, elle ferme un angle mort de controle en versant ces deux
   // routes dans le compte des controlees, ou elles ne figuraient pas.
   { match: (p) => p === "/insights" || p === "/en/insights", label: "index guides", expect: ["Organization", "ProfessionalService"] },
+  // Index annuaire : attente bloquante assumee. Elle couple le build a l'etat de
+  // la base, puisque l'ItemList n'est emis que si des fiches sont publiables ;
+  // une base vide ou injoignable fera donc echouer le build. C'est voulu : un
+  // annuaire qui se vide sans que personne ne le voie est un incident plus grave
+  // qu'un build rouge, et le prerendu de cette page est deja couple aux memes
+  // donnees par son attente DOM.
+  { match: (p) => p === "/patients" || p === "/en/patients", label: "annuaire patients", expect: ["ItemList", "BreadcrumbList"] },
   { match: (p) => /^\/patients\/problematiques\/./.test(p), label: "problematique", expect: ["MedicalCondition", "ItemList", "BreadcrumbList"] },
   // Page ressources : alignee sur les guides au lot 3 du sprint 14. Elle ne
   // portait que les deux blocs statiques d'index.html, alors que c'est la page
