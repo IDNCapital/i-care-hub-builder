@@ -86,7 +86,7 @@ export default function ProblematiquesIndex() {
             aria-label="Fil d'ariane"
             className="font-sans text-[12px] text-[#6B6B6B] mb-4"
           >
-            <a href="/patients" className="hover:text-sage hover:underline">
+            <a href="/patients/" className="hover:text-sage hover:underline">
               Patients
             </a>
             <span className="mx-2">›</span>
@@ -166,7 +166,7 @@ export default function ProblematiquesIndex() {
             Décrivez-nous votre besoin en quelques lignes. Nous vous orienterons vers la praticienne ou le praticien I‑CA.RE le plus adapté.
           </p>
           <Button variant="gold" size="lg" asChild>
-            <a href="/patients/decrire-mon-besoin">Décrire mon besoin</a>
+            <a href="/patients/decrire-mon-besoin/">Décrire mon besoin</a>
           </Button>
         </div>
       </section>

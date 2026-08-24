@@ -13,6 +13,7 @@ import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter,
 } from "@/components/ui/sheet";
 import { adminLogout, callAdminFunction } from "@/lib/adminAuth";
+import { BASE_URL } from "@/lib/siteUrl";
 
 type Demande = {
   id: string;
@@ -251,7 +252,7 @@ export default function AdminDemandesInstallation() {
                   <div>
                     <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Page source</p>
                     <a
-                      href={`https://i-ca.re${selected.source_path}`}
+                      href={`${BASE_URL}${selected.source_path}`}
                       target="_blank"
                       rel="noreferrer"
                       className="text-sm text-primary underline break-all"

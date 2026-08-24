@@ -29,7 +29,7 @@ import { isPipelineCabinet } from "@/lib/installation";
 import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
-import { pageUrl } from "@/lib/siteUrl";
+import { BASE_URL, assetUrl, pageUrl } from "@/lib/siteUrl";
 import { SectionAvisGoogle } from "@/components/avis/SectionAvisGoogle";
 import { marqueAffichee } from "@/lib/brand";
 
@@ -44,19 +44,19 @@ const PROJECT_OG_IMAGES: Record<
   { ogImage: string; ogImageWidth: number; ogImageHeight: number; ogImageAlt: string }
 > = {
   "i-ca-re-jardin-public": {
-    ogImage: "https://i-ca.re/og/og-jardin-public.png",
+    ogImage: assetUrl("/og/og-jardin-public.png"),
     ogImageWidth: 1200,
     ogImageHeight: 630,
     ogImageAlt: "Cabinet I-CA.RE Jardin Public à Bordeaux, salle d'attente",
   },
   "i-ca-re-pey-berland": {
-    ogImage: "https://i-ca.re/og/og-pey-berland.png",
+    ogImage: assetUrl("/og/og-pey-berland.png"),
     ogImageWidth: 1200,
     ogImageHeight: 630,
     ogImageAlt: "Cabinet I-CA.RE Pey-Berland à Bordeaux, salle d'attente",
   },
   "i-ca-re-nansouty": {
-    ogImage: "https://i-ca.re/og/og-nansouty.png",
+    ogImage: assetUrl("/og/og-nansouty.png"),
     ogImageWidth: 1200,
     ogImageHeight: 630,
     ogImageAlt: "Cabinet I-CA.RE Nansouty à Bordeaux, salle d'attente",
@@ -172,7 +172,7 @@ export default function ProjetDetail() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify((() => {
           const canonicalUrl = pageUrl(lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`);
           const heroPath = getProjectHero(project.slug, project.hero_image_url);
-          const heroUrl = heroPath ? `https://i-ca.re${heroPath}` : undefined;
+          const heroUrl = heroPath ? `${BASE_URL}${heroPath}` : undefined;
           // Enrichissement rédactionnel optionnel ; l'adresse et la géolocalisation
           // proviennent toujours de la table `projets`.
           const copy = slug ? getProjectSchemaCopy(slug) : undefined;

@@ -327,7 +327,7 @@ export default function DecrireMonBesoin() {
                 <Label htmlFor="consent" className="text-sm leading-relaxed font-normal text-muted-foreground">
                   J'accepte que mes informations soient utilisées pour traiter ma demande,
                   conformément à la{" "}
-                  <Link to="/confidentialite" className="text-primary underline">
+                  <Link to="/confidentialite/" className="text-primary underline">
                     politique de confidentialité
                   </Link>
                   . *

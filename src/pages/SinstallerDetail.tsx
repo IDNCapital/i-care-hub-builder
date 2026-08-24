@@ -12,7 +12,7 @@ import { CabinetVisuel } from "@/components/CabinetVisuel";
 import { getCabinetVisuals } from "@/lib/projectImages";
 import { ICARE_TELEPHONE_E164 } from "@/lib/contact";
 import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
-import { pageUrl } from "@/lib/siteUrl";
+import { BASE_URL, assetUrl, pageUrl } from "@/lib/siteUrl";
 
 function parsePostalAddress(address: string | null, city: string) {
   if (!address) return { streetAddress: "", postalCode: "", addressLocality: city };
@@ -95,7 +95,7 @@ export default function SinstallerDetail() {
     "@type": "MedicalBusiness",
     name: data.cabinet_nom_complet,
     // image émise uniquement si vraie photo du cabinet (pas de fallback générique)
-    ...(visuels.isGeneric ? {} : { image: `https://i-ca.re${visuels.hero}` }),
+    ...(visuels.isGeneric ? {} : { image: `${BASE_URL}${visuels.hero}` }),
     ...(projetCabinet ? { url: pageUrl(`/projets/${projetCabinet.slug}`) } : {}),
     telephone: ICARE_TELEPHONE_E164,
     address: {
@@ -144,7 +144,7 @@ export default function SinstallerDetail() {
         title={`S'installer comme ${professionLower} ${villeAvecPreposition} | Cabinet I-CA.RE`}
         description={`Découvrez les opportunités d'installation pour ${professionLower} au Cabinet I-CA.RE de ${nomCourt}, ${data.cabinet_adresse ?? ""}. ${ouvertureLabel}. Demandez le dossier d'installation.`}
         path={path}
-        ogImage={`https://i-ca.re/og/og-${ville}.png`}
+        ogImage={assetUrl(`/og/og-${ville}.png`)}
       />
       <script
         type="application/ld+json"
@@ -164,7 +164,7 @@ export default function SinstallerDetail() {
         <ol className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">
           <li><Link to="/" className="hover:text-primary">Accueil</Link></li>
           <li><ChevronRight className="h-3.5 w-3.5" /></li>
-          <li><Link to="/sinstaller" className="hover:text-primary">S'installer</Link></li>
+          <li><Link to="/sinstaller/" className="hover:text-primary">S'installer</Link></li>
           <li><ChevronRight className="h-3.5 w-3.5" /></li>
           <li>{data.profession_libelle}</li>
           <li><ChevronRight className="h-3.5 w-3.5" /></li>

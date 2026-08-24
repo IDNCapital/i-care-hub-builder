@@ -104,9 +104,9 @@ export default function SpecialiteDetail() {
       <section className="pt-28 pb-10 md:pt-32 md:pb-14 bg-cream">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
           <nav aria-label="Fil d'ariane" className="font-sans text-[12px] text-[#6B6B6B] mb-4">
-            <a href="/patients" className="hover:text-sage hover:underline">Patients</a>
+            <a href="/patients/" className="hover:text-sage hover:underline">Patients</a>
             <span className="mx-2">›</span>
-            <a href="/patients" className="hover:text-sage hover:underline">Annuaire</a>
+            <a href="/patients/" className="hover:text-sage hover:underline">Annuaire</a>
             <span className="mx-2">›</span>
             <span>{specialite.nom}</span>
           </nav>
@@ -143,7 +143,7 @@ export default function SpecialiteDetail() {
                 Nous n'avons pas encore de {specialite.nom.toLowerCase()} dans nos cabinets. Décrivez-nous votre besoin, nous vous orienterons.
               </p>
               <Button variant="gold" size="lg" asChild>
-                <a href="/patients/decrire-mon-besoin">Décrire mon besoin</a>
+                <a href="/patients/decrire-mon-besoin/">Décrire mon besoin</a>
               </Button>
             </div>
           ) : (
@@ -157,7 +157,7 @@ export default function SpecialiteDetail() {
           {/* Maillage vers problématiques */}
           <div className="mt-10 text-center">
             <a
-              href="/patients/problematiques"
+              href="/patients/problematiques/"
               className="font-sans text-sm md:text-base text-sage hover:underline whitespace-nowrap"
             >
               Explorer aussi par problématique →
@@ -179,7 +179,7 @@ export default function SpecialiteDetail() {
             Décrivez-nous votre besoin en quelques lignes. Nous vous orienterons vers la praticienne ou le praticien I‑CA.RE le plus adapté.
           </p>
           <Button variant="gold" size="lg" asChild>
-            <a href="/patients/decrire-mon-besoin">Décrire mon besoin</a>
+            <a href="/patients/decrire-mon-besoin/">Décrire mon besoin</a>
           </Button>
         </div>
       </section>

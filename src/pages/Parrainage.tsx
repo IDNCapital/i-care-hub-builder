@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { localePath } from "@/lib/routes";
+import { BASE_URL } from "@/lib/siteUrl";
 import { Analytics } from "@/lib/analytics";
 import { z } from "zod";
 
@@ -256,11 +257,11 @@ export default function Parrainage() {
     name: "Programme de parrainage I-CA.RE",
     description:
       "Recommandez une consœur ou un confrère qui signe un bail dans un cabinet I-CA.RE et bénéficiez de 3 mois de services Espace Patients premium offerts.",
-    url: `https://i-ca.re${path}`,
+    url: `${BASE_URL}${path}`,
     isPartOf: {
       "@type": "WebSite",
       name: "I-CA.RE",
-      url: "https://i-ca.re",
+      url: BASE_URL,
     },
   };
 
