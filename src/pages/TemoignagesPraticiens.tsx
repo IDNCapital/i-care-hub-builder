@@ -70,7 +70,7 @@ export default function TemoignagesPraticiens() {
       seen.add(slug);
       out.push({
         slug,
-        shortName: proj.name.replace(/^I[\u2010-\u2015\-]?CA\.?RE\s*/i, "").trim() || proj.name,
+        shortName: proj.name.replace(/^I[\u2010-\u2015-]?CA\.?RE\s*/i, "").trim() || proj.name,
         url,
       });
     }

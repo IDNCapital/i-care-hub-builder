@@ -1,4 +1,13 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+/**
+ * Ces tables d'installation ne figurent pas dans les types generes de
+ * `Database` : le client doit donc etre lu sans son schema. Un client sans
+ * generique, plutot qu'un `any`, garde le typage des methodes appelees
+ * (`from`, `select`, `eq`, `order`, `maybeSingle`) au lieu de tout eteindre.
+ */
+type SupabaseSansSchema = SupabaseClient;
 import { useQuery } from "@tanstack/react-query";
 import type {
   InstallationContentCommon,
@@ -48,7 +57,7 @@ export function useProfessions() {
   return useQuery({
     queryKey: ["professions"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown as SupabaseSansSchema)
         .from("professions")
         .select("id, slug, nom_masculin_singulier, nom_feminin_singulier, nom_inclusif_pluriel, ordre_affichage, actif, page_installation")
         .eq("actif", true)
@@ -68,7 +77,7 @@ export function useProfessionsInstallation() {
   return useQuery({
     queryKey: ["professions", "page_installation"],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await (supabase as unknown as SupabaseSansSchema)
         .from("professions")
         .select("id, slug, nom_masculin_singulier, nom_feminin_singulier, nom_inclusif_pluriel, ordre_affichage, actif, page_installation")
         .eq("actif", true)
@@ -100,26 +109,26 @@ export function useInstallationPage(professionSlug: string, villeSlug: string) {
   return useQuery({
     queryKey: ["installation-page", professionSlug, villeSlug],
     queryFn: async () => {
-      const baseQuery = (supabase as any)
+      const baseQuery = (supabase as unknown as SupabaseSansSchema)
         .from("installation_pages")
         .select("*")
         .eq("profession_slug", professionSlug)
         .eq("ville_slug", villeSlug)
         .maybeSingle();
 
-      const villeQuery = (supabase as any)
+      const villeQuery = (supabase as unknown as SupabaseSansSchema)
         .from("installation_content_ville")
         .select("ville_slug, cabinet_details_md, quartier_md, acces_md")
         .eq("ville_slug", villeSlug)
         .maybeSingle();
 
-      const professionQuery = (supabase as any)
+      const professionQuery = (supabase as unknown as SupabaseSansSchema)
         .from("installation_content_profession")
         .select("profession_slug, enjeux_md, patientele_md, pourquoi_idn_md")
         .eq("profession_slug", professionSlug)
         .maybeSingle();
 
-      const commonQuery = (supabase as any)
+      const commonQuery = (supabase as unknown as SupabaseSansSchema)
         .from("installation_content_common")
         .select("content_key, content_md, titre_section, ordre, actif")
         .eq("actif", true)

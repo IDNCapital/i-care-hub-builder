@@ -156,7 +156,7 @@ export default function PraticienPublic() {
 
   // Quartier derived from cabinet name (strips "I-CA.RE" prefix)
   const quartier = cabinet?.name
-    ? cabinet.name.replace(/I[\u2010-\u2015\-]?CA\.?RE/i, "").trim()
+    ? cabinet.name.replace(/I[\u2010-\u2015-]?CA\.?RE/i, "").trim()
     : "";
 
   const jsonLd: Record<string, unknown> = {

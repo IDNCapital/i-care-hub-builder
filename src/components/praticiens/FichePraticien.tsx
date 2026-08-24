@@ -139,7 +139,7 @@ export function FichePraticien({
   const quartier = useMemo(() => {
     if (!cabinet?.name) return "";
     const cleaned = cabinet.name
-      .replace(/I[\u2010-\u2015\-]?CA\.?RE/i, "")
+      .replace(/I[\u2010-\u2015-]?CA\.?RE/i, "")
       .trim()
       .replace(/\s+/g, "-");
     return cleaned;
