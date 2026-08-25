@@ -298,7 +298,7 @@ export function FormulaireInteretInstallation({
         <Label htmlFor="consent" className="text-sm font-normal leading-relaxed cursor-pointer">
           J'accepte que mes informations soient utilisées par I‑CA.RE pour traiter ma demande
           d'installation, conformément à la{" "}
-          <Link to="/confidentialite" className="text-primary underline hover:no-underline">
+          <Link to="/confidentialite/" className="text-primary underline hover:no-underline">
             politique de confidentialité
           </Link>
           . <span className="text-primary">*</span>

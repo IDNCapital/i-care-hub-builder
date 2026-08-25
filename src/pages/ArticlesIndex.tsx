@@ -69,7 +69,7 @@ export default function ArticlesIndex() {
       <section className="pt-28 pb-10 md:pt-32 md:pb-14 bg-cream">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
           <nav aria-label="Fil d'ariane" className="font-sans text-[12px] text-[#6B6B6B] mb-4">
-            <a href="/patients" className="hover:text-sage hover:underline">Espace Patients</a>
+            <a href="/patients/" className="hover:text-sage hover:underline">Espace Patients</a>
             <span className="mx-2">›</span>
             <span>Articles</span>
           </nav>
@@ -98,7 +98,7 @@ export default function ArticlesIndex() {
                 Nos premiers articles arrivent bientôt.
               </p>
               <Button variant="outline" size="lg" asChild>
-                <a href="/patients/decrire-mon-besoin">Décrire mon besoin</a>
+                <a href="/patients/decrire-mon-besoin/">Décrire mon besoin</a>
               </Button>
             </div>
           ) : (

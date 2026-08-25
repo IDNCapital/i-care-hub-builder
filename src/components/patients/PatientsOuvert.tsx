@@ -390,7 +390,7 @@ export function PatientsOuvert({ praticiens }: Props) {
           <p className="font-sans text-sm md:text-base text-[#6B6B6B]">
             Vous ne savez pas quel type d'accompagnement chercher&nbsp;?{" "}
             <a
-              href="/patients/problematiques"
+              href="/patients/problematiques/"
               className="text-sage hover:underline font-sans font-medium whitespace-nowrap"
             >
               Explorer par problématique →
@@ -436,7 +436,7 @@ export function PatientsOuvert({ praticiens }: Props) {
             adapté.
           </p>
           <Button variant="gold" size="lg" asChild>
-            <a href="/patients/decrire-mon-besoin">Décrire mon besoin</a>
+            <a href="/patients/decrire-mon-besoin/">Décrire mon besoin</a>
           </Button>
         </div>
       </section>

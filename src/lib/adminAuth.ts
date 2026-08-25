@@ -72,8 +72,9 @@ export async function callAdminFunction<T = unknown>(
   if (error) {
     throw new Error("Erreur de l'appel admin");
   }
-  if ((data as any)?.error) {
-    throw new Error((data as any).error);
+  const enveloppe = data as { error?: string } | null | undefined;
+  if (enveloppe?.error) {
+    throw new Error(enveloppe.error);
   }
   return data as T;
 }

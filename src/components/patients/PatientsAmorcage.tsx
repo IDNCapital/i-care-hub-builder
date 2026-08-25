@@ -80,7 +80,7 @@ export function PatientsAmorcage({ praticiens }: Props) {
             engagement et en toute confidentialité.
           </p>
           <Button variant="gold" size="lg" asChild>
-            <Link to="/patients/decrire-mon-besoin">Décrire mon besoin</Link>
+            <Link to="/patients/decrire-mon-besoin/">Décrire mon besoin</Link>
           </Button>
         </div>
       </section>

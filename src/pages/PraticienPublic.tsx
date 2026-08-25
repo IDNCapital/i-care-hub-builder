@@ -4,7 +4,7 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { FichePraticien } from "@/components/praticiens/FichePraticien";
 import type { Praticien } from "@/pages/admin/AdminPraticiens";
-import { pageUrl } from "@/lib/siteUrl";
+import { assetUrl, pageUrl } from "@/lib/siteUrl";
 import {
   DEFAULT_OG_IMAGE_ALT,
   DEFAULT_OG_IMAGE_HEIGHT,
@@ -152,11 +152,11 @@ export default function PraticienPublic() {
   const title = `${fullName}, ${praticien.profession}${ville ? ` à ${ville}` : ""} · I-CA.RE`;
   const description = praticien.bio_courte ?? `${fullName}, ${praticien.profession}${ville ? ` à ${ville}` : ""}.`;
   const canonical = pageUrl(`/praticien/${praticien.slug}`);
-  const image = praticien.photo_url ?? "https://i-ca.re/og-i-ca-re.png";
+  const image = praticien.photo_url ?? assetUrl("/og-i-ca-re.png");
 
   // Quartier derived from cabinet name (strips "I-CA.RE" prefix)
   const quartier = cabinet?.name
-    ? cabinet.name.replace(/I[\u2010-\u2015\-]?CA\.?RE/i, "").trim()
+    ? cabinet.name.replace(/I[\u2010-\u2015-]?CA\.?RE/i, "").trim()
     : "";
 
   const jsonLd: Record<string, unknown> = {

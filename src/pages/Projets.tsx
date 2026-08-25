@@ -38,7 +38,7 @@ export default function Projets() {
     return projects.find((p) => p.slug === slug) ?? null;
   };
 
-  const getDescription = (project: any) => {
+  const getDescription = (project: { short_description_en?: string | null; short_description?: string | null }) => {
     if (lang === "en" && project.short_description_en) return project.short_description_en;
     return project.short_description;
   };

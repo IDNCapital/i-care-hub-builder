@@ -96,7 +96,7 @@ export function SectionPraticiensDuCabinet({
 
         <div className="text-center mt-10">
           <Link
-            to="/patients"
+            to="/patients/"
             className="inline-flex items-center text-sm font-medium text-primary hover:underline"
           >
             Voir l'ensemble du réseau à Bordeaux →

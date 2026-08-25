@@ -117,9 +117,9 @@ export default function ProblematiqueDetail() {
       <section className="pt-28 pb-10 md:pt-32 md:pb-14 bg-cream">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
           <nav aria-label="Fil d'ariane" className="font-sans text-[12px] text-[#6B6B6B] mb-4">
-            <a href="/patients" className="hover:text-sage hover:underline">Patients</a>
+            <a href="/patients/" className="hover:text-sage hover:underline">Patients</a>
             <span className="mx-2">›</span>
-            <a href="/patients/problematiques" className="hover:text-sage hover:underline">Problématiques</a>
+            <a href="/patients/problematiques/" className="hover:text-sage hover:underline">Problématiques</a>
             <span className="mx-2">›</span>
             <span>{problematique.nom}</span>
           </nav>
@@ -156,7 +156,7 @@ export default function ProblematiqueDetail() {
                 Nos praticiennes et praticiens n'affichent pas encore cette problématique.
               </p>
               <Button variant="gold" size="lg" asChild>
-                <a href="/patients/decrire-mon-besoin">Décrire mon besoin</a>
+                <a href="/patients/decrire-mon-besoin/">Décrire mon besoin</a>
               </Button>
             </div>
           ) : (
@@ -198,7 +198,7 @@ export default function ProblematiqueDetail() {
             Décrivez-nous votre besoin en quelques lignes. Nous vous orienterons vers la praticienne ou le praticien I‑CA.RE le plus adapté.
           </p>
           <Button variant="gold" size="lg" asChild>
-            <a href="/patients/decrire-mon-besoin">Décrire mon besoin</a>
+            <a href="/patients/decrire-mon-besoin/">Décrire mon besoin</a>
           </Button>
         </div>
       </section>

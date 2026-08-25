@@ -37,6 +37,7 @@ import {
 import { toast } from "sonner";
 import { adminLogout, callAdminFunction, getAdminToken } from "@/lib/adminAuth";
 import { PraticienDrawer } from "@/components/admin/PraticienDrawer";
+import { BASE_URL } from "@/lib/siteUrl";
 
 export type Praticien = {
   id: string;
@@ -324,7 +325,7 @@ export default function AdminPraticiens() {
   };
 
   const copyPreviewLink = (p: Praticien) => {
-    const url = `https://i-ca.re/preview/${p.slug}/${p.preview_token}`;
+    const url = `${BASE_URL}/preview/${p.slug}/${p.preview_token}`;
     navigator.clipboard.writeText(url).then(
       () => toast.success("Lien copié"),
       () => toast.error("Impossible de copier"),

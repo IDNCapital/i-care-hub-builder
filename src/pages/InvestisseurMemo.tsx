@@ -423,7 +423,7 @@ export default function InvestisseurMemo() {
             {governanceRoles.map((item) => (
               <div key={item.role} className="bg-background border border-border rounded-xl p-8">
                 <h3 className="text-xl font-heading font-semibold mb-2">
-                  {(item as any).rolePrefix ? <><BrandName /> (sponsor)</> : item.role}
+                  {(item as { rolePrefix?: boolean }).rolePrefix ? <><BrandName /> (sponsor)</> : item.role}
                 </h3>
                 <p className="text-sm font-semibold text-primary mb-5">{item.contribution}</p>
                 <ul className="space-y-3">
