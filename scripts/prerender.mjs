@@ -405,6 +405,15 @@ function deduplicateLinkByRel(head, rel) {
 // fait ne vient jamais, ce que la reprise par route absorbe comme le reste.
 const ATTENTES_DOM = [
   {
+    // Egalite stricte sur les deux seules routes qui posent le marqueur. Un
+    // startsWith("/patients") capterait /patients/problematiques,
+    // /patients/specialite/<slug> et /patients/articles/<slug>, qui ne le
+    // portent pas, et bloquerait leur prerendu jusqu'a expiration.
+    match: (p) => p === "/patients" || p === "/en/patients",
+    selecteur: "[data-praticiens-annuaire]",
+    label: "annuaire des praticiens",
+  },
+  {
     match: (p) => /^(\/en)?\/(projets|projects)\/./.test(p),
     selecteur: "[data-praticiens-cabinet]",
     label: "section praticiens du cabinet",
