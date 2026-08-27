@@ -36,17 +36,24 @@ const OPTIONAL = process.env.PRERENDER_OPTIONAL === "true";
 // la refuser (run #183 sur /projets/i-ca-re-le-bouscat, build local du lot 4
 // sur /patients/articles/burn-out-reconnaitre-les-signes).
 //
-// LA CAUSE N'EST PAS ETABLIE, et ce lot ne pretend pas la corriger : il absorbe
-// l'alea. Deux candidates au 20/08/2026. Une course entre la requete Supabase
-// et networkidle0. Ou une fragilite de react-helmet-async 2.0.5 sous React
-// 19.2.1, qui n'injecterait rien dans le head : la signature du run #183
-// comportait "Missing canonical" et "Missing hreflang", qui viennent de Helmet
-// et non de la donnee, et la meme bibliotheque a montre deux autres
-// manifestations, le head fige en navigation cliente et une non-injection au
-// premier rendu observee en local. Un lot de diagnostic est ouvert.
+// LA CAUSE N'A PAS ETE ETABLIE, et ce lot ne pretendait pas la corriger : il
+// absorbe l'alea. Deux candidates etaient retenues au 20/08/2026. Une course
+// entre la requete Supabase et networkidle0. Ou une fragilite de
+// react-helmet-async 2.0.5 sous React 19.2.1, qui n'injectait rien dans le
+// head : la signature du run #183 comportait "Missing canonical" et "Missing
+// hreflang", qui venaient de Helmet et non de la donnee, et la meme
+// bibliotheque avait montre deux autres manifestations, le head fige en
+// navigation cliente et une non-injection au premier rendu observee en local.
+// Un lot de diagnostic avait ete ouvert.
 // On absorbe donc l'alea, sans toucher a la severite : une route qui echoue a
 // TOUS ses essais fait echouer le build, exactement comme avant, en rendant son
 // erreur d'origine et non un message de reprise.
+//
+// La seconde candidate est SANS OBJET depuis le Sprint 14 : react-helmet-async
+// a ete retiree du depot, le head est rendu nativement par React 19. Elle reste
+// ecrite ci-dessus parce qu'elle explique la signature des runs anterieurs, pas
+// parce qu'elle designerait encore une cause vivante. Si l'alea se reproduit,
+// c'est la premiere candidate qu'il faut instruire.
 //
 // La reprise couvre AUSSI les captures qui levent, timeout de navigation,
 // selecteur jamais apparu, connexion fermee. Une exception est une forme plus

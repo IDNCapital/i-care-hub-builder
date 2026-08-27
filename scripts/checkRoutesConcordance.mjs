@@ -46,6 +46,16 @@ const ECARTS_DECLARES = [
   { chemin: "/en/investment/interest", absentDe: ["prerendu", "sitemap"], motif: "idem /investissement/interet, cote anglais" },
   { chemin: "/en/investment/memo", absentDe: ["prerendu", "sitemap"], motif: "idem /investissement/memo, cote anglais" },
   { chemin: "/en/investment/verify", absentDe: ["prerendu", "sitemap"], motif: "idem /investissement/verify, cote anglais" },
+  { chemin: "/admin", absentDe: ["prerendu"], motif: "route Navigate sans page, reoriente cote client vers /admin/praticiens ; hors prerendu par construction, couverte par Disallow: /admin/" },
+  { chemin: "/admin/login", absentDe: ["prerendu"], motif: "page d'administration, hors prerendu par construction, couverte par Disallow: /admin/" },
+  { chemin: "/admin/praticiens", absentDe: ["prerendu"], motif: "page d'administration, hors prerendu par construction, couverte par Disallow: /admin/" },
+  { chemin: "/admin/demandes", absentDe: ["prerendu"], motif: "page d'administration, hors prerendu par construction, couverte par Disallow: /admin/" },
+  { chemin: "/admin/demandes-installation", absentDe: ["prerendu"], motif: "page d'administration, hors prerendu par construction, couverte par Disallow: /admin/" },
+  { chemin: "/admin/idn-os-webhooks", absentDe: ["prerendu"], motif: "page d'administration, hors prerendu par construction, couverte par Disallow: /admin/" },
+  { chemin: "/admin/extractions", absentDe: ["prerendu"], motif: "page d'administration, hors prerendu par construction, couverte par Disallow: /admin/" },
+  { chemin: "/preview-carte-cabinets", absentDe: ["prerendu"], motif: "page de mise au point, hors prerendu, couverte par sa propre directive Disallow" },
+  { chemin: "/preview-footer-idn", absentDe: ["prerendu"], motif: "page de mise au point, hors prerendu, couverte par sa propre directive Disallow" },
+  { chemin: "/preview-footer-idn-v3", absentDe: ["prerendu"], motif: "page de mise au point, hors prerendu, couverte par sa propre directive Disallow" },
 ];
 
 const norm = (p) => {
@@ -170,6 +180,7 @@ const main = async () => {
     ["app", "prerendu, absent des routes d'App.tsx", pre.routes, (p) => app.fixes.has(p) || couvertParUneFamille(p)],
     ["prerendu", "declare dans routeMap, ni prerendu ni redirige", routeMapChemins, (p) => pre.routes.has(p) || pre.redirections.has(p)],
     ["sitemap", "au sitemap, absent du prerendu", sitemap, (p) => pre.routes.has(p)],
+    ["prerendu", "declare dans App.tsx, ni prerendu ni redirige", app.fixes, (p) => pre.routes.has(p) || pre.redirections.has(p)],
   ];
   for (const [ou, libelle, source, present] of absences) {
     for (const p of [...source].sort()) {
