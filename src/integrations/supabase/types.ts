@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.1"
+    PostgrestVersion: "14.17"
   }
   public: {
     Tables: {
@@ -56,6 +56,48 @@ export type Database = {
           statut?: string
           titre?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      audit_donnees_nominatives: {
+        Row: {
+          auth_sub: string | null
+          colonnes_modifiees: string[] | null
+          id: number
+          jwt_role: string | null
+          ligne_id: string | null
+          lignes_avant: number | null
+          operation: string
+          role_effectif: string | null
+          survenu_le: string
+          table_cible: string
+          utilisateur_session: string | null
+        }
+        Insert: {
+          auth_sub?: string | null
+          colonnes_modifiees?: string[] | null
+          id?: number
+          jwt_role?: string | null
+          ligne_id?: string | null
+          lignes_avant?: number | null
+          operation: string
+          role_effectif?: string | null
+          survenu_le?: string
+          table_cible: string
+          utilisateur_session?: string | null
+        }
+        Update: {
+          auth_sub?: string | null
+          colonnes_modifiees?: string[] | null
+          id?: number
+          jwt_role?: string | null
+          ligne_id?: string | null
+          lignes_avant?: number | null
+          operation?: string
+          role_effectif?: string | null
+          survenu_le?: string
+          table_cible?: string
+          utilisateur_session?: string | null
         }
         Relationships: []
       }
