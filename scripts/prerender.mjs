@@ -37,13 +37,15 @@ const OPTIONAL = process.env.PRERENDER_OPTIONAL === "true";
 // sur /patients/articles/burn-out-reconnaitre-les-signes).
 //
 // LA CAUSE N'EST PAS ETABLIE, et ce lot ne pretend pas la corriger : il absorbe
-// l'alea. Deux candidates au 20/08/2026. Une course entre la requete Supabase
-// et networkidle0. Ou une fragilite de react-helmet-async 2.0.5 sous React
-// 19.2.1, qui n'injecterait rien dans le head : la signature du run #183
-// comportait "Missing canonical" et "Missing hreflang", qui viennent de Helmet
-// et non de la donnee, et la meme bibliotheque a montre deux autres
+// l'alea. Deux candidates avaient ete retenues au 20/08/2026. Une course entre la
+// requete Supabase et networkidle0. Ou une fragilite de react-helmet-async 2.0.5
+// sous React 19.2.1, qui n'aurait rien injecte dans le head : la signature du run
+// #183 comportait "Missing canonical" et "Missing hreflang", qui venaient de
+// Helmet et non de la donnee, et la meme bibliotheque avait montre deux autres
 // manifestations, le head fige en navigation cliente et une non-injection au
-// premier rendu observee en local. Un lot de diagnostic est ouvert.
+// premier rendu observee en local. Cette seconde candidate est caduque : la
+// bibliotheque a ete retiree du depot au Sprint 14, elle n'est plus ni dans
+// package.json ni dans src/. Seule la premiere candidate reste ouverte.
 // On absorbe donc l'alea, sans toucher a la severite : une route qui echoue a
 // TOUS ses essais fait echouer le build, exactement comme avant, en rendant son
 // erreur d'origine et non un message de reprise.
