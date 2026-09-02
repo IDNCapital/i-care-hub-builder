@@ -41,7 +41,7 @@ function scrubPii(s: string): string {
   return s.replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, (m) => maskEmail(m));
 }
 
-// ═══ IDN OS Webhook — copie locale de submit-demande-conciergerie (sans console.log) ═══
+// ═══ IDN OS Webhook — copie locale de submit-demande-conciergerie (journalisation console réduite) ═══
 async function notifyIdnOs(
   supabase: ReturnType<typeof createClient>,
   functionName: string,
