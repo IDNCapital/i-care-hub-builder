@@ -363,7 +363,7 @@ Deno.serve(async (req) => {
 
       // ── Email 2 : notification équipe interne
       const internalEmail = Deno.env.get("INTERNAL_NOTIFICATION_EMAIL") ?? mailFromEmail;
-      const adminUrl = `https://i-ca.re/admin/demandes?id=${demandeId}`;
+      const adminUrl = `https://i-ca.re/admin/demandes-installation?id=${demandeId}`;
       const sourceLink = cleanSource
         ? `<a href="https://i-ca.re${escapeHtml(cleanSource)}" style="color:#2563eb;">${escapeHtml(cleanSource)}</a>`
         : "-";
