@@ -350,15 +350,20 @@ Deno.serve(async (req) => {
           subject: "Votre demande d'installation a bien été reçue — I-CA.RE",
           html: ackHtml,
         });
+        ackSentAt = new Date().toISOString();
       } catch (e) {
         console.error("[submit-demande-installation] ack mail error:", e);
         const errMsg = e instanceof Error ? e.message : String(e);
+        sendError = "ack: " + scrubPii(errMsg);
         await auditEmailFailed(supabase, "échec envoi accusé candidat installation", {
-          error_message: errMsg.slice(0, 500),
+          error_message: scrubPii(errMsg).slice(0, 500),
           demande_id: demandeId,
           recipient: maskEmail(cleanEmail),
           stage: "ack",
         });
+        try {
+          await notifyIdnOs(supabase, "submit-demande-installation", "email_failed", "demandes_installation", demandeId, { stage: "ack", error_message: scrubPii(errMsg).slice(0, 300), recipient: maskEmail(cleanEmail) });
+        } catch (_) { /* swallow */ }
       }
 
       // ── Email 2 : notification équipe interne
