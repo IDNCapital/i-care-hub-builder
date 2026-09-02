@@ -25,7 +25,7 @@ import { getCentreBySlug, quarterLabel } from "@/lib/centres";
 import { getProjectSchemaCopy, parseAddress, regionFromPostalCode } from "@/lib/projectSchema";
 import { BrandName } from "@/components/BrandName";
 import { SectionPraticiensDuCabinet } from "@/components/SectionPraticiensDuCabinet";
-import { isPipelineCabinet } from "@/lib/installation";
+import { cabinetNomCourt, isPipelineCabinet } from "@/lib/installation";
 import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
@@ -448,7 +448,10 @@ export default function ProjetDetail() {
             <p className="text-base text-muted-foreground mb-8">
               Ce cabinet <BrandName /> est en pré-lancement. Laissez-nous quelques informations pour recevoir en priorité les disponibilités de bureaux, les conditions de location et le planning d'ouverture prévisionnel.
             </p>
-            <FormulaireInteretInstallation villeSlug={project.slug_installation} />
+            <FormulaireInteretInstallation
+              villeSlug={project.slug_installation}
+              villeLabel={cabinetNomCourt(project.name)}
+            />
           </div>
         </section>
       )}

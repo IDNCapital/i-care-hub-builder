@@ -22,7 +22,7 @@ interface Props {
 }
 
 type State = "idle" | "submitting" | "success" | "error";
-type FieldErrors = Partial<Record<"nom" | "email" | "telephone" | "consent" | "profession" | "form", string>>;
+type FieldErrors = Partial<Record<"nom" | "email" | "telephone" | "consent" | "profession" | "message" | "form", string>>;
 
 /**
  * Formulaire d'intérêt installation (pattern B, réutilisable).
@@ -35,7 +35,8 @@ export function FormulaireInteretInstallation({
   professionLabel,
   villeLabel,
 }: Props) {
-  const modeSelects = !professionSlug;
+  const professionLibre = !professionSlug;
+  const villeLibre = !villeSlug;
   const { data: professions = [] } = useProfessions();
   const { data: cabinets = [] } = useCabinetsPipeline();
 
@@ -49,14 +50,15 @@ export function FormulaireInteretInstallation({
   const [selectedVille, setSelectedVille] = useState<string>(villeSlug ?? "__all__");
   const [state, setState] = useState<State>("idle");
   const [errors, setErrors] = useState<FieldErrors>({});
+  const autreProfession = professionLibre && selectedProfession === "autre-profession";
 
   const isValid = useMemo(() => {
     if (!nom.trim() || nom.trim().length < 2) return false;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) return false;
     if (!consent) return false;
-    if (modeSelects && !selectedProfession) return false;
+    if (professionLibre && !selectedProfession) return false;
     return true;
-  }, [nom, email, consent, modeSelects, selectedProfession]);
+  }, [nom, email, consent, professionLibre, selectedProfession]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,21 +69,20 @@ export function FormulaireInteretInstallation({
       next.telephone = "Numéro de téléphone invalide.";
     }
     if (!consent) next.consent = "Le consentement est obligatoire.";
-    if (modeSelects && !selectedProfession) next.profession = "Merci de choisir votre profession.";
+    if (professionLibre && !selectedProfession) next.profession = "Merci de choisir votre profession.";
+    if (autreProfession && message.trim().length < 3) next.message = "Merci de préciser votre profession dans le message.";
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
     setState("submitting");
     try {
-      const villeToSend = modeSelects
-        ? (selectedVille === "__all__" ? null : selectedVille)
-        : (villeSlug ?? null);
+      const villeToSend = villeSlug ?? (selectedVille === "__all__" ? null : selectedVille);
 
       const { data, error } = await supabase.functions.invoke<{ ok?: boolean; id?: string; error?: string }>(
         "submit-demande-installation",
         {
           body: {
-            profession_slug: modeSelects ? selectedProfession : professionSlug,
+            profession_slug: professionSlug ?? selectedProfession,
             ville_slug: villeToSend,
             nom: nom.trim(),
             email: email.trim(),
@@ -169,7 +170,7 @@ export function FormulaireInteretInstallation({
       </div>
 
       {/* Rappel profession/ville pour pages détail */}
-      {!modeSelects && (professionLabel || villeLabel) && (
+      {(!professionLibre || !villeLibre) && (professionLabel || villeLabel) && (
         <div className="bg-secondary rounded-md p-4 text-sm">
           {professionLabel && (
             <p className="mb-1">
@@ -187,7 +188,7 @@ export function FormulaireInteretInstallation({
       )}
 
       {/* Selects (mode index) */}
-      {modeSelects && (
+      {professionLibre && (
         <>
           <div>
             <Label htmlFor="profession">
@@ -206,23 +207,30 @@ export function FormulaireInteretInstallation({
               </SelectContent>
             </Select>
             {errors.profession && <p className="text-sm text-destructive mt-1">{errors.profession}</p>}
+            {autreProfession && (
+              <p className="text-xs text-muted-foreground mt-1">
+                Indiquez votre profession dans le champ « Votre projet d'installation » ci-dessous.
+              </p>
+            )}
           </div>
-          <div>
-            <Label htmlFor="ville">Cabinet souhaité (facultatif)</Label>
-            <Select value={selectedVille} onValueChange={setSelectedVille}>
-              <SelectTrigger id="ville" className="mt-1.5">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="__all__">Tous les cabinets</SelectItem>
-                {cabinets.map((c) => (
-                  <SelectItem key={c.id} value={c.slug_installation}>
-                    {cabinetNomCourt(c.name)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          {villeLibre && (
+            <div>
+              <Label htmlFor="ville">Cabinet souhaité (facultatif)</Label>
+              <Select value={selectedVille} onValueChange={setSelectedVille}>
+                <SelectTrigger id="ville" className="mt-1.5">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="__all__">Tous les cabinets</SelectItem>
+                  {cabinets.map((c) => (
+                    <SelectItem key={c.id} value={c.slug_installation}>
+                      {cabinetNomCourt(c.name)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
         </>
       )}
 
@@ -275,17 +283,21 @@ export function FormulaireInteretInstallation({
       </div>
 
       <div>
-        <Label htmlFor="message">Votre projet d'installation (facultatif)</Label>
+        <Label htmlFor="message">
+          Votre projet d'installation {autreProfession ? <span className="text-primary">*</span> : "(facultatif)"}
+        </Label>
         <Textarea
           id="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           maxLength={2000}
           rows={5}
+          aria-required={autreProfession}
           placeholder="Précisez votre calendrier envisagé, votre mode d'exercice actuel, vos besoins particuliers (surface, équipements, temps partagé)…"
           className="mt-1.5"
         />
         <p className="text-xs text-muted-foreground mt-1">{message.length} / 2000 caractères</p>
+        {errors.message && <p className="text-sm text-destructive mt-1">{errors.message}</p>}
       </div>
 
       <div className="flex items-start gap-3">
