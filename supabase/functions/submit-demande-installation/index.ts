@@ -399,15 +399,45 @@ Deno.serve(async (req) => {
           subject: `[I-CA.RE] Nouvelle demande installation — ${cleanNom} · ${professionLabel}${villeLabel ? ` · ${villeLabel}` : ""}`,
           html: notifHtml,
         });
+        notifiedAt = new Date().toISOString();
       } catch (e) {
         console.error("[submit-demande-installation] internal mail error:", e);
         const errMsg = e instanceof Error ? e.message : String(e);
+        sendError = "notification: " + scrubPii(errMsg);
         await auditEmailFailed(supabase, "échec envoi notification interne installation", {
-          error_message: errMsg.slice(0, 500),
+          error_message: scrubPii(errMsg).slice(0, 500),
           demande_id: demandeId,
           recipient: maskEmail(internalEmail),
           stage: "notification",
         });
+        try {
+          await notifyIdnOs(supabase, "submit-demande-installation", "email_failed", "demandes_installation", demandeId, { stage: "notification", error_message: scrubPii(errMsg).slice(0, 300), recipient: maskEmail(internalEmail) });
+        } catch (_) { /* swallow */ }
+      }
+    }
+
+    // IDN OS webhook
+    try {
+      await notifyIdnOs(supabase, "submit-demande-installation", "lead_created", "demandes_installation", demandeId, { nom: cleanNom, email: cleanEmail, telephone: cleanTel, profession_slug: cleanProfession, ville_slug: cleanVille, source_path: cleanSource, created_at: inserted.created_at });
+    } catch (e) {
+      console.error("[submit-demande-installation] webhook error swallowed:", e);
+    }
+
+    const suivi: Record<string, string> = {};
+    if (ackSentAt) suivi.ack_sent_at = ackSentAt;
+    if (notifiedAt) suivi.notified_at = notifiedAt;
+    if (sendError) suivi.email_send_error = sendError.slice(0, 480);
+    if (Object.keys(suivi).length > 0) {
+      try {
+        const { error: suiviErr } = await supabase
+          .from("demandes_installation")
+          .update(suivi)
+          .eq("id", demandeId);
+        if (suiviErr) {
+          console.error("[submit-demande-installation] suivi update error:", suiviErr.code, suiviErr.message);
+        }
+      } catch (e) {
+        console.error("[submit-demande-installation] suivi update threw:", e);
       }
     }
 
