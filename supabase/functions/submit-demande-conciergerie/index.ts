@@ -429,11 +429,14 @@ Deno.serve(async (req) => {
         console.error("[submit-demande-conciergerie] internal mail error:", e);
         const errMsg = e instanceof Error ? e.message : String(e);
         await auditEmailFailed(supabase, "échec envoi notification interne conciergerie", {
-          error_message: errMsg.slice(0, 500),
+          error_message: scrubPii(errMsg).slice(0, 500),
           demande_id: demandeId,
           recipient: maskEmail(internalEmail),
           stage: "notification",
         });
+        try {
+          await notifyIdnOs(supabase, "submit-demande-conciergerie", "email_failed", "demandes_conciergerie", demandeId, { stage: "notification", error_message: scrubPii(errMsg).slice(0, 300), recipient: maskEmail(internalEmail) });
+        } catch (_) { /* swallow */ }
       }
     }
 
