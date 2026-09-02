@@ -109,6 +109,10 @@ function maskEmail(e: string): string {
   if (at <= 0) return "***";
   return `${e.slice(0, Math.min(3, at))}***@${e.slice(at + 1)}`;
 }
+
+function scrubPii(s: string): string {
+  return s.replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, (m) => maskEmail(m));
+}
 async function auditEmailFailed(
   supabase: ReturnType<typeof createClient>,
   description: string,
@@ -333,6 +337,10 @@ Deno.serve(async (req) => {
       smtpReady = true;
     } catch (e) {
       console.warn("[submit-demande-conciergerie] SMTP not configured:", e);
+      await auditEmailFailed(supabase, "SMTP non configuré, aucun courriel envoyé", { demande_id: demandeId, stage: "smtp_not_configured" });
+      try {
+        await notifyIdnOs(supabase, "submit-demande-conciergerie", "email_failed", "demandes_conciergerie", demandeId, { stage: "smtp_not_configured", error_message: "SMTP non configuré, aucun courriel envoyé" });
+      } catch (_) { /* swallow */ }
     }
 
     const cabinetLabel = cleanCabinet
@@ -383,11 +391,14 @@ Deno.serve(async (req) => {
         console.error("[submit-demande-conciergerie] ack mail error:", e);
         const errMsg = e instanceof Error ? e.message : String(e);
         await auditEmailFailed(supabase, "échec envoi accusé patient conciergerie", {
-          error_message: errMsg.slice(0, 500),
+          error_message: scrubPii(errMsg).slice(0, 500),
           demande_id: demandeId,
           recipient: maskEmail(cleanEmail),
           stage: "ack",
         });
+        try {
+          await notifyIdnOs(supabase, "submit-demande-conciergerie", "email_failed", "demandes_conciergerie", demandeId, { stage: "ack", error_message: scrubPii(errMsg).slice(0, 300), recipient: maskEmail(cleanEmail) });
+        } catch (_) { /* swallow */ }
       }
 
       // ── Email 2 : notification équipe interne
@@ -429,11 +440,14 @@ Deno.serve(async (req) => {
         console.error("[submit-demande-conciergerie] internal mail error:", e);
         const errMsg = e instanceof Error ? e.message : String(e);
         await auditEmailFailed(supabase, "échec envoi notification interne conciergerie", {
-          error_message: errMsg.slice(0, 500),
+          error_message: scrubPii(errMsg).slice(0, 500),
           demande_id: demandeId,
           recipient: maskEmail(internalEmail),
           stage: "notification",
         });
+        try {
+          await notifyIdnOs(supabase, "submit-demande-conciergerie", "email_failed", "demandes_conciergerie", demandeId, { stage: "notification", error_message: scrubPii(errMsg).slice(0, 300), recipient: maskEmail(internalEmail) });
+        } catch (_) { /* swallow */ }
       }
     }
 

@@ -37,6 +37,86 @@ function maskEmail(e: string): string {
   return `${e.slice(0, Math.min(3, at))}***@${e.slice(at + 1)}`;
 }
 
+function scrubPii(s: string): string {
+  return s.replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, (m) => maskEmail(m));
+}
+
+// ═══ IDN OS Webhook — copie locale de submit-demande-conciergerie (journalisation console réduite) ═══
+async function notifyIdnOs(
+  supabase: ReturnType<typeof createClient>,
+  functionName: string,
+  eventType: string,
+  sourceTable: string,
+  sourceId: string,
+  payload: Record<string, unknown>,
+): Promise<void> {
+  try {
+    const enabled = Deno.env.get("IDN_OS_WEBHOOK_ENABLED");
+    if (enabled === "false" || enabled === "FALSE") {
+      return;
+    }
+    const webhookUrl = Deno.env.get("IDN_OS_WEBHOOK_URL");
+    const webhookSecret = Deno.env.get("IDN_OS_WEBHOOK_SECRET");
+    if (!webhookUrl || !webhookSecret) {
+      console.warn("[idnos-webhook] missing URL or SECRET, logging and skipping");
+      try {
+        await supabase.from("icare_idnos_audit_log").insert({
+          event_type: "webhook_config_missing",
+          function_name: functionName,
+          description: `Missing ${!webhookUrl ? "IDN_OS_WEBHOOK_URL" : ""} ${!webhookSecret ? "IDN_OS_WEBHOOK_SECRET" : ""}`.trim(),
+        });
+      } catch (_) { /* swallow */ }
+      return;
+    }
+    const body = JSON.stringify({
+      event_type: eventType,
+      source_table: sourceTable,
+      source_id: sourceId,
+      payload,
+      sent_at: new Date().toISOString(),
+    });
+    const keyData = new TextEncoder().encode(webhookSecret);
+    const key = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+    const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body));
+    const hmacHex = [...new Uint8Array(sig)].map(b => b.toString(16).padStart(2, "0")).join("");
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000);
+    const start = Date.now();
+    try {
+      const resp = await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Icare-Signature": hmacHex },
+        body,
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+      const durationMs = Date.now() - start;
+      if (resp.ok) {
+        try {
+          await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_sent", function_name: functionName, description: `Webhook sent to IDN OS`, payload_json: { response_status: resp.status, duration_ms: durationMs } });
+        } catch (auditErr) { console.error("[idnos-webhook] audit insert error:", auditErr); }
+      } else {
+        const respText = await resp.text().catch(() => "");
+        console.warn("[idnos-webhook] failed, status =", resp.status, "body =", respText.slice(0, 200));
+        try {
+          await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_failed", function_name: functionName, description: `HTTP ${resp.status}`, payload_json: { error_message: respText.slice(0, 500), attempted_url: webhookUrl, response_status: resp.status } });
+        } catch (auditErr) { console.error("[idnos-webhook] audit insert error:", auditErr); }
+      }
+    } catch (fetchErr) {
+      clearTimeout(timeout);
+      const errMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+      console.error("[idnos-webhook] fetch error:", errMsg);
+      try {
+        await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_failed", function_name: functionName, description: errMsg.slice(0, 200), payload_json: { error_message: errMsg, attempted_url: webhookUrl, response_status: null } });
+      } catch (auditErr) { console.error("[idnos-webhook] audit insert error:", auditErr); }
+    }
+  } catch (_globalErr) {
+    // Global catch: never interrupt the caller
+    console.error("[idnos-webhook] unexpected error swallowed:", _globalErr);
+  }
+}
+// ═══ End IDN OS Webhook helper ═══
+
 // Consignation d'un échec d'envoi email dans icare_idnos_audit_log.
 // Codes structurants uniquement (pas de nom, pas d'email en clair : email masqué).
 // Réplique du pattern durci de submit-demande-conciergerie.
@@ -209,6 +289,9 @@ Deno.serve(async (req) => {
     const demandeId = inserted.id as string;
 
     // ── SMTP (Infomaniak — même infra que submit-demande-conciergerie)
+    let ackSentAt: string | null = null;
+    let notifiedAt: string | null = null;
+    let sendError: string | null = null;
     let smtpReady = false;
     let transporter: ReturnType<typeof nodemailer.createTransport> | null = null;
     let mailFromName = "I-CA.RE";
@@ -229,6 +312,11 @@ Deno.serve(async (req) => {
       smtpReady = true;
     } catch (e) {
       console.warn("[submit-demande-installation] SMTP not configured:", e);
+      sendError = "smtp_not_configured";
+      await auditEmailFailed(supabase, "SMTP non configuré, aucun courriel envoyé", { demande_id: demandeId, stage: "smtp_not_configured" });
+      try {
+        await notifyIdnOs(supabase, "submit-demande-installation", "email_failed", "demandes_installation", demandeId, { stage: "smtp_not_configured", error_message: "SMTP non configuré, aucun courriel envoyé" });
+      } catch (_) { /* swallow */ }
     }
 
     if (smtpReady && transporter) {
@@ -270,20 +358,25 @@ Deno.serve(async (req) => {
           subject: "Votre demande d'installation a bien été reçue — I-CA.RE",
           html: ackHtml,
         });
+        ackSentAt = new Date().toISOString();
       } catch (e) {
         console.error("[submit-demande-installation] ack mail error:", e);
         const errMsg = e instanceof Error ? e.message : String(e);
+        sendError = "ack: " + scrubPii(errMsg);
         await auditEmailFailed(supabase, "échec envoi accusé candidat installation", {
-          error_message: errMsg.slice(0, 500),
+          error_message: scrubPii(errMsg).slice(0, 500),
           demande_id: demandeId,
           recipient: maskEmail(cleanEmail),
           stage: "ack",
         });
+        try {
+          await notifyIdnOs(supabase, "submit-demande-installation", "email_failed", "demandes_installation", demandeId, { stage: "ack", error_message: scrubPii(errMsg).slice(0, 300), recipient: maskEmail(cleanEmail) });
+        } catch (_) { /* swallow */ }
       }
 
       // ── Email 2 : notification équipe interne
       const internalEmail = Deno.env.get("INTERNAL_NOTIFICATION_EMAIL") ?? mailFromEmail;
-      const adminUrl = `https://i-ca.re/admin/demandes?id=${demandeId}`;
+      const adminUrl = `https://i-ca.re/admin/demandes-installation?id=${demandeId}`;
       const sourceLink = cleanSource
         ? `<a href="https://i-ca.re${escapeHtml(cleanSource)}" style="color:#2563eb;">${escapeHtml(cleanSource)}</a>`
         : "-";
@@ -319,15 +412,45 @@ Deno.serve(async (req) => {
           subject: `[I-CA.RE] Nouvelle demande installation — ${cleanNom} · ${professionLabel}${villeLabel ? ` · ${villeLabel}` : ""}`,
           html: notifHtml,
         });
+        notifiedAt = new Date().toISOString();
       } catch (e) {
         console.error("[submit-demande-installation] internal mail error:", e);
         const errMsg = e instanceof Error ? e.message : String(e);
+        sendError = "notification: " + scrubPii(errMsg);
         await auditEmailFailed(supabase, "échec envoi notification interne installation", {
-          error_message: errMsg.slice(0, 500),
+          error_message: scrubPii(errMsg).slice(0, 500),
           demande_id: demandeId,
           recipient: maskEmail(internalEmail),
           stage: "notification",
         });
+        try {
+          await notifyIdnOs(supabase, "submit-demande-installation", "email_failed", "demandes_installation", demandeId, { stage: "notification", error_message: scrubPii(errMsg).slice(0, 300), recipient: maskEmail(internalEmail) });
+        } catch (_) { /* swallow */ }
+      }
+    }
+
+    // IDN OS webhook
+    try {
+      await notifyIdnOs(supabase, "submit-demande-installation", "lead_created", "demandes_installation", demandeId, { nom: cleanNom, email: cleanEmail, telephone: cleanTel, profession_slug: cleanProfession, ville_slug: cleanVille, source_path: cleanSource, created_at: inserted.created_at });
+    } catch (e) {
+      console.error("[submit-demande-installation] webhook error swallowed:", e);
+    }
+
+    const suivi: Record<string, string> = {};
+    if (ackSentAt) suivi.ack_sent_at = ackSentAt;
+    if (notifiedAt) suivi.notified_at = notifiedAt;
+    if (sendError) suivi.email_send_error = sendError.slice(0, 480);
+    if (Object.keys(suivi).length > 0) {
+      try {
+        const { error: suiviErr } = await supabase
+          .from("demandes_installation")
+          .update(suivi)
+          .eq("id", demandeId);
+        if (suiviErr) {
+          console.error("[submit-demande-installation] suivi update error:", suiviErr.code, suiviErr.message);
+        }
+      } catch (e) {
+        console.error("[submit-demande-installation] suivi update threw:", e);
       }
     }
 
