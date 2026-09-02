@@ -376,14 +376,17 @@ export type Database = {
       }
       demandes_installation: {
         Row: {
+          ack_sent_at: string | null
           consentement_rgpd: boolean
           created_at: string
           email: string
+          email_send_error: string | null
           id: string
           ip_hash: string | null
           message: string | null
           nom: string
           notes_internes: string | null
+          notified_at: string | null
           profession_slug: string
           source_path: string | null
           statut: string
@@ -393,14 +396,17 @@ export type Database = {
           ville_slug: string | null
         }
         Insert: {
+          ack_sent_at?: string | null
           consentement_rgpd?: boolean
           created_at?: string
           email: string
+          email_send_error?: string | null
           id?: string
           ip_hash?: string | null
           message?: string | null
           nom: string
           notes_internes?: string | null
+          notified_at?: string | null
           profession_slug: string
           source_path?: string | null
           statut?: string
@@ -410,14 +416,17 @@ export type Database = {
           ville_slug?: string | null
         }
         Update: {
+          ack_sent_at?: string | null
           consentement_rgpd?: boolean
           created_at?: string
           email?: string
+          email_send_error?: string | null
           id?: string
           ip_hash?: string | null
           message?: string | null
           nom?: string
           notes_internes?: string | null
+          notified_at?: string | null
           profession_slug?: string
           source_path?: string | null
           statut?: string
