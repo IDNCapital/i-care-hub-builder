@@ -289,6 +289,9 @@ Deno.serve(async (req) => {
     const demandeId = inserted.id as string;
 
     // ── SMTP (Infomaniak — même infra que submit-demande-conciergerie)
+    let ackSentAt: string | null = null;
+    let notifiedAt: string | null = null;
+    let sendError: string | null = null;
     let smtpReady = false;
     let transporter: ReturnType<typeof nodemailer.createTransport> | null = null;
     let mailFromName = "I-CA.RE";
@@ -309,6 +312,11 @@ Deno.serve(async (req) => {
       smtpReady = true;
     } catch (e) {
       console.warn("[submit-demande-installation] SMTP not configured:", e);
+      sendError = "smtp_not_configured";
+      await auditEmailFailed(supabase, "SMTP non configuré, aucun courriel envoyé", { demande_id: demandeId, stage: "smtp_not_configured" });
+      try {
+        await notifyIdnOs(supabase, "submit-demande-installation", "email_failed", "demandes_installation", demandeId, { stage: "smtp_not_configured", error_message: "SMTP non configuré, aucun courriel envoyé" });
+      } catch (_) { /* swallow */ }
     }
 
     if (smtpReady && transporter) {
