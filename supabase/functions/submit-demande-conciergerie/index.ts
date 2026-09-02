@@ -333,6 +333,10 @@ Deno.serve(async (req) => {
       smtpReady = true;
     } catch (e) {
       console.warn("[submit-demande-conciergerie] SMTP not configured:", e);
+      await auditEmailFailed(supabase, "SMTP non configuré, aucun courriel envoyé", { demande_id: demandeId, stage: "smtp_not_configured" });
+      try {
+        await notifyIdnOs(supabase, "submit-demande-conciergerie", "email_failed", "demandes_conciergerie", demandeId, { stage: "smtp_not_configured", error_message: "SMTP non configuré, aucun courriel envoyé" });
+      } catch (_) { /* swallow */ }
     }
 
     const cabinetLabel = cleanCabinet
