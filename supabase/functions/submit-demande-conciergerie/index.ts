@@ -13,14 +13,11 @@ async function notifyIdnOs(
 ): Promise<void> {
   try {
     const enabled = Deno.env.get("IDN_OS_WEBHOOK_ENABLED");
-    console.log("[idnos-webhook] enabled env =", JSON.stringify(enabled));
     if (enabled === "false" || enabled === "FALSE") {
-      console.log("[idnos-webhook] disabled, skipping");
       return;
     }
     const webhookUrl = Deno.env.get("IDN_OS_WEBHOOK_URL");
     const webhookSecret = Deno.env.get("IDN_OS_WEBHOOK_SECRET");
-    console.log("[idnos-webhook] url present =", !!webhookUrl, "secret present =", !!webhookSecret);
     if (!webhookUrl || !webhookSecret) {
       console.warn("[idnos-webhook] missing URL or SECRET, logging and skipping");
       try {
@@ -43,7 +40,6 @@ async function notifyIdnOs(
     const key = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
     const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body));
     const hmacHex = [...new Uint8Array(sig)].map(b => b.toString(16).padStart(2, "0")).join("");
-      console.log("[idnos-webhook] sending to", webhookUrl?.slice(0, 50));
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3000);
     const start = Date.now();
@@ -57,26 +53,22 @@ async function notifyIdnOs(
       clearTimeout(timeout);
       const durationMs = Date.now() - start;
       if (resp.ok) {
-        console.log("[idnos-webhook] success, status =", resp.status, "duration =", durationMs);
         try {
-          const auditRes = await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_sent", function_name: functionName, description: `Webhook sent to IDN OS`, payload_json: { response_status: resp.status, duration_ms: durationMs } });
-          console.log("[idnos-webhook] audit insert result:", JSON.stringify(auditRes));
+          await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_sent", function_name: functionName, description: `Webhook sent to IDN OS`, payload_json: { response_status: resp.status, duration_ms: durationMs } });
         } catch (auditErr) { console.error("[idnos-webhook] audit insert error:", auditErr); }
       } else {
         const respText = await resp.text().catch(() => "");
         console.warn("[idnos-webhook] failed, status =", resp.status, "body =", respText.slice(0, 200));
         try {
-          const auditRes = await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_failed", function_name: functionName, description: `HTTP ${resp.status}`, payload_json: { error_message: respText.slice(0, 500), attempted_url: webhookUrl, response_status: resp.status } });
-          console.log("[idnos-webhook] audit insert (fail) result:", JSON.stringify(auditRes));
+          await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_failed", function_name: functionName, description: `HTTP ${resp.status}`, payload_json: { error_message: respText.slice(0, 500), attempted_url: webhookUrl, response_status: resp.status } });
         } catch (auditErr) { console.error("[idnos-webhook] audit insert error:", auditErr); }
       }
     } catch (fetchErr) {
       clearTimeout(timeout);
       const errMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
-      console.error("[idnos-webhook] fetch error:", errMsg);
+      console.error("[idnos-webhook] fetch error:", fetchErr instanceof Error ? fetchErr.name : "unknown");
       try {
-        const auditRes = await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_failed", function_name: functionName, description: errMsg.slice(0, 200), payload_json: { error_message: errMsg, attempted_url: webhookUrl, response_status: null } });
-        console.log("[idnos-webhook] audit insert (fetchErr) result:", JSON.stringify(auditRes));
+        await supabase.from("icare_idnos_audit_log").insert({ event_type: "webhook_failed", function_name: functionName, description: errMsg.slice(0, 200), payload_json: { error_message: errMsg, attempted_url: webhookUrl, response_status: null } });
       } catch (auditErr) { console.error("[idnos-webhook] audit insert error:", auditErr); }
     }
   } catch (_globalErr) {
@@ -311,7 +303,7 @@ Deno.serve(async (req) => {
       .select("id, created_at")
       .single();
     if (insertErr || !inserted) {
-      console.error("[submit-demande-conciergerie] insert error:", insertErr);
+      console.error("[submit-demande-conciergerie] insert error:", insertErr?.code, insertErr?.message);
       return json(500, { error: "internal_error" });
     }
     const demandeId = inserted.id as string;
@@ -388,7 +380,7 @@ Deno.serve(async (req) => {
           html: ackHtml,
         });
       } catch (e) {
-        console.error("[submit-demande-conciergerie] ack mail error:", e);
+        console.error("[submit-demande-conciergerie] ack mail error:", scrubPii(e instanceof Error ? e.message : String(e)));
         const errMsg = e instanceof Error ? e.message : String(e);
         await auditEmailFailed(supabase, "échec envoi accusé patient conciergerie", {
           error_message: scrubPii(errMsg).slice(0, 500),
@@ -437,7 +429,7 @@ Deno.serve(async (req) => {
           html: notifHtml,
         });
       } catch (e) {
-        console.error("[submit-demande-conciergerie] internal mail error:", e);
+        console.error("[submit-demande-conciergerie] internal mail error:", scrubPii(e instanceof Error ? e.message : String(e)));
         const errMsg = e instanceof Error ? e.message : String(e);
         await auditEmailFailed(supabase, "échec envoi notification interne conciergerie", {
           error_message: scrubPii(errMsg).slice(0, 500),
