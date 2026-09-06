@@ -7,6 +7,7 @@
  */
 import { Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
+import { MapErrorBoundary } from "@/components/MapErrorBoundary";
 
 const CarteCabinets = lazy(() =>
   import("@/components/CarteCabinets").then((m) => ({ default: m.CarteCabinets })),
@@ -50,20 +51,22 @@ export function CarteCabinetsSection({
           <h2 className="section-title mb-4">{title ?? defaultTitle}</h2>
           <p className="text-lg text-muted-foreground">{subtitle ?? defaultSubtitle}</p>
         </div>
-        <Suspense
-          fallback={
-            <div
-              className="flex items-center justify-center bg-muted/30 rounded-md"
-              style={{ height: height ?? "min(70vh, 520px)" }}
-            >
-              <p className="text-sm text-muted-foreground">
-                {lang === "fr" ? "Chargement de la carte…" : "Loading map…"}
-              </p>
-            </div>
-          }
-        >
-          <CarteCabinets centerOn="all" showSidebar={showSidebar} height={height} />
-        </Suspense>
+        <MapErrorBoundary lang={lang} recovery="reload">
+          <Suspense
+            fallback={
+              <div
+                className="flex items-center justify-center bg-muted/30 rounded-md"
+                style={{ height: height ?? "min(70vh, 520px)" }}
+              >
+                <p className="text-sm text-muted-foreground">
+                  {lang === "fr" ? "Chargement de la carte…" : "Loading map…"}
+                </p>
+              </div>
+            }
+          >
+            <CarteCabinets centerOn="all" showSidebar={showSidebar} height={height} />
+          </Suspense>
+        </MapErrorBoundary>
       </div>
     </section>
   );

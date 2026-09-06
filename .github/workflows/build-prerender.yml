@@ -46,6 +46,13 @@ jobs:
       - name: Install Chromium for Puppeteer
         run: npx puppeteer browsers install chrome
 
+      - name: Verify map coordinates and browser recovery
+        run: |
+          ./node_modules/.bin/tsc --noEmit -p tsconfig.app.json --types node
+          node --experimental-strip-types tests/geo.test.mts
+          node --experimental-strip-types tests/geo-types.test.mts
+          node tests/map-browser.mjs
+
       - name: Build + Prerender (strict mode)
         run: bun run build:ci
         env:

@@ -16,11 +16,14 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Link, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Crosshair } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
 import { openingForecastLabel } from "@/lib/centres";
 import { marqueAffichee } from "@/lib/brand";
+import { parseLat, parseLng } from "@/lib/geo";
+import { MapErrorBoundary } from "@/components/MapErrorBoundary";
 
 const SAGE = "#9EB8A5";
 const SAGE_LIGHT = "#E2EAE5";
@@ -108,17 +111,30 @@ function MapController({
 }) {
   const map = useMap();
   const reduced = prefersReducedMotion();
+  const isFirstFit = useRef(true);
+  const isFirstSelect = useRef(true);
 
   // fitBounds when fitTrigger changes (filter switch or recenter)
   useEffect(() => {
     if (cabinets.length === 0) return;
+    // Hypothèse (non vérifiée en profondeur) : sur un chargement à froid,
+    // le conteneur pourrait ne pas encore avoir sa taille finale
+    // (polices/CSS pas chargées) au moment où cet effet s'exécute, ce qui
+    // amènerait Leaflet à calculer un zoom/centre sur une vue 0x0 et un
+    // LatLng (NaN, NaN). Par précaution on force une mesure à jour du
+    // conteneur avant de bouger la carte, et on n'anime jamais ce tout
+    // premier positionnement.
+    map.invalidateSize();
     const bounds = L.latLngBounds(cabinets.map((c) => [c.lat, c.lng] as [number, number]));
+    if (!bounds.isValid()) return;
+    const instant = reduced || isFirstFit.current;
+    isFirstFit.current = false;
     if (cabinets.length === 1) {
       const c = cabinets[0];
-      if (reduced) map.setView([c.lat, c.lng], 14);
+      if (instant) map.setView([c.lat, c.lng], 14);
       else map.flyTo([c.lat, c.lng], 14, { duration: 0.8 });
     } else {
-      if (reduced) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 13 });
+      if (instant) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 13 });
       else map.flyToBounds(bounds, { padding: [40, 40], maxZoom: 13, duration: 0.8 });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,10 +142,19 @@ function MapController({
 
   // flyTo when selected cabinet changes
   useEffect(() => {
+    const initialSelection = isFirstSelect.current;
+    isFirstSelect.current = false;
     if (!selected) return;
     const c = cabinets.find((x) => x.slug === selected);
     if (!c) return;
-    if (reduced) map.setView([c.lat, c.lng], 16);
+    if (!Number.isFinite(c.lat) || !Number.isFinite(c.lng)) return;
+    // La toute première sélection (ex. deep-link ?cabinet=) arrive juste
+    // après le premier positionnement ci-dessus, qui vient déjà de placer
+    // la carte sans animation : l'animer ici produirait un second
+    // mouvement visible juste après le premier. On ne l'anime donc que
+    // pour les sélections suivantes, faites par l'utilisateur.
+    const instant = reduced || initialSelection;
+    if (instant) map.setView([c.lat, c.lng], 16);
     else map.flyTo([c.lat, c.lng], 16, { duration: 0.9 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
@@ -153,6 +178,9 @@ export function CarteCabinets({
   const [cabinets, setCabinets] = useState<Cabinet[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  /** Nombre de lignes reçues mais écartées (coordonnées invalides). Ne
+   *  jamais exposer les valeurs brutes rejetées ni leur origine. */
+  const [excludedCount, setExcludedCount] = useState(0);
   const [cityFilter, setCityFilter] = useState<CityFilter>("all");
   const [selected, setSelected] = useState<string | null>(
     centerOnProp !== "all" ? centerOnProp : null,
@@ -160,6 +188,8 @@ export function CarteCabinets({
   const [fitTrigger, setFitTrigger] = useState(0);
   const markerRefs = useRef<Record<string, L.Marker>>({});
   const [searchParams, setSearchParams] = useSearchParams();
+  const { i18n } = useTranslation();
+  const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
   // Load data
   useEffect(() => {
@@ -178,18 +208,24 @@ export function CarteCabinets({
         return;
       }
       const rows: Cabinet[] = (data ?? [])
-        .filter((r) => r.lat != null && r.lng != null)
-        .map((r) => ({
-          slug: r.slug,
-          name: r.name,
-          address: r.address ?? "",
-          city: r.city,
-          status: r.status,
-          lat: Number(r.lat),
-          lng: Number(r.lng),
-          googlePlaceId: r.google_place_id,
-          dateOuvertureCible: r.date_ouverture_cible,
-        }));
+        .map((r): Cabinet | null => {
+          const lat = parseLat(r.lat);
+          const lng = parseLng(r.lng);
+          if (lat === null || lng === null) return null;
+          return {
+            slug: r.slug,
+            name: r.name,
+            address: r.address ?? "",
+            city: r.city,
+            status: r.status,
+            lat,
+            lng,
+            googlePlaceId: r.google_place_id,
+            dateOuvertureCible: r.date_ouverture_cible,
+          };
+        })
+        .filter((r): r is Cabinet => r !== null);
+      setExcludedCount((data ?? []).length - rows.length);
       setCabinets(rows);
       setLoading(false);
 
@@ -437,10 +473,30 @@ export function CarteCabinets({
       </div>
     );
   }
+  const projectsHref = lang === "fr" ? "/projets" : "/en/projects";
+
   if (cabinets.length === 0) {
+    // Si des lignes ont été reçues mais toutes écartées (coordonnées
+    // invalides), ne pas affirmer qu'aucun cabinet n'existe : orienter
+    // vers la liste complète plutôt que de fermer la porte.
+    const allExcluded = excludedCount > 0;
     return (
-      <div className="flex items-center justify-center bg-muted/30 rounded-md p-6">
-        <p className="text-sm text-muted-foreground">Aucun cabinet géolocalisé.</p>
+      <div className="flex flex-col items-center justify-center gap-2 text-center bg-muted/30 rounded-md p-6">
+        <p className="text-sm text-muted-foreground">
+          {allExcluded
+            ? lang === "fr"
+              ? "La carte ne peut pas afficher nos cabinets pour le moment."
+              : "The map cannot display our offices right now."
+            : lang === "fr"
+              ? "Aucun cabinet géolocalisé."
+              : "No geolocated office."}
+        </p>
+        <Link
+          to={projectsHref}
+          className="text-sm font-medium underline underline-offset-2 text-primary focus:outline-none focus:ring-2 focus:ring-[#9EB8A5]/40 rounded"
+        >
+          {lang === "fr" ? "Voir tous les cabinets" : "See all offices"}
+        </Link>
       </div>
     );
   }
@@ -449,23 +505,38 @@ export function CarteCabinets({
     <div className={`grid grid-cols-1 ${showSidebar ? "lg:grid-cols-3" : ""} gap-6`}>
       {/* Carte */}
       <div className={showSidebar ? "lg:col-span-2" : ""}>
-        <div
-          className="relative rounded-md overflow-hidden border border-border"
-          style={{ height: mapHeight }}
-        >
-          {mapElement}
-          {/* Bouton recentrer */}
-          <button
-            type="button"
-            onClick={handleRecenter}
-            aria-label="Recentrer sur tous les cabinets"
-            title="Recentrer sur tous les cabinets"
-            className="absolute top-3 right-3 z-[400] bg-white hover:bg-[#F6F5F0] border border-[#9EB8A5]/40 rounded-md w-10 h-10 flex items-center justify-center shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-[#9EB8A5]"
-            style={{ color: ANTHRACITE }}
+        {excludedCount > 0 && (
+          <p className="text-xs text-muted-foreground mb-2">
+            {lang === "fr"
+              ? "Certains cabinets ne sont pas affichés sur la carte."
+              : "Some offices are not shown on the map."}{" "}
+            <Link
+              to={projectsHref}
+              className="underline underline-offset-2 hover:text-foreground"
+            >
+              {lang === "fr" ? "Voir la liste complète" : "See the full list"}
+            </Link>
+          </p>
+        )}
+        <MapErrorBoundary lang={lang}>
+          <div
+            className="relative rounded-md overflow-hidden border border-border"
+            style={{ height: mapHeight }}
           >
-            <Crosshair size={18} strokeWidth={2} />
-          </button>
-        </div>
+            {mapElement}
+            {/* Bouton recentrer */}
+            <button
+              type="button"
+              onClick={handleRecenter}
+              aria-label="Recentrer sur tous les cabinets"
+              title="Recentrer sur tous les cabinets"
+              className="absolute top-3 right-3 z-[400] bg-white hover:bg-[#F6F5F0] border border-[#9EB8A5]/40 rounded-md w-10 h-10 flex items-center justify-center shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-[#9EB8A5]"
+              style={{ color: ANTHRACITE }}
+            >
+              <Crosshair size={18} strokeWidth={2} />
+            </button>
+          </div>
+        </MapErrorBoundary>
       </div>
 
       {/* Sidebar */}

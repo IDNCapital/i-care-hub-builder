@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { MapErrorBoundary } from "@/components/MapErrorBoundary";
 
 // Lazy import : Leaflet (~150kB) ne se charge que sur cette page.
 const CarteCabinets = lazy(() =>
@@ -35,15 +36,17 @@ export default function PreviewCarteCabinets() {
               </p>
             </div>
 
-            <Suspense
-              fallback={
-                <div className="flex items-center justify-center h-[400px] bg-muted/30 rounded-md">
-                  <p className="text-sm text-muted-foreground">Chargement…</p>
-                </div>
-              }
-            >
-              <CarteCabinets centerOn="all" showSidebar />
-            </Suspense>
+            <MapErrorBoundary lang="fr" recovery="reload">
+              <Suspense
+                fallback={
+                  <div className="flex items-center justify-center h-[400px] bg-muted/30 rounded-md">
+                    <p className="text-sm text-muted-foreground">Chargement…</p>
+                  </div>
+                }
+              >
+                <CarteCabinets centerOn="all" showSidebar />
+              </Suspense>
+            </MapErrorBoundary>
           </section>
         </main>
         <Footer />
