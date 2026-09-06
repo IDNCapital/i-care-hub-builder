@@ -9,3 +9,11 @@ Les accès réseau, DOM et navigateur sont remplacés par des doubles explicites
 Les doubles restent sous `tests/doubles/modules`, puis sont copiés dans le `node_modules` temporaire de chaque cas. Aucun runtime mutable ni donnée de production ne sert de fixture.
 
 Lot WEB-GARDE-MUETTE, 6 septembre 2026 : développement initial Claude Fable, reprise ciblée Claude Sonnet après revue Codex. Codex assure l'intégration et les vérifications indépendantes. Les relevés détaillés sont conservés dans le dossier partagé Pilotage manager IA.
+
+## Carte publique et récupération après erreur
+
+`node --experimental-strip-types tests/geo.test.mts` et `tests/geo-types.test.mts` vérifient les coordonnées et les types rejetés. `node tests/map-browser.mjs` lance Vite sur un port local disponible et Chrome pour six scénarios : erreur Leaflet puis reprise locale en FR/EN, import indisponible puis rechargement en FR/EN, coordonnées partiellement ou entièrement invalides. Les composants sont réels ; les cabinets sont fictifs et toute requête externe est bloquée. Le serveur et le navigateur sont fermés en fin de test.
+
+La fixture HTML sous tests n'est pas une entrée du build de production. Les captures facultatives utilisent MAP_TEST_ARTIFACT_DIR. La CI exécute ces recettes avant son build strict. Le contrôle TypeScript emploie `--types node` : l'inclusion implicite du paquet transitoire incomplet mapbox__point-geometry échoue déjà sur la base e6a02d43 ; avec les types ambiants explicites, la base et le correctif passent, sans désactiver les vérifications de modules importés.
+
+Lot WEB-CARTE-LATLNG-NAN : développement et reprise ciblée Claude Sonnet, revue, recette navigateur et intégration Codex. L'origine précise du signalement historique de premier chargement reste non confirmée. Le démontage de la page sur une coordonnée invalide et les chemins de récupération sont, eux, reproduits par les essais.
