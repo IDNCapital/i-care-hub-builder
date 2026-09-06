@@ -1,0 +1,27 @@
+{
+  "__commentaire": "Fixture adverse ciblee sur matchSpecialites : praticiens[0].specialites contient 7, une valeur non chaine que normListeGardee filtre et compte (colonne specialites/specialites_derivees) quand matchSpecialites calcule praticiensNormSpecialiteSets. problematiques reste saine : matchProblematiques ne doit declencher aucune garde sur cette fixture.",
+  "praticiens": [
+    {
+      "slug": "anna-dupont",
+      "updated_at": "2026-01-15T10:00:00Z",
+      "profession": "Sophrologue",
+      "specialites": ["sophrologie", 7],
+      "specialites_derivees": [],
+      "problematiques": ["stress"],
+      "problematiques_derivees": [],
+      "problematiques_manuelles": [],
+      "cabinet_slug": "i-ca-re-chartrons"
+    }
+  ],
+  "problematiques": [
+    { "slug": "stress", "nom": "Stress", "synonymes": [], "updated_at": "2026-01-10T10:00:00Z" }
+  ],
+  "specialites": [
+    { "slug": "sophrologie", "nom": "Sophrologie", "synonymes": [], "updated_at": "2026-01-10T10:00:00Z", "cabinet_slug": null }
+  ],
+  "articles": [],
+  "avis_google_mis_en_avant": [],
+  "professions": [],
+  "installation_content_ville": [],
+  "installation_content_profession": []
+}

@@ -1,0 +1,7 @@
+{
+  "name": "puppeteer",
+  "version": "0.0.0-double-de-frontiere",
+  "description": "Double de frontiere navigateur pour les tests hors reseau. N'est PAS le vrai puppeteer.",
+  "type": "module",
+  "main": "index.js"
+}

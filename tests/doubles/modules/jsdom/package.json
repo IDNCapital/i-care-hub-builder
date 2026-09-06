@@ -1,0 +1,7 @@
+{
+  "name": "jsdom",
+  "version": "0.0.0-double-de-frontiere",
+  "description": "Double de frontiere DOM pour les tests hors reseau. N'est PAS le vrai jsdom.",
+  "type": "module",
+  "main": "index.js"
+}
