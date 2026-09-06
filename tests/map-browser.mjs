@@ -38,7 +38,9 @@ async function retained(page) {
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth));
 }
 try {
-  browser = await puppeteer.launch({headless:true});
+  // Le runner Ubuntu Actions utilise le même mode que le prerender existant.
+  // Uniquement en CI éphémère ; fixtures locales et requêtes externes bloquées.
+  browser = await puppeteer.launch({headless:true,args:process.env.GITHUB_ACTIONS === 'true' ? ['--no-sandbox','--disable-setuid-sandbox'] : []});
   for (const lang of ['fr','en']) {
     const {page,context} = await fixturePage({lang,failure:'bounds'});
     await page.waitForSelector('[role="alert"]');
