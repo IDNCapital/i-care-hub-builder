@@ -27,6 +27,7 @@ import {
   matchSpecialites,
   fetchArticlesPublies,
   fetchInstallationMatrix,
+  echouerSiGardesDeclenchees,
 } from "./publishedRoutes.mjs";
 import { pageUrl } from "./siteUrl.mjs";
 
@@ -97,6 +98,17 @@ async function main() {
   const matchedProblematiques = matchProblematiques(problematiques, rows);
   const matchedSet = new Set(matchedProblematiques.map((p) => p.slug));
 
+  // Garde des donnees : verifiee ICI, avant tout fetch suivant. Sans ce point,
+  // une garde levee par matchProblematiques puis un fetchSpecialites en echec
+  // sortirait via fail(), qui en PRERENDER_OPTIONAL=true rend 0 : l'anomalie de
+  // donnees deja constatee disparaitrait derriere la tolerance reseau.
+  if (echouerSiGardesDeclenchees("[generate-sitemap]")) {
+    console.error(
+      "[generate-sitemap] ✗ Garde de donnees declenchee apres matchProblematiques : dist/sitemap.xml n'est pas ecrit, build en echec.",
+    );
+    process.exit(1);
+  }
+
   // Fetch spécialités (RLS filtre actif=true).
   let specialites;
   try {
@@ -106,6 +118,15 @@ async function main() {
   }
   const matchedSpecialites = matchSpecialites(specialites, rows);
   const matchedSpecialiteSet = new Set(matchedSpecialites.map((s) => s.slug));
+
+  // Meme garde, meme motif, apres matchSpecialites : le dernier matcher qui
+  // peut enregistrer une garde.
+  if (echouerSiGardesDeclenchees("[generate-sitemap]")) {
+    console.error(
+      "[generate-sitemap] ✗ Garde de donnees declenchee apres matchSpecialites : dist/sitemap.xml n'est pas ecrit, build en echec.",
+    );
+    process.exit(1);
+  }
 
   // Fetch articles publiés (RLS filtre statut='publie').
   let articles;

@@ -563,6 +563,7 @@ async function main() {
         fetchArticlesPublies,
         fetchInstallationMatrix,
         fetchAvisMisEnAvant,
+        echouerSiGardesDeclenchees,
       } = await import("./publishedRoutes.mjs");
       const praticiens = await fetchPraticiensPublies();
       for (const p of praticiens) {
@@ -571,8 +572,30 @@ async function main() {
       }
       const problematiques = await fetchProblematiques();
       const matched = matchProblematiques(problematiques, praticiens);
+      // Garde des donnees : verifiee ICI, avant tout fetch suivant. Sans ce
+      // point, une garde levee par matchProblematiques puis un fetchSpecialites
+      // en echec serait absorbee par le catch ci-dessous, qui en
+      // PRERENDER_OPTIONAL=true se contente d'avertir et de continuer :
+      // l'anomalie de donnees deja constatee disparaitrait derriere la
+      // tolerance reseau.
+      if (echouerSiGardesDeclenchees("[prerender]")) {
+        const err = new Error(
+          "Garde de donnees declenchee apres matchProblematiques : anomalie deja constatee, non couverte par PRERENDER_OPTIONAL.",
+        );
+        err.isDataGuard = true;
+        throw err;
+      }
       const specialites = await fetchSpecialites();
       const matchedSp = matchSpecialites(specialites, praticiens);
+      // Meme garde, meme motif, apres matchSpecialites : le dernier matcher
+      // qui peut enregistrer une garde.
+      if (echouerSiGardesDeclenchees("[prerender]")) {
+        const err = new Error(
+          "Garde de donnees declenchee apres matchSpecialites : anomalie deja constatee, non couverte par PRERENDER_OPTIONAL.",
+        );
+        err.isDataGuard = true;
+        throw err;
+      }
       const articles = await fetchArticlesPublies();
       const installation = await fetchInstallationMatrix();
       nbAvisMisEnAvant = (await fetchAvisMisEnAvant()).length;
@@ -620,9 +643,23 @@ async function main() {
       console.log(
         `[prerender] Dynamic routes: ${seenP.size} praticiens + ${seenPb.size} problematiques + ${seenSp.size} specialites + ${seenAr.size} articles + ${installation.paths.length} sinstaller (${installation.professions.length} professions × ${installation.villes.length} villes)`,
       );
+      // Garde des donnees de publishedRoutes.mjs : le point se prend ICI, apres
+      // matchProblematiques et matchSpecialites, derniers calculs qui
+      // enregistrent une garde, et avant tout lancement de navigateur, donc
+      // avant la moindre ecriture dans dist/. La ligne Dynamic routes ci-dessus
+      // reste imprimee : la preuve doit rester lisible quand la garde se
+      // declenche. PRERENDER_OPTIONAL couvre une panne reseau locale, jamais
+      // une anomalie de donnees, donc la sortie reste non nulle meme en mode
+      // optionnel.
+      if (echouerSiGardesDeclenchees("[prerender]")) {
+        console.error(
+          "[prerender] ✗ Garde de donnees declenchee : aucune capture n'est lancee, build en echec.",
+        );
+        process.exit(1);
+      }
     } catch (err) {
       const msg = `[prerender] Failed to fetch dynamic routes: ${err?.message || err}`;
-      if (err?.isEditorialGuard) {
+      if (err?.isEditorialGuard || err?.isDataGuard) {
         console.error(`[prerender] ✗ ${err.message}`);
         process.exit(1);
       }
