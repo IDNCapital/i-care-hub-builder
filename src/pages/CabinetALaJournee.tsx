@@ -27,16 +27,19 @@ export default function CabinetALaJournee() {
 
   const principleBlocks = [
     {
+      id: "shared",
       icon: Users,
       title: t("cabinetJournee.principle.sharedTitle"),
       desc: t("cabinetJournee.principle.sharedDesc"),
     },
     {
+      id: "fixedDays",
       icon: CalendarCheck,
       title: t("cabinetJournee.principle.fixedDaysTitle"),
       desc: t("cabinetJournee.principle.fixedDaysDesc"),
     },
     {
+      id: "sharedCost",
       icon: Euro,
       title: t("cabinetJournee.principle.sharedCostTitle"),
       desc: t("cabinetJournee.principle.sharedCostDesc"),
@@ -45,14 +48,17 @@ export default function CabinetALaJournee() {
 
   const pricingTiers = [
     {
+      id: "oneDay",
       label: t("cabinetJournee.pricing.oneDayLabel"),
       price: t("cabinetJournee.pricing.oneDayPrice"),
     },
     {
+      id: "twoDays",
       label: t("cabinetJournee.pricing.twoDaysLabel"),
       price: t("cabinetJournee.pricing.twoDaysPrice"),
     },
     {
+      id: "threeDays",
       label: t("cabinetJournee.pricing.threeDaysLabel"),
       price: t("cabinetJournee.pricing.threeDaysPrice"),
     },
@@ -64,12 +70,39 @@ export default function CabinetALaJournee() {
     { q: t("cabinetJournee.faq.q3"), a: t("cabinetJournee.faq.a3") },
   ];
 
+  /* FAQ JSON-LD, meme patron que src/pages/LocationCabinetToulouse.tsx */
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((it) => ({
+      "@type": "Question",
+      name: it.q,
+      acceptedAnswer: { "@type": "Answer", text: it.a },
+    })),
+  };
+
+  const statusLabel = (status: string) => {
+    if (status === "available") return t("projects.availableBadge");
+    if (status === "full") return t("projects.fullBadge");
+    return t("projects.comingSoonBadge");
+  };
+
+  const statusBadgeClass = (status: string) => {
+    if (status === "available") return "bg-sage text-cream";
+    if (status === "full") return "bg-cream text-anthracite";
+    return "bg-gold text-anthracite";
+  };
+
   return (
     <Layout>
       <SeoHead
         title={t("seo.cabinetJourneeTitle")}
         description={t("seo.cabinetJourneeDesc")}
         path={lang === "fr" ? "/cabinet-a-la-journee" : "/en/day-office"}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       {/* ── HERO ── */}
@@ -103,7 +136,7 @@ export default function CabinetALaJournee() {
           </div>
           <div className="grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {principleBlocks.map((b) => (
-              <div key={b.title} className="text-center">
+              <div key={b.id} className="text-center">
                 <div className="w-14 h-14 rounded-xl bg-primary/15 flex items-center justify-center mx-auto mb-5">
                   <b.icon className="w-7 h-7 text-primary" />
                 </div>
@@ -121,11 +154,14 @@ export default function CabinetALaJournee() {
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="section-title">{t("cabinetJournee.pricingTitle")}</h2>
             <p className="section-subtitle mx-auto">{t("cabinetJournee.pricingSubtitle")}</p>
+            <p className="text-sm text-muted-foreground/80 leading-relaxed mt-3 max-w-2xl mx-auto">
+              {t("cabinetJournee.pricingLeaseNote")}
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto mb-10">
             {pricingTiers.map((tier) => (
-              <div key={tier.label} className="card-premium text-center">
+              <div key={tier.id} className="card-premium text-center">
                 <p className="text-base font-heading font-semibold mb-3">{tier.label}</p>
                 <p className="text-2xl font-heading font-bold text-primary">{tier.price}</p>
               </div>
@@ -174,16 +210,23 @@ export default function CabinetALaJournee() {
                 <Link
                   key={centre.id}
                   to={linkTo}
-                  className="card-premium flex items-start gap-3 hover:shadow-elevated transition-shadow"
+                  className="card-premium flex flex-col gap-3 hover:shadow-elevated transition-shadow"
                 >
-                  <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                  <span>
-                    <span className="block font-heading font-semibold text-foreground">
-                      {centre.name}
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <span>
+                      <span className="block font-heading font-semibold text-foreground">
+                        {centre.name}
+                      </span>
+                      <span className="block text-xs text-muted-foreground/70 mt-1">
+                        {centre.address}
+                      </span>
                     </span>
-                    <span className="block text-xs text-muted-foreground/70 mt-1">
-                      {centre.address}
-                    </span>
+                  </div>
+                  <span
+                    className={`self-start text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full shadow-sm ${statusBadgeClass(centre.status)}`}
+                  >
+                    {statusLabel(centre.status)}
                   </span>
                 </Link>
               );
