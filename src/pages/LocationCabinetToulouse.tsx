@@ -557,7 +557,7 @@ export default function LocationCabinetToulouse() {
       </section>
 
       {/* Encart : cabinet à la journée.
-          dette : page non internationalisée, voir DETTES_WEB. Texte en dur en
+          dette : page non internationalisée, voir la note Websites/DETTES_WEB.md du kDrive (hors dépôt). Texte en dur en
           francais comme le reste de cette page (memes phrases que la version
           fr des cles cabinetJournee.crossLink*, utilisees par i18n sur la page
           Bordeaux). */}

@@ -251,7 +251,7 @@ export default function CabinetALaJournee() {
                 dans la colonne de gauche et qu'aucun texte ne rende sous les
                 12 px a 390 px (voir calcul dans le rapport du lot). */}
             <svg
-              viewBox="0 0 590 180"
+              viewBox="0 0 620 180"
               className="hidden sm:block w-full h-auto"
               role="img"
               aria-label={t("cabinetJournee.schema.ariaLabel")}
@@ -262,7 +262,7 @@ export default function CabinetALaJournee() {
               {schemaDayLabels.map((label, i) => (
                 <text
                   key={`day-${i}`}
-                  x={230 + i * 60 + 30}
+                  x={260 + i * 60 + 30}
                   y="24"
                   textAnchor="middle"
                   fontSize="24"
@@ -286,7 +286,7 @@ export default function CabinetALaJournee() {
                       return (
                         <g key={`${p.key}-${dayIndex}`}>
                           <rect
-                            x={230 + dayIndex * 60 + 3}
+                            x={260 + dayIndex * 60 + 3}
                             y={rowY + 5}
                             width="54"
                             height="60"
@@ -298,7 +298,7 @@ export default function CabinetALaJournee() {
                           />
                           {occupied && (
                             <text
-                              x={230 + dayIndex * 60 + 30}
+                              x={260 + dayIndex * 60 + 30}
                               y={rowY + 43}
                               textAnchor="middle"
                               fontSize="24"
@@ -317,7 +317,7 @@ export default function CabinetALaJournee() {
 
             {/* Variante mobile, sous sm : pastilles HTML (pas de SVG), une
                 ligne par praticienne, ses jours fixes en pastille pleine. */}
-            <div className="sm:hidden space-y-5">
+            <div className="sm:hidden space-y-5" role="img" aria-label={t("cabinetJournee.schema.ariaLabel")}>
               {schemaPractitioners.map((p) => (
                 <div key={p.key}>
                   <p className="text-sm font-heading font-semibold text-foreground mb-2">
