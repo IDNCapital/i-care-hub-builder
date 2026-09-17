@@ -526,7 +526,7 @@
       "sharedCostDesc": "The office stays in use and the cost is shared between the practitioners who take it up."
     },
     "pricingTitle": "Pricing",
-    "pricingSubtitle": "Furnished short-term lease, identical pricing across all I‑CA.RE sites.",
+    "pricingSubtitle": "Furnished short-term lease, identical pricing across all our sites, from the moment each one opens.",
     "pricingLeaseNote": "This day-based offer is separate from the full-time professional lease presented in our FAQ.",
     "pricing": {
       "oneDayLabel": "One fixed day per week",
@@ -548,7 +548,7 @@
       "q1": "Can I change my day?",
       "a1": "Days are fixed. Any change is discussed with the team.",
       "q2": "Is the price the same across all sites?",
-      "a2": "Yes, the pricing is identical across all I‑CA.RE sites, from the moment each one opens.",
+      "a2": "Yes, the pricing is identical across all our sites, from the moment each one opens.",
       "q3": "What does the price include?",
       "a3": "The price covers the furnished, equipped office, common areas, cleaning and cleaning products. It does not cover personal consumables (coffee, for example)."
     },

@@ -88,8 +88,8 @@ export default function CabinetALaJournee() {
   };
 
   const statusBadgeClass = (status: string) => {
-    if (status === "available") return "bg-sage text-cream";
-    if (status === "full") return "bg-cream text-anthracite";
+    if (status === "available") return "bg-sage text-anthracite";
+    if (status === "full") return "bg-cream text-anthracite border border-anthracite/30";
     return "bg-gold text-anthracite";
   };
 
