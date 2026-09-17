@@ -5,6 +5,9 @@ import { SeoHead } from "@/components/SeoHead";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { STATIC_CENTRES } from "@/lib/centres";
+import { FadeImage } from "@/components/FadeImage";
+import { getDefaultHero, PROJECT_IMAGES } from "@/lib/projectImages";
+import { InlineBrand } from "@/components/BrandName";
 import {
   Accordion,
   AccordionContent,
@@ -12,14 +15,27 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
+  Armchair,
   ArrowRight,
   CalendarCheck,
   CheckCircle2,
   Euro,
   MapPin,
+  Ruler,
+  Table2,
   Users,
   XCircle,
 } from "lucide-react";
+
+/* Semaine de mix & match illustrant la compatibilite des usages (section 2bis).
+   Jours et specialites fictifs, textes passes par i18n depuis le composant.
+   Deux praticiennes fictives seulement : psychologue (lundi a mercredi) et
+   psychotherapeute (jeudi, vendredi) ; le samedi reste libre pour les deux. */
+const SCHEMA_DAY_KEYS = ["mon", "tue", "wed", "thu", "fri", "sat"] as const;
+const SCHEMA_PRACTITIONERS = [
+  { key: "psychologist", days: [0, 1, 2], color: "#9EB8A5" },
+  { key: "psychotherapist", days: [3, 4], color: "#D9C7A1" },
+] as const;
 
 export default function CabinetALaJournee() {
   const { t, i18n } = useTranslation();
@@ -45,6 +61,33 @@ export default function CabinetALaJournee() {
       desc: t("cabinetJournee.principle.sharedCostDesc"),
     },
   ];
+
+  const furnitureBlocks = [
+    {
+      id: "psy",
+      icon: Armchair,
+      title: t("cabinetJournee.furniture.psyTitle"),
+      desc: t("cabinetJournee.furniture.psyDesc"),
+    },
+    {
+      id: "osteo",
+      icon: Table2,
+      title: t("cabinetJournee.furniture.osteoTitle"),
+      desc: t("cabinetJournee.furniture.osteoDesc"),
+    },
+    {
+      id: "dietetique",
+      icon: Ruler,
+      title: t("cabinetJournee.furniture.dietTitle"),
+      desc: t("cabinetJournee.furniture.dietDesc"),
+    },
+  ];
+
+  const schemaDayLabels = SCHEMA_DAY_KEYS.map((k) => t(`cabinetJournee.schema.days.${k}`));
+  const schemaPractitioners = SCHEMA_PRACTITIONERS.map((p) => ({
+    ...p,
+    label: t(`cabinetJournee.schema.specialties.${p.key}`),
+  }));
 
   const pricingTiers = [
     {
@@ -93,6 +136,8 @@ export default function CabinetALaJournee() {
     return "bg-gold text-anthracite";
   };
 
+  const heroImage = getDefaultHero("professionnels");
+
   return (
     <Layout>
       <SeoHead
@@ -106,9 +151,19 @@ export default function CabinetALaJournee() {
       />
 
       {/* ── HERO ── */}
-      <section className="pt-32 pb-16 bg-secondary">
-        <div className="container">
-          <div className="max-w-3xl">
+      <section className="relative min-h-[70vh] flex items-center pt-20">
+        <div className="absolute inset-0">
+          <FadeImage
+            src={heroImage}
+            alt={t("cabinetJournee.heroImageAlt")}
+            className="w-full h-full object-cover"
+            loading="eager"
+            fadeDuration={500}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/30" />
+        </div>
+        <div className="container relative z-10 py-20">
+          <div className="max-w-2xl">
             <span className="inline-block px-4 py-1.5 bg-primary/15 text-primary text-xs font-bold uppercase tracking-[0.1em] rounded-full mb-6">
               {t("cabinetJournee.heroTag")}
             </span>
@@ -144,6 +199,157 @@ export default function CabinetALaJournee() {
                 <p className="text-muted-foreground text-sm leading-relaxed">{b.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 1bis : Le mobilier par specialite ── */}
+      <section className="section-padding bg-muted/50">
+        <div className="container">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="section-title">{t("cabinetJournee.furnitureTitle")}</h2>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              {t("cabinetJournee.furnitureIntro")}
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto mb-10">
+            {furnitureBlocks.map((b) => (
+              <div key={b.id} className="text-center">
+                <div className="w-14 h-14 rounded-xl bg-primary/15 flex items-center justify-center mx-auto mb-5">
+                  <b.icon className="w-7 h-7 text-primary" />
+                </div>
+                <h3 className="text-lg font-heading font-semibold mb-3">{b.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{b.desc}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm text-muted-foreground/80 leading-relaxed text-center max-w-2xl mx-auto">
+            {t("cabinetJournee.furnitureNote")}
+          </p>
+        </div>
+      </section>
+
+      {/* ── SECTION 1ter : Jours libres et usages compatibles ── */}
+      <section className="section-padding">
+        <div className="container">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="section-title">{t("cabinetJournee.compatTitle")}</h2>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+              {t("cabinetJournee.compatIntro")}
+            </p>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+              {t("cabinetJournee.compatExample")}
+            </p>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              <InlineBrand>{t("cabinetJournee.compatTeam")}</InlineBrand>
+            </p>
+          </div>
+
+          <div className="max-w-2xl mx-auto">
+            {/* Version graphique, a partir de sm : viewBox recalculee pour que
+                le libellé le plus long ("Psychothérapeute", 24 unites) tienne
+                dans la colonne de gauche et qu'aucun texte ne rende sous les
+                12 px a 390 px (voir calcul dans le rapport du lot). */}
+            <svg
+              viewBox="0 0 620 180"
+              className="hidden sm:block w-full h-auto"
+              role="img"
+              aria-label={t("cabinetJournee.schema.ariaLabel")}
+            >
+              <rect x="0" y="0" width="590" height="180" fill="#F6F5F0" />
+
+              {/* En-tete des jours */}
+              {schemaDayLabels.map((label, i) => (
+                <text
+                  key={`day-${i}`}
+                  x={260 + i * 60 + 30}
+                  y="24"
+                  textAnchor="middle"
+                  fontSize="24"
+                  fontWeight="700"
+                  fill="#2B2B2B"
+                >
+                  {label}
+                </text>
+              ))}
+
+              {/* Lignes des praticiennes fictives */}
+              {schemaPractitioners.map((p, rowIndex) => {
+                const rowY = 36 + rowIndex * 70;
+                return (
+                  <g key={p.key}>
+                    <text x="10" y={rowY + 40} fontSize="24" fill="#2B2B2B">
+                      {p.label}
+                    </text>
+                    {schemaDayLabels.map((dayLabel, dayIndex) => {
+                      const occupied = (p.days as readonly number[]).includes(dayIndex);
+                      return (
+                        <g key={`${p.key}-${dayIndex}`}>
+                          <rect
+                            x={260 + dayIndex * 60 + 3}
+                            y={rowY + 5}
+                            width="54"
+                            height="60"
+                            rx="6"
+                            fill={occupied ? p.color : "#F6F5F0"}
+                            stroke="#2B2B2B"
+                            strokeWidth={occupied ? "1.5" : "1"}
+                            strokeOpacity={occupied ? "1" : "0.4"}
+                          />
+                          {occupied && (
+                            <text
+                              x={260 + dayIndex * 60 + 30}
+                              y={rowY + 43}
+                              textAnchor="middle"
+                              fontSize="24"
+                              fill="#2B2B2B"
+                            >
+                              {dayLabel}
+                            </text>
+                          )}
+                        </g>
+                      );
+                    })}
+                  </g>
+                );
+              })}
+            </svg>
+
+            {/* Variante mobile, sous sm : pastilles HTML (pas de SVG), une
+                ligne par praticienne, ses jours fixes en pastille pleine. */}
+            <div className="sm:hidden space-y-5" role="img" aria-label={t("cabinetJournee.schema.ariaLabel")}>
+              {schemaPractitioners.map((p) => (
+                <div key={p.key}>
+                  <p className="text-sm font-heading font-semibold text-foreground mb-2">
+                    {p.label}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {schemaDayLabels.map((label, i) => {
+                      const occupied = (p.days as readonly number[]).includes(i);
+                      return (
+                        <span
+                          key={i}
+                          className="inline-flex items-center justify-center rounded-md px-2.5 py-1.5 text-xs font-medium"
+                          style={{
+                            backgroundColor: occupied ? p.color : "#F6F5F0",
+                            color: "#2B2B2B",
+                            border: occupied
+                              ? "1.5px solid #2B2B2B"
+                              : "1px solid rgba(43,43,43,0.4)",
+                          }}
+                        >
+                          {label}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-xs text-muted-foreground text-center italic mt-4">
+              {t("cabinetJournee.schema.caption")}
+            </p>
           </div>
         </div>
       </section>
@@ -206,12 +412,27 @@ export default function CabinetALaJournee() {
               const linkTo = centre.slug
                 ? localePath(lang, "projects", centre.slug)
                 : localePath(lang, "contact");
+              const heroImg = centre.slug ? PROJECT_IMAGES[centre.slug]?.hero : undefined;
               return (
                 <Link
                   key={centre.id}
                   to={linkTo}
-                  className="card-premium flex flex-col gap-3 hover:shadow-elevated transition-shadow"
+                  className="card-premium overflow-hidden flex flex-col gap-3 hover:shadow-elevated transition-shadow"
                 >
+                  {heroImg && (
+                    /* Largeur auto (pas de w-full sur ce conteneur) : c'est ce
+                       qui permet aux marges negatives de faire deborder l'image
+                       jusqu'au bord de la carte des deux cotes. Meme patron que
+                       CabinetVisuel/SinstallerIndex.tsx:78. */
+                    <div className="relative h-32 -mt-6 md:-mt-8 -mx-6 md:-mx-8 mb-4 overflow-hidden">
+                      <FadeImage
+                        src={heroImg}
+                        alt={t("cabinetJournee.siteImageAlt", { name: centre.name })}
+                        className="w-full h-full object-cover"
+                        fadeDuration={400}
+                      />
+                    </div>
+                  )}
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                     <span>

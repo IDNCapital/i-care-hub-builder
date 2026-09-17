@@ -13,6 +13,11 @@ import {
 } from "@/components/ui/accordion";
 import { InlineBrand } from "@/components/BrandName";
 
+/* Numero (1-based, faq.q2/faq.a2) de la question "Que comprend le loyer ?",
+   seule reponse portant le lien vers l'offre a la journee. Compare a i + 1
+   puisque questions est construit sur un index 0-based. Voir faq.a2DayOfficeLink. */
+const RENT_INCLUDES_QUESTION_NUMBER = 2;
+
 export default function FAQ() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
@@ -76,6 +81,17 @@ export default function FAQ() {
                     className="text-muted-foreground leading-relaxed pb-5"
                   >
                     <InlineBrand>{item.a}</InlineBrand>
+                    {i + 1 === RENT_INCLUDES_QUESTION_NUMBER && (
+                      <>
+                        {" "}
+                        <Link
+                          to={localePath(lang, "cabinetJournee")}
+                          className="text-primary underline underline-offset-4 hover:text-primary/80"
+                        >
+                          {t("faq.a2DayOfficeLink")}
+                        </Link>
+                      </>
+                    )}
                   </AccordionContent>
                 </AccordionItem>
               ))}
