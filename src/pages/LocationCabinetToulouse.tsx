@@ -556,6 +556,29 @@ export default function LocationCabinetToulouse() {
         </div>
       </section>
 
+      {/* Encart : cabinet à la journée */}
+      <section className="section-padding">
+        <div className="container">
+          <div className="max-w-2xl mx-auto card-premium text-center">
+            <h2 className="text-xl font-heading font-semibold mb-3">
+              {t("cabinetJournee.crossLinkTitle")}
+            </h2>
+            <p className="text-muted-foreground leading-relaxed mb-2">
+              {t("cabinetJournee.crossLinkDesc1")}
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-6">
+              {t("cabinetJournee.crossLinkDesc2")}
+            </p>
+            <Button variant="outline" asChild>
+              <Link to={localePath(lang, "cabinetJournee")}>
+                {t("cabinetJournee.crossLinkCta")}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* CTA final */}
       <section className="section-padding bg-foreground">
         <div className="container">

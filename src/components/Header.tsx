@@ -40,6 +40,7 @@ export const Header = memo(function Header() {
     contact: t("nav.contact"),
     sub: {
       spaces: lang === "fr" ? "Nos lieux de soin" : "Our care spaces",
+      dayOffice: t("cabinetJournee.footerLabel"),
       install: lang === "fr" ? "S'installer" : "Setting up",
       testimonials: lang === "fr" ? "Témoignages" : "Testimonials",
     },
@@ -47,6 +48,7 @@ export const Header = memo(function Header() {
 
   const practitionerSubItems = useMemo(() => [
     { name: labels.sub.spaces, href: localePath(lang, "projects") },
+    { name: labels.sub.dayOffice, href: localePath(lang, "cabinetJournee") },
     { name: labels.sub.install, href: lang === "fr" ? "/sinstaller" : localePath(lang, "insights") },
     { name: labels.sub.testimonials, href: localePath(lang, "temoignages") },
   ], [labels, lang]);

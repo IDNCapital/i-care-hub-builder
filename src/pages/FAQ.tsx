@@ -5,6 +5,10 @@ import { SeoHead } from "@/components/SeoHead";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { ArrowRight } from "lucide-react";
+
+/* Index (0-based) de la question "Que comprend le loyer ?" (faq.q2), seule
+   reponse portant le lien vers l'offre a la journee. Voir faq.a2DayOfficeLink. */
+const RENT_INCLUDES_QUESTION_INDEX = 1;
 import {
   Accordion,
   AccordionContent,
@@ -76,6 +80,17 @@ export default function FAQ() {
                     className="text-muted-foreground leading-relaxed pb-5"
                   >
                     <InlineBrand>{item.a}</InlineBrand>
+                    {i === RENT_INCLUDES_QUESTION_INDEX && (
+                      <>
+                        {" "}
+                        <Link
+                          to={localePath(lang, "cabinetJournee")}
+                          className="text-primary underline underline-offset-4 hover:text-primary/80"
+                        >
+                          {t("faq.a2DayOfficeLink")}
+                        </Link>
+                      </>
+                    )}
                   </AccordionContent>
                 </AccordionItem>
               ))}

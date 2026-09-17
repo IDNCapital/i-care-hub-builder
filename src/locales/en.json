@@ -513,6 +513,7 @@
     "heroTag": "Day Office",
     "h1": "Day offices: the I‑CA.RE mix & match",
     "heroSubtitle": "One equipped office, shared between several practitioners for full days, each on their own fixed days of the week.",
+    "heroImageAlt": "I-CA.RE consultation office",
     "footerLabel": "Day office",
     "principleTitle": "The mix & match principle",
     "principleIntro": "An equipped office is shared between several practitioners for full days, Monday to Saturday. Each practitioner books fixed days every week: the office stays in use and the cost is shared.",
@@ -525,6 +526,42 @@
       "sharedCostTitle": "Shared cost",
       "sharedCostDesc": "The office stays in use and the cost is shared between the practitioners who take it up."
     },
+    "furnitureTitle": "An office equipped for your specialty",
+    "furnitureIntro": "The furniture provided is adapted to the specialty occupying the office.",
+    "furniture": {
+      "psyTitle": "Psychology, psychotherapy, sophrology",
+      "psyDesc": "Armchairs and a sofa.",
+      "osteoTitle": "Osteopathy and manual therapies",
+      "osteoDesc": "A manipulation table.",
+      "dietTitle": "Dietetics and nutrition",
+      "dietDesc": "A consultation desk and a measurement area."
+    },
+    "furnitureNote": "The furniture is defined with you before you move in, within what the office allows.",
+    "compatTitle": "Free days, and compatible uses",
+    "compatIntro": "Mix & match is not only about available days: two practitioners share an office only if their uses are compatible (furniture, atmosphere, patient flow), and preferably complementary.",
+    "compatExample": "A psych profile and an osteopath do not share the same office; a psychologist and a psychotherapist can.",
+    "compatTeam": "The I‑CA.RE team builds the pairs and trios, based on days and on uses.",
+    "schema": {
+      "ariaLabel": "Diagram of a mix & match week: three fictional practitioners, a psychologist, a psychotherapist and a sophrologist, occupy the same office on different fixed days, Monday to Saturday.",
+      "days": {
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat"
+      },
+      "specialties": {
+        "psychologist": "Psychologist",
+        "psychotherapist": "Psychotherapist",
+        "sophrologist": "Sophrologist"
+      }
+    },
+    "siteImageAlt": "I-CA.RE office {{name}}",
+    "crossLinkTitle": "Need an office only a few days a week?",
+    "crossLinkDesc1": "Mix & match offers an equipped office, shared by the day between several practitioners.",
+    "crossLinkDesc2": "You choose one, two or three fixed days per week.",
+    "crossLinkCta": "Discover the day office",
     "pricingTitle": "Pricing",
     "pricingSubtitle": "Furnished short-term lease, identical pricing across all our sites, from the moment each one opens.",
     "pricingLeaseNote": "This day-based offer is separate from the full-time professional lease presented in our FAQ.",
@@ -595,6 +632,7 @@
     "a1": "Each I-CA.RE location comprises 7 to 10 private offices of 11 to 15 sqm, plus shared common areas: waiting room, restrooms and a break area. Offices are fully partitioned and soundproofed to ensure the confidentiality of exchanges.",
     "q2": "What does the rent include?",
     "a2": "The rent covers exclusive use of your office, access to common areas, maintenance of shared spaces, building insurance and running costs (water, communal electricity, internet). There are no hidden fees or additional charges.",
+    "a2DayOfficeLink": "For the day office offer, see the dedicated page.",
     "q3": "Is the office fitted out?",
     "a3": "Yes, each office is delivered turnkey: flooring, paint, lighting, electrical outlets and network are in place. You can start practising from day one. Furniture (desk, chair, décor) is your responsibility to personalise your space.",
     "q4": "What is the commitment period?",

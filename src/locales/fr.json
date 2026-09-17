@@ -513,6 +513,7 @@
     "heroTag": "Cabinet à la journée",
     "h1": "Cabinets à la journée : le mix & match I‑CA.RE",
     "heroSubtitle": "Un même cabinet équipé, partagé entre plusieurs praticiens à la journée entière, chacun sur ses jours fixes de la semaine.",
+    "heroImageAlt": "Cabinet de consultation I-CA.RE",
     "footerLabel": "Cabinet à la journée",
     "principleTitle": "Le principe du mix & match",
     "principleIntro": "Un cabinet équipé se partage entre plusieurs praticiens à la journée entière, du lundi au samedi. Chaque praticien réserve ses jours fixes chaque semaine : le cabinet reste occupé et le coût est partagé.",
@@ -525,6 +526,42 @@
       "sharedCostTitle": "Coût partagé",
       "sharedCostDesc": "Le cabinet reste occupé et le coût est partagé entre les praticiens qui s'y installent."
     },
+    "furnitureTitle": "Un cabinet équipé pour votre spécialité",
+    "furnitureIntro": "Le mobilier mis à disposition s'adapte à la spécialité qui occupe le cabinet.",
+    "furniture": {
+      "psyTitle": "Psychologie, psychothérapie, sophrologie",
+      "psyDesc": "Fauteuils et canapé.",
+      "osteoTitle": "Ostéopathie et thérapies manuelles",
+      "osteoDesc": "Table de manipulation.",
+      "dietTitle": "Diététique et nutrition",
+      "dietDesc": "Bureau de consultation et espace de mesure."
+    },
+    "furnitureNote": "Le mobilier est défini avec vous avant l'entrée dans les lieux, dans la limite de ce que le cabinet permet.",
+    "compatTitle": "Des jours libres, et des usages compatibles",
+    "compatIntro": "Le mix & match ne se résume pas aux jours disponibles : deux praticiens partagent un cabinet seulement si leurs usages sont compatibles (mobilier, ambiance, flux de patients), et de préférence complémentaires.",
+    "compatExample": "Un profil psy et un ostéopathe ne se partagent pas le même cabinet ; une psychologue et une psychothérapeute, oui.",
+    "compatTeam": "C'est l'équipe I‑CA.RE qui compose les binômes et trinômes, sur les jours et sur les usages.",
+    "schema": {
+      "ariaLabel": "Schéma d'une semaine de mix & match : trois praticiens fictifs, une psychologue, une psychothérapeute et une sophrologue, occupent le même cabinet sur des jours fixes différents, du lundi au samedi.",
+      "days": {
+        "mon": "Lun",
+        "tue": "Mar",
+        "wed": "Mer",
+        "thu": "Jeu",
+        "fri": "Ven",
+        "sat": "Sam"
+      },
+      "specialties": {
+        "psychologist": "Psychologue",
+        "psychotherapist": "Psychothérapeute",
+        "sophrologist": "Sophrologue"
+      }
+    },
+    "siteImageAlt": "Cabinet I-CA.RE {{name}}",
+    "crossLinkTitle": "Besoin d'un cabinet seulement quelques jours par semaine ?",
+    "crossLinkDesc1": "Le mix & match propose un cabinet équipé, partagé à la journée entre plusieurs praticiens.",
+    "crossLinkDesc2": "Vous choisissez un, deux ou trois jours fixes par semaine.",
+    "crossLinkCta": "Découvrir le cabinet à la journée",
     "pricingTitle": "La grille tarifaire",
     "pricingSubtitle": "Bail précaire meublé, grille identique sur tous nos sites, dès l'ouverture de chacun.",
     "pricingLeaseNote": "Cette offre à la journée est distincte du bail professionnel à temps plein présenté dans notre foire aux questions.",
@@ -595,6 +632,7 @@
     "a1": "Chaque lieu I-CA.RE comprend entre 7 et 10 cabinets privatifs de 11 à 15 m², ainsi que des espaces communs mutualisés : salle d'attente, sanitaires, espace de pause. Les cabinets sont entièrement cloisonnés et insonorisés pour garantir la confidentialité des échanges.",
     "q2": "Que comprend le loyer ?",
     "a2": "Le loyer couvre l'usage exclusif de votre cabinet, l'accès aux espaces communs, l'entretien des parties partagées, l'assurance du bâtiment et les charges courantes (eau, électricité des communs, internet). Vous n'avez aucun frais caché ni charge supplémentaire à prévoir.",
+    "a2DayOfficeLink": "Pour l'offre à la journée, voir la page dédiée.",
     "q3": "Le cabinet est-il aménagé ?",
     "a3": "Oui, chaque cabinet est livré clé en main : sol, peinture, éclairage, prises électriques et réseau sont en place. Vous pouvez exercer dès votre installation. L'aménagement mobilier (bureau, fauteuil, décoration) reste à votre charge pour personnaliser votre espace.",
     "q4": "Quelle est la durée d'engagement ?",
