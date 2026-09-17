@@ -28,12 +28,13 @@ import {
 } from "lucide-react";
 
 /* Semaine de mix & match illustrant la compatibilite des usages (section 2bis).
-   Jours et specialites fictifs, textes passes par i18n depuis le composant. */
+   Jours et specialites fictifs, textes passes par i18n depuis le composant.
+   Deux praticiennes fictives seulement : psychologue (lundi a mercredi) et
+   psychotherapeute (jeudi, vendredi) ; le samedi reste libre pour les deux. */
 const SCHEMA_DAY_KEYS = ["mon", "tue", "wed", "thu", "fri", "sat"] as const;
 const SCHEMA_PRACTITIONERS = [
-  { key: "psychologist", days: [0, 1], color: "#9EB8A5" },
-  { key: "psychotherapist", days: [2, 3], color: "#D9C7A1" },
-  { key: "sophrologist", days: [4], color: "#C5D4CA" },
+  { key: "psychologist", days: [0, 1, 2], color: "#9EB8A5" },
+  { key: "psychotherapist", days: [3, 4], color: "#D9C7A1" },
 ] as const;
 
 export default function CabinetALaJournee() {
@@ -150,7 +151,7 @@ export default function CabinetALaJournee() {
       />
 
       {/* ── HERO ── */}
-      <section className="relative min-h-[60vh] flex items-center pt-20">
+      <section className="relative min-h-[70vh] flex items-center pt-20">
         <div className="absolute inset-0">
           <FadeImage
             src={heroImage}
@@ -162,7 +163,7 @@ export default function CabinetALaJournee() {
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/30" />
         </div>
         <div className="container relative z-10 py-20">
-          <div className="max-w-3xl">
+          <div className="max-w-2xl">
             <span className="inline-block px-4 py-1.5 bg-primary/15 text-primary text-xs font-bold uppercase tracking-[0.1em] rounded-full mb-6">
               {t("cabinetJournee.heroTag")}
             </span>
@@ -245,22 +246,26 @@ export default function CabinetALaJournee() {
           </div>
 
           <div className="max-w-2xl mx-auto">
+            {/* Version graphique, a partir de sm : viewBox recalculee pour que
+                le libellé le plus long ("Psychothérapeute", 24 unites) tienne
+                dans la colonne de gauche et qu'aucun texte ne rende sous les
+                12 px a 390 px (voir calcul dans le rapport du lot). */}
             <svg
-              viewBox="0 0 640 210"
-              className="w-full h-auto"
+              viewBox="0 0 590 180"
+              className="hidden sm:block w-full h-auto"
               role="img"
               aria-label={t("cabinetJournee.schema.ariaLabel")}
             >
-              <rect x="0" y="0" width="640" height="210" fill="#F6F5F0" />
+              <rect x="0" y="0" width="590" height="180" fill="#F6F5F0" />
 
               {/* En-tete des jours */}
               {schemaDayLabels.map((label, i) => (
                 <text
                   key={`day-${i}`}
-                  x={160 + i * 80 + 40}
-                  y="20"
+                  x={230 + i * 60 + 30}
+                  y="24"
                   textAnchor="middle"
-                  fontSize="16"
+                  fontSize="24"
                   fontWeight="700"
                   fill="#2B2B2B"
                 >
@@ -268,39 +273,83 @@ export default function CabinetALaJournee() {
                 </text>
               ))}
 
-              {/* Lignes des praticiens fictifs */}
+              {/* Lignes des praticiennes fictives */}
               {schemaPractitioners.map((p, rowIndex) => {
-                const rowY = 40 + rowIndex * 55;
+                const rowY = 36 + rowIndex * 70;
                 return (
                   <g key={p.key}>
-                    <text
-                      x="8"
-                      y={rowY + 33}
-                      fontSize="16"
-                      fill="#2B2B2B"
-                    >
+                    <text x="10" y={rowY + 40} fontSize="24" fill="#2B2B2B">
                       {p.label}
                     </text>
-                    {schemaDayLabels.map((_, dayIndex) => {
+                    {schemaDayLabels.map((dayLabel, dayIndex) => {
                       const occupied = (p.days as readonly number[]).includes(dayIndex);
                       return (
-                        <rect
-                          key={`${p.key}-${dayIndex}`}
-                          x={160 + dayIndex * 80 + 4}
-                          y={rowY}
-                          width="72"
-                          height="44"
-                          rx="6"
-                          fill={occupied ? p.color : "#F6F5F0"}
-                          stroke="#2B2B2B"
-                          strokeOpacity={occupied ? 0 : 0.15}
-                        />
+                        <g key={`${p.key}-${dayIndex}`}>
+                          <rect
+                            x={230 + dayIndex * 60 + 3}
+                            y={rowY + 5}
+                            width="54"
+                            height="60"
+                            rx="6"
+                            fill={occupied ? p.color : "#F6F5F0"}
+                            stroke="#2B2B2B"
+                            strokeWidth={occupied ? "1.5" : "1"}
+                            strokeOpacity={occupied ? "1" : "0.4"}
+                          />
+                          {occupied && (
+                            <text
+                              x={230 + dayIndex * 60 + 30}
+                              y={rowY + 43}
+                              textAnchor="middle"
+                              fontSize="24"
+                              fill="#2B2B2B"
+                            >
+                              {dayLabel}
+                            </text>
+                          )}
+                        </g>
                       );
                     })}
                   </g>
                 );
               })}
             </svg>
+
+            {/* Variante mobile, sous sm : pastilles HTML (pas de SVG), une
+                ligne par praticienne, ses jours fixes en pastille pleine. */}
+            <div className="sm:hidden space-y-5">
+              {schemaPractitioners.map((p) => (
+                <div key={p.key}>
+                  <p className="text-sm font-heading font-semibold text-foreground mb-2">
+                    {p.label}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {schemaDayLabels.map((label, i) => {
+                      const occupied = (p.days as readonly number[]).includes(i);
+                      return (
+                        <span
+                          key={i}
+                          className="inline-flex items-center justify-center rounded-md px-2.5 py-1.5 text-xs font-medium"
+                          style={{
+                            backgroundColor: occupied ? p.color : "#F6F5F0",
+                            color: "#2B2B2B",
+                            border: occupied
+                              ? "1.5px solid #2B2B2B"
+                              : "1px solid rgba(43,43,43,0.4)",
+                          }}
+                        >
+                          {label}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-xs text-muted-foreground text-center italic mt-4">
+              {t("cabinetJournee.schema.caption")}
+            </p>
           </div>
         </div>
       </section>
@@ -371,7 +420,11 @@ export default function CabinetALaJournee() {
                   className="card-premium overflow-hidden flex flex-col gap-3 hover:shadow-elevated transition-shadow"
                 >
                   {heroImg && (
-                    <div className="relative w-full h-32 -mt-6 md:-mt-8 -mx-6 md:-mx-8 mb-1 overflow-hidden">
+                    /* Largeur auto (pas de w-full sur ce conteneur) : c'est ce
+                       qui permet aux marges negatives de faire deborder l'image
+                       jusqu'au bord de la carte des deux cotes. Meme patron que
+                       CabinetVisuel/SinstallerIndex.tsx:78. */
+                    <div className="relative h-32 -mt-6 md:-mt-8 -mx-6 md:-mx-8 mb-4 overflow-hidden">
                       <FadeImage
                         src={heroImg}
                         alt={t("cabinetJournee.siteImageAlt", { name: centre.name })}

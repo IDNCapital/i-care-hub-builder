@@ -5,10 +5,6 @@ import { SeoHead } from "@/components/SeoHead";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { ArrowRight } from "lucide-react";
-
-/* Index (0-based) de la question "Que comprend le loyer ?" (faq.q2), seule
-   reponse portant le lien vers l'offre a la journee. Voir faq.a2DayOfficeLink. */
-const RENT_INCLUDES_QUESTION_INDEX = 1;
 import {
   Accordion,
   AccordionContent,
@@ -16,6 +12,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { InlineBrand } from "@/components/BrandName";
+
+/* Numero (1-based, faq.q2/faq.a2) de la question "Que comprend le loyer ?",
+   seule reponse portant le lien vers l'offre a la journee. Compare a i + 1
+   puisque questions est construit sur un index 0-based. Voir faq.a2DayOfficeLink. */
+const RENT_INCLUDES_QUESTION_NUMBER = 2;
 
 export default function FAQ() {
   const { t, i18n } = useTranslation();
@@ -80,7 +81,7 @@ export default function FAQ() {
                     className="text-muted-foreground leading-relaxed pb-5"
                   >
                     <InlineBrand>{item.a}</InlineBrand>
-                    {i === RENT_INCLUDES_QUESTION_INDEX && (
+                    {i + 1 === RENT_INCLUDES_QUESTION_NUMBER && (
                       <>
                         {" "}
                         <Link

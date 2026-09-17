@@ -40,7 +40,7 @@ export const Header = memo(function Header() {
     contact: t("nav.contact"),
     sub: {
       spaces: lang === "fr" ? "Nos lieux de soin" : "Our care spaces",
-      dayOffice: t("cabinetJournee.footerLabel"),
+      dayOffice: t("cabinetJournee.navLabel"),
       install: lang === "fr" ? "S'installer" : "Setting up",
       testimonials: lang === "fr" ? "Témoignages" : "Testimonials",
     },

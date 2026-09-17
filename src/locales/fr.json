@@ -515,6 +515,7 @@
     "heroSubtitle": "Un même cabinet équipé, partagé entre plusieurs praticiens à la journée entière, chacun sur ses jours fixes de la semaine.",
     "heroImageAlt": "Cabinet de consultation I-CA.RE",
     "footerLabel": "Cabinet à la journée",
+    "navLabel": "Cabinet à la journée",
     "principleTitle": "Le principe du mix & match",
     "principleIntro": "Un cabinet équipé se partage entre plusieurs praticiens à la journée entière, du lundi au samedi. Chaque praticien réserve ses jours fixes chaque semaine : le cabinet reste occupé et le coût est partagé.",
     "principleChoice": "Vous choisissez un, deux ou trois jours fixes par semaine.",
@@ -529,7 +530,7 @@
     "furnitureTitle": "Un cabinet équipé pour votre spécialité",
     "furnitureIntro": "Le mobilier mis à disposition s'adapte à la spécialité qui occupe le cabinet.",
     "furniture": {
-      "psyTitle": "Psychologie, psychothérapie, sophrologie",
+      "psyTitle": "Psychologie, psychothérapie",
       "psyDesc": "Fauteuils et canapé.",
       "osteoTitle": "Ostéopathie et thérapies manuelles",
       "osteoDesc": "Table de manipulation.",
@@ -538,11 +539,12 @@
     },
     "furnitureNote": "Le mobilier est défini avec vous avant l'entrée dans les lieux, dans la limite de ce que le cabinet permet.",
     "compatTitle": "Des jours libres, et des usages compatibles",
-    "compatIntro": "Le mix & match ne se résume pas aux jours disponibles : deux praticiens partagent un cabinet seulement si leurs usages sont compatibles (mobilier, ambiance, flux de patients), et de préférence complémentaires.",
+    "compatIntro": "Le mix & match ne se résume pas aux jours disponibles : deux praticiens partagent un cabinet seulement si leurs usages sont compatibles, et de préférence complémentaires.",
     "compatExample": "Un profil psy et un ostéopathe ne se partagent pas le même cabinet ; une psychologue et une psychothérapeute, oui.",
-    "compatTeam": "C'est l'équipe I‑CA.RE qui compose les binômes et trinômes, sur les jours et sur les usages.",
+    "compatTeam": "C'est l'équipe I‑CA.RE qui compose les partages de cabinet, sur les jours et sur les usages.",
     "schema": {
-      "ariaLabel": "Schéma d'une semaine de mix & match : trois praticiens fictifs, une psychologue, une psychothérapeute et une sophrologue, occupent le même cabinet sur des jours fixes différents, du lundi au samedi.",
+      "ariaLabel": "Schéma d'une semaine de mix & match : deux praticiennes fictives, une psychologue (lundi, mardi, mercredi) et une psychothérapeute (jeudi, vendredi), occupent le même cabinet sur des jours fixes différents ; le samedi reste libre.",
+      "caption": "Exemple d'organisation d'une semaine, praticiennes fictives.",
       "days": {
         "mon": "Lun",
         "tue": "Mar",
@@ -553,8 +555,7 @@
       },
       "specialties": {
         "psychologist": "Psychologue",
-        "psychotherapist": "Psychothérapeute",
-        "sophrologist": "Sophrologue"
+        "psychotherapist": "Psychothérapeute"
       }
     },
     "siteImageAlt": "Cabinet I-CA.RE {{name}}",
@@ -634,7 +635,7 @@
     "a2": "Le loyer couvre l'usage exclusif de votre cabinet, l'accès aux espaces communs, l'entretien des parties partagées, l'assurance du bâtiment et les charges courantes (eau, électricité des communs, internet). Vous n'avez aucun frais caché ni charge supplémentaire à prévoir.",
     "a2DayOfficeLink": "Pour l'offre à la journée, voir la page dédiée.",
     "q3": "Le cabinet est-il aménagé ?",
-    "a3": "Oui, chaque cabinet est livré clé en main : sol, peinture, éclairage, prises électriques et réseau sont en place. Vous pouvez exercer dès votre installation. L'aménagement mobilier (bureau, fauteuil, décoration) reste à votre charge pour personnaliser votre espace.",
+    "a3": "Oui, chaque cabinet est livré clé en main : sol, peinture, éclairage, prises électriques et réseau sont en place. Vous pouvez exercer dès votre installation. Pour le bail professionnel à temps plein, l'aménagement mobilier (bureau, fauteuil, décoration) reste à votre charge pour personnaliser votre espace ; le cabinet à la journée est livré meublé.",
     "q4": "Quelle est la durée d'engagement ?",
     "a4": "Nous proposons des baux professionnels souples, généralement d'une durée de 3 ans renouvelable, avec un préavis de 6 mois. Cette durée peut être adaptée selon votre situation. Notre objectif est de vous offrir de la stabilité tout en restant flexible.",
     "q5": "Comment est sélectionné le réseau ?",

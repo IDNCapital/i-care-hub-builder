@@ -556,22 +556,26 @@ export default function LocationCabinetToulouse() {
         </div>
       </section>
 
-      {/* Encart : cabinet à la journée */}
+      {/* Encart : cabinet à la journée.
+          dette : page non internationalisée, voir DETTES_WEB. Texte en dur en
+          francais comme le reste de cette page (memes phrases que la version
+          fr des cles cabinetJournee.crossLink*, utilisees par i18n sur la page
+          Bordeaux). */}
       <section className="section-padding">
         <div className="container">
           <div className="max-w-2xl mx-auto card-premium text-center">
             <h2 className="text-xl font-heading font-semibold mb-3">
-              {t("cabinetJournee.crossLinkTitle")}
+              Besoin d'un cabinet seulement quelques jours par semaine ?
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-2">
-              {t("cabinetJournee.crossLinkDesc1")}
+              Le mix & match propose un cabinet équipé, partagé à la journée entre plusieurs praticiens.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              {t("cabinetJournee.crossLinkDesc2")}
+              Vous choisissez un, deux ou trois jours fixes par semaine.
             </p>
             <Button variant="outline" asChild>
               <Link to={localePath(lang, "cabinetJournee")}>
-                {t("cabinetJournee.crossLinkCta")}
+                Découvrir le cabinet à la journée
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
