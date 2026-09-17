@@ -29,6 +29,7 @@ const routeMap: Record<string, Record<string, string>> = {
     temoignages: "temoignages-praticiens",
     parrainage: "parrainage",
     patients: "patients",
+    cabinetJournee: "cabinet-a-la-journee",
   },
   en: {
     home: "",
@@ -59,6 +60,7 @@ const routeMap: Record<string, Record<string, string>> = {
     temoignages: "practitioner-testimonials",
     parrainage: "referral",
     patients: "patients",
+    cabinetJournee: "day-office",
   },
 };
 

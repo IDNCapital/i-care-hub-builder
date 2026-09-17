@@ -509,6 +509,51 @@
     "ctaTitle": "Échanger sur votre projet d'installation",
     "ctaDesc": "Vous cherchez un cabinet thérapeute à Bordeaux ou un cabinet paramédical à louer ? Contactez-nous pour discuter de votre projet."
   },
+  "cabinetJournee": {
+    "heroTag": "Cabinet à la journée",
+    "h1": "Cabinets à la journée : le mix & match I‑CA.RE",
+    "heroSubtitle": "Un même cabinet équipé, partagé entre plusieurs praticiens à la journée entière, chacun sur ses jours fixes de la semaine.",
+    "heroImageAlt": "Cabinet de consultation I‑CA.RE partagé à la journée",
+    "principleTitle": "Le principe du mix & match",
+    "principleIntro": "Un cabinet équipé se partage entre plusieurs praticiens à la journée entière, du lundi au samedi. Chaque praticien réserve ses jours fixes chaque semaine : le cabinet reste occupé et le coût est partagé.",
+    "principleChoice": "Vous choisissez un, deux ou trois jours fixes par semaine.",
+    "principle": {
+      "sharedTitle": "Cabinet partagé",
+      "sharedDesc": "Un même cabinet équipé se partage entre plusieurs praticiens à la journée entière, du lundi au samedi.",
+      "fixedDaysTitle": "Jours fixes",
+      "fixedDaysDesc": "Chaque praticien réserve ses jours fixes chaque semaine, pour toute la durée du bail.",
+      "sharedCostTitle": "Coût partagé",
+      "sharedCostDesc": "Le cabinet reste occupé et le coût est partagé entre les praticiens qui s'y installent."
+    },
+    "pricingTitle": "La grille tarifaire",
+    "pricingSubtitle": "Bail précaire meublé, grille identique sur tous les sites I‑CA.RE.",
+    "pricing": {
+      "oneDayLabel": "Un jour fixe par semaine",
+      "oneDayPrice": "190 € TTC par mois",
+      "twoDaysLabel": "Deux jours fixes par semaine",
+      "twoDaysPrice": "340 € TTC par mois",
+      "threeDaysLabel": "Trois jours fixes par semaine",
+      "threeDaysPrice": "440 € TTC par mois"
+    },
+    "pricingIncludesTitle": "Le tarif couvre",
+    "pricingIncludes": "Le cabinet meublé et équipé, les espaces communs, le ménage et les produits d'entretien.",
+    "pricingExcludesTitle": "Le tarif ne couvre pas",
+    "pricingExcludes": "Les consommables personnels (le café par exemple).",
+    "pricingWifi": "Sur les sites de plus de dix cabinets, le wifi est inclus.",
+    "sitesTitle": "Nos cabinets",
+    "sitesSubtitle": "Le mix & match s'applique sur l'ensemble de nos sites I‑CA.RE.",
+    "faqTitle": "Questions fréquentes sur le cabinet à la journée",
+    "faq": {
+      "q1": "Puis-je changer de jour ?",
+      "a1": "Les jours sont fixes sur la durée du bail. Tout changement se voit avec l'équipe.",
+      "q2": "Le tarif est-il le même à Bordeaux et à Toulouse ?",
+      "a2": "Oui, la grille est identique sur tous les sites.",
+      "q3": "Que comprend le tarif ?",
+      "a3": "Le tarif couvre le cabinet meublé et équipé, les espaces communs, le ménage et les produits d'entretien. Il ne couvre pas les consommables personnels (le café par exemple)."
+    },
+    "ctaTitle": "Échanger sur votre installation",
+    "ctaDesc": "Contactez-nous pour réserver vos jours fixes dans un cabinet à la journée."
+  },
   "seo": {
     "homeTitle": "Cabinets de soin et de bien-être à Bordeaux | I-CA.RE",
     "homeDesc": "Lieux de soin partagés à Bordeaux et Toulouse. Cabinets traités acoustiquement et confidentiels pour les métiers du soin, du paramédical et du bien-être.",
@@ -526,6 +571,8 @@
     "locationBordeauxDesc": "Cabinets de consultation à louer à Bordeaux pour professionnels du soin et du bien-être : psychologues, thérapeutes, ostéopathes, infirmiers. Découvrez les lieux I-CA.RE.",
     "locationToulouseTitle": "Cabinet à louer à Toulouse | Cabinets paramédicaux I-CA.RE",
     "locationToulouseDesc": "I-CA.RE arrive à Toulouse : cabinets paramédicaux clé en main au cœur de la ville rose. Première ouverture Q4 2026 au Capitole, autres quartiers à suivre. 11–15 m², 550–800€/mois.",
+    "cabinetJourneeTitle": "Cabinet à la journée : mix & match et tarifs | I-CA.RE",
+    "cabinetJourneeDesc": "Le mix & match I-CA.RE : un cabinet équipé partagé à la journée entre plusieurs praticiens. Grille tarifaire d'un à trois jours fixes par semaine, identique sur tous les sites.",
     "faqTitle": "Questions fréquentes | I-CA.RE",
     "faqDesc": "Réponses aux questions fréquentes sur la location de cabinets I-CA.RE : organisation, loyer, engagement, aménagement."
   },

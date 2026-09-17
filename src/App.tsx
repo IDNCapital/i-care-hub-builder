@@ -21,6 +21,7 @@ import PolitiqueCookies from "./pages/PolitiqueCookies";
 import NotFound from "./pages/NotFound";
 import LocationCabinetBordeaux from "./pages/LocationCabinetBordeaux";
 import LocationCabinetToulouse from "./pages/LocationCabinetToulouse";
+import CabinetALaJournee from "./pages/CabinetALaJournee";
 import FAQ from "./pages/FAQ";
 import BlogTrouverCabinet from "./pages/BlogTrouverCabinet";
 import BlogCoutCabinetBordeaux from "./pages/BlogCoutCabinetBordeaux";
@@ -173,6 +174,7 @@ const App = () => (
               <Route path="/cookies" element={<PolitiqueCookies />} />
               <Route path="/office-rental-bordeaux" element={<LocationCabinetBordeaux />} />
               <Route path="/office-rental-toulouse" element={<LocationCabinetToulouse />} />
+              <Route path="/day-office" element={<CabinetALaJournee />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/blog/finding-office-bordeaux-practitioner" element={<Navigate to="/en/insights/medical-office-bordeaux" replace />} />
               <Route path="/blog/consultation-office-cost-bordeaux" element={<Navigate to="/en/insights/office-budget-bordeaux" replace />} />
@@ -225,6 +227,7 @@ const App = () => (
               <Route path="/cookies" element={<PolitiqueCookies />} />
               <Route path="/location-cabinet-bordeaux" element={<LocationCabinetBordeaux />} />
               <Route path="/location-cabinet-toulouse" element={<LocationCabinetToulouse />} />
+              <Route path="/cabinet-a-la-journee" element={<CabinetALaJournee />} />
               <Route path="/questions-frequentes" element={<FAQ />} />
               <Route path="/installer-cabinet-praticien" element={<Navigate to="/sinstaller" replace />} />
               <Route path="/trouver-cabinet-medical-bordeaux" element={<Navigate to="/location-cabinet-bordeaux" replace />} />
