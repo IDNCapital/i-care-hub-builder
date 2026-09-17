@@ -509,6 +509,52 @@
     "ctaTitle": "Discuss your setup project",
     "ctaDesc": "Looking for a therapy office or healthcare office for rent in Bordeaux? Contact us to discuss your project."
   },
+  "cabinetJournee": {
+    "heroTag": "Day Office",
+    "h1": "Day offices: the I‑CA.RE mix & match",
+    "heroSubtitle": "One equipped office, shared between several practitioners for full days, each on their own fixed days of the week.",
+    "footerLabel": "Day office",
+    "principleTitle": "The mix & match principle",
+    "principleIntro": "An equipped office is shared between several practitioners for full days, Monday to Saturday. Each practitioner books fixed days every week: the office stays in use and the cost is shared.",
+    "principleChoice": "You choose one, two or three fixed days per week.",
+    "principle": {
+      "sharedTitle": "Shared office",
+      "sharedDesc": "One equipped office is shared between several practitioners for full days, Monday to Saturday.",
+      "fixedDaysTitle": "Fixed days",
+      "fixedDaysDesc": "Each practitioner books fixed days every week.",
+      "sharedCostTitle": "Shared cost",
+      "sharedCostDesc": "The office stays in use and the cost is shared between the practitioners who take it up."
+    },
+    "pricingTitle": "Pricing",
+    "pricingSubtitle": "Furnished short-term lease, identical pricing across all our sites, from the moment each one opens.",
+    "pricingLeaseNote": "This day-based offer is separate from the full-time professional lease presented in our FAQ.",
+    "pricing": {
+      "oneDayLabel": "One fixed day per week",
+      "oneDayPrice": "€190 incl. VAT/month",
+      "twoDaysLabel": "Two fixed days per week",
+      "twoDaysPrice": "€340 incl. VAT/month",
+      "threeDaysLabel": "Three fixed days per week",
+      "threeDaysPrice": "€440 incl. VAT/month"
+    },
+    "pricingIncludesTitle": "The price covers",
+    "pricingIncludes": "The furnished, equipped office, common areas, cleaning and cleaning products.",
+    "pricingExcludesTitle": "The price does not cover",
+    "pricingExcludes": "Personal consumables (coffee, for example).",
+    "pricingWifi": "For the day office, wifi is included on sites with more than ten offices.",
+    "sitesTitle": "Our offices",
+    "sitesSubtitle": "The mix & match applies to all our sites, from the moment each one opens.",
+    "faqTitle": "Frequently asked questions about the day office",
+    "faq": {
+      "q1": "Can I change my day?",
+      "a1": "Days are fixed. Any change is discussed with the team.",
+      "q2": "Is the price the same across all sites?",
+      "a2": "Yes, the pricing is identical across all our sites, from the moment each one opens.",
+      "q3": "What does the price include?",
+      "a3": "The price covers the furnished, equipped office, common areas, cleaning and cleaning products. It does not cover personal consumables (coffee, for example)."
+    },
+    "ctaTitle": "Discuss your setup",
+    "ctaDesc": "Contact us to book your fixed days in a day office."
+  },
   "seo": {
     "homeTitle": "Care & Wellbeing Offices in Bordeaux | I-CA.RE",
     "homeDesc": "Shared care spaces in Bordeaux and Toulouse. Confidential, acoustically treated practice rooms for care, paramedical and wellbeing professions.",
@@ -526,6 +572,8 @@
     "locationBordeauxDesc": "Consultation offices for rent in Bordeaux for care and wellbeing professionals: psychologists, therapists, osteopaths, nurses. Discover I-CA.RE spaces.",
     "locationToulouseTitle": "Office for Rent in Toulouse | I-CA.RE Care Spaces",
     "locationToulouseDesc": "I-CA.RE is coming to Toulouse: turnkey care offices in the heart of the city. First opening Q4 2026 near Capitole, more neighbourhoods to follow. 11–15 m², €550–800/month.",
+    "cabinetJourneeTitle": "Day Office: Mix & Match Pricing | I-CA.RE",
+    "cabinetJourneeDesc": "The I-CA.RE mix & match: an equipped office shared by the day between several practitioners. Pricing grid from one to three fixed days per week, identical across all sites.",
     "faqTitle": "Frequently Asked Questions | I-CA.RE",
     "faqDesc": "Answers to common questions about renting an I-CA.RE office: organisation, rent, commitment, fit-out."
   },
