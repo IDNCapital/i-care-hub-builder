@@ -50,3 +50,27 @@ export const STATIC_CENTRES: StaticCentre[] = [
 export function getCentreBySlug(slug: string): StaticCentre | undefined {
   return STATIC_CENTRES.find((c) => c.slug === slug);
 }
+
+/**
+ * Nombre de centres STATIC_CENTRES situés dans la métropole bordelaise
+ * (region === "bordeaux"). Source de vérité unique pour tout texte qui
+ * annonce ce nombre, plutôt qu'un chiffre écrit en dur dans une page.
+ */
+export function bordeauxCentresCount(): number {
+  return STATIC_CENTRES.filter((c) => c.region === "bordeaux").length;
+}
+
+const COUNT_WORDS_FR = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"];
+const COUNT_WORDS_EN = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+
+/**
+ * Libellé en toutes lettres du nombre de centres de la métropole bordelaise,
+ * dérivé de bordeauxCentresCount(). Retombe sur le chiffre si le compte
+ * dépasse le lexique couvert.
+ */
+export function bordeauxCentresCountLabel(lang: "fr" | "en"): string {
+  const n = bordeauxCentresCount();
+  const words = lang === "en" ? COUNT_WORDS_EN : COUNT_WORDS_FR;
+  return words[n] ?? String(n);
+}
+
