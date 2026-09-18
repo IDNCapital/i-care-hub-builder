@@ -90,7 +90,7 @@ export default function Investissement() {
         <div className="absolute inset-0">
           <FadeImage
             src={getDefaultHero("investissement")}
-            alt={lang === "fr" ? "Façade – I‑CA.RE Nansouty" : "Facade – I‑CA.RE Nansouty"}
+            alt={lang === "fr" ? "Façade, I‑CA.RE Nansouty" : "Facade, I‑CA.RE Nansouty"}
             className="w-full h-full object-cover"
             loading="eager"
             fadeDuration={500}
@@ -146,10 +146,10 @@ export default function Investissement() {
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { value: "50–300 m²", label: t("investment.surfacePerAsset") },
-              { value: "3–6", label: t("investment.officesPerOp") },
-              { value: "11–15 m²", label: t("investment.perOffice") },
-              { value: "24–36 " + (lang === "en" ? "months" : "mois"), label: t("investment.stabilisation") },
+              { value: (lang === "en" ? "50 to 300 m²" : "50 à 300 m²"), label: t("investment.surfacePerAsset") },
+              { value: (lang === "en" ? "3 to 6" : "3 à 6"), label: t("investment.officesPerOp") },
+              { value: (lang === "en" ? "11 to 15 m²" : "11 à 15 m²"), label: t("investment.perOffice") },
+              { value: (lang === "en" ? "24 to 36 months" : "24 à 36 mois"), label: t("investment.stabilisation") },
             ].map((metric) => (
               <div
                 key={metric.label}

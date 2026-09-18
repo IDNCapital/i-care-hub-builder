@@ -53,7 +53,7 @@ export default function BlogCoutCabinetBordeaux() {
       : [
           {
             q: "What is the average rent for an office in Bordeaux?",
-            a: "It varies by location and amenities, but typically ranges from €600 to €800 per month for an optimised 11–15 m² consultation office.",
+            a: "It varies by location and amenities, but typically ranges from €600 to €800 per month for an optimised 11 to 15 m² consultation office.",
           },
           {
             q: "What size is needed for a consultation office?",

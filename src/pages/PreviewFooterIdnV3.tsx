@@ -24,7 +24,7 @@ export default function PreviewFooterIdnV3() {
                 Footer compact unifié, validation
               </h1>
               <p className="font-body text-base text-muted-foreground leading-relaxed">
-                Cible 320–400px desktop. 3 bandeaux empilés sans gap : liens utiles
+                Cible 320 à 400px desktop. 3 bandeaux empilés sans gap : liens utiles
                 (anthracite), signature Famille IDN une ligne (crème), copyright
                 (anthracite). Page exclue de l'indexation.
               </p>

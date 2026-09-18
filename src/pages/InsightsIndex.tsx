@@ -98,8 +98,8 @@ const FAQ_ITEMS = {
   ],
   en: [
     { q: "Who are these guides for?", a: "Care, allied health and wellbeing practitioners preparing to set up in a private office or shared care space, particularly in Bordeaux and Nouvelle-Aquitaine." },
-    { q: "What is the minimum budget to get started?", a: "In a shared space, expect €1,500–3,000 to start (deposit + basic furniture). For a standalone office, initial budgets range from €10,000 to €30,000 depending on renovation scope." },
-    { q: "What size for a consultation office?", a: "Between 11 and 18 sqm depending on your profession. A psychologist needs 11–14 sqm, an osteopath 14–18 sqm. Common areas (waiting room, toilets) can be shared." },
+    { q: "What is the minimum budget to get started?", a: "In a shared space, expect €1,500 to 3,000 to start (deposit + basic furniture). For a standalone office, initial budgets range from €10,000 to €30,000 depending on renovation scope." },
+    { q: "What size for a consultation office?", a: "Between 11 and 18 sqm depending on your profession. A psychologist needs 11 to 14 sqm, an osteopath 14 to 18 sqm. Common areas (waiting room, toilets) can be shared." },
     { q: "Can you practise in a commercial space?", a: "Yes, under certain conditions: the space must be compatible with care use (planning designation, ERP standards, disabled access). Renovations are often required." },
     { q: "What are the advantages of a shared space?", a: "Lower overheads, shared waiting area, structured professional environment, less isolation and the ability to start without heavy investment." },
     { q: "Should you rent or buy your office?", a: "When starting out, renting offers more flexibility. Buying may make sense after several years of practice, once finances are stable and needs are well identified." },
