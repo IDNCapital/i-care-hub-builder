@@ -60,7 +60,7 @@ function Pill({
       onClick={onClick}
       className={`text-[13px] font-sans px-3 py-1.5 rounded-full border transition-colors text-left ${
         active
-          ? "bg-sage text-cream border-sage"
+          ? "bg-sage text-[#1E392B] border-sage"
           : "bg-cream text-anthracite border-[#BFBFBF] hover:border-sage"
       }`}
     >
