@@ -10,28 +10,17 @@ import { useProjects } from "@/hooks/useProjects";
 import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
-import { STATIC_CENTRES, quarterLabel, type CentreStatus } from "@/lib/centres";
+import { STATIC_CENTRES, quarterLabel, centreStatusLabel, centreStatusBadgeClass, type CentreStatus } from "@/lib/centres";
 import { InlineBrand } from "@/components/BrandName";
 import { CarteCabinetsSection } from "@/components/CarteCabinetsSection";
-
-const badgeStyles: Record<CentreStatus, string> = {
-  available: "bg-sage text-cream",
-  full: "bg-cream text-anthracite",
-  coming_soon: "bg-gold text-anthracite",
-};
 
 export default function Projets() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const { data: projects } = useProjects();
 
-  const badgeLabel = (status: CentreStatus) => {
-    switch (status) {
-      case "available": return t("projects.availableBadge");
-      case "full": return t("projects.fullBadge");
-      case "coming_soon": return t("projects.comingSoonBadge");
-    }
-  };
+  const badgeLabel = (status: CentreStatus) => centreStatusLabel(status, t);
+  const badgeStyles = centreStatusBadgeClass;
 
   const getProject = (slug?: string) => {
     if (!slug || !projects) return null;
@@ -138,7 +127,7 @@ export default function Projets() {
                     )}
                     {/* Badge */}
                     <div className="absolute top-4 left-4">
-                      <span className={`text-sm font-bold uppercase tracking-wide px-3 py-1.5 rounded-full shadow-sm ${badgeStyles[centre.status]}`}>
+                      <span className={`text-sm font-bold uppercase tracking-wide px-3 py-1.5 rounded-full shadow-sm ${badgeStyles(centre.status)}`}>
                         {badgeLabel(centre.status)}{(() => {
                           if (centre.status !== "coming_soon") return "";
                           const q = quarterLabel(getProject(centre.slug)?.date_ouverture_cible, lang === "fr" ? "T" : "Q");

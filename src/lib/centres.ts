@@ -50,3 +50,52 @@ export const STATIC_CENTRES: StaticCentre[] = [
 export function getCentreBySlug(slug: string): StaticCentre | undefined {
   return STATIC_CENTRES.find((c) => c.slug === slug);
 }
+
+/**
+ * Nombre de centres STATIC_CENTRES situés dans la métropole bordelaise
+ * (region === "bordeaux"). Source de vérité unique pour tout texte qui
+ * annonce ce nombre, plutôt qu'un chiffre écrit en dur dans une page.
+ */
+export function bordeauxCentresCount(): number {
+  // Lieux ouverts (disponibles ou complets) : un lieu « a venir » ne se compte
+  // pas comme un lieu de soin propose aujourd'hui (relecture WEB-DETTES-1).
+  return STATIC_CENTRES.filter((c) => c.region === "bordeaux" && c.status !== "coming_soon").length;
+}
+
+/** Lieux bordelais annonces et non encore ouverts. */
+export function bordeauxCentresComingCount(): number {
+  return STATIC_CENTRES.filter((c) => c.region === "bordeaux" && c.status === "coming_soon").length;
+}
+
+const COUNT_WORDS_FR = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"];
+const COUNT_WORDS_EN = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+
+/**
+ * Libellé en toutes lettres du nombre de centres de la métropole bordelaise,
+ * dérivé de bordeauxCentresCount(). Retombe sur le chiffre si le compte
+ * dépasse le lexique couvert.
+ */
+export function bordeauxCentresCountLabel(lang: "fr" | "en"): string {
+  const n = bordeauxCentresCount();
+  const words = lang === "en" ? COUNT_WORDS_EN : COUNT_WORDS_FR;
+  return words[n] ?? String(n);
+}
+
+/**
+ * Libellé et classe de badge de statut d'un centre, factorisés depuis
+ * LocationCabinetBordeaux.tsx, CabinetALaJournee.tsx et Projets.tsx où ils
+ * étaient dupliqués (dette WEB-STATUS-HELPERS-DUPLIQUES). Les classes de
+ * contraste sont celles corrigées en PR20 (commit 678447d) : badge
+ * « Disponible » en anthracite sur sauge, seuil de contraste 4,5 pour 1.
+ */
+export function centreStatusLabel(status: CentreStatus, t: (key: string) => string): string {
+  if (status === "available") return t("projects.availableBadge");
+  if (status === "full") return t("projects.fullBadge");
+  return t("projects.comingSoonBadge");
+}
+
+export function centreStatusBadgeClass(status: CentreStatus): string {
+  if (status === "available") return "bg-sage text-anthracite";
+  if (status === "full") return "bg-cream text-anthracite border border-anthracite/60";
+  return "bg-gold text-anthracite";
+}
