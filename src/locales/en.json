@@ -120,9 +120,9 @@
     },
     "ticketOptions": {
       "<100k": "Under €100,000",
-      "100-250k": "€100,000 – €250,000",
-      "250-500k": "€250,000 – €500,000",
-      "500k-1M": "€500,000 – €1,000,000",
+      "100-250k": "€100,000 to €250,000",
+      "250-500k": "€250,000 to €500,000",
+      "500k-1M": "€500,000 to €1,000,000",
       ">1M": "Over €1,000,000"
     }
   },
@@ -223,7 +223,7 @@
     "formCabinetCountHint": "Each private office is approximately 11 to 15 sqm and includes access to shared common areas.",
     "formCabinetConfig": "Describe your configuration",
     "cabinetCountOptions": {
-      "1": "1 office (11–15 sqm)",
+      "1": "1 office (11 to 15 sqm)",
       "2": "2 offices",
       "3": "3 offices",
       "4+": "4 offices or more",
@@ -348,7 +348,7 @@
     "requestAvailability": "Request Availability",
     "scheduleVisit": "Schedule a Visit",
     "surface": "sqm of floor area",
-    "offices": "offices (~11–15 sqm)",
+    "offices": "offices (~11 to 15 sqm)",
     "delivery": "delivery",
     "deliveryUnknown": "To be confirmed",
     "rent": "rent / office / month",
@@ -440,7 +440,7 @@
     "managementDesc": "Leasing within 24 to 36 months, integrated management and preventive maintenance with a patient, long-term capital approach."
   },
   "benefits": {
-    "optimised": "50–300 sqm Optimised",
+    "optimised": "50 to 300 sqm Optimised",
     "optimisedDesc": "Ground-floor areas designed for care and wellbeing.",
     "accessibility": "Disability Access",
     "accessibilityDesc": "Full compliance with accessibility standards.",
@@ -712,7 +712,7 @@
     "locationBordeauxTitle": "Office for Rent Bordeaux | Consultation Rooms | I-CA.RE",
     "locationBordeauxDesc": "Consultation offices for rent in Bordeaux for care and wellbeing professionals: psychologists, therapists, osteopaths, nurses. Discover I-CA.RE spaces.",
     "locationToulouseTitle": "Office for Rent in Toulouse | I-CA.RE Care Spaces",
-    "locationToulouseDesc": "I-CA.RE is coming to Toulouse: turnkey care offices in the heart of the city. First opening Q4 2026 near Capitole, more neighbourhoods to follow. 11–15 m², €550–800/month.",
+    "locationToulouseDesc": "I-CA.RE is coming to Toulouse: turnkey care offices in the heart of the city. First opening Q4 2026 near Capitole, more neighbourhoods to follow. 11 to 15 sqm, €550 to €800/month.",
     "cabinetJourneeTitle": "Day Office: Mix & Match Pricing | I-CA.RE",
     "cabinetJourneeDesc": "The I-CA.RE mix & match: an equipped office shared by the day between several practitioners. Pricing grid from one to three fixed days per week, identical across all sites.",
     "faqTitle": "Frequently Asked Questions | I-CA.RE",

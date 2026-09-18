@@ -170,7 +170,7 @@ export const Header = memo(function Header() {
 
             <Link
               to={`${localePath(lang, "professionals")}#candidature`}
-              className="inline-flex items-center justify-center min-h-[44px] whitespace-nowrap rounded-md bg-sage text-cream font-sans font-bold uppercase text-[14px] tracking-[0.10em] px-7 py-[14px] transition-all duration-200 ease-out hover:bg-[#C5D4CA] hover:-translate-y-px hover:shadow-[0_6px_18px_-6px_hsl(var(--sage)/0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9C7A1] focus-visible:ring-offset-[3px] focus-visible:ring-offset-background"
+              className="inline-flex items-center justify-center min-h-[44px] whitespace-nowrap rounded-md bg-sage text-[#1E392B] font-sans font-bold uppercase text-[14px] tracking-[0.10em] px-7 py-[14px] transition-all duration-200 ease-out hover:bg-[#C5D4CA] hover:-translate-y-px hover:shadow-[0_6px_18px_-6px_hsl(var(--sage)/0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9C7A1] focus-visible:ring-offset-[3px] focus-visible:ring-offset-background"
             >
               {t("nav.joinCta")}
             </Link>
@@ -263,7 +263,7 @@ export const Header = memo(function Header() {
                 <Link
                   to={`${localePath(lang, "professionals")}#candidature`}
                   onClick={() => setIsOpen(false)}
-                  className="inline-flex w-full items-center justify-center min-h-[44px] whitespace-nowrap rounded-md bg-sage text-cream font-sans font-bold uppercase text-[14px] tracking-[0.10em] px-7 py-[14px] transition-all duration-200 ease-out hover:bg-[#C5D4CA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9C7A1] focus-visible:ring-offset-[3px] focus-visible:ring-offset-background"
+                  className="inline-flex w-full items-center justify-center min-h-[44px] whitespace-nowrap rounded-md bg-sage text-[#1E392B] font-sans font-bold uppercase text-[14px] tracking-[0.10em] px-7 py-[14px] transition-all duration-200 ease-out hover:bg-[#C5D4CA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9C7A1] focus-visible:ring-offset-[3px] focus-visible:ring-offset-background"
                 >
                   {t("nav.joinCta")}
                 </Link>

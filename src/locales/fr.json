@@ -120,9 +120,9 @@
     },
     "ticketOptions": {
       "<100k": "Moins de 100 000 €",
-      "100-250k": "100 000 – 250 000 €",
-      "250-500k": "250 000 – 500 000 €",
-      "500k-1M": "500 000 – 1 000 000 €",
+      "100-250k": "100 000 à 250 000 €",
+      "250-500k": "250 000 à 500 000 €",
+      "500k-1M": "500 000 à 1 000 000 €",
       ">1M": "Plus de 1 000 000 €"
     }
   },
@@ -223,7 +223,7 @@
     "formCabinetCountHint": "Chaque cabinet privatif mesure environ 11 à 15 m² et bénéficie d'espaces communs mutualisés.",
     "formCabinetConfig": "Précisez votre configuration",
     "cabinetCountOptions": {
-      "1": "1 cabinet (11–15 m²)",
+      "1": "1 cabinet (11 à 15 m²)",
       "2": "2 cabinets",
       "3": "3 cabinets",
       "4+": "4 cabinets ou plus",
@@ -348,7 +348,7 @@
     "requestAvailability": "Demander une disponibilité",
     "scheduleVisit": "Planifier une visite",
     "surface": "m² de surface",
-    "offices": "cabinets (~11–15 m²)",
+    "offices": "cabinets (~11 à 15 m²)",
     "delivery": "livraison",
     "deliveryUnknown": "À confirmer",
     "rent": "loyer / cabinet / mois",
@@ -440,7 +440,7 @@
     "managementDesc": "Remplissage locatif en 24 à 36 mois, gestion intégrée et maintenance préventive dans une logique patrimoniale de long terme."
   },
   "benefits": {
-    "optimised": "50–300 m² optimisés",
+    "optimised": "50 à 300 m² optimisés",
     "optimisedDesc": "Surfaces de rez-de-chaussée pensées pour le soin et le bien-être.",
     "accessibility": "Accessibilité PMR",
     "accessibilityDesc": "Conformité totale aux normes d'accessibilité.",
@@ -712,7 +712,7 @@
     "locationBordeauxTitle": "Cabinet à louer Bordeaux | Cabinets de consultation | I-CA.RE",
     "locationBordeauxDesc": "Cabinets de consultation à louer à Bordeaux pour professionnels du soin et du bien-être : psychologues, thérapeutes, ostéopathes, infirmiers. Découvrez les lieux I-CA.RE.",
     "locationToulouseTitle": "Cabinet à louer à Toulouse | Cabinets paramédicaux I-CA.RE",
-    "locationToulouseDesc": "I-CA.RE arrive à Toulouse : cabinets paramédicaux clé en main au cœur de la ville rose. Première ouverture Q4 2026 au Capitole, autres quartiers à suivre. 11–15 m², 550–800€/mois.",
+    "locationToulouseDesc": "I-CA.RE arrive à Toulouse : cabinets paramédicaux clé en main au cœur de la ville rose. Première ouverture Q4 2026 au Capitole, autres quartiers à suivre. 11 à 15 m², 550 à 800 €/mois.",
     "cabinetJourneeTitle": "Cabinet à la journée : mix & match et tarifs | I-CA.RE",
     "cabinetJourneeDesc": "Le mix & match I-CA.RE : un cabinet équipé partagé à la journée entre plusieurs praticiens. Grille tarifaire d'un à trois jours fixes par semaine, identique sur tous les sites.",
     "faqTitle": "Questions fréquentes | I-CA.RE",
