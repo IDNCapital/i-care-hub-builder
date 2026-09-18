@@ -21,6 +21,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Analytics } from "@/lib/analytics";
 import { FadeImage } from "@/components/FadeImage";
 import { PROJECT_IMAGES } from "@/lib/projectImages";
+import { getCentreBySlug } from "@/lib/centres";
 import {
   Accordion,
   AccordionContent,
@@ -42,24 +43,57 @@ export default function LocationCabinetToulouse() {
   const cabinetsToulouse = (pipelineCabinets ?? []).filter((c) => c.city === "Toulouse");
 
   const toulouseCapitoleHero = PROJECT_IMAGES["i-ca-re-toulouse-capitole"]?.hero;
+  const toulouseCapitoleCentre = getCentreBySlug("i-ca-re-toulouse-capitole");
 
-  const neighbourhoodOptions = [
-    "Capitole", "Carmes", "Saint-Étienne", "Saint-Cyprien",
-    "Les Chalets", "Jean-Jaurès", "Compans-Caffarelli",
-    "Autre", "Pas de préférence",
-  ];
+  /* Valeurs stables envoyees au backend (extra_data), non traduites : seul le
+     libelle affiche est localise via t(). Memes options qu'avant l'i18n. */
+  const neighbourhoodKeys = [
+    "capitole", "carmes", "saintEtienne", "saintCyprien",
+    "lesChalets", "jeanJaures", "compansCaffarelli",
+    "other", "noPreference",
+  ] as const;
+  const neighbourhoodValues: Record<(typeof neighbourhoodKeys)[number], string> = {
+    capitole: "Capitole",
+    carmes: "Carmes",
+    saintEtienne: "Saint-Étienne",
+    saintCyprien: "Saint-Cyprien",
+    lesChalets: "Les Chalets",
+    jeanJaures: "Jean-Jaurès",
+    compansCaffarelli: "Compans-Caffarelli",
+    other: "Autre",
+    noPreference: "Pas de préférence",
+  };
+  const neighbourhoodOptions = neighbourhoodKeys.map((k) => ({
+    value: neighbourhoodValues[k],
+    label: t(`locationToulouse.neighbourhoodOptions.${k}`),
+  }));
 
-  const daysOptions = [
-    "Temps plein", "4 jours", "3 jours", "2 jours", "1 jour", "À définir",
-  ];
+  const daysKeys = ["fullTime", "fourDays", "threeDays", "twoDays", "oneDay", "toBeDefined"] as const;
+  const daysValues: Record<(typeof daysKeys)[number], string> = {
+    fullTime: "Temps plein",
+    fourDays: "4 jours",
+    threeDays: "3 jours",
+    twoDays: "2 jours",
+    oneDay: "1 jour",
+    toBeDefined: "À définir",
+  };
+  const daysOptions = daysKeys.map((k) => ({
+    value: daysValues[k],
+    label: t(`locationToulouse.daysOptions.${k}`),
+  }));
 
-  const dateOptions = [
-    "Dès l'ouverture Q4 2026",
-    "Dans les 6 mois après ouverture",
-    "Courant 2027",
-    "Plus tard",
-    "À définir",
-  ];
+  const dateKeys = ["fromOpening", "within6Months", "during2027", "later", "toBeDefined"] as const;
+  const dateValues: Record<(typeof dateKeys)[number], string> = {
+    fromOpening: "Dès l'ouverture Q4 2026",
+    within6Months: "Dans les 6 mois après ouverture",
+    during2027: "Courant 2027",
+    later: "Plus tard",
+    toBeDefined: "À définir",
+  };
+  const dateOptions = dateKeys.map((k) => ({
+    value: dateValues[k],
+    label: t(`locationToulouse.dateOptions.${k}`),
+  }));
 
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", phone: "",
@@ -73,14 +107,14 @@ export default function LocationCabinetToulouse() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (honeypot) return;
-    if (!consent) { toast.error("Merci d'accepter le traitement de vos données."); return; }
+    if (!consent) { toast.error(t("locationToulouse.toastConsentRequired")); return; }
     if (!form.firstName.trim() || !form.lastName.trim() || !form.email.trim() || !form.phone.trim() || !form.profession) {
-      toast.error("Merci de remplir les champs obligatoires."); return;
+      toast.error(t("locationToulouse.toastRequiredFields")); return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(form.email.trim())) { toast.error("Email invalide."); return; }
+    if (!emailRegex.test(form.email.trim())) { toast.error(t("locationToulouse.toastInvalidEmail")); return; }
     const phoneRegex = /^[+\d\s.\-()]{6,30}$/;
-    if (!phoneRegex.test(form.phone.trim())) { toast.error("Téléphone invalide."); return; }
+    if (!phoneRegex.test(form.phone.trim())) { toast.error(t("locationToulouse.toastInvalidPhone")); return; }
 
     setSubmitting(true);
     try {
@@ -111,9 +145,9 @@ export default function LocationCabinetToulouse() {
         },
       });
       if (error) throw error;
-      if (data?.error === "rate_limited") { toast.error("Une demande a déjà été envoyée récemment. Réessayez dans un instant."); return; }
+      if (data?.error === "rate_limited") { toast.error(t("locationToulouse.toastRateLimited")); return; }
       if (data?.error) throw new Error(data.error);
-      toast.success("Merci ! Nous vous recontactons dès qu'un cabinet correspondant à votre projet est disponible.");
+      toast.success(t("locationToulouse.toastSuccess"));
       // Chemin ecrit en dur cote francais alors que la page est bilingue : une
       // soumission anglaise etait attribuee a la page francaise. Meme expression que
       // celle passee a SeoHead.
@@ -125,35 +159,35 @@ export default function LocationCabinetToulouse() {
       setConsent(false);
     } catch (err) {
       console.error("Toulouse interest form error:", err);
-      toast.error("Une erreur est survenue. Merci de réessayer.");
+      toast.error(t("locationToulouse.toastError"));
     } finally {
       setSubmitting(false);
     }
   };
 
   const whyBlocks = [
-    { icon: Volume2, title: "Espaces pensés pour la pratique", desc: "Cabinets de 11 à 15 m² avec isolation acoustique renforcée, lumière naturelle, climatisation réversible et points d'eau." },
-    { icon: MapPin, title: "Implantation dans des quartiers vivants à Toulouse", desc: "Capitole et autres quartiers centraux en cours d'étude, accessibles à pied, en métro et à vélo." },
-    { icon: TreePine, title: "Atmosphère calme et professionnelle", desc: "Une décoration soignée, une salle d'attente mutualisée chaleureuse, une communauté engagée de praticiennes et praticiens." },
+    {
+      icon: Volume2,
+      title: t("locationToulouse.why.spaces"),
+      desc: t("locationToulouse.why.spacesDesc"),
+    },
+    {
+      icon: MapPin,
+      title: t("locationToulouse.why.neighbourhoods"),
+      desc: t("locationToulouse.why.neighbourhoodsDesc"),
+    },
+    {
+      icon: TreePine,
+      title: t("locationToulouse.why.atmosphere"),
+      desc: t("locationToulouse.why.atmosphereDesc"),
+    },
   ];
 
   const faqItems = [
-    {
-      q: "Quand ouvrira le premier cabinet I-CA.RE à Toulouse ?",
-      a: "Notre première ouverture toulousaine est prévue au quatrième trimestre 2026, à deux pas de la place du Capitole. Le permis de construire a été obtenu et les travaux débutent prochainement.",
-    },
-    {
-      q: "Dans quels quartiers de Toulouse I-CA.RE prévoit-il d'ouvrir ?",
-      a: "Au-delà du Capitole, nous étudions plusieurs autres quartiers centraux toulousains pour mailler progressivement la ville rose. Les personnes inscrites à notre liste d'intérêt sont informées en priorité des nouvelles ouvertures.",
-    },
-    {
-      q: "Quels sont les loyers pratiqués par I-CA.RE à Toulouse ?",
-      a: "Les loyers sont compris entre 550 et 800 € hors charges par mois, selon la surface du cabinet (11 à 15 m²) et ses spécificités. Les cabinets sont entièrement clé en main : aucune dépense d'aménagement à prévoir.",
-    },
-    {
-      q: "Comment être informé en priorité des disponibilités toulousaines ?",
-      a: "Inscrivez-vous à notre liste d'intérêt Toulouse via le formulaire ci-dessus. Nous vous contactons dès qu'un cabinet correspondant à votre projet est disponible, avant publication des annonces publiques.",
-    },
+    { q: t("locationToulouse.faq.q1"), a: t("locationToulouse.faq.a1") },
+    { q: t("locationToulouse.faq.q2"), a: t("locationToulouse.faq.a2") },
+    { q: t("locationToulouse.faq.q3"), a: t("locationToulouse.faq.a3") },
+    { q: t("locationToulouse.faq.q4"), a: t("locationToulouse.faq.a4") },
   ];
 
   const faqJsonLd = {
@@ -191,7 +225,7 @@ export default function LocationCabinetToulouse() {
           {toulouseCapitoleHero ? (
             <FadeImage
               src={toulouseCapitoleHero}
-              alt="Façade I‑CA.RE Toulouse Capitole, cabinets paramédicaux à louer"
+              alt={t("locationToulouse.heroImageAlt")}
               className="w-full h-full object-cover"
               loading="eager"
               fadeDuration={500}
@@ -204,24 +238,24 @@ export default function LocationCabinetToulouse() {
         <div className="container relative z-10 py-20">
           <div className="max-w-2xl">
             <span className="inline-block px-4 py-1.5 bg-primary/15 text-primary text-xs font-bold uppercase tracking-[0.1em] rounded-full mb-6">
-              Cabinet à louer Toulouse
+              {t("locationToulouse.heroTag")}
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6">
-              Cabinet paramédical à louer à Toulouse
+              {t("locationToulouse.h1")}
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-10">
-              Cabinets de consultation rénovés, acoustiques et clé en main, premier lieu en plein cœur de Toulouse, ouverture Q4 2026. 550 à 800&nbsp;€ HC/mois selon les surfaces.
+              {t("locationToulouse.heroSubtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="hero" asChild>
                 <a href="#liste-interet">
-                  Rejoindre la liste d'intérêt
+                  {t("locationToulouse.ctaJoinList")}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
               <Button variant="hero-outline" asChild>
                 <Link to={localePath(lang, "projects", "i-ca-re-toulouse-capitole")}>
-                  Découvrir Toulouse Capitole
+                  {t("locationToulouse.ctaDiscoverCapitole")}
                 </Link>
               </Button>
             </div>
@@ -233,12 +267,12 @@ export default function LocationCabinetToulouse() {
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="section-title"><InlineBrand>I-CA.RE arrive à Toulouse</InlineBrand></h2>
+            <h2 className="section-title"><InlineBrand>{t("locationToulouse.arrivingTitle")}</InlineBrand></h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              Après quatre lieux exploités à Bordeaux (Nansouty, Jardin Public, Pey-Berland et Chartrons), <InlineBrand>I-CA.RE</InlineBrand> étend son modèle à Toulouse. Notre mission reste la même : transformer des rez-de-chaussée urbains sous-valorisés en espaces de soin nouvelle génération, pensés pour la confidentialité, le confort acoustique et la qualité d'accueil de la patientèle.
+              <InlineBrand>{t("locationToulouse.arrivingP1")}</InlineBrand>
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              La première ouverture toulousaine, située à deux pas de la place du Capitole, nous évoque naturellement notre réalisation Pey-Berland à Bordeaux : même cœur de ville, même qualité patrimoniale, même potentiel pour devenir un lieu de soin de référence. D'autres ouvertures suivront dans d'autres quartiers toulousains, pour mailler progressivement la ville rose.
+              {t("locationToulouse.arrivingP2")}
             </p>
           </div>
         </div>
@@ -249,17 +283,17 @@ export default function LocationCabinetToulouse() {
         <div className="container">
           <div className="max-w-3xl mx-auto">
             <h2 className="section-title text-center">
-              Trouver un cabinet à louer à Toulouse : un vrai défi pour les praticiens
+              {t("locationToulouse.challengeTitle")}
             </h2>
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Psychologues, ostéopathes, thérapeutes, infirmières et infirmiers… trouver un cabinet paramédical à louer à Toulouse qui conjugue confidentialité, accessibilité et loyer maîtrisé reste un parcours du combattant. Les locaux disponibles sont rarement adaptés à la pratique du soin : mauvaise isolation acoustique, absence de conformité PMR, surfaces inadaptées.
+                {t("locationToulouse.challengeP1")}
               </p>
               <p>
-                C'est pourquoi <InlineBrand>I-CA.RE</InlineBrand> identifie des rez-de-chaussée sous-valorisés dans les quartiers centraux de Toulouse et les transforme en cabinets de consultation nouvelle génération. Chaque espace est pensé pour la relation thérapeutique : isolation phonique renforcée, lumière naturelle, conformité ERP et PMR, accueil chaleureux.
+                <InlineBrand>{t("locationToulouse.challengeP2")}</InlineBrand>
               </p>
               <p>
-                Avec <InlineBrand>I-CA.RE</InlineBrand>, la location de cabinet à Toulouse devient simple : un espace clé en main, un loyer transparent, une communauté de praticiens engagés.
+                <InlineBrand>{t("locationToulouse.challengeP3")}</InlineBrand>
               </p>
             </div>
           </div>
@@ -270,7 +304,7 @@ export default function LocationCabinetToulouse() {
       <section className="section-padding">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="section-title">Nos cabinets de consultation à Toulouse</h2>
+            <h2 className="section-title">{t("locationToulouse.centresTitle")}</h2>
           </div>
           <div className="max-w-md mx-auto">
             <Link
@@ -281,7 +315,7 @@ export default function LocationCabinetToulouse() {
                 {toulouseCapitoleHero ? (
                   <FadeImage
                     src={toulouseCapitoleHero}
-                    alt="I‑CA.RE Toulouse Capitole, façade brique"
+                    alt={t("locationToulouse.centresImageAlt")}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     fadeDuration={400}
                   />
@@ -289,7 +323,7 @@ export default function LocationCabinetToulouse() {
                   <div className="w-full h-full bg-secondary" />
                 )}
                 <span className="absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm bg-[hsl(38,30%,90%)] text-[hsl(38,40%,35%)]">
-                  Ouverture Q4 2026
+                  {t("locationToulouse.centresBadgeOpening")}
                 </span>
               </div>
               <div className="p-6">
@@ -297,21 +331,21 @@ export default function LocationCabinetToulouse() {
                   <InlineBrand>I-CA.RE</InlineBrand> Toulouse Capitole
                 </h3>
                 <p className="text-xs text-muted-foreground/70 mb-5">
-                  5 rue de Mirepoix, 31000 Toulouse
+                  {toulouseCapitoleCentre?.address}
                 </p>
                 <span className="text-sm font-semibold text-primary inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Découvrir le projet
+                  {t("locationToulouse.centresCardCta")}
                   <ArrowRight className="w-4 h-4" />
                 </span>
               </div>
             </Link>
           </div>
           <p className="text-center text-sm text-muted-foreground mt-8 max-w-xl mx-auto">
-            D'autres ouvertures sont en cours d'étude dans Toulouse.{" "}
+            {t("locationToulouse.centresMoreP1")}{" "}
             <a href="#liste-interet" className="text-primary underline underline-offset-4 hover:text-primary/80">
-              Rejoignez notre liste d'intérêt
+              {t("locationToulouse.centresMoreLink")}
             </a>{" "}
-            pour recevoir l'information en priorité.
+            {t("locationToulouse.centresMoreP2")}
           </p>
         </div>
       </section>
@@ -334,7 +368,7 @@ export default function LocationCabinetToulouse() {
       <section className="section-padding bg-muted/50">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="section-title"><InlineBrand>Pourquoi rejoindre un lieu I-CA.RE</InlineBrand></h2>
+            <h2 className="section-title"><InlineBrand>{t("locationToulouse.whyTitle")}</InlineBrand></h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {whyBlocks.map((b) => (
@@ -354,20 +388,20 @@ export default function LocationCabinetToulouse() {
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="section-title">Notre preuve à Bordeaux</h2>
+            <h2 className="section-title">{t("locationToulouse.proofTitle")}</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              Nous ne partons pas de zéro. À Bordeaux, nos 4 lieux exploités (Nansouty, Jardin Public, Pey-Berland, Chartrons) sont complets ou en cours de commercialisation, avec une communauté d'une vingtaine de praticiennes et praticiens : psychologues, psychothérapeutes, sophrologues, naturopathes, ostéopathes, hypnothérapeutes. Nous apportons ce savoir-faire à Toulouse.
+              {t("locationToulouse.proofP1")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="default" asChild>
                 <Link to={localePath(lang, "projects")}>
-                  Voir nos lieux bordelais
+                  {t("locationToulouse.proofCtaBordeaux")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button variant="outline" asChild>
                 <Link to={localePath(lang, "approach")}>
-                  Notre approche
+                  {t("locationToulouse.proofCtaApproach")}
                 </Link>
               </Button>
             </div>
@@ -381,10 +415,10 @@ export default function LocationCabinetToulouse() {
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-10">
               <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4 text-background">
-                Recevez en priorité l'information sur les ouvertures toulousaines
+                {t("locationToulouse.formTitle")}
               </h2>
               <p className="text-background/70 text-lg">
-                Laissez-nous vos coordonnées et votre projet. Nous vous contactons dès qu'un cabinet correspondant à votre besoin sera disponible.
+                {t("locationToulouse.formSubtitle")}
               </p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-6 form-dark-section">
@@ -402,28 +436,28 @@ export default function LocationCabinetToulouse() {
 
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="tlse-firstName" className="text-[#F6F5F0]">Prénom *</Label>
+                  <Label htmlFor="tlse-firstName" className="text-[#F6F5F0]">{t("locationToulouse.formFirstName")}</Label>
                   <Input id="tlse-firstName" value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} className="h-12" required maxLength={100} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="tlse-lastName" className="text-[#F6F5F0]">Nom *</Label>
+                  <Label htmlFor="tlse-lastName" className="text-[#F6F5F0]">{t("locationToulouse.formLastName")}</Label>
                   <Input id="tlse-lastName" value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} className="h-12" required maxLength={100} />
                 </div>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="tlse-email" className="text-[#F6F5F0]">Email *</Label>
+                  <Label htmlFor="tlse-email" className="text-[#F6F5F0]">{t("locationToulouse.formEmail")}</Label>
                   <Input id="tlse-email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="h-12" required maxLength={255} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="tlse-phone" className="text-[#F6F5F0]">Téléphone *</Label>
+                  <Label htmlFor="tlse-phone" className="text-[#F6F5F0]">{t("locationToulouse.formPhone")}</Label>
                   <Input id="tlse-phone" type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder={ICARE_TELEPHONE_AFFICHAGE} className="h-12" required maxLength={30} />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-[#F6F5F0]">Type de praticien *</Label>
+                <Label className="text-[#F6F5F0]">{t("locationToulouse.formProfessionLabel")}</Label>
                 {/*
                   key porteuse du correctif : le <select> natif caché de Radix (aria-hidden)
                   suit l'ORDRE DE MONTAGE des SelectItem, pas l'ordre du JSX. Sans remontage,
@@ -438,7 +472,7 @@ export default function LocationCabinetToulouse() {
                   onValueChange={(v) => setForm({ ...form, profession: v })}
                 >
                   <SelectTrigger className={darkSelectTrigger}>
-                    <SelectValue placeholder="Sélectionnez votre profession" />
+                    <SelectValue placeholder={t("locationToulouse.formProfessionPlaceholder")} />
                   </SelectTrigger>
                   <SelectContent className={darkSelectContent}>
                     {professions.map((p) => (
@@ -447,7 +481,7 @@ export default function LocationCabinetToulouse() {
                       </SelectItem>
                     ))}
                     <SelectItem value="autre" className={darkSelectItem}>
-                      Autre praticienne ou praticien du soin ou du bien-être
+                      {t("locationToulouse.formProfessionOther")}
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -455,27 +489,27 @@ export default function LocationCabinetToulouse() {
 
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label className="text-[#F6F5F0]">Quartier souhaité</Label>
+                  <Label className="text-[#F6F5F0]">{t("locationToulouse.formNeighbourhoodLabel")}</Label>
                   <Select value={form.neighbourhood} onValueChange={(v) => setForm({ ...form, neighbourhood: v })}>
                     <SelectTrigger className={darkSelectTrigger}>
-                      <SelectValue placeholder="Sélectionnez un quartier" />
+                      <SelectValue placeholder={t("locationToulouse.formNeighbourhoodPlaceholder")} />
                     </SelectTrigger>
                     <SelectContent className={darkSelectContent}>
                       {neighbourhoodOptions.map((n) => (
-                        <SelectItem key={n} value={n} className={darkSelectItem}>{n}</SelectItem>
+                        <SelectItem key={n.value} value={n.value} className={darkSelectItem}>{n.label}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-[#F6F5F0]">Nombre de jours/semaine</Label>
+                  <Label className="text-[#F6F5F0]">{t("locationToulouse.formDaysLabel")}</Label>
                   <Select value={form.days} onValueChange={(v) => setForm({ ...form, days: v })}>
                     <SelectTrigger className={darkSelectTrigger}>
-                      <SelectValue placeholder="Sélectionnez" />
+                      <SelectValue placeholder={t("locationToulouse.formDaysPlaceholder")} />
                     </SelectTrigger>
                     <SelectContent className={darkSelectContent}>
                       {daysOptions.map((d) => (
-                        <SelectItem key={d} value={d} className={darkSelectItem}>{d}</SelectItem>
+                        <SelectItem key={d.value} value={d.value} className={darkSelectItem}>{d.label}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -483,28 +517,28 @@ export default function LocationCabinetToulouse() {
               </div>
 
               <div className="space-y-2">
-                <Label className="text-[#F6F5F0]">Date d'installation visée</Label>
+                <Label className="text-[#F6F5F0]">{t("locationToulouse.formDateLabel")}</Label>
                 <Select value={form.dateInstall} onValueChange={(v) => setForm({ ...form, dateInstall: v })}>
                   <SelectTrigger className={darkSelectTrigger}>
-                    <SelectValue placeholder="Sélectionnez une période" />
+                    <SelectValue placeholder={t("locationToulouse.formDatePlaceholder")} />
                   </SelectTrigger>
                   <SelectContent className={darkSelectContent}>
                     {dateOptions.map((d) => (
-                      <SelectItem key={d} value={d} className={darkSelectItem}>{d}</SelectItem>
+                      <SelectItem key={d.value} value={d.value} className={darkSelectItem}>{d.label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="tlse-message" className="text-[#F6F5F0]">Message (optionnel)</Label>
+                <Label htmlFor="tlse-message" className="text-[#F6F5F0]">{t("locationToulouse.formMessageLabel")}</Label>
                 <Textarea
                   id="tlse-message"
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                   className="min-h-[120px] bg-[#1F1F1F] border-white/15 text-[#F6F5F0] placeholder:text-[#F6F5F0]/45"
                   maxLength={2000}
-                  placeholder="Décrivez votre projet d'installation à Toulouse"
+                  placeholder={t("locationToulouse.formMessagePlaceholder")}
                 />
               </div>
 
@@ -516,16 +550,16 @@ export default function LocationCabinetToulouse() {
                   className="mt-1 border-white/30 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                 />
                 <Label htmlFor="tlse-consent" className="text-sm text-[#F6F5F0]/80 leading-relaxed cursor-pointer">
-                  J'accepte que mes données soient traitées par <InlineBrand>I-CA.RE</InlineBrand> dans le cadre de ma demande, conformément à la{" "}
+                  {t("locationToulouse.formConsentPrefix")} <InlineBrand>I-CA.RE</InlineBrand> {t("locationToulouse.formConsentMiddle")}{" "}
                   <Link to={localePath(lang, "privacy")} className="text-primary underline underline-offset-4 hover:text-primary/80">
-                    politique de confidentialité
+                    {t("locationToulouse.formConsentLinkText")}
                   </Link>
                   .
                 </Label>
               </div>
 
               <Button type="submit" variant="hero" size="lg" className="w-full" disabled={submitting}>
-                {submitting ? (<><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Envoi en cours…</>) : "Rejoindre la liste d'intérêt Toulouse"}
+                {submitting ? (<><Loader2 className="mr-2 h-5 w-5 animate-spin" /> {t("locationToulouse.formSubmitting")}</>) : t("locationToulouse.formSubmit")}
               </Button>
             </form>
           </div>
@@ -536,7 +570,7 @@ export default function LocationCabinetToulouse() {
       <section className="section-padding">
         <div className="container">
           <div className="max-w-3xl mx-auto">
-            <h2 className="section-title text-center">Questions fréquentes : Toulouse</h2>
+            <h2 className="section-title text-center">{t("locationToulouse.faqTitle")}</h2>
             <Accordion type="single" collapsible className="mt-10 space-y-3">
               {faqItems.map((item, i) => (
                 <AccordionItem key={i} value={`tlse-faq-${i}`} className="bg-secondary rounded-2xl px-6 border-none">
@@ -556,26 +590,22 @@ export default function LocationCabinetToulouse() {
         </div>
       </section>
 
-      {/* Encart : cabinet à la journée.
-          dette : page non internationalisée, voir la note Websites/DETTES_WEB.md du kDrive (hors dépôt). Texte en dur en
-          francais comme le reste de cette page (memes phrases que la version
-          fr des cles cabinetJournee.crossLink*, utilisees par i18n sur la page
-          Bordeaux). */}
+      {/* Encart : cabinet à la journée, mêmes clefs que la page Bordeaux (cabinetJournee.crossLink*). */}
       <section className="section-padding">
         <div className="container">
           <div className="max-w-2xl mx-auto card-premium text-center">
             <h2 className="text-xl font-heading font-semibold mb-3">
-              Besoin d'un cabinet seulement quelques jours par semaine ?
+              {t("cabinetJournee.crossLinkTitle")}
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-2">
-              Le mix & match propose un cabinet équipé, partagé à la journée entre plusieurs praticiens.
+              {t("cabinetJournee.crossLinkDesc1")}
             </p>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Vous choisissez un, deux ou trois jours fixes par semaine.
+              {t("cabinetJournee.crossLinkDesc2")}
             </p>
             <Button variant="outline" asChild>
               <Link to={localePath(lang, "cabinetJournee")}>
-                Découvrir le cabinet à la journée
+                {t("cabinetJournee.crossLinkCta")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -588,15 +618,15 @@ export default function LocationCabinetToulouse() {
         <div className="container">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4 text-background">
-              Échanger sur votre projet d'installation à Toulouse
+              {t("locationToulouse.ctaFinalTitle")}
             </h2>
             <p className="text-background/70 text-lg mb-8">
-              Rejoignez la liste d'intérêt pour recevoir l'information en priorité, ou contactez-nous directement pour échanger sur votre projet.
+              {t("locationToulouse.ctaFinalDesc")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>
                 <a href="#liste-interet">
-                  Rejoindre la liste d'intérêt
+                  {t("locationToulouse.ctaJoinList")}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
@@ -605,7 +635,7 @@ export default function LocationCabinetToulouse() {
                 className="border-background/30 text-background hover:bg-background/10"
                 asChild
               >
-                <Link to={localePath(lang, "contact")}>Nous contacter</Link>
+                <Link to={localePath(lang, "contact")}>{t("common.contactUs")}</Link>
               </Button>
             </div>
           </div>
