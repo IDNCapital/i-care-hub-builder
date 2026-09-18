@@ -74,3 +74,21 @@ export function bordeauxCentresCountLabel(lang: "fr" | "en"): string {
   return words[n] ?? String(n);
 }
 
+/**
+ * Libellé et classe de badge de statut d'un centre, factorisés depuis
+ * LocationCabinetBordeaux.tsx, CabinetALaJournee.tsx et Projets.tsx où ils
+ * étaient dupliqués (dette WEB-STATUS-HELPERS-DUPLIQUES). Les classes de
+ * contraste sont celles corrigées en PR20 (commit 678447d) : badge
+ * « Disponible » en anthracite sur sauge, seuil de contraste 4,5 pour 1.
+ */
+export function centreStatusLabel(status: CentreStatus, t: (key: string) => string): string {
+  if (status === "available") return t("projects.availableBadge");
+  if (status === "full") return t("projects.fullBadge");
+  return t("projects.comingSoonBadge");
+}
+
+export function centreStatusBadgeClass(status: CentreStatus): string {
+  if (status === "available") return "bg-sage text-anthracite";
+  if (status === "full") return "bg-cream text-anthracite border border-anthracite/30";
+  return "bg-gold text-anthracite";
+}

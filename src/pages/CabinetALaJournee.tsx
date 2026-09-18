@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
-import { STATIC_CENTRES } from "@/lib/centres";
+import { STATIC_CENTRES, centreStatusLabel, centreStatusBadgeClass, type CentreStatus } from "@/lib/centres";
 import { FadeImage } from "@/components/FadeImage";
 import { getDefaultHero, PROJECT_IMAGES } from "@/lib/projectImages";
 import { InlineBrand } from "@/components/BrandName";
@@ -124,17 +124,8 @@ export default function CabinetALaJournee() {
     })),
   };
 
-  const statusLabel = (status: string) => {
-    if (status === "available") return t("projects.availableBadge");
-    if (status === "full") return t("projects.fullBadge");
-    return t("projects.comingSoonBadge");
-  };
-
-  const statusBadgeClass = (status: string) => {
-    if (status === "available") return "bg-sage text-anthracite";
-    if (status === "full") return "bg-cream text-anthracite border border-anthracite/30";
-    return "bg-gold text-anthracite";
-  };
+  const statusLabel = (status: string) => centreStatusLabel(status as CentreStatus, t);
+  const statusBadgeClass = (status: string) => centreStatusBadgeClass(status as CentreStatus);
 
   const heroImage = getDefaultHero("professionnels");
 

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { FadeImage } from "@/components/FadeImage";
 import { getDefaultHero, PROJECT_IMAGES } from "@/lib/projectImages";
-import { STATIC_CENTRES } from "@/lib/centres";
+import { STATIC_CENTRES, centreStatusLabel, centreStatusBadgeClass, type CentreStatus } from "@/lib/centres";
 import {
   Accordion,
   AccordionContent,
@@ -57,17 +57,8 @@ export default function LocationCabinetBordeaux() {
     { q: t("locationBordeaux.faq.q4"), a: t("locationBordeaux.faq.a4") },
   ];
 
-  const statusLabel = (status: string) => {
-    if (status === "available") return t("projects.availableBadge");
-    if (status === "full") return t("projects.fullBadge");
-    return t("projects.comingSoonBadge");
-  };
-
-  const statusBadgeClass = (status: string) => {
-    if (status === "available") return "bg-sage text-cream";
-    if (status === "full") return "bg-cream text-anthracite";
-    return "bg-gold text-anthracite";
-  };
+  const statusLabel = (status: string) => centreStatusLabel(status as CentreStatus, t);
+  const statusBadgeClass = (status: string) => centreStatusBadgeClass(status as CentreStatus);
 
   const ctaLabel = (status: string) => {
     if (status === "available") return t("projects.viewSpace");
@@ -265,7 +256,7 @@ export default function LocationCabinetBordeaux() {
                       <FadeImage
                         key={i}
                         src={img}
-                        alt={`Cabinet I‑CA.RE ${centre.name} – photo ${i + 1}`}
+                        alt={`Cabinet I‑CA.RE ${centre.name}, photo ${i + 1}`}
                         className="w-full h-40 md:h-52 object-cover rounded-lg"
                         fadeDuration={400}
                       />
