@@ -300,7 +300,7 @@ export default function BlogTrouverCabinet() {
                 : <><BrandName /> currently offers {bordeauxCentresCountLabel("en")} care spaces across the Bordeaux metropolitan area, each with its own identity. Our consultation offices in Bordeaux are designed to meet the requirements of care and wellbeing practitioners.</>}
             </p>
             <div className="grid sm:grid-cols-2 gap-4 mb-8">
-              {STATIC_CENTRES.map((centre) => (
+              {STATIC_CENTRES.filter((centre) => centre.region === "bordeaux").map((centre) => (
                 <div
                   key={centre.id}
                   className="flex items-start gap-3 p-4 rounded-lg bg-muted/50"

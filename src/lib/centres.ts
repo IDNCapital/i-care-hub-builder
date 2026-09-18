@@ -57,7 +57,14 @@ export function getCentreBySlug(slug: string): StaticCentre | undefined {
  * annonce ce nombre, plutôt qu'un chiffre écrit en dur dans une page.
  */
 export function bordeauxCentresCount(): number {
-  return STATIC_CENTRES.filter((c) => c.region === "bordeaux").length;
+  // Lieux ouverts (disponibles ou complets) : un lieu « a venir » ne se compte
+  // pas comme un lieu de soin propose aujourd'hui (relecture WEB-DETTES-1).
+  return STATIC_CENTRES.filter((c) => c.region === "bordeaux" && c.status !== "coming_soon").length;
+}
+
+/** Lieux bordelais annonces et non encore ouverts. */
+export function bordeauxCentresComingCount(): number {
+  return STATIC_CENTRES.filter((c) => c.region === "bordeaux" && c.status === "coming_soon").length;
 }
 
 const COUNT_WORDS_FR = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"];
@@ -89,6 +96,6 @@ export function centreStatusLabel(status: CentreStatus, t: (key: string) => stri
 
 export function centreStatusBadgeClass(status: CentreStatus): string {
   if (status === "available") return "bg-sage text-anthracite";
-  if (status === "full") return "bg-cream text-anthracite border border-anthracite/30";
+  if (status === "full") return "bg-cream text-anthracite border border-anthracite/60";
   return "bg-gold text-anthracite";
 }
