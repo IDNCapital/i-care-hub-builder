@@ -48,8 +48,8 @@ export default function InsightsBudget() {
           { question: "Faut-il préparer son budget avant ou après avoir trouvé un local\u00a0?", answer: "Avant. Un cadre budgétaire clair permet de filtrer efficacement les options et d'éviter de s'engager au-delà de ses capacités." },
         ]
       : [
-          { question: "How much does it cost to open an office in Bordeaux?", answer: "For a standalone office: plan €10,000–25,000 including deposit, renovations and furniture, plus a cash reserve. In a shared space: €1,500–3,000." },
-          { question: "Are shared spaces cheaper?", answer: "Yes, significantly. The initial outlay is typically 30–50% lower than a standalone set-up." },
+          { question: "How much does it cost to open an office in Bordeaux?", answer: "For a standalone office: plan €10,000 to 25,000 including deposit, renovations and furniture, plus a cash reserve. In a shared space: €1,500 to 3,000." },
+          { question: "Are shared spaces cheaper?", answer: "Yes, significantly. The initial outlay is typically 30 to 50% lower than a standalone set-up." },
           { question: "Can I deduct set-up costs?", answer: "Many set-up costs are deductible depending on your tax regime (BNC, micro-BNC). Consult an accountant familiar with healthcare professions." },
           { question: "How long before the office becomes profitable?", answer: "Most practitioners reach break-even within 6 to 12 months, depending on their existing patient base and referral network." },
           { question: "Should I prepare my budget before or after finding a space?", answer: "Before. A clear budget framework helps you filter options efficiently." },
@@ -96,13 +96,13 @@ export default function InsightsBudget() {
         <section id="structure">
           <h2 className="text-xl font-heading font-bold mb-3">How to structure your budget</h2>
           <p className="text-muted-foreground leading-relaxed mb-3">A well-prepared budget separates three categories: one-off set-up costs (deposit, renovations, furniture, signage), recurring costs (rent, charges, insurance, maintenance) and a cash reserve for the ramp-up period.</p>
-          <p className="text-muted-foreground leading-relaxed">Start by listing every foreseeable expense, then add a 10–15% contingency margin. A realistic budget prepared before signing is your best protection.</p>
+          <p className="text-muted-foreground leading-relaxed">Start by listing every foreseeable expense, then add a 10 to 15% contingency margin. A realistic budget prepared before signing is your best protection.</p>
         </section>
 
         <section id="rent">
           <h2 className="text-xl font-heading font-bold mb-3">Rent or acquisition: the main commitment</h2>
           <p className="text-muted-foreground leading-relaxed mb-3">In Bordeaux, monthly rent for a small healthcare office typically ranges from €400 to €900, depending on location, quality and size.</p>
-          <p className="text-muted-foreground leading-relaxed">Buying requires €2,000–4,000/sqm plus notary fees (7–8%). For most early-career practitioners, renting or joining a shared space is the safer entry point.</p>
+          <p className="text-muted-foreground leading-relaxed">Buying requires €2,000 to 4,000/sqm plus notary fees (7 to 8%). For most early-career practitioners, renting or joining a shared space is the safer entry point.</p>
         </section>
 
         <section id="deposit">
@@ -118,12 +118,12 @@ export default function InsightsBudget() {
 
         <section id="furniture">
           <h2 className="text-xl font-heading font-bold mb-3">Furniture, equipment and signage</h2>
-          <p className="text-muted-foreground leading-relaxed">Furnishing a small office typically costs €2,000–5,000. External signage adds €500–2,000. Digital presence set-up should also be budgeted.</p>
+          <p className="text-muted-foreground leading-relaxed">Furnishing a small office typically costs €2,000 to 5,000. External signage adds €500 to 2,000. Digital presence set-up should also be budgeted.</p>
         </section>
 
         <section id="insurance">
           <h2 className="text-xl font-heading font-bold mb-3">Insurance and recurring charges</h2>
-          <p className="text-muted-foreground leading-relaxed">RC Pro insurance: €300–1,000/year. Premises insurance: €200–500/year. Charges represent 15–25% on top of base rent.</p>
+          <p className="text-muted-foreground leading-relaxed">RC Pro insurance: €300 to 1,000/year. Premises insurance: €200 to 500/year. Charges represent 15 to 25% on top of base rent.</p>
         </section>
 
         <section id="reserve">
@@ -135,8 +135,8 @@ export default function InsightsBudget() {
           <h2 className="text-xl font-heading font-bold mb-3">Standalone office vs shared space: the cost comparison</h2>
           <p className="text-muted-foreground leading-relaxed mb-3">Example for a 14 sqm office in Bordeaux:</p>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-            <li>Standalone: deposit €1,500–2,700 + renovations €7,000–21,000 + furniture €3,000–5,000 = total €11,500–28,700</li>
-            <li>Shared space: deposit €500–900 + furniture €1,000–2,000 = total €1,500–2,900</li>
+            <li>Standalone: deposit €1,500 to 2,700 + renovations €7,000 to 21,000 + furniture €3,000 to 5,000 = total €11,500 to 28,700</li>
+            <li>Shared space: deposit €500 to 900 + furniture €1,000 to 2,000 = total €1,500 to 2,900</li>
           </ul>
           <p className="text-xs text-muted-foreground italic">These ranges are illustrative and depend on the specific space.</p>
         </section>
@@ -152,7 +152,7 @@ export default function InsightsBudget() {
             <li>Starting the search without a clear budget framework</li>
             <li>Underestimating renovation costs, especially ERP accessibility upgrades</li>
             <li>Forgetting about charges and insurance in monthly projections</li>
-            <li>Failing to plan a cash reserve for the first 3–6 months</li>
+            <li>Failing to plan a cash reserve for the first 3 to 6 months</li>
             <li>Comparing raw rents without accounting for included services</li>
             <li>Overinvesting in premium finishes at the expense of cash flow</li>
           </ul>
@@ -167,7 +167,7 @@ export default function InsightsBudget() {
       description="Loyer, dépôt, travaux, mobilier, assurances, trésorerie : un tour d'horizon détaillé et réaliste des coûts pour ouvrir un cabinet médical ou paramédical à Bordeaux."
       path="/insights/budget-cabinet-bordeaux"
       heroImage={nansoutyFacade}
-      heroImageAlt="Façade I‑CA.RE Nansouty – espace de soins à Bordeaux"
+      heroImageAlt="Façade I‑CA.RE Nansouty, espace de soins à Bordeaux"
       articleTitle="Quel budget prévoir pour ouvrir un cabinet médical ou paramédical à Bordeaux"
       intro={<>Combien coûte réellement une installation à Bordeaux&nbsp;? La réponse va bien au-delà du loyer. Entre dépôt de garantie, travaux, mobilier, assurances et trésorerie de sécurité, le budget total peut varier considérablement selon que vous choisissez un cabinet indépendant ou un espace mutualisé.</>}
       takeaways={[
@@ -240,8 +240,8 @@ export default function InsightsBudget() {
         <h2 className="text-xl font-heading font-bold mb-3">Cabinet seul vs espace mutualisé&nbsp;: la comparaison des coûts</h2>
         <p className="text-muted-foreground leading-relaxed mb-3">Exemple comparatif pour un cabinet de 14&nbsp;m² à Bordeaux&nbsp;:</p>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-          <li>Cabinet seul&nbsp;: dépôt 1&nbsp;500–2&nbsp;700&nbsp;€ + travaux 7&nbsp;000–21&nbsp;000&nbsp;€ + mobilier 3&nbsp;000–5&nbsp;000&nbsp;€ = total 11&nbsp;500–28&nbsp;700&nbsp;€</li>
-          <li>Espace mutualisé&nbsp;: dépôt 500–900&nbsp;€ + mobilier 1&nbsp;000–2&nbsp;000&nbsp;€ = total 1&nbsp;500–2&nbsp;900&nbsp;€</li>
+          <li>Cabinet seul&nbsp;: dépôt 1&nbsp;500 à 2&nbsp;700&nbsp;€ + travaux 7&nbsp;000 à 21&nbsp;000&nbsp;€ + mobilier 3&nbsp;000 à 5&nbsp;000&nbsp;€ = total 11&nbsp;500 à 28&nbsp;700&nbsp;€</li>
+          <li>Espace mutualisé&nbsp;: dépôt 500 à 900&nbsp;€ + mobilier 1&nbsp;000 à 2&nbsp;000&nbsp;€ = total 1&nbsp;500 à 2&nbsp;900&nbsp;€</li>
         </ul>
         <p className="text-xs text-muted-foreground italic">Ces fourchettes sont illustratives et dépendent du local et de son état.</p>
       </section>

@@ -22,19 +22,19 @@ export default function InsightsProfessions() {
   const keyFigures =
     lang === "fr"
       ? [
-          { label: "Santé mentale", value: "11–13 m²" },
-          { label: "Thérapies manuelles", value: "12–18 m²" },
-          { label: "Nutrition", value: "11–14 m²" },
-          { label: "Rééducation", value: "12–16 m²" },
-          { label: "Partage d'un cabinet", value: "2–3 praticiens possibles" },
+          { label: "Santé mentale", value: "11 à 13 m²" },
+          { label: "Thérapies manuelles", value: "12 à 18 m²" },
+          { label: "Nutrition", value: "11 à 14 m²" },
+          { label: "Rééducation", value: "12 à 16 m²" },
+          { label: "Partage d'un cabinet", value: "2 à 3 praticiens possibles" },
           { label: "Clé du succès", value: "Complémentarité des services" },
         ]
       : [
-          { label: "Mental health", value: "11–13 sqm" },
-          { label: "Manual therapies", value: "12–18 sqm" },
-          { label: "Nutrition", value: "11–14 sqm" },
-          { label: "Rehabilitation", value: "12–16 sqm" },
-          { label: "Office sharing", value: "2–3 practitioners possible" },
+          { label: "Mental health", value: "11 to 13 sqm" },
+          { label: "Manual therapies", value: "12 to 18 sqm" },
+          { label: "Nutrition", value: "11 to 14 sqm" },
+          { label: "Rehabilitation", value: "12 to 16 sqm" },
+          { label: "Office sharing", value: "2 to 3 practitioners possible" },
           { label: "Key to success", value: "Complementary services" },
         ];
 
@@ -62,7 +62,7 @@ export default function InsightsProfessions() {
         description="Psychologists, osteopaths, dietitians, sophrologists, naturopaths and more: which care and wellbeing professions work best in shared offices of 11 to 18 sqm."
         path="/en/insights/professions-sharing-office"
         heroImage={peyBerlandCab2}
-        heroImageAlt="Professional shared consultation space – I‑CA.RE Bordeaux"
+        heroImageAlt="Professional shared consultation space, I‑CA.RE Bordeaux"
         articleTitle="Which professions can share an office or care space"
         intro="Sharing an office between care and wellbeing practitioners is an efficient, increasingly popular model. But not all professions are equally suited. Success depends on complementarity of services, compatibility of schedules and respect for confidentiality."
         takeaways={[
@@ -79,7 +79,7 @@ export default function InsightsProfessions() {
           { id: "confidentiality", label: "Confidentiality: non-negotiable" },
           { id: "atmosphere", label: "The atmosphere of the space" },
           { id: "common-areas", label: "Shared areas: the quality multiplier" },
-          { id: "professions-list", label: "Professions suited to 11–18 sqm offices" },
+          { id: "professions-list", label: "Professions suited to 11 to 18 sqm offices" },
           { id: "mistakes", label: "Common mistakes to avoid" },
         ]}
         keyFigures={keyFigures}
@@ -124,26 +124,26 @@ export default function InsightsProfessions() {
           <h2 className="text-xl font-heading font-bold mb-3">Professions well suited to shared offices of 11 to 18 sqm</h2>
           <h3 className="text-base font-heading font-semibold mt-5 mb-2">Mental health and talking therapies</h3>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-4">
-            <li>Psychologists and psychotherapists (11–13 sqm)</li>
-            <li>Sexologists (11–13 sqm)</li>
-            <li>Counsellors and mediators (11–13 sqm)</li>
+            <li>Psychologists and psychotherapists (11 to 13 sqm)</li>
+            <li>Sexologists (11 to 13 sqm)</li>
+            <li>Counsellors and mediators (11 to 13 sqm)</li>
           </ul>
           <h3 className="text-base font-heading font-semibold mt-5 mb-2">Manual and body-based therapies</h3>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-4">
-            <li>Osteopaths (14–18 sqm)</li>
-            <li>Sophrologists (11–14 sqm)</li>
-            <li>Reflexologists (12–15 sqm)</li>
+            <li>Osteopaths (14 to 18 sqm)</li>
+            <li>Sophrologists (11 to 14 sqm)</li>
+            <li>Reflexologists (12 to 15 sqm)</li>
           </ul>
           <h3 className="text-base font-heading font-semibold mt-5 mb-2">Nutrition and lifestyle</h3>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-4">
-            <li>Dietitians and nutritionists (11–14 sqm)</li>
-            <li>Naturopaths (11–14 sqm)</li>
+            <li>Dietitians and nutritionists (11 to 14 sqm)</li>
+            <li>Naturopaths (11 to 14 sqm)</li>
           </ul>
           <h3 className="text-base font-heading font-semibold mt-5 mb-2">Rehabilitation and development</h3>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-4">
-            <li>Speech therapists (12–16 sqm)</li>
-            <li>Occupational therapists (13–16 sqm)</li>
-            <li>Psychomotor therapists (13–16 sqm)</li>
+            <li>Speech therapists (12 to 16 sqm)</li>
+            <li>Occupational therapists (13 to 16 sqm)</li>
+            <li>Psychomotor therapists (13 to 16 sqm)</li>
           </ul>
           <p className="text-xs text-muted-foreground italic">Note: professions requiring very large areas or heavy equipment are generally not suited to this model.</p>
         </section>
@@ -168,7 +168,7 @@ export default function InsightsProfessions() {
       description="Psychologues, ostéopathes, diététiciens, sophrologues, naturopathes… Complémentarité, rythmes et confidentialité dans des cabinets partagés de 11 à 18 m²."
       path="/insights/professions-partage-cabinet"
       heroImage={peyBerlandCab2}
-      heroImageAlt="Espace de consultation partagé professionnel – I‑CA.RE Bordeaux"
+      heroImageAlt="Espace de consultation partagé professionnel, I‑CA.RE Bordeaux"
       articleTitle="Quelles professions peuvent partager un cabinet ou un espace de soins"
       intro={<>Le partage de cabinet entre praticiens du soin et du bien-être est un modèle efficace et de plus en plus courant. Mais toutes les professions ne s'y prêtent pas de la même façon. Le succès repose sur la complémentarité des services, la compatibilité des rythmes et le respect de la confidentialité.</>}
       takeaways={[
@@ -230,26 +230,26 @@ export default function InsightsProfessions() {
         <h2 className="text-xl font-heading font-bold mb-3">Professions compatibles avec des cabinets de 11 à 18&nbsp;m²</h2>
         <h3 className="text-base font-heading font-semibold mt-5 mb-2">Santé mentale et thérapies par la parole</h3>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-4">
-          <li>Psychologues et psychothérapeutes (11–13&nbsp;m²)</li>
-          <li>Sexologues (11–13&nbsp;m²)</li>
-          <li>Conseillers et médiateurs (11–13&nbsp;m²)</li>
+          <li>Psychologues et psychothérapeutes (11 à 13&nbsp;m²)</li>
+          <li>Sexologues (11 à 13&nbsp;m²)</li>
+          <li>Conseillers et médiateurs (11 à 13&nbsp;m²)</li>
         </ul>
         <h3 className="text-base font-heading font-semibold mt-5 mb-2">Thérapies manuelles et corporelles</h3>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-4">
-          <li>Ostéopathes (14–18&nbsp;m²)</li>
-          <li>Sophrologues (11–14&nbsp;m²)</li>
-          <li>Réflexologues et thérapeutes manuels (12–15&nbsp;m²)</li>
+          <li>Ostéopathes (14 à 18&nbsp;m²)</li>
+          <li>Sophrologues (11 à 14&nbsp;m²)</li>
+          <li>Réflexologues et thérapeutes manuels (12 à 15&nbsp;m²)</li>
         </ul>
         <h3 className="text-base font-heading font-semibold mt-5 mb-2">Nutrition et hygiène de vie</h3>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-4">
-          <li>Diététiciens et nutritionnistes (11–14&nbsp;m²)</li>
-          <li>Naturopathes (11–14&nbsp;m²)</li>
+          <li>Diététiciens et nutritionnistes (11 à 14&nbsp;m²)</li>
+          <li>Naturopathes (11 à 14&nbsp;m²)</li>
         </ul>
         <h3 className="text-base font-heading font-semibold mt-5 mb-2">Rééducation et développement</h3>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-4">
-          <li>Orthophonistes (12–16&nbsp;m²)</li>
-          <li>Ergothérapeutes (13–16&nbsp;m²)</li>
-          <li>Psychomotriciens (13–16&nbsp;m²)</li>
+          <li>Orthophonistes (12 à 16&nbsp;m²)</li>
+          <li>Ergothérapeutes (13 à 16&nbsp;m²)</li>
+          <li>Psychomotriciens (13 à 16&nbsp;m²)</li>
         </ul>
         <p className="text-xs text-muted-foreground italic">Note&nbsp;: les professions nécessitant de très grands espaces ou des équipements lourds ne sont généralement pas adaptées à ce modèle.</p>
       </section>

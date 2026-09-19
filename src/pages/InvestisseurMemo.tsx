@@ -70,14 +70,14 @@ function useInvestorAccess(): AccessState {
 }
 
 const keyMetrics = [
-  { label: "Surface type par actif", value: "50 – 300 m² (RDC)" },
+  { label: "Surface type par actif", value: "50 à 300 m² (RDC)" },
   { label: "Densité", value: "~5 cabinets / 100 m²" },
-  { label: "Loyer moyen par cabinet", value: "600 – 800 € / mois" },
+  { label: "Loyer moyen par cabinet", value: "600 à 800 € / mois" },
   { label: "Structure de financement", value: "dette senior + equity investisseur" },
 ];
 
 const performanceTargets = [
-  { label: "Rendement courant stabilisé", value: "6 – 7 % / an" },
+  { label: "Rendement courant stabilisé", value: "6 à 7 % / an" },
   { label: "TRI cible annualisé", value: "~10 %" },
   { label: "Horizon de détention", value: "moyen-long terme" },
   { label: "Vacance cible structurelle", value: "< 5 %" },
@@ -292,7 +292,7 @@ export default function InvestisseurMemo() {
         <div className="container">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { value: "6–7 %", label: "rendement courant stabilisé" },
+              { value: "6 à 7 %", label: "rendement courant stabilisé" },
               { value: "~10 %", label: "TRI cible annualisé" },
               { value: "6 %", label: "hurdle préférentiel" },
               { value: "< 5 %", label: "vacance cible structurelle" },
@@ -500,7 +500,7 @@ export default function InvestisseurMemo() {
       <section className="section-padding bg-card">
         <div className="container">
           <div className="max-w-3xl mx-auto mb-16">
-            <h2 className="section-title mb-6 text-center">Feuille de route 2026–2028</h2>
+            <h2 className="section-title mb-6 text-center">Feuille de route 2026 à 2028</h2>
             <p className="text-muted-foreground text-center">
               Un plan de développement progressif, ancré dans les métropoles du Grand Sud-Ouest.
             </p>
@@ -514,7 +514,7 @@ export default function InvestisseurMemo() {
               <div className="border-t border-border pt-4">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Bordeaux Métropole</span>
-                  <span className="font-semibold">4–5 ops</span>
+                  <span className="font-semibold">4 à 5 ops</span>
                 </div>
               </div>
             </div>
@@ -526,15 +526,15 @@ export default function InvestisseurMemo() {
               <div className="border-t border-border pt-4 space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Bordeaux</span>
-                  <span className="font-semibold">4–5 ops</span>
+                  <span className="font-semibold">4 à 5 ops</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Toulouse</span>
-                  <span className="font-semibold">3–4 ops</span>
+                  <span className="font-semibold">3 à 4 ops</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Bayonne / BAB</span>
-                  <span className="font-semibold">2–3 ops</span>
+                  <span className="font-semibold">2 à 3 ops</span>
                 </div>
               </div>
             </div>

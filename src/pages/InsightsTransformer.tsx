@@ -22,17 +22,17 @@ export default function InsightsTransformer() {
   const keyFigures =
     lang === "fr"
       ? [
-          { label: "Adaptation légère", value: "500–800 €/m²" },
-          { label: "Transformation standard", value: "800–1 200 €/m²" },
-          { label: "Rénovation complète", value: "1 200–1 500+ €/m²" },
+          { label: "Adaptation légère", value: "500 à 800 €/m²" },
+          { label: "Transformation standard", value: "800 à 1 200 €/m²" },
+          { label: "Rénovation complète", value: "1 200 à 1 500+ €/m²" },
           { label: "Délai total", value: "2 à 6 mois" },
           { label: "Hauteur sous plafond min.", value: "2,50 m" },
           { label: "Largeur de porte ERP", value: "90 cm minimum" },
         ]
       : [
-          { label: "Light adaptation", value: "€500–800/sqm" },
-          { label: "Standard conversion", value: "€800–1,200/sqm" },
-          { label: "Full renovation", value: "€1,200–1,500+/sqm" },
+          { label: "Light adaptation", value: "€500 to 800/sqm" },
+          { label: "Standard conversion", value: "€800 to 1,200/sqm" },
+          { label: "Full renovation", value: "€1,200 to 1,500+/sqm" },
           { label: "Total timeline", value: "2 to 6 months" },
           { label: "Min. ceiling height", value: "2.50m" },
           { label: "ERP door width", value: "90cm minimum" },
@@ -42,14 +42,14 @@ export default function InsightsTransformer() {
     lang === "fr"
       ? [
           { question: "Faut-il un permis pour transformer un commerce en cabinet\u00a0?", answer: "Cela dépend de la destination actuelle. Un changement de destination nécessite généralement une déclaration préalable ou un permis auprès de la mairie." },
-          { question: "Combien de temps dure une transformation\u00a0?", answer: "Généralement 2 à 6 mois, incluant les démarches administratives (1–3 mois) et les travaux (1–3 mois)." },
+          { question: "Combien de temps dure une transformation\u00a0?", answer: "Généralement 2 à 6 mois, incluant les démarches administratives (1 à 3 mois) et les travaux (1 à 3 mois)." },
           { question: "Tout local commercial peut-il être transformé\u00a0?", answer: "Non. Des contraintes physiques, juridiques et normatives peuvent rendre certains locaux inadaptés." },
           { question: "Quels sont les coûts cachés les plus fréquents\u00a0?", answer: "Les mises aux normes ERP, l'isolation acoustique et la plomberie sont les postes les plus souvent sous-estimés." },
           { question: "Est-il plus simple de rejoindre un espace mutualisé\u00a0?", answer: "Souvent, oui. Les espaces mutualisés sont déjà aménagés, conformes et prêts à l'usage." },
         ]
       : [
           { question: "Do I need a permit to convert a shop?", answer: "It depends on the current designated use. A change of use typically requires a prior declaration or planning permit from the local authority." },
-          { question: "How long does a conversion take?", answer: "Typically 2 to 6 months, including administrative steps (1–3 months) and renovation work (1–3 months)." },
+          { question: "How long does a conversion take?", answer: "Typically 2 to 6 months, including administrative steps (1 to 3 months) and renovation work (1 to 3 months)." },
           { question: "Can any commercial space be converted?", answer: "No. Physical, legal and regulatory constraints may make some spaces unsuitable." },
           { question: "What are the biggest hidden costs?", answer: "ERP accessibility upgrades, acoustic insulation and plumbing are the most commonly underestimated items." },
           { question: "Is it simpler to join a shared space?", answer: "Often, yes. Shared spaces are already fitted out, compliant and ready to use." },
@@ -62,7 +62,7 @@ export default function InsightsTransformer() {
         description="Planning rules, designated use, ERP standards, co-ownership, acoustics, costs and timelines: a step-by-step guide for practitioners considering space conversion."
         path="/en/insights/converting-commercial-space"
         heroImage={chartronsInsertionFacade}
-        heroImageAlt="3D projection of the Chartrons facade insertion – I‑CA.RE Bordeaux"
+        heroImageAlt="3D projection of the Chartrons facade insertion, I‑CA.RE Bordeaux"
         articleTitle="Can you convert a commercial space into a medical or paramedical office"
         intro="You've found a well-located commercial space and you're wondering whether it could become your consulting room. The short answer is often yes, but the path involves regulatory checks, technical adaptations and a realistic budget. Understanding each step before committing protects you from costly mistakes."
         takeaways={[
@@ -126,11 +126,11 @@ export default function InsightsTransformer() {
         <section id="costs">
           <h2 className="text-xl font-heading font-bold mb-3">What will it cost?</h2>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-            <li><strong>Light adaptation:</strong> €500–800/sqm</li>
-            <li><strong>Standard conversion:</strong> €800–1,200/sqm</li>
-            <li><strong>Full renovation:</strong> €1,200–1,500+/sqm</li>
+            <li><strong>Light adaptation:</strong> €500 to 800/sqm</li>
+            <li><strong>Standard conversion:</strong> €800 to 1,200/sqm</li>
+            <li><strong>Full renovation:</strong> €1,200 to 1,500+/sqm</li>
           </ul>
-          <p className="text-muted-foreground leading-relaxed">Always add a 10–15% contingency margin.</p>
+          <p className="text-muted-foreground leading-relaxed">Always add a 10 to 15% contingency margin.</p>
         </section>
 
         <section id="timeline">
@@ -148,10 +148,10 @@ export default function InsightsTransformer() {
           <h2 className="text-xl font-heading font-bold mb-3">Common mistakes to avoid</h2>
           <ul className="list-disc pl-5 space-y-2 text-muted-foreground leading-relaxed">
             <li>Signing a lease before checking designated use and co-ownership rules</li>
-            <li>Underestimating ERP compliance costs (€5,000–15,000 for accessibility alone)</li>
+            <li>Underestimating ERP compliance costs (€5,000 to 15,000 for accessibility alone)</li>
             <li>Ignoring acoustic insulation, confidentiality is non-negotiable</li>
             <li>Starting work before obtaining all approvals</li>
-            <li>Not budgeting a contingency margin (10–15%)</li>
+            <li>Not budgeting a contingency margin (10 to 15%)</li>
             <li>Assuming all ground-floor spaces are suitable</li>
           </ul>
         </section>
@@ -165,7 +165,7 @@ export default function InsightsTransformer() {
       description="Urbanisme, destination, ERP, copropriété, acoustique, coûts et délais : guide étape par étape pour transformer un local commercial en cabinet."
       path="/insights/transformer-local-en-cabinet"
       heroImage={chartronsInsertionFacade}
-      heroImageAlt="Projection 3D de l'insertion de façade des Chartrons – I‑CA.RE Bordeaux"
+      heroImageAlt="Projection 3D de l'insertion de façade des Chartrons, I‑CA.RE Bordeaux"
       articleTitle="Peut-on transformer un local commercial en cabinet médical ou paramédical"
       intro={<>Vous avez repéré un local commercial bien situé et vous vous demandez s'il pourrait devenir votre cabinet. La réponse est souvent oui, mais le chemin passe par des vérifications réglementaires, des adaptations techniques et un budget réaliste. Comprendre chaque étape avant de s'engager protège contre les erreurs coûteuses.</>}
       takeaways={[
@@ -229,9 +229,9 @@ export default function InsightsTransformer() {
       <section id="couts">
         <h2 className="text-xl font-heading font-bold mb-3">Combien ça coûte&nbsp;?</h2>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-          <li><strong>Adaptation légère&nbsp;:</strong> 500–800&nbsp;€/m²</li>
-          <li><strong>Transformation standard&nbsp;:</strong> 800–1&nbsp;200&nbsp;€/m²</li>
-          <li><strong>Rénovation complète&nbsp;:</strong> 1&nbsp;200–1&nbsp;500+&nbsp;€/m²</li>
+          <li><strong>Adaptation légère&nbsp;:</strong> 500 à 800&nbsp;€/m²</li>
+          <li><strong>Transformation standard&nbsp;:</strong> 800 à 1&nbsp;200&nbsp;€/m²</li>
+          <li><strong>Rénovation complète&nbsp;:</strong> 1&nbsp;200 à 1&nbsp;500+&nbsp;€/m²</li>
         </ul>
         <p className="text-muted-foreground leading-relaxed">Prévoyez toujours une marge de 10 à 15&nbsp;%.</p>
       </section>
@@ -254,7 +254,7 @@ export default function InsightsTransformer() {
           <li>Sous-estimer les coûts ERP, les adaptations d'accessibilité seules peuvent atteindre 5&nbsp;000 à 15&nbsp;000&nbsp;€</li>
           <li>Ignorer l'isolation acoustique, la confidentialité est non négociable</li>
           <li>Démarrer les travaux avant d'avoir toutes les autorisations</li>
-          <li>Ne pas budgétiser de marge pour imprévus (10–15&nbsp;%)</li>
+          <li>Ne pas budgétiser de marge pour imprévus (10 à 15&nbsp;%)</li>
           <li>Supposer que tout rez-de-chaussée commercial est automatiquement transformable</li>
         </ul>
       </section>

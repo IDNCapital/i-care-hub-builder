@@ -172,14 +172,14 @@ export default function Index() {
               </div>
             </div>
             <div className="relative">
-              <FadeImage src={SECTION_IMAGES.homeWhyChoose} alt={lang === "fr" ? "Cabinet – I‑CA.RE Pey Berland" : "Office – I‑CA.RE Pey Berland"} className="rounded-xl shadow-card w-full aspect-[4/3] object-cover object-center" />
+              <FadeImage src={SECTION_IMAGES.homeWhyChoose} alt={lang === "fr" ? "Cabinet, I‑CA.RE Pey Berland" : "Office, I‑CA.RE Pey Berland"} className="rounded-xl shadow-card w-full aspect-[4/3] object-cover object-center" />
               <div className="absolute -bottom-6 -left-6 bg-card rounded-xl p-5 shadow-card">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
                     <Heart className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="font-semibold text-sm">7–10</p>
+                    <p className="font-semibold text-sm">{lang === "fr" ? "7 à 10" : "7 to 10"}</p>
                     <p className="text-xs text-muted-foreground">{t("home.officesPerAsset")}</p>
                   </div>
                 </div>
@@ -214,7 +214,7 @@ export default function Index() {
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
-              <FadeImage src={SECTION_IMAGES.homeImpact} alt={lang === "fr" ? "Cabinet – I‑CA.RE Nansouty" : "Office – I‑CA.RE Nansouty"} className="rounded-xl shadow-card w-full aspect-[4/3] object-cover object-center" />
+              <FadeImage src={SECTION_IMAGES.homeImpact} alt={lang === "fr" ? "Cabinet, I‑CA.RE Nansouty" : "Office, I‑CA.RE Nansouty"} className="rounded-xl shadow-card w-full aspect-[4/3] object-cover object-center" />
             </div>
             <div className="order-1 lg:order-2">
               <h2 className="section-title mb-6">{t("home.localImpact")}</h2>

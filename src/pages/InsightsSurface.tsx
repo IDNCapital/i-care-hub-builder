@@ -34,7 +34,7 @@ export default function InsightsSurface() {
           { label: "Treatment table", value: "14 to 18 sqm" },
           { label: "Standalone office", value: "25 to 40 sqm total" },
           { label: "Oversizing cost", value: "~€8,000/year wasted" },
-          { label: "Shared waiting room", value: "€1,000–2,000/practitioner" },
+          { label: "Shared waiting room", value: "€1,000 to 2,000/practitioner" },
           { label: "Comfort", value: "Light, acoustics, layout" },
         ];
 
@@ -48,7 +48,7 @@ export default function InsightsSurface() {
           { question: "Les espaces mutualisés sont-ils trop petits\u00a0?", answer: "Non. La surface totale effective (cabinet privatif plus parties communes) est souvent plus grande et mieux équipée qu'un cabinet indépendant." },
         ]
       : [
-          { question: "Can I practise in 11 sqm?", answer: "Yes, many seated-practice professions work very well in 11–13 sqm: psychologists, dietitians, sophrologists, naturopaths. The key is access to shared waiting room and facilities." },
+          { question: "Can I practise in 11 sqm?", answer: "Yes, many seated-practice professions work very well in 11 to 13 sqm: psychologists, dietitians, sophrologists, naturopaths. The key is access to shared waiting room and facilities." },
           { question: "How much space does an osteopath need?", answer: "A treatment table and adequate circulation typically require 14 to 18 sqm." },
           { question: "Does a larger office improve patient experience?", answer: "Not necessarily. Experience depends on atmosphere, cleanliness, acoustic privacy and natural light, not on size alone." },
           { question: "How do I calculate the right size?", answer: "List your essential furniture, add circulation space, then check whether shared areas cover your remaining needs." },
@@ -62,7 +62,7 @@ export default function InsightsSurface() {
         description="From 11 to 18 sqm depending on your profession: realistic minimum areas, the role of shared spaces, oversizing traps and concrete examples by practice type."
         path="/en/insights/medical-office-size"
         heroImage={jardinPublicCab1}
-        heroImageAlt="Well-designed consultation room – I‑CA.RE Bordeaux"
+        heroImageAlt="Well-designed consultation room, I‑CA.RE Bordeaux"
         articleTitle="What size do you need for a medical or paramedical office"
         intro="Choosing the right size for your office is one of the most impactful decisions you'll make. Too large, and you overspend every month. Too small, and you compromise comfort. The answer depends on your profession, whether you work with equipment, and whether you have access to shared common areas."
         takeaways={[
@@ -93,27 +93,27 @@ export default function InsightsSurface() {
           <h2 className="text-xl font-heading font-bold mb-3">Realistic minimum areas by practice type</h2>
           <p className="text-muted-foreground leading-relaxed mb-3">Space needs vary by profession. Realistic minimums, assuming access to shared common areas:</p>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-            <li><strong>Psychology, psychotherapy:</strong> 11–13 sqm</li>
-            <li><strong>Dietetics, nutrition:</strong> 11–14 sqm</li>
-            <li><strong>Sophrology, naturopathy:</strong> 11–14 sqm</li>
-            <li><strong>Osteopathy, manual therapy:</strong> 14–18 sqm</li>
-            <li><strong>Speech therapy:</strong> 12–16 sqm</li>
-            <li><strong>Psychomotor therapy:</strong> 13–16 sqm</li>
-            <li><strong>Sexology, counselling:</strong> 11–13 sqm</li>
+            <li><strong>Psychology, psychotherapy:</strong> 11 to 13 sqm</li>
+            <li><strong>Dietetics, nutrition:</strong> 11 to 14 sqm</li>
+            <li><strong>Sophrology, naturopathy:</strong> 11 to 14 sqm</li>
+            <li><strong>Osteopathy, manual therapy:</strong> 14 to 18 sqm</li>
+            <li><strong>Speech therapy:</strong> 12 to 16 sqm</li>
+            <li><strong>Psychomotor therapy:</strong> 13 to 16 sqm</li>
+            <li><strong>Sexology, counselling:</strong> 11 to 13 sqm</li>
           </ul>
           <p className="text-xs text-muted-foreground italic">These ranges assume access to shared waiting room, facilities and entrance.</p>
         </section>
 
         <section id="standalone-vs-shared">
           <h2 className="text-xl font-heading font-bold mb-3">Standalone office vs shared space: the space equation</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">A standalone office must fit everything (waiting area, facilities, storage), into your own square metres. This often means 25–40 sqm total.</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">A standalone office must fit everything (waiting area, facilities, storage), into your own square metres. This often means 25 to 40 sqm total.</p>
           <p className="text-muted-foreground leading-relaxed">In a shared setting, common functions are pooled. A 13 sqm private office can feel as professional as a 30 sqm standalone space.</p>
         </section>
 
         <section id="common-areas">
           <h2 className="text-xl font-heading font-bold mb-3">The critical role of common areas</h2>
           <p className="text-muted-foreground leading-relaxed mb-3">A well-designed waiting room, clean facilities and a professional entrance create the first impression for every patient. They directly influence perceived quality.</p>
-          <p className="text-muted-foreground leading-relaxed">In a shared space, common areas are maintained collectively, higher quality at lower individual cost. A quality waiting room shared among five practitioners costs €1,000–2,000 each.</p>
+          <p className="text-muted-foreground leading-relaxed">In a shared space, common areas are maintained collectively, higher quality at lower individual cost. A quality waiting room shared among five practitioners costs €1,000 to 2,000 each.</p>
         </section>
 
         <section id="oversizing">
@@ -149,7 +149,7 @@ export default function InsightsSurface() {
       description="De 11 à 18 m² selon votre métier : surfaces minimales réalistes, rôle des parties communes, piège du surdimensionnement et exemples concrets par type d'exercice."
       path="/insights/surface-cabinet-medical"
       heroImage={jardinPublicCab1}
-      heroImageAlt="Cabinet de consultation bien agencé – I‑CA.RE Bordeaux"
+      heroImageAlt="Cabinet de consultation bien agencé, I‑CA.RE Bordeaux"
       articleTitle="Quelle surface faut-il pour un cabinet médical ou paramédical"
       intro={<>Choisir la bonne surface pour son cabinet est l'une des décisions les plus impactantes. Trop grand, vous surpayez chaque mois. Trop petit, vous compromettez le confort. La réponse dépend de votre métier, de votre mode d'exercice et de l'accès à des espaces communs partagés.</>}
       takeaways={[
@@ -180,13 +180,13 @@ export default function InsightsSurface() {
         <h2 className="text-xl font-heading font-bold mb-3">Surfaces minimales réalistes par type d'exercice</h2>
         <p className="text-muted-foreground leading-relaxed mb-3">Les besoins varient selon le métier. Fourchettes réalistes avec accès à des parties communes&nbsp;:</p>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-3">
-          <li><strong>Psychologie, psychothérapie&nbsp;:</strong> 11–13&nbsp;m²</li>
-          <li><strong>Diététique, nutrition&nbsp;:</strong> 11–14&nbsp;m²</li>
-          <li><strong>Sophrologie, naturopathie&nbsp;:</strong> 11–14&nbsp;m²</li>
-          <li><strong>Ostéopathie, thérapie manuelle&nbsp;:</strong> 14–18&nbsp;m²</li>
-          <li><strong>Orthophonie&nbsp;:</strong> 12–16&nbsp;m²</li>
-          <li><strong>Psychomotricité, ergothérapie&nbsp;:</strong> 13–16&nbsp;m²</li>
-          <li><strong>Sexologie, conseil&nbsp;:</strong> 11–13&nbsp;m²</li>
+          <li><strong>Psychologie, psychothérapie&nbsp;:</strong> 11 à 13&nbsp;m²</li>
+          <li><strong>Diététique, nutrition&nbsp;:</strong> 11 à 14&nbsp;m²</li>
+          <li><strong>Sophrologie, naturopathie&nbsp;:</strong> 11 à 14&nbsp;m²</li>
+          <li><strong>Ostéopathie, thérapie manuelle&nbsp;:</strong> 14 à 18&nbsp;m²</li>
+          <li><strong>Orthophonie&nbsp;:</strong> 12 à 16&nbsp;m²</li>
+          <li><strong>Psychomotricité, ergothérapie&nbsp;:</strong> 13 à 16&nbsp;m²</li>
+          <li><strong>Sexologie, conseil&nbsp;:</strong> 11 à 13&nbsp;m²</li>
         </ul>
         <p className="text-xs text-muted-foreground italic">Ces fourchettes supposent un accès à salle d'attente, sanitaires et entrée partagés.</p>
       </section>

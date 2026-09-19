@@ -33,8 +33,8 @@ export default function InsightsLouerAcheter() {
           { label: "Rental deposit", value: "1 to 3 months' rent" },
           { label: "Purchase deposit", value: "10 to 20%" },
           { label: "Notary fees", value: "7 to 8%" },
-          { label: "Shared space entry", value: "€1,500–3,000" },
-          { label: "Stability before buying", value: "3–5+ years" },
+          { label: "Shared space entry", value: "€1,500 to 3,000" },
+          { label: "Stability before buying", value: "3 to 5+ years" },
           { label: "Ownership costs", value: "Maintenance + taxes" },
         ];
 
@@ -49,7 +49,7 @@ export default function InsightsLouerAcheter() {
         ]
       : [
           { question: "Is renting a waste of money?", answer: "No. Renting preserves capital, offers flexibility and avoids ownership risks. Many successful practitioners rent throughout their career." },
-          { question: "When is the right time to buy?", answer: "When your practice is stable (3–5+ years), your location confirmed, and you have the financial capacity without compromising your activity." },
+          { question: "When is the right time to buy?", answer: "When your practice is stable (3 to 5+ years), your location confirmed, and you have the financial capacity without compromising your activity." },
           { question: "Can I buy through a company structure?", answer: "Yes. Purchasing through an SCI can offer tax and estate planning advantages. Seek professional advice." },
           { question: "Are shared spaces viable long-term?", answer: "Yes. Many practitioners use shared spaces throughout their career, benefiting from quality premises and zero property management." },
           { question: "How do I decide?", answer: "Start from your professional situation: career stage, patient base stability, financial reserves. The property decision should serve your practice." },
@@ -62,7 +62,7 @@ export default function InsightsLouerAcheter() {
         description="Flexibility, equity, professional maturity, shared spaces: the concrete criteria for choosing between renting and buying a medical or paramedical office."
         path="/en/insights/rent-or-buy-office"
         heroImage={jardinPublicAttente}
-        heroImageAlt="Welcoming waiting room in a shared care space – I‑CA.RE Bordeaux"
+        heroImageAlt="Welcoming waiting room in a shared care space, I‑CA.RE Bordeaux"
         articleTitle="Should you rent or buy your medical or paramedical office"
         intro="Rent or buy? It's one of the most frequently asked questions when setting up. There is no universal right answer, the best choice depends on your career stage, financial situation and long-term vision. What matters is making a decision based on professional needs, not property market pressure."
         takeaways={[
@@ -96,7 +96,7 @@ export default function InsightsLouerAcheter() {
           <h2 className="text-xl font-heading font-bold mb-3">Renting: flexibility and focus</h2>
           <p className="text-muted-foreground leading-relaxed mb-3">Renting requires a lower initial outlay and preserves financial flexibility. You can change location, test a neighbourhood, and focus on building your patient base.</p>
           <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
-            <li>Lower barrier to entry, deposit of 1–3 months' rent</li>
+            <li>Lower barrier to entry, deposit of 1 to 3 months' rent</li>
             <li>Geographic mobility, relocate if your catchment changes</li>
             <li>Predictable costs, rent and charges known in advance</li>
             <li>No property management burden</li>
@@ -121,7 +121,7 @@ export default function InsightsLouerAcheter() {
 
         <section id="buying-limits">
           <h2 className="text-xl font-heading font-bold mb-3">The real limitations of buying</h2>
-          <p className="text-muted-foreground leading-relaxed">Buying ties up significant capital (10–20% deposit, 7–8% notary fees), reduces mobility and adds management responsibilities. The total cost of ownership is often higher than it appears.</p>
+          <p className="text-muted-foreground leading-relaxed">Buying ties up significant capital (10 to 20% deposit, 7 to 8% notary fees), reduces mobility and adds management responsibilities. The total cost of ownership is often higher than it appears.</p>
         </section>
 
         <section id="early-career">
@@ -170,7 +170,7 @@ export default function InsightsLouerAcheter() {
       description="Souplesse, patrimoine, maturité professionnelle, espaces mutualisés : les critères concrets pour choisir entre location et achat d'un cabinet."
       path="/insights/louer-ou-acheter-cabinet"
       heroImage={jardinPublicAttente}
-      heroImageAlt="Salle d'attente accueillante dans un espace de soins partagé – I‑CA.RE Bordeaux"
+      heroImageAlt="Salle d'attente accueillante dans un espace de soins partagé, I‑CA.RE Bordeaux"
       articleTitle="Faut-il louer ou acheter son cabinet médical ou paramédical"
       intro={<>Louer ou acheter&nbsp;? C'est l'une des questions les plus posées lors d'une installation. Il n'y a pas de réponse universelle, le meilleur choix dépend de votre stade de carrière, de votre situation financière et de votre vision à long terme. L'important est de décider sur la base de vos besoins professionnels, pas de la pression du marché.</>}
       takeaways={[
@@ -229,7 +229,7 @@ export default function InsightsLouerAcheter() {
 
       <section id="limites-achat">
         <h2 className="text-xl font-heading font-bold mb-3">Les vraies limites de l'achat</h2>
-        <p className="text-muted-foreground leading-relaxed">L'achat immobilise un capital important (apport 10–20&nbsp;%, frais de notaire 7–8&nbsp;%), réduit votre mobilité et ajoute des charges de gestion. Le coût total de propriété est souvent plus élevé qu'il n'y paraît.</p>
+        <p className="text-muted-foreground leading-relaxed">L'achat immobilise un capital important (apport 10 à 20&nbsp;%, frais de notaire 7 à 8&nbsp;%), réduit votre mobilité et ajoute des charges de gestion. Le coût total de propriété est souvent plus élevé qu'il n'y paraît.</p>
       </section>
 
       <section id="debut-carriere">
