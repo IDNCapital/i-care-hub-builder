@@ -19,7 +19,7 @@ function truncateDesc(text: string, max = 155): string {
   if (text.length <= max) return text;
   const cut = text.slice(0, max);
   const lastSpace = cut.lastIndexOf(" ");
-  return (lastSpace > 40 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.–—-]+$/, "") + "…";
+  return (lastSpace > 40 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.\u2013\u2014-]+$/, "") + "…";
 }
 
 export default function ProblematiqueDetail() {
