@@ -352,7 +352,7 @@
     "delivery": "delivery",
     "deliveryUnknown": "To be confirmed",
     "rent": "rent / office / month",
-    "rentDetails": "Rents are controlled and range between €600 and €800 excluding charges, depending on floor area and specific office features.",
+    "rentDetails": "Rents are controlled and range between €600 and €800 excluding charges, for a full-time professional lease, depending on floor area and specific office features.",
     "interested": "Interested?",
     "conceptTitle": "Concept & Architectural Vision",
     "architecturalQuality": "Architectural Quality",
@@ -447,7 +447,7 @@
     "proximity": "Neighbourhood Locations",
     "proximityDesc": "In the heart of communities, close to residents.",
     "rents": "Controlled Rents",
-    "rentsDesc": "Rents range between €600 and €800 excl. charges/month, depending on area and features."
+    "rentsDesc": "Rents range between €600 and €800 excl. charges/month, for a full-time professional lease, depending on area and features."
   },
   "impacts": {
     "deserts": "of French people affected by lack of local practitioners",
@@ -474,7 +474,7 @@
   "locationBordeaux": {
     "heroTag": "Office for Rent in Bordeaux",
     "h1": "Consultation offices for rent in Bordeaux for care & wellbeing practitioners",
-    "heroSubtitle": "Renovated, acoustically insulated, turnkey consultation rooms, in the heart of Bordeaux neighbourhoods, from €600 to €800 excl. charges/month.",
+    "heroSubtitle": "Renovated, acoustically insulated, turnkey consultation rooms, in the heart of the Bordeaux metropolitan area, from €600 to €800 excl. charges/month.",
     "heroImageAlt": "I‑CA.RE consultation office for rent in Bordeaux",
     "ctaProjects": "View available spaces",
     "introTitle": "Finding an office in Bordeaux: a real challenge for practitioners",
@@ -488,7 +488,7 @@
       "spaces": "Spaces designed for practice",
       "spacesDesc": "Enhanced acoustic insulation, natural light, ERP and disability compliance: every consultation room is designed to foster confidentiality and patient comfort.",
       "neighbourhoods": "Located in vibrant neighbourhoods",
-      "neighbourhoodsDesc": "Our offices are on the ground floor, in central Bordeaux neighbourhoods (Chartrons, Nansouty, Pey-Berland, Jardin Public), close to transport and residents.",
+      "neighbourhoodsDesc": "Our offices are on the ground floor, in vibrant neighbourhoods across the Bordeaux metropolitan area: in Bordeaux (Chartrons, Nansouty, Pey-Berland, Jardin Public), with new locations in preparation in Floirac, Lormont and Le Bouscat, close to transport and residents.",
       "atmosphere": "Calm, professional atmosphere",
       "atmosphereDesc": "A refined, soothing setting with convivial common areas and a shared waiting room, for a coherent professional image."
     },
