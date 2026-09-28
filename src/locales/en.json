@@ -190,14 +190,20 @@
     "processTitle": "From Project to Practice",
     "processSubtitle": "A guided pathway, a single point of contact.",
     "steps": {
+      "weLabel": "We:",
+      "youLabel": "You:",
       "analysis": "Needs Assessment",
       "analysisDesc": "We discuss your speciality, constraints and expectations to identify the ideal space.",
+      "analysisYou": "You describe your needs, speciality and constraints.",
       "proposal": "Location Proposal",
       "proposalDesc": "We present available or upcoming spaces suited to your practice and preferred area.",
+      "proposalYou": "You visit the proposed spaces and choose the one that suits you.",
       "fitout": "Fit-Out & Compliance",
       "fitoutDesc": "We manage the fit-out of your office to your requirements, meeting all health and accessibility standards.",
+      "fitoutYou": "You share your fit-out needs and approve the proposal.",
       "install": "Move-In",
-      "installDesc": "Key handover, operational support and post-move-in follow-up. You practise with confidence from day one."
+      "installDesc": "Key handover, operational support and post-move-in follow-up. You practise with confidence from day one.",
+      "installYou": "You sign and move into your office."
     },
     "testimonialsTitle": "They Practise at I‑CA.RE",
     "testimonialsSubtitle": "Practitioners who chose quality.",
