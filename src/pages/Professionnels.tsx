@@ -58,10 +58,10 @@ export default function Professionnels() {
   ];
 
   const processSteps = [
-    { icon: Search, number: "01", title: t("professionals.steps.analysis"), description: t("professionals.steps.analysisDesc") },
-    { icon: MapPin, number: "02", title: t("professionals.steps.proposal"), description: t("professionals.steps.proposalDesc") },
-    { icon: HardHat, number: "03", title: t("professionals.steps.fitout"), description: t("professionals.steps.fitoutDesc") },
-    { icon: Key, number: "04", title: t("professionals.steps.install"), description: t("professionals.steps.installDesc") },
+    { icon: Search, number: "01", title: t("professionals.steps.analysis"), description: t("professionals.steps.analysisDesc"), youDescription: t("professionals.steps.analysisYou") },
+    { icon: MapPin, number: "02", title: t("professionals.steps.proposal"), description: t("professionals.steps.proposalDesc"), youDescription: t("professionals.steps.proposalYou") },
+    { icon: HardHat, number: "03", title: t("professionals.steps.fitout"), description: t("professionals.steps.fitoutDesc"), youDescription: t("professionals.steps.fitoutYou") },
+    { icon: Key, number: "04", title: t("professionals.steps.install"), description: t("professionals.steps.installDesc"), youDescription: t("professionals.steps.installYou") },
   ];
 
   const dateOptions = ["immediat", "3mois", "6mois", "1an", "plus"];
@@ -261,7 +261,14 @@ export default function Professionnels() {
                     <span className="text-xs font-bold text-primary">{step.number}</span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    <span className="font-semibold text-foreground">{t("professionals.steps.weLabel")} </span>
+                    {step.description}
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed mt-2">
+                    <span className="font-semibold text-foreground">{t("professionals.steps.youLabel")} </span>
+                    {step.youDescription}
+                  </p>
                 </div>
               ))}
             </div>
