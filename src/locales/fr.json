@@ -352,7 +352,7 @@
     "delivery": "livraison",
     "deliveryUnknown": "À confirmer",
     "rent": "loyer / cabinet / mois",
-    "rentDetails": "Les loyers sont maîtrisés et varient entre 600 € et 800 € hors charges, en fonction des surfaces et des spécificités du cabinet.",
+    "rentDetails": "Les loyers sont maîtrisés et varient entre 600 € et 800 € hors charges, pour un bail professionnel à temps plein, en fonction des surfaces et des spécificités du cabinet.",
     "interested": "Intéressé ?",
     "conceptTitle": "Concept & vision architecturale",
     "architecturalQuality": "Qualité architecturale",
@@ -447,7 +447,7 @@
     "proximity": "Emplacements de Proximité",
     "proximityDesc": "Au cœur des quartiers, proches des habitants.",
     "rents": "Loyers Maîtrisés",
-    "rentsDesc": "Les loyers varient entre 600 € et 800 € HT/mois, selon les surfaces et spécificités."
+    "rentsDesc": "Les loyers varient entre 600 € et 800 € HT/mois, pour un bail professionnel à temps plein, selon les surfaces et spécificités."
   },
   "impacts": {
     "deserts": "des Français concernés par le manque de praticiens de proximité",
@@ -474,7 +474,7 @@
   "locationBordeaux": {
     "heroTag": "Cabinet à louer Bordeaux",
     "h1": "Cabinet à louer à Bordeaux pour praticiens du soin et du bien-être",
-    "heroSubtitle": "Cabinets de consultation rénovés, acoustiques et clé en main, au cœur des quartiers bordelais, de 600 à 800 € HC/mois.",
+    "heroSubtitle": "Cabinets de consultation rénovés, acoustiques et clé en main, au cœur de la métropole bordelaise, de 600 à 800 € HC/mois.",
     "heroImageAlt": "Cabinet de consultation I‑CA.RE à louer à Bordeaux",
     "ctaProjects": "Voir les espaces disponibles",
     "introTitle": "Trouver un cabinet à louer à Bordeaux : un vrai défi pour les praticiennes et praticiens",
@@ -488,7 +488,7 @@
       "spaces": "Espaces pensés pour la pratique",
       "spacesDesc": "Isolation acoustique renforcée, lumière naturelle, conformité ERP et PMR : chaque cabinet de consultation est conçu pour favoriser la confidentialité et le confort de vos patients.",
       "neighbourhoods": "Implantation dans des quartiers vivants",
-      "neighbourhoodsDesc": "Nos cabinets sont situés en rez-de-chaussée, dans des quartiers centraux de Bordeaux (Chartrons, Nansouty, Pey-Berland, Jardin Public), proches des transports et des habitants.",
+      "neighbourhoodsDesc": "Nos cabinets sont situés en rez-de-chaussée, dans des quartiers vivants de la métropole bordelaise : à Bordeaux (Chartrons, Nansouty, Pey-Berland, Jardin Public), avec de nouveaux lieux en préparation à Floirac, à Lormont et au Bouscat, proches des transports et des habitants.",
       "atmosphere": "Atmosphère calme et professionnelle",
       "atmosphereDesc": "Un cadre soigné et apaisant, avec des espaces communs conviviaux et une salle d'attente partagée, pour une image professionnelle cohérente."
     },
