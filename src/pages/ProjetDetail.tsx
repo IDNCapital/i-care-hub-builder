@@ -318,7 +318,7 @@ export default function ProjetDetail() {
               <Ruler className="w-8 h-8 text-primary mx-auto mb-3" />
               <p className="text-lg font-bold">{lang === "fr" ? "600 à 800 €" : "600 to 800 €"}</p>
               <p className="text-sm text-muted-foreground">{t("projectDetail.rent")}</p>
-              <p className="text-xs text-muted-foreground mt-1">{lang === "fr" ? "HT" : "excl."}</p>
+              <p className="text-xs text-muted-foreground mt-1">{lang === "fr" ? "HC" : "excl. charges"}</p>
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
               <Phone className="w-8 h-8 text-primary mx-auto mb-3" />
