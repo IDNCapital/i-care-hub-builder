@@ -453,7 +453,7 @@
     "proximity": "Emplacements de Proximité",
     "proximityDesc": "Au cœur des quartiers, proches des habitants.",
     "rents": "Loyers Maîtrisés",
-    "rentsDesc": "Les loyers varient entre 600 € et 800 € HT/mois, pour un bail professionnel à temps plein, selon les surfaces et spécificités."
+    "rentsDesc": "Les loyers varient entre 600 € et 800 € HC/mois, pour un bail professionnel à temps plein, selon les surfaces et spécificités."
   },
   "impacts": {
     "deserts": "des Français concernés par le manque de praticiens de proximité",
