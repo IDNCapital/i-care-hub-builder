@@ -621,32 +621,21 @@
   "cabinetJournee": {
     "heroTag": "Cabinet à la journée",
     "h1": "Cabinets à la journée : le mix & match I‑CA.RE",
-    "heroSubtitle": "Un même cabinet équipé, partagé entre plusieurs praticiens à la journée entière, chacun sur ses jours fixes de la semaine.",
+    "heroSubtitle": "Un même cabinet, partagé entre plusieurs praticiens à la journée entière, chacun sur ses jours fixes de la semaine.",
     "heroImageAlt": "Cabinet de consultation I-CA.RE",
     "footerLabel": "Cabinet à la journée",
     "navLabel": "Cabinet à la journée",
     "principleTitle": "Le principe du mix & match",
-    "principleIntro": "Un cabinet équipé se partage entre plusieurs praticiens à la journée entière, du lundi au samedi. Chaque praticien réserve ses jours fixes chaque semaine : le cabinet reste occupé et le coût est partagé.",
+    "principleIntro": "Un cabinet se partage entre plusieurs praticiens à la journée entière, du lundi au samedi. Chaque praticien réserve ses jours fixes chaque semaine : le cabinet reste occupé et le coût est partagé.",
     "principleChoice": "Vous choisissez un, deux ou trois jours fixes par semaine.",
     "principle": {
       "sharedTitle": "Cabinet partagé",
-      "sharedDesc": "Un même cabinet équipé se partage entre plusieurs praticiens à la journée entière, du lundi au samedi.",
+      "sharedDesc": "Un même cabinet se partage entre plusieurs praticiens à la journée entière, du lundi au samedi.",
       "fixedDaysTitle": "Jours fixes",
       "fixedDaysDesc": "Chaque praticien réserve ses jours fixes chaque semaine.",
       "sharedCostTitle": "Coût partagé",
       "sharedCostDesc": "Le cabinet reste occupé et le coût est partagé entre les praticiens qui s'y installent."
     },
-    "furnitureTitle": "Un cabinet équipé pour votre spécialité",
-    "furnitureIntro": "Le mobilier mis à disposition s'adapte à la spécialité qui occupe le cabinet.",
-    "furniture": {
-      "psyTitle": "Psychologie, psychothérapie",
-      "psyDesc": "Fauteuils et canapé.",
-      "osteoTitle": "Ostéopathie et thérapies manuelles",
-      "osteoDesc": "Table de manipulation.",
-      "dietTitle": "Diététique et nutrition",
-      "dietDesc": "Bureau de consultation et espace de mesure."
-    },
-    "furnitureNote": "Le mobilier est défini avec vous avant l'entrée dans les lieux, dans la limite de ce que le cabinet permet.",
     "compatTitle": "Des jours libres, et des usages compatibles",
     "compatIntro": "Le mix & match ne se résume pas aux jours disponibles : deux praticiens partagent un cabinet seulement si leurs usages sont compatibles, et de préférence complémentaires.",
     "compatExample": "Un profil psy et un ostéopathe ne se partagent pas le même cabinet ; une psychologue et une psychothérapeute, oui.",
@@ -669,11 +658,11 @@
     },
     "siteImageAlt": "Cabinet I-CA.RE {{name}}",
     "crossLinkTitle": "Besoin d'un cabinet seulement quelques jours par semaine ?",
-    "crossLinkDesc1": "Le mix & match propose un cabinet équipé, partagé à la journée entre plusieurs praticiens.",
+    "crossLinkDesc1": "Le mix & match propose un cabinet, partagé à la journée entre plusieurs praticiens.",
     "crossLinkDesc2": "Vous choisissez un, deux ou trois jours fixes par semaine.",
     "crossLinkCta": "Découvrir le cabinet à la journée",
     "pricingTitle": "La grille tarifaire",
-    "pricingSubtitle": "Bail précaire meublé, grille identique sur tous nos sites, dès l'ouverture de chacun.",
+    "pricingSubtitle": "Bail précaire, local loué nu, grille identique sur tous nos sites, dès l'ouverture de chacun.",
     "pricingLeaseNote": "Cette offre à la journée est distincte du bail professionnel à temps plein présenté dans notre foire aux questions.",
     "pricing": {
       "oneDayLabel": "Un jour fixe par semaine",
@@ -681,10 +670,10 @@
       "twoDaysLabel": "Deux jours fixes par semaine",
       "twoDaysPrice": "340 € TTC par mois",
       "threeDaysLabel": "Trois jours fixes par semaine",
-      "threeDaysPrice": "440 € TTC par mois"
+      "threeDaysPrice": "460 € TTC par mois"
     },
     "pricingIncludesTitle": "Le tarif couvre",
-    "pricingIncludes": "Le cabinet meublé et équipé, les espaces communs, le ménage et les produits d'entretien.",
+    "pricingIncludes": "Le cabinet, les espaces communs, le ménage des parties communes et les produits d'entretien.",
     "pricingExcludesTitle": "Le tarif ne couvre pas",
     "pricingExcludes": "Les consommables personnels (le café par exemple).",
     "pricingWifi": "Pour le cabinet à la journée, le wifi est inclus sur les sites de plus de dix cabinets.",
@@ -697,7 +686,7 @@
       "q2": "Le tarif est-il le même sur tous les sites ?",
       "a2": "Oui, la grille est identique sur tous nos sites, dès l'ouverture de chacun.",
       "q3": "Que comprend le tarif ?",
-      "a3": "Le tarif couvre le cabinet meublé et équipé, les espaces communs, le ménage et les produits d'entretien. Il ne couvre pas les consommables personnels (le café par exemple)."
+      "a3": "Le tarif couvre le cabinet, les espaces communs, le ménage des parties communes et les produits d'entretien. Il ne couvre pas les consommables personnels (le café par exemple)."
     },
     "ctaTitle": "Échanger sur votre installation",
     "ctaDesc": "Contactez-nous pour réserver vos jours fixes dans un cabinet à la journée."
@@ -720,7 +709,7 @@
     "locationToulouseTitle": "Cabinet à louer à Toulouse | Cabinets paramédicaux I-CA.RE",
     "locationToulouseDesc": "I-CA.RE arrive à Toulouse : cabinets paramédicaux clé en main au cœur de la ville rose. Première ouverture Q4 2026 au Capitole, autres quartiers à suivre. 11 à 15 m², 550 à 800 €/mois.",
     "cabinetJourneeTitle": "Cabinet à la journée : mix & match et tarifs | I-CA.RE",
-    "cabinetJourneeDesc": "Le mix & match I-CA.RE : un cabinet équipé partagé à la journée entre plusieurs praticiens. Grille tarifaire d'un à trois jours fixes par semaine, identique sur tous les sites.",
+    "cabinetJourneeDesc": "Le mix & match I-CA.RE : un cabinet partagé à la journée entre plusieurs praticiens. Grille tarifaire d'un à trois jours fixes par semaine, identique sur tous les sites.",
     "faqTitle": "Questions fréquentes | I-CA.RE",
     "faqDesc": "Réponses aux questions fréquentes sur la location de cabinets I-CA.RE : organisation, loyer, engagement, aménagement."
   },
@@ -744,7 +733,7 @@
     "a2": "Pour le bail professionnel à temps plein, le loyer hors charges couvre l'usage exclusif de votre cabinet et l'accès aux espaces communs ; les provisions pour charges, détaillées dans le bail, couvrent l'entretien des parties partagées, l'assurance du bâtiment et les charges courantes (eau, électricité des communs, internet). Vous n'avez aucun frais caché à prévoir en dehors du loyer et de ces provisions.",
     "a2DayOfficeLink": "Pour l'offre à la journée, voir la page dédiée.",
     "q3": "Le cabinet est-il aménagé ?",
-    "a3": "Oui, chaque cabinet est livré clé en main : sol, peinture, éclairage, prises électriques et réseau sont en place. Vous pouvez exercer dès votre installation. Pour le bail professionnel à temps plein, l'aménagement mobilier (bureau, fauteuil, décoration) reste à votre charge pour personnaliser votre espace ; le cabinet à la journée est livré meublé.",
+    "a3": "Oui, chaque cabinet est livré clé en main : sol, peinture, éclairage, prises électriques et réseau sont en place. Vous pouvez exercer dès votre installation. Pour le bail professionnel à temps plein, l'aménagement mobilier (bureau, fauteuil, décoration) reste à votre charge pour personnaliser votre espace ; le cabinet à la journée est loué nu également.",
     "q4": "Quelle est la durée d'engagement ?",
     "a4": "Nous proposons des baux professionnels souples, généralement d'une durée de 3 ans renouvelable, avec un préavis de 6 mois. Cette durée peut être adaptée selon votre situation. Notre objectif est de vous offrir de la stabilité tout en restant flexible.",
     "q5": "Comment est sélectionné le réseau ?",
