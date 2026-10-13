@@ -621,32 +621,21 @@
   "cabinetJournee": {
     "heroTag": "Day Office",
     "h1": "Day offices: the I‑CA.RE mix & match",
-    "heroSubtitle": "One equipped office, shared between several practitioners for full days, each on their own fixed days of the week.",
+    "heroSubtitle": "One office, shared between several practitioners for full days, each on their own fixed days of the week.",
     "heroImageAlt": "I-CA.RE consultation office",
     "footerLabel": "Day office",
     "navLabel": "Day office",
     "principleTitle": "The mix & match principle",
-    "principleIntro": "An equipped office is shared between several practitioners for full days, Monday to Saturday. Each practitioner books fixed days every week: the office stays in use and the cost is shared.",
+    "principleIntro": "An office is shared between several practitioners for full days, Monday to Saturday. Each practitioner books fixed days every week: the office stays in use and the cost is shared.",
     "principleChoice": "You choose one, two or three fixed days per week.",
     "principle": {
       "sharedTitle": "Shared office",
-      "sharedDesc": "One equipped office is shared between several practitioners for full days, Monday to Saturday.",
+      "sharedDesc": "One office is shared between several practitioners for full days, Monday to Saturday.",
       "fixedDaysTitle": "Fixed days",
       "fixedDaysDesc": "Each practitioner books fixed days every week.",
       "sharedCostTitle": "Shared cost",
       "sharedCostDesc": "The office stays in use and the cost is shared between the practitioners who take it up."
     },
-    "furnitureTitle": "An office equipped for your specialty",
-    "furnitureIntro": "The furniture provided is adapted to the specialty occupying the office.",
-    "furniture": {
-      "psyTitle": "Psychology, psychotherapy",
-      "psyDesc": "Armchairs and a sofa.",
-      "osteoTitle": "Osteopathy and manual therapies",
-      "osteoDesc": "A manipulation table.",
-      "dietTitle": "Dietetics and nutrition",
-      "dietDesc": "A consultation desk and a measurement area."
-    },
-    "furnitureNote": "The furniture is defined with you before you move in, within what the office allows.",
     "compatTitle": "Free days, and compatible uses",
     "compatIntro": "Mix & match is not only about available days: two practitioners share an office only if their uses are compatible, and preferably complementary.",
     "compatExample": "A psych profile and an osteopath do not share the same office; a psychologist and a psychotherapist can.",
@@ -669,11 +658,11 @@
     },
     "siteImageAlt": "I-CA.RE office {{name}}",
     "crossLinkTitle": "Need an office only a few days a week?",
-    "crossLinkDesc1": "Mix & match offers an equipped office, shared by the day between several practitioners.",
+    "crossLinkDesc1": "Mix & match offers an office, shared by the day between several practitioners.",
     "crossLinkDesc2": "You choose one, two or three fixed days per week.",
     "crossLinkCta": "Discover the day office",
     "pricingTitle": "Pricing",
-    "pricingSubtitle": "Furnished short-term lease, identical pricing across all our sites, from the moment each one opens.",
+    "pricingSubtitle": "Short-term lease, unfurnished premises, identical pricing across all our sites, from the moment each one opens.",
     "pricingLeaseNote": "This day-based offer is separate from the full-time professional lease presented in our FAQ.",
     "pricing": {
       "oneDayLabel": "One fixed day per week",
@@ -681,10 +670,10 @@
       "twoDaysLabel": "Two fixed days per week",
       "twoDaysPrice": "€340 incl. VAT/month",
       "threeDaysLabel": "Three fixed days per week",
-      "threeDaysPrice": "€440 incl. VAT/month"
+      "threeDaysPrice": "€460 incl. VAT/month"
     },
     "pricingIncludesTitle": "The price covers",
-    "pricingIncludes": "The furnished, equipped office, common areas, cleaning and cleaning products.",
+    "pricingIncludes": "The office, common areas, cleaning of the common areas and cleaning products.",
     "pricingExcludesTitle": "The price does not cover",
     "pricingExcludes": "Personal consumables (coffee, for example).",
     "pricingWifi": "For the day office, wifi is included on sites with more than ten offices.",
@@ -697,7 +686,7 @@
       "q2": "Is the price the same across all sites?",
       "a2": "Yes, the pricing is identical across all our sites, from the moment each one opens.",
       "q3": "What does the price include?",
-      "a3": "The price covers the furnished, equipped office, common areas, cleaning and cleaning products. It does not cover personal consumables (coffee, for example)."
+      "a3": "The price covers the office, common areas, cleaning of the common areas and cleaning products. It does not cover personal consumables (coffee, for example)."
     },
     "ctaTitle": "Discuss your setup",
     "ctaDesc": "Contact us to book your fixed days in a day office."
@@ -720,7 +709,7 @@
     "locationToulouseTitle": "Office for Rent in Toulouse | I-CA.RE Care Spaces",
     "locationToulouseDesc": "I-CA.RE is coming to Toulouse: turnkey care offices in the heart of the city. First opening Q4 2026 near Capitole, more neighbourhoods to follow. 11 to 15 sqm, €550 to €800/month.",
     "cabinetJourneeTitle": "Day Office: Mix & Match Pricing | I-CA.RE",
-    "cabinetJourneeDesc": "The I-CA.RE mix & match: an equipped office shared by the day between several practitioners. Pricing grid from one to three fixed days per week, identical across all sites.",
+    "cabinetJourneeDesc": "The I-CA.RE mix & match: an office shared by the day between several practitioners. Pricing grid from one to three fixed days per week, identical across all sites.",
     "faqTitle": "Frequently Asked Questions | I-CA.RE",
     "faqDesc": "Answers to common questions about renting an I-CA.RE office: organisation, rent, commitment, fit-out."
   },
@@ -744,7 +733,7 @@
     "a2": "For the full-time professional lease, the rent excluding charges covers exclusive use of your office and access to common areas; the service charge provisions, detailed in the lease, cover maintenance of shared spaces, building insurance and running costs (water, communal electricity, internet). There are no hidden fees beyond the rent and these provisions.",
     "a2DayOfficeLink": "For the day office offer, see the dedicated page.",
     "q3": "Is the office fitted out?",
-    "a3": "Yes, each office is delivered turnkey: flooring, paint, lighting, electrical outlets and network are in place. You can start practising from day one. For the full-time professional lease, furniture (desk, chair, décor) is your responsibility to personalise your space; the day office is delivered furnished.",
+    "a3": "Yes, each office is delivered turnkey: flooring, paint, lighting, electrical outlets and network are in place. You can start practising from day one. For the full-time professional lease, furniture (desk, chair, décor) is your responsibility to personalise your space; the day office is also let unfurnished.",
     "q4": "What is the commitment period?",
     "a4": "We offer flexible professional leases, generally 3 years renewable, with 6 months' notice. This can be adapted to your situation. Our goal is to offer stability while remaining flexible.",
     "q5": "How are practitioners selected?",
