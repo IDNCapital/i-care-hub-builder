@@ -15,14 +15,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
-  Armchair,
   ArrowRight,
   CalendarCheck,
   CheckCircle2,
   Euro,
   MapPin,
-  Ruler,
-  Table2,
   Users,
   XCircle,
 } from "lucide-react";
@@ -59,27 +56,6 @@ export default function CabinetALaJournee() {
       icon: Euro,
       title: t("cabinetJournee.principle.sharedCostTitle"),
       desc: t("cabinetJournee.principle.sharedCostDesc"),
-    },
-  ];
-
-  const furnitureBlocks = [
-    {
-      id: "psy",
-      icon: Armchair,
-      title: t("cabinetJournee.furniture.psyTitle"),
-      desc: t("cabinetJournee.furniture.psyDesc"),
-    },
-    {
-      id: "osteo",
-      icon: Table2,
-      title: t("cabinetJournee.furniture.osteoTitle"),
-      desc: t("cabinetJournee.furniture.osteoDesc"),
-    },
-    {
-      id: "dietetique",
-      icon: Ruler,
-      title: t("cabinetJournee.furniture.dietTitle"),
-      desc: t("cabinetJournee.furniture.dietDesc"),
     },
   ];
 
@@ -191,32 +167,6 @@ export default function CabinetALaJournee() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 1bis : Le mobilier par specialite ── */}
-      <section className="section-padding bg-muted/50">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="section-title">{t("cabinetJournee.furnitureTitle")}</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              {t("cabinetJournee.furnitureIntro")}
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto mb-10">
-            {furnitureBlocks.map((b) => (
-              <div key={b.id} className="text-center">
-                <div className="w-14 h-14 rounded-xl bg-primary/15 flex items-center justify-center mx-auto mb-5">
-                  <b.icon className="w-7 h-7 text-primary" />
-                </div>
-                <h3 className="text-lg font-heading font-semibold mb-3">{b.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{b.desc}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-sm text-muted-foreground/80 leading-relaxed text-center max-w-2xl mx-auto">
-            {t("cabinetJournee.furnitureNote")}
-          </p>
         </div>
       </section>
 
