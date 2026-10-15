@@ -33,7 +33,7 @@ export const PROJECT_SCHEMA_COPY: Record<string, ProjectSchemaCopy> = {
   "i-ca-re-chartrons": {
     name: "I-CA.RE Chartrons",
     description:
-      "Lieu de soin en cours de livraison au cœur des Chartrons à Bordeaux. 5 cabinets, permis accepté, travaux T2 2026, ouverture Q4 2026. Géré par I-CA.RE, foncière familiale indépendante.",
+      "Lieu de soin ouvert au cœur des Chartrons à Bordeaux. 5 cabinets de 11 à 15 m² et une salle d'attente, livrés en octobre 2026. Géré par I-CA.RE, foncière familiale indépendante.",
   },
 };
 
