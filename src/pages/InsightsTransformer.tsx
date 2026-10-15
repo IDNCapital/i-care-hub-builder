@@ -62,7 +62,7 @@ export default function InsightsTransformer() {
         description="Planning rules, designated use, ERP standards, co-ownership, acoustics, costs and timelines: a step-by-step guide for practitioners considering space conversion."
         path="/en/insights/converting-commercial-space"
         heroImage={chartronsFacade}
-        heroImageAlt="Facade of the I‑CA.RE Chartrons practice in Bordeaux, a former commercial unit converted into a practice"
+        heroImageAlt="Facade of the I‑CA.RE Chartrons practice in Bordeaux"
         articleTitle="Can you convert a commercial space into a medical or paramedical office"
         intro="You've found a well-located commercial space and you're wondering whether it could become your consulting room. The short answer is often yes, but the path involves regulatory checks, technical adaptations and a realistic budget. Understanding each step before committing protects you from costly mistakes."
         takeaways={[
@@ -165,7 +165,7 @@ export default function InsightsTransformer() {
       description="Urbanisme, destination, ERP, copropriété, acoustique, coûts et délais : guide étape par étape pour transformer un local commercial en cabinet."
       path="/insights/transformer-local-en-cabinet"
       heroImage={chartronsFacade}
-      heroImageAlt="Façade du cabinet I‑CA.RE Chartrons à Bordeaux, ancien local commercial transformé en cabinet"
+      heroImageAlt="Façade du cabinet I‑CA.RE Chartrons à Bordeaux"
       articleTitle="Peut-on transformer un local commercial en cabinet médical ou paramédical"
       intro={<>Vous avez repéré un local commercial bien situé et vous vous demandez s'il pourrait devenir votre cabinet. La réponse est souvent oui, mais le chemin passe par des vérifications réglementaires, des adaptations techniques et un budget réaliste. Comprendre chaque étape avant de s'engager protège contre les erreurs coûteuses.</>}
       takeaways={[
