@@ -2,15 +2,15 @@ import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
 import { Link } from "react-router-dom";
 import { MapPin, ArrowRight } from "lucide-react";
-import { useProfessionsInstallation, useCabinetsPipeline } from "@/hooks/useInstallation";
-import { cabinetNomCourt, formatDateOuverture, installationUrl } from "@/lib/installation";
+import { useProfessionsInstallation, useCabinetsInstallation } from "@/hooks/useInstallation";
+import { cabinetNomCourt, libelleOuverture, installationUrl } from "@/lib/installation";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { CabinetVisuel } from "@/components/CabinetVisuel";
 import { pageUrl } from "@/lib/siteUrl";
 
 export default function SinstallerIndex() {
   const { data: professions = [] } = useProfessionsInstallation();
-  const { data: cabinets = [] } = useCabinetsPipeline();
+  const { data: cabinets = [] } = useCabinetsInstallation();
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -63,7 +63,7 @@ export default function SinstallerIndex() {
       <section className="section-padding bg-background">
         <div className="container">
           <h2 className="text-3xl md:text-4xl font-heading font-normal mb-10">
-            Villes en cours d'ouverture
+            Cabinets ouverts et en ouverture
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {cabinets.map((c) => (
@@ -87,7 +87,7 @@ export default function SinstallerIndex() {
                   </p>
                 )}
                 <p className="text-sm text-primary font-medium">
-                  {formatDateOuverture(c.date_ouverture_cible)}
+                  {libelleOuverture(c.status, c.date_ouverture_cible)}
                 </p>
                 <a
                   href="#professions"
