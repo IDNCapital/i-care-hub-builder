@@ -11,6 +11,20 @@ export function isPipelineCabinet(projectStatus: string): boolean {
   return projectStatus === "en_travaux" || projectStatus === "a_venir";
 }
 
+/**
+ * Cabinet qui dispose de pages /sinstaller : en travaux, à venir, ou ouvert
+ * (décision du 15/10/2026 : un cabinet ouvert garde ses pages d'installation).
+ */
+export function hasInstallationPages(projectStatus: string | null | undefined): boolean {
+  return projectStatus === "en_travaux" || projectStatus === "a_venir" || projectStatus === "en_exploitation";
+}
+
+/** Libellé d'ouverture d'un cabinet selon son statut. */
+export function libelleOuverture(projectStatus: string | null | undefined, dateString: string | null): string {
+  if (projectStatus === "en_exploitation") return "Cabinet ouvert";
+  return formatDateOuverture(dateString);
+}
+
 export function formatDateOuverture(dateString: string | null): string {
   if (!dateString) return "";
   const date = new Date(dateString);

@@ -53,6 +53,10 @@ export interface CabinetPipeline {
   google_place_id: string | null;
 }
 
+export interface CabinetInstallation extends CabinetPipeline {
+  status: string;
+}
+
 export function useProfessions() {
   return useQuery({
     queryKey: ["professions"],
@@ -101,6 +105,26 @@ export function useCabinetsPipeline() {
         .order("date_ouverture_cible", { ascending: true });
       if (error) throw error;
       return (data ?? []) as unknown as CabinetPipeline[];
+    },
+  });
+}
+
+/**
+ * Cabinets disposant de pages /sinstaller : en travaux, à venir, ou ouverts
+ * (décision du 15/10/2026 : un cabinet ouvert garde ses pages d'installation).
+ */
+export function useCabinetsInstallation() {
+  return useQuery({
+    queryKey: ["cabinets-installation"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("projets")
+        .select("id, slug, slug_installation, name, city, address, date_ouverture_cible, lat, lng, google_place_id, status")
+        .in("status", ["en_travaux", "a_venir", "en_exploitation"])
+        .not("slug_installation", "is", null)
+        .order("date_ouverture_cible", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as unknown as CabinetInstallation[];
     },
   });
 }

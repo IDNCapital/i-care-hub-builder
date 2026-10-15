@@ -10,7 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { useProfessions, useCabinetsPipeline } from "@/hooks/useInstallation";
+import { useProfessions, useCabinetsInstallation } from "@/hooks/useInstallation";
 import { cabinetNomCourt } from "@/lib/installation";
 import { Analytics } from "@/lib/analytics";
 
@@ -38,7 +38,7 @@ export function FormulaireInteretInstallation({
   const professionLibre = !professionSlug;
   const villeLibre = !villeSlug;
   const { data: professions = [] } = useProfessions();
-  const { data: cabinets = [] } = useCabinetsPipeline();
+  const { data: cabinets = [] } = useCabinetsInstallation();
 
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
