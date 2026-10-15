@@ -26,9 +26,16 @@ import peyBerlandFacade from "@/assets/pey-berland/facade.webp";
 
 // Chartrons
 import chartronsPlan from "@/assets/chartrons/plan.webp";
-import chartronsInsertionFacade from "@/assets/chartrons/insertion-facade.webp";
-import chartronsProjectionCab1 from "@/assets/chartrons/projection-cab-1.webp";
-import chartronsProjectionCab2 from "@/assets/chartrons/projection-cab-2.webp";
+// Photos réelles prises à la livraison (12/10/2026), à la place des visuels IA
+import chartronsAttente1 from "@/assets/chartrons/attente-1.webp";
+import chartronsAttente2 from "@/assets/chartrons/attente-2.webp";
+import chartronsCab1 from "@/assets/chartrons/cab1.webp";
+import chartronsCab2 from "@/assets/chartrons/cab2.webp";
+import chartronsCab3 from "@/assets/chartrons/cab3.webp";
+import chartronsCab4 from "@/assets/chartrons/cab4.webp";
+import chartronsKitchenette from "@/assets/chartrons/kitchenette.webp";
+import chartronsCouloir from "@/assets/chartrons/couloir.webp";
+import chartronsFacade from "@/assets/chartrons/facade.webp";
 
 // Toulouse Capitole
 import toulouseCapitoleFacade from "@/assets/toulouse-capitole/facade.png";
@@ -87,8 +94,8 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
     gallery: [peyBerlandAttente, peyBerlandAttente2, peyBerlandCab1, peyBerlandCab2, peyBerlandCab3, peyBerlandDetailBureau, peyBerlandFacade],
   },
   "i-ca-re-chartrons": {
-    hero: chartronsInsertionFacade,
-    gallery: [chartronsInsertionFacade, chartronsProjectionCab1, chartronsProjectionCab2, chartronsPlan],
+    hero: chartronsAttente1,
+    gallery: [chartronsAttente1, chartronsAttente2, chartronsCab1, chartronsCab2, chartronsCab3, chartronsCab4, chartronsKitchenette, chartronsCouloir, chartronsFacade, chartronsPlan],
   },
   "i-ca-re-toulouse-capitole": {
     hero: toulouseCapitoleFacade,
@@ -111,7 +118,7 @@ export const PROJECT_IMAGES: Record<string, ProjectImages> = {
 // ─── Page-level default heroes ───────────────────────────
 
 const PAGE_HEROES: Record<PageContext, string> = {
-  home: chartronsInsertionFacade,
+  home: chartronsFacade,
   professionnels: heroPraticiens,
   investissement: heroInvestissement,
   approche: nansoutyAttente,
@@ -142,11 +149,11 @@ export interface HeroSlide {
 
 /** Full set for desktop (6 slides, alternating facade ↔ interior) */
 export const HOME_HERO_SLIDES: HeroSlide[] = [
-  { src: chartronsInsertionFacade, altFr: "Façade du futur cabinet I‑CA.RE Chartrons à Bordeaux (insertion 3D)", altEn: "Facade of the future I‑CA.RE Chartrons practice in Bordeaux (3D rendering)" },
+  { src: chartronsFacade,          altFr: "Façade du cabinet I‑CA.RE Chartrons à Bordeaux",                        altEn: "Facade of the I‑CA.RE Chartrons practice in Bordeaux" },
   { src: heroHomeReelleAttente1,   altFr: "Salle d'attente d'un cabinet I‑CA.RE à Bordeaux",                     altEn: "Waiting room of an I‑CA.RE practice in Bordeaux" },
-  { src: chartronsProjectionCab1,  altFr: "Projection d'un cabinet du futur I‑CA.RE Chartrons",                   altEn: "Rendering of a practice room, future I‑CA.RE Chartrons" },
+  { src: chartronsCab1,            altFr: "Cabinet de consultation I‑CA.RE Chartrons à Bordeaux",                  altEn: "Consultation room, I‑CA.RE Chartrons in Bordeaux" },
   { src: heroHomeReelleCabinet1,   altFr: "Cabinet de consultation I‑CA.RE à Bordeaux",                           altEn: "I‑CA.RE consultation room in Bordeaux" },
-  { src: chartronsProjectionCab2,  altFr: "Projection d'un espace de consultation, futur cabinet Chartrons",      altEn: "Rendering of a consultation space, future Chartrons practice" },
+  { src: chartronsAttente1,        altFr: "Salle d'attente du cabinet I‑CA.RE Chartrons à Bordeaux",               altEn: "Waiting room, I‑CA.RE Chartrons practice in Bordeaux" },
   { src: heroHomeReelleAttente2,   altFr: "Espace d'accueil d'un cabinet I‑CA.RE à Bordeaux",                     altEn: "Reception area of an I‑CA.RE practice in Bordeaux" },
 ];
 
