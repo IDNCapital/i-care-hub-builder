@@ -88,6 +88,7 @@ export function InsightArticleTemplate({
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
   const canonical = pageUrl(path);
+  const articleImage = heroImage ? new URL(heroImage, pageUrl("/")).href : undefined;
   const insightsPath = lang === "fr" ? "/insights" : "/en/insights";
 
   const l =
@@ -133,11 +134,13 @@ export function InsightArticleTemplate({
   const articleJsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `${canonical}#article`,
+    inLanguage: lang,
     headline: articleTitle,
     description,
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
     url: canonical,
-    ...(heroImage ? { image: heroImage } : {}),
+    ...(articleImage ? { image: articleImage } : {}),
     ...(datePublished ? { datePublished } : {}),
     ...(dateModified ? { dateModified } : {}),
     author: { "@type": "Organization", name: "I-CA.RE", url: pageUrl("/") },
@@ -176,7 +179,14 @@ export function InsightArticleTemplate({
 
   return (
     <Layout>
-      <SeoHead title={title} description={description} path={path} />
+      <SeoHead
+        title={title}
+        description={description}
+        path={path}
+        ogType="article"
+        ogImage={articleImage}
+        ogImageAlt={heroImageAlt}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}

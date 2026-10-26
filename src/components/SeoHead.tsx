@@ -22,6 +22,8 @@ interface SeoHeadProps {
   path: string;
   /** OG image URL (absolute). Falls back to default. */
   ogImage?: string;
+  /** Articles declare their content type; other pages remain websites. */
+  ogType?: "website" | "article";
   /** OG image intrinsic width in px (only meaningful when ogImage is set). */
   ogImageWidth?: number;
   /** OG image intrinsic height in px (only meaningful when ogImage is set). */
@@ -46,6 +48,7 @@ export function SeoHead({
   description,
   path,
   ogImage,
+  ogType = "website",
   ogImageWidth,
   ogImageHeight,
   ogImageAlt,
@@ -60,10 +63,9 @@ export function SeoHead({
   const image = ogImage || DEFAULT_OG_IMAGE;
   // Les dimensions et l'alternative decrivent l'image effectivement posee :
   // celles de la page quand elle les fournit, celles de l'image par defaut
-  // sinon. Une page qui donne son ogImage sans donner ses dimensions retombe
-  // donc sur 1200x630, ce qui est exactement ce dont elle heritait de la racine.
-  const imageWidth = ogImageWidth ?? DEFAULT_OG_IMAGE_WIDTH;
-  const imageHeight = ogImageHeight ?? DEFAULT_OG_IMAGE_HEIGHT;
+  // sinon. Ne pas attribuer les dimensions du visuel par défaut à une autre image.
+  const imageWidth = ogImageWidth ?? (ogImage ? undefined : DEFAULT_OG_IMAGE_WIDTH);
+  const imageHeight = ogImageHeight ?? (ogImage ? undefined : DEFAULT_OG_IMAGE_HEIGHT);
   const imageAlt = ogImageAlt ?? DEFAULT_OG_IMAGE_ALT;
   // x-default falls back to FR when available, otherwise to the current path.
   const xDefaultPath = frPath ?? path;
@@ -82,13 +84,13 @@ export function SeoHead({
       <link rel="alternate" hrefLang="x-default" href={pageUrl(xDefaultPath)} />
 
       {/* Open Graph */}
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={ogType} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={image} />
-      <meta property="og:image:width" content={String(imageWidth)} />
-      <meta property="og:image:height" content={String(imageHeight)} />
+      {imageWidth && <meta property="og:image:width" content={String(imageWidth)} />}
+      {imageHeight && <meta property="og:image:height" content={String(imageHeight)} />}
       <meta property="og:image:alt" content={imageAlt} />
       <meta property="og:site_name" content="I-CA.RE" />
       <meta property="og:locale" content={lang === "fr" ? "fr_FR" : "en_GB"} />
