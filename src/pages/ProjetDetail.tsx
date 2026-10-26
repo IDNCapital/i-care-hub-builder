@@ -22,14 +22,14 @@ import { VisuelsAVenir } from "@/components/VisuelsAVenir";
 import { getProjectHero, getProjectGallery } from "@/lib/projectImages";
 import { FadeImage } from "@/components/FadeImage";
 import { getCentreBySlug, quarterLabel } from "@/lib/centres";
-import { getProjectSchemaCopy, parseAddress, regionFromPostalCode } from "@/lib/projectSchema";
+import { buildProjectStructuredData } from "@/lib/projectStructuredData";
 import { BrandName } from "@/components/BrandName";
 import { SectionPraticiensDuCabinet } from "@/components/SectionPraticiensDuCabinet";
 import { cabinetNomCourt, hasInstallationPages } from "@/lib/installation";
 import { SinstallerLinksCabinet } from "@/components/SinstallerLinksCabinet";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { Lightbox, type LightboxImage } from "@/components/Lightbox";
-import { BASE_URL, assetUrl, pageUrl } from "@/lib/siteUrl";
+import { assetUrl, pageUrl } from "@/lib/siteUrl";
 import { SectionAvisGoogle } from "@/components/avis/SectionAvisGoogle";
 import { marqueAffichee } from "@/lib/brand";
 
@@ -169,47 +169,12 @@ export default function ProjetDetail() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify((() => {
-          const canonicalUrl = pageUrl(lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`);
-          const heroPath = getProjectHero(project.slug, project.hero_image_url);
-          const heroUrl = heroPath ? `${BASE_URL}${heroPath}` : undefined;
-          // Enrichissement rédactionnel optionnel ; l'adresse et la géolocalisation
-          // proviennent toujours de la table `projets`.
-          const copy = slug ? getProjectSchemaCopy(slug) : undefined;
-          const parsed = parseAddress(project.address ?? "");
-          const region = regionFromPostalCode(parsed.postalCode);
-
-          const address: Record<string, unknown> = {
-            "@type": "PostalAddress",
-            "addressLocality": project.city,
-            "addressCountry": "FR",
-          };
-          if (project.show_address && parsed.streetAddress) address["streetAddress"] = parsed.streetAddress;
-          if (parsed.postalCode) address["postalCode"] = parsed.postalCode;
-          if (region) address["addressRegion"] = region;
-
-          const jsonLd: Record<string, unknown> = {
-            "@context": "https://schema.org",
-            "@type": "MedicalBusiness",
-            "name": copy?.name ?? project.name,
-            "description": copy?.description ?? shortDesc,
-            "url": canonicalUrl,
-            "email": "contact@i-ca.re",
-            "address": address,
-            "areaServed": { "@type": "City", "name": project.city },
-          };
-          if (heroUrl) jsonLd["image"] = heroUrl;
-          if (project.lat != null && project.lng != null) {
-            jsonLd["geo"] = {
-              "@type": "GeoCoordinates",
-              "latitude": Number(project.lat),
-              "longitude": Number(project.lng),
-            };
-          }
-          // Pas d'horaires pour un lieu qui n'est pas encore ouvert.
-          if (project.status === "en_exploitation") jsonLd["openingHours"] = "Mo-Fr 08:00-20:00";
-          return jsonLd;
-        })()) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildProjectStructuredData({
+          project,
+          description,
+          canonicalPath: lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`,
+          heroPath: heroSrc,
+        })).replace(/</g, "\\u003c") }}
       />
 
       <section className="relative h-[60vh] min-h-[400px]">
