@@ -128,7 +128,7 @@
   },
   "contact": {
     "title": "Contactez-nous",
-    "subtitle": "Une question, un projet ? Notre équipe est à votre écoute.",
+    "subtitle": "Nicolas, votre interlocuteur pour votre installation. Une réponse sous 24 h.",
     "address": "Adresse",
     "email": "Email",
     "phone": "Téléphone",
@@ -151,7 +151,7 @@
     "errorRateLimit": "Message déjà envoyé. Veuillez patienter 30 secondes.",
     "rgpd": "J'accepte que mes données soient traitées par I‑CA.RE dans le cadre de ma demande, conformément à la",
     "rgpdLink": "politique de confidentialité",
-    "recontact": "Nous vous recontactons sous 48h ouvrées.",
+    "recontact": "Nicolas vous répond sous 24 h.",
     "types": {
       "professionnel": "Praticien du soin ou du bien-être",
       "professionnelDesc": "Vous souhaitez rejoindre un cabinet I‑CA.RE",
@@ -208,7 +208,7 @@
     "testimonialsTitle": "Ils exercent chez I‑CA.RE",
     "testimonialsSubtitle": "Des praticiens qui ont fait le choix de la qualité.",
     "formTitle": "Trouvez votre futur cabinet",
-    "formSubtitle": "Décrivez votre projet en quelques clics. Notre équipe vous recontacte sous 48h avec une proposition personnalisée.",
+    "formSubtitle": "Décrivez votre projet en quelques clics. Nicolas vous répond sous 24 h pour étudier les cabinets et quartiers adaptés à vos besoins.",
     "formFirstName": "Prénom",
     "formLastName": "Nom",
     "formEmail": "Email",
@@ -242,7 +242,7 @@
     "formSubmit": "Envoyer ma demande",
     "formSubmitting": "Envoi en cours…",
     "formDisclaimer": "Vos données ne sont jamais partagées avec des tiers.",
-    "formRecontact": "Nous vous recontactons sous 48h ouvrées.",
+    "formRecontact": "Nicolas vous répond sous 24 h.",
     "formErrorConsent": "Veuillez accepter la politique de confidentialité.",
     "formErrorRequired": "Veuillez remplir les champs obligatoires.",
     "formErrorEmail": "Veuillez saisir une adresse email valide.",
@@ -354,11 +354,11 @@
     "requestAvailability": "Demander une disponibilité",
     "scheduleVisit": "Planifier une visite",
     "surface": "m² de surface",
-    "offices": "cabinets (~11 à 15 m²)",
+    "offices": "cabinets",
     "delivery": "livraison",
     "deliveryUnknown": "À confirmer",
-    "rent": "loyer / cabinet / mois",
-    "rentDetails": "Les loyers sont maîtrisés et varient entre 600 € et 800 € hors charges, pour un bail professionnel à temps plein, en fonction des surfaces et des spécificités du cabinet.",
+    "rent": "conditions de location",
+    "rentDetails": "Le loyer dépend du cabinet, de sa surface et de la formule retenue. Les conditions détaillées vous sont communiquées avant tout engagement.",
     "interested": "Intéressé ?",
     "conceptTitle": "Concept & vision architecturale",
     "architecturalQuality": "Qualité architecturale",
@@ -375,7 +375,10 @@
     "deliveryLabel": "Livraison",
     "ctaTitle": "Ce projet vous intéresse ?",
     "ctaDesc": "Contactez-nous pour obtenir le dossier complet, planifier une visite ou réserver votre cabinet.",
-    "applyNow": "Échanger sur mon projet"
+    "applyNow": "Échanger sur mon projet",
+    "rentOnRequest": "Sur demande",
+    "contactPromise": "Nicolas vous répond sous 24 h.",
+    "visitRequest": "Demander une visite"
   },
   "approach": {
     "heroTitle": "Des lieux pensés pour le soin, conçus pour durer",
@@ -453,7 +456,7 @@
     "proximity": "Emplacements de Proximité",
     "proximityDesc": "Au cœur des quartiers, proches des habitants.",
     "rents": "Loyers Maîtrisés",
-    "rentsDesc": "Les loyers varient entre 600 € et 800 € HC/mois, pour un bail professionnel à temps plein, selon les surfaces et spécificités."
+    "rentsDesc": "Loyer adapté à la surface et aux caractéristiques du cabinet ; conditions détaillées sur demande."
   },
   "impacts": {
     "deserts": "des Français concernés par le manque de praticiens de proximité",
@@ -480,7 +483,7 @@
   "locationBordeaux": {
     "heroTag": "Cabinet à louer Bordeaux",
     "h1": "Cabinet à louer à Bordeaux pour praticiens du soin et du bien-être",
-    "heroSubtitle": "Cabinets de consultation rénovés, acoustiques et clé en main, au cœur de la métropole bordelaise, de 600 à 800 € HC/mois.",
+    "heroSubtitle": "Cabinets de consultation rénovés, acoustiques et clé en main dans la métropole bordelaise. Aux Chartrons, les cabinets 1 et 5 sont disponibles : venez découvrir le lieu et son quartier.",
     "heroImageAlt": "Cabinet de consultation I‑CA.RE à louer à Bordeaux",
     "ctaProjects": "Voir les espaces disponibles",
     "introTitle": "Trouver un cabinet à louer à Bordeaux : un vrai défi pour les praticiennes et praticiens",
@@ -510,7 +513,7 @@
       "q3": "Peut-on partager un cabinet à Bordeaux ?",
       "a3": "Oui, le partage de cabinet est possible et encouragé. Plusieurs praticiens peuvent se répartir les créneaux d'un même cabinet, ce qui permet de réduire les coûts tout en bénéficiant d'un espace professionnel de qualité.",
       "q4": "Combien coûte la location d'un cabinet paramédical à Bordeaux ?",
-      "a4": "Pour le bail professionnel à temps plein, les loyers de nos cabinets de consultation à Bordeaux sont compris entre 600 et 800 € hors charges par mois. Les provisions pour charges (eau, électricité, internet, ménage, assurance) s'ajoutent au loyer et sont détaillées dans le bail. Aucun droit d'entrée ni frais cachés."
+      "a4": "Aux Chartrons, le cabinet 1 de 11,1 m² est proposé à 690 €/mois et le cabinet 5 de 13,1 m² à 790 €/mois, toutes taxes et charges comprises, TVA non applicable. Les loyers des autres centres dépendent du bureau et de la formule. Nicolas vous transmet les conditions détaillées sous 24 h."
     },
     "ctaTitle": "Échanger sur votre projet d'installation",
     "ctaDesc": "Vous cherchez un cabinet thérapeute à Bordeaux ou un cabinet paramédical à louer ? Contactez-nous pour discuter de votre projet."
@@ -519,8 +522,8 @@
     "heroTag": "Cabinet à louer Toulouse",
     "heroImageAlt": "Façade I‑CA.RE Toulouse Capitole, cabinets paramédicaux à louer",
     "h1": "Cabinet paramédical à louer à Toulouse",
-    "heroSubtitle": "Cabinets de consultation rénovés, acoustiques et clé en main, premier lieu en plein cœur de Toulouse, ouverture Q4 2026. 550 à 800 € HC/mois selon les surfaces.",
-    "ctaJoinList": "Rejoindre la liste d'intérêt",
+    "heroSubtitle": "5 cabinets de consultation à Toulouse Capitole. Travaux prévus en novembre 2026, livraison prévue en mars 2027. Visites possibles dès maintenant.",
+    "ctaJoinList": "Demander une visite",
     "ctaDiscoverCapitole": "Découvrir Toulouse Capitole",
     "arrivingTitle": "I-CA.RE arrive à Toulouse",
     "arrivingP1": "Après quatre lieux exploités à Bordeaux (Nansouty, Jardin Public, Pey-Berland et Chartrons), I-CA.RE étend son modèle à Toulouse. Notre mission reste la même : transformer des rez-de-chaussée urbains sous-valorisés en espaces de soin nouvelle génération, pensés pour la confidentialité, le confort acoustique et la qualité d'accueil de la patientèle.",
@@ -531,7 +534,7 @@
     "challengeP3": "Avec I-CA.RE, la location de cabinet à Toulouse devient simple : un espace clé en main, un loyer transparent, une communauté de praticiens engagés.",
     "centresTitle": "Nos cabinets de consultation à Toulouse",
     "centresImageAlt": "I‑CA.RE Toulouse Capitole, façade brique",
-    "centresBadgeOpening": "Ouverture Q4 2026",
+    "centresBadgeOpening": "Livraison prévue mars 2027",
     "centresCardCta": "Découvrir le projet",
     "centresMoreP1": "D'autres ouvertures sont en cours d'étude dans Toulouse.",
     "centresMoreLink": "Rejoignez notre liste d'intérêt",
@@ -549,8 +552,8 @@
     "proofP1": "Nous ne partons pas de zéro. À Bordeaux, nos 4 lieux exploités (Nansouty, Jardin Public, Pey-Berland, Chartrons) sont complets ou en cours de commercialisation, avec une communauté d'une vingtaine de praticiennes et praticiens : psychologues, psychothérapeutes, sophrologues, naturopathes, ostéopathes, hypnothérapeutes. Nous apportons ce savoir-faire à Toulouse.",
     "proofCtaBordeaux": "Voir nos lieux bordelais",
     "proofCtaApproach": "Notre approche",
-    "formTitle": "Recevez en priorité l'information sur les ouvertures toulousaines",
-    "formSubtitle": "Laissez-nous vos coordonnées et votre projet. Nous vous contactons dès qu'un cabinet correspondant à votre besoin sera disponible.",
+    "formTitle": "Visiter Toulouse Capitole et préparer votre installation",
+    "formSubtitle": "Indiquez votre activité, votre rythme de location et vos disponibilités pour une visite. Nicolas vous répond sous 24 h.",
     "formFirstName": "Prénom *",
     "formLastName": "Nom *",
     "formEmail": "Email *",
@@ -565,18 +568,18 @@
     "formDateLabel": "Date d'installation visée",
     "formDatePlaceholder": "Sélectionnez une période",
     "formMessageLabel": "Message (optionnel)",
-    "formMessagePlaceholder": "Décrivez votre projet d'installation à Toulouse",
+    "formMessagePlaceholder": "Vos disponibilités pour une visite et votre projet d’installation à Toulouse",
     "formConsentPrefix": "J'accepte que mes données soient traitées par",
     "formConsentMiddle": "dans le cadre de ma demande, conformément à la",
     "formConsentLinkText": "politique de confidentialité",
-    "formSubmit": "Rejoindre la liste d'intérêt Toulouse",
+    "formSubmit": "Envoyer ma demande à Nicolas",
     "formSubmitting": "Envoi en cours…",
     "toastConsentRequired": "Merci d'accepter le traitement de vos données.",
     "toastRequiredFields": "Merci de remplir les champs obligatoires.",
     "toastInvalidEmail": "Email invalide.",
     "toastInvalidPhone": "Téléphone invalide.",
     "toastRateLimited": "Une demande a déjà été envoyée récemment. Réessayez dans un instant.",
-    "toastSuccess": "Merci ! Nous vous recontactons dès qu'un cabinet correspondant à votre projet est disponible.",
+    "toastSuccess": "Merci ! Votre demande a été envoyée. Nicolas vous répond sous 24 h.",
     "toastError": "Une erreur est survenue. Merci de réessayer.",
     "neighbourhoodOptions": {
       "capitole": "Capitole",
@@ -598,7 +601,7 @@
       "toBeDefined": "À définir"
     },
     "dateOptions": {
-      "fromOpening": "Dès l'ouverture Q4 2026",
+      "fromOpening": "À la livraison prévue en mars 2027",
       "within6Months": "Dans les 6 mois après ouverture",
       "during2027": "Courant 2027",
       "later": "Plus tard",
@@ -607,16 +610,16 @@
     "faqTitle": "Questions fréquentes : Toulouse",
     "faq": {
       "q1": "Quand ouvrira le premier cabinet I-CA.RE à Toulouse ?",
-      "a1": "Notre première ouverture toulousaine est prévue au quatrième trimestre 2026, à deux pas de la place du Capitole. Le permis de construire a été obtenu et les travaux débutent prochainement.",
+      "a1": "Les travaux de Toulouse Capitole doivent démarrer en novembre 2026. La livraison des cinq cabinets est prévue en mars 2027. Des visites sont possibles dès maintenant, sur rendez-vous avec Nicolas.",
       "q2": "Dans quels quartiers de Toulouse I-CA.RE prévoit-il d'ouvrir ?",
       "a2": "Au-delà du Capitole, nous étudions plusieurs autres quartiers centraux toulousains pour mailler progressivement la ville rose. Les personnes inscrites à notre liste d'intérêt sont informées en priorité des nouvelles ouvertures.",
       "q3": "Quels sont les loyers pratiqués par I-CA.RE à Toulouse ?",
-      "a3": "Les loyers sont compris entre 550 et 800 € hors charges par mois, selon la surface du cabinet (11 à 15 m²) et ses spécificités. Les cabinets sont entièrement clé en main : aucune dépense d'aménagement à prévoir.",
-      "q4": "Comment être informé en priorité des disponibilités toulousaines ?",
-      "a4": "Inscrivez-vous à notre liste d'intérêt Toulouse via le formulaire ci-dessus. Nous vous contactons dès qu'un cabinet correspondant à votre projet est disponible, avant publication des annonces publiques."
+      "a3": "Le loyer varie selon le cabinet et sa surface. Nicolas vous transmet la fiche adaptée à votre besoin et les conditions contractuelles. Les plans peuvent être présentés lors d’une visite.",
+      "q4": "Peut-on visiter avant la livraison ?",
+      "a4": "Oui. Utilisez le formulaire ci-dessus pour proposer vos disponibilités et préciser votre activité. Nicolas vous répond sous 24 h pour organiser une visite et préparer votre installation."
     },
     "ctaFinalTitle": "Échanger sur votre projet d'installation à Toulouse",
-    "ctaFinalDesc": "Rejoignez la liste d'intérêt pour recevoir l'information en priorité, ou contactez-nous directement pour échanger sur votre projet."
+    "ctaFinalDesc": "Découvrez le quartier et le projet lors d’une visite. Échangez avec Nicolas sur les bureaux, les conditions de location et votre calendrier d’installation."
   },
   "cabinetJournee": {
     "heroTag": "Cabinet à la journée",
@@ -707,7 +710,7 @@
     "locationBordeauxTitle": "Cabinet à louer Bordeaux | Cabinets de consultation | I-CA.RE",
     "locationBordeauxDesc": "Cabinets de consultation à louer à Bordeaux pour professionnels du soin et du bien-être : psychologues, thérapeutes, ostéopathes, infirmiers. Découvrez les lieux I-CA.RE.",
     "locationToulouseTitle": "Cabinet à louer à Toulouse | Cabinets paramédicaux I-CA.RE",
-    "locationToulouseDesc": "I-CA.RE arrive à Toulouse : cabinets paramédicaux clé en main au cœur de la ville rose. Première ouverture Q4 2026 au Capitole, autres quartiers à suivre. 11 à 15 m², 550 à 800 €/mois.",
+    "locationToulouseDesc": "5 cabinets à louer à Toulouse Capitole, rue de Mirepoix. Livraison prévue mars 2027, visites possibles dès maintenant. Nicolas répond sous 24 h.",
     "cabinetJourneeTitle": "Cabinet à la journée : mix & match et tarifs | I-CA.RE",
     "cabinetJourneeDesc": "Le mix & match I-CA.RE : un cabinet partagé à la journée entre plusieurs praticiens. Grille tarifaire d'un à trois jours fixes par semaine, identique sur tous les sites.",
     "faqTitle": "Questions fréquentes | I-CA.RE",
