@@ -84,7 +84,7 @@ export default function LocationCabinetToulouse() {
 
   const dateKeys = ["fromOpening", "within6Months", "during2027", "later", "toBeDefined"] as const;
   const dateValues: Record<(typeof dateKeys)[number], string> = {
-    fromOpening: "Dès l'ouverture Q4 2026",
+    fromOpening: "À la livraison prévue en mars 2027",
     within6Months: "Dans les 6 mois après ouverture",
     during2027: "Courant 2027",
     later: "Plus tard",
