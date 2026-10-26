@@ -128,7 +128,7 @@
   },
   "contact": {
     "title": "Contactez-nous",
-    "subtitle": "Nicolas, votre interlocuteur pour votre installation. Une réponse sous 24 h.",
+    "subtitle": "Nicolas, votre interlocuteur pour votre projet. Une réponse sous 24 h.",
     "address": "Adresse",
     "email": "Email",
     "phone": "Téléphone",
@@ -374,7 +374,7 @@
     "status": "Statut",
     "deliveryLabel": "Livraison",
     "ctaTitle": "Ce projet vous intéresse ?",
-    "ctaDesc": "Contactez-nous pour obtenir le dossier complet, planifier une visite ou réserver votre cabinet.",
+    "ctaDesc": "Échangez avec Nicolas sur les disponibilités, les conditions de location et une visite du lieu.",
     "applyNow": "Échanger sur mon projet",
     "rentOnRequest": "Sur demande",
     "contactPromise": "Nicolas vous répond sous 24 h.",
@@ -614,7 +614,7 @@
       "q2": "Dans quels quartiers de Toulouse I-CA.RE prévoit-il d'ouvrir ?",
       "a2": "Au-delà du Capitole, nous étudions plusieurs autres quartiers centraux toulousains pour mailler progressivement la ville rose. Les personnes inscrites à notre liste d'intérêt sont informées en priorité des nouvelles ouvertures.",
       "q3": "Quels sont les loyers pratiqués par I-CA.RE à Toulouse ?",
-      "a3": "Le loyer varie selon le cabinet et sa surface. Nicolas vous transmet la fiche adaptée à votre besoin et les conditions contractuelles. Les plans peuvent être présentés lors d’une visite.",
+      "a3": "Les cinq cabinets sont proposés de 700 à 800 € par mois, toutes taxes et charges comprises, TVA non applicable, selon la surface (11,32 à 14,39 m²). Demandez à Nicolas la fiche du cabinet et les conditions de location.",
       "q4": "Peut-on visiter avant la livraison ?",
       "a4": "Oui. Utilisez le formulaire ci-dessus pour proposer vos disponibilités et préciser votre activité. Nicolas vous répond sous 24 h pour organiser une visite et préparer votre installation."
     },
