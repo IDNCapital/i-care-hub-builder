@@ -136,7 +136,7 @@ export function FormulaireInteretInstallation({
           Votre demande a bien été envoyée
         </h3>
         <p className="text-base text-muted-foreground max-w-lg mx-auto">
-          Notre équipe revient vers vous <strong className="text-foreground">sous 48h ouvrées</strong>{" "}
+          Nicolas revient vers vous <strong className="text-foreground">sous 24 h</strong>{" "}
           avec les informations détaillées sur les espaces disponibles et les conditions d'installation.
         </p>
       </div>

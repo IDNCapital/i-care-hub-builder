@@ -128,7 +128,7 @@
   },
   "contact": {
     "title": "Contact Us",
-    "subtitle": "A question, a project? Our team is here to help.",
+    "subtitle": "Nicolas is your point of contact for your project. A response within 24 hours.",
     "address": "Address",
     "email": "Email",
     "phone": "Phone",
@@ -151,7 +151,7 @@
     "errorRateLimit": "Message already sent. Please wait 30 seconds.",
     "rgpd": "I consent to my data being processed by I‑CA.RE in connection with my enquiry, in accordance with the",
     "rgpdLink": "Privacy Policy",
-    "recontact": "We will get back to you within 2 business days.",
+    "recontact": "Nicolas responds within 24 hours.",
     "types": {
       "professionnel": "Care or Wellbeing Practitioner",
       "professionnelDesc": "You wish to join an I‑CA.RE practice",
@@ -208,7 +208,7 @@
     "testimonialsTitle": "They Practise at I‑CA.RE",
     "testimonialsSubtitle": "Practitioners who chose quality.",
     "formTitle": "Find Your Future Practice",
-    "formSubtitle": "Describe your project in a few clicks. Our team will get back to you within 48 hours with a tailored proposal.",
+    "formSubtitle": "Tell us about your plans. Nicolas responds within 24 hours to discuss the offices and neighbourhoods that suit your needs.",
     "formFirstName": "First Name",
     "formLastName": "Last Name",
     "formEmail": "Email",
@@ -242,7 +242,7 @@
     "formSubmit": "Send My Enquiry",
     "formSubmitting": "Sending…",
     "formDisclaimer": "Your data is never shared with third parties.",
-    "formRecontact": "We will get back to you within 48 business hours.",
+    "formRecontact": "Nicolas responds within 24 hours.",
     "formErrorConsent": "Please accept the privacy policy.",
     "formErrorRequired": "Please fill in all required fields.",
     "formErrorEmail": "Please enter a valid email address.",
@@ -354,11 +354,11 @@
     "requestAvailability": "Request Availability",
     "scheduleVisit": "Schedule a Visit",
     "surface": "sqm of floor area",
-    "offices": "offices (~11 to 15 sqm)",
+    "offices": "offices",
     "delivery": "delivery",
     "deliveryUnknown": "To be confirmed",
-    "rent": "rent / office / month",
-    "rentDetails": "Rents are controlled and range between €600 and €800 excluding charges, for a full-time professional lease, depending on floor area and specific office features.",
+    "rent": "rental terms",
+    "rentDetails": "Rent depends on the office, floor area and rental option. Detailed terms are provided before any commitment.",
     "interested": "Interested?",
     "conceptTitle": "Concept & Architectural Vision",
     "architecturalQuality": "Architectural Quality",
@@ -374,8 +374,11 @@
     "status": "Status",
     "deliveryLabel": "Delivery",
     "ctaTitle": "Interested in this project?",
-    "ctaDesc": "Contact us to receive the full dossier, schedule a visit or reserve your office.",
-    "applyNow": "Discuss My Project"
+    "ctaDesc": "Discuss availability, rental terms and a visit to the centre with Nicolas.",
+    "applyNow": "Discuss My Project",
+    "rentOnRequest": "On request",
+    "contactPromise": "Nicolas responds within 24 hours.",
+    "visitRequest": "Request a visit"
   },
   "approach": {
     "heroTitle": "Spaces designed for care, built to last",
@@ -453,7 +456,7 @@
     "proximity": "Neighbourhood Locations",
     "proximityDesc": "In the heart of communities, close to residents.",
     "rents": "Controlled Rents",
-    "rentsDesc": "Rents range between €600 and €800 excl. charges/month, for a full-time professional lease, depending on area and features."
+    "rentsDesc": "Rent based on the floor area and features of the office; detailed terms on request."
   },
   "impacts": {
     "deserts": "of French people affected by lack of local practitioners",
@@ -480,7 +483,7 @@
   "locationBordeaux": {
     "heroTag": "Office for Rent in Bordeaux",
     "h1": "Consultation offices for rent in Bordeaux for care & wellbeing practitioners",
-    "heroSubtitle": "Renovated, acoustically insulated, turnkey consultation rooms, in the heart of the Bordeaux metropolitan area, from €600 to €800 excl. charges/month.",
+    "heroSubtitle": "Renovated, acoustically insulated, turnkey consultation rooms across Bordeaux. Rooms 1 and 5 are available in Chartrons: visit the centre and its neighbourhood.",
     "heroImageAlt": "I‑CA.RE consultation office for rent in Bordeaux",
     "ctaProjects": "View available spaces",
     "introTitle": "Finding an office in Bordeaux: a real challenge for practitioners",
@@ -510,7 +513,7 @@
       "q3": "Can you share an office in Bordeaux?",
       "a3": "Yes, office sharing is possible and encouraged. Several practitioners can share time slots in the same office, reducing costs while benefiting from a high-quality professional space.",
       "q4": "How much does it cost to rent a healthcare office in Bordeaux?",
-      "a4": "For the full-time professional lease, our consultation office rents in Bordeaux range from €600 to €800 per month excluding charges. Service charge provisions (water, electricity, internet, cleaning, insurance) are added to the rent and detailed in the lease. No entry fees or hidden costs."
+      "a4": "In Chartrons, room 1 (11.1 sqm) is offered at €690/month and room 5 (13.1 sqm) at €790/month, including all taxes and charges; VAT is not applicable. Rents at other centres depend on the room and rental option. Nicolas provides detailed terms within 24 hours."
     },
     "ctaTitle": "Discuss your setup project",
     "ctaDesc": "Looking for a therapy office or healthcare office for rent in Bordeaux? Contact us to discuss your project."
@@ -519,8 +522,8 @@
     "heroTag": "Office for Rent Toulouse",
     "heroImageAlt": "I‑CA.RE Toulouse Capitole facade, allied health offices for rent",
     "h1": "Allied health office for rent in Toulouse",
-    "heroSubtitle": "Renovated, acoustically insulated, turnkey consultation rooms, first location in the heart of Toulouse, opening Q4 2026. €550 to €800 excl. charges/month depending on surface.",
-    "ctaJoinList": "Join the interest list",
+    "heroSubtitle": "5 consultation rooms in Toulouse Capitole. Works planned for November 2026, delivery planned for March 2027. Visits available now.",
+    "ctaJoinList": "Request a visit",
     "ctaDiscoverCapitole": "Discover Toulouse Capitole",
     "arrivingTitle": "I-CA.RE is coming to Toulouse",
     "arrivingP1": "After four operating locations in Bordeaux (Nansouty, Jardin Public, Pey-Berland and Chartrons), I-CA.RE is extending its model to Toulouse. Our mission remains the same: turning undervalued urban ground floors into next-generation care spaces, designed for confidentiality, acoustic comfort and the quality of patient welcome.",
@@ -531,7 +534,7 @@
     "challengeP3": "With I-CA.RE, renting an office in Toulouse becomes simple: a turnkey space, transparent rent, and a community of committed practitioners.",
     "centresTitle": "Our consultation offices in Toulouse",
     "centresImageAlt": "I‑CA.RE Toulouse Capitole, brick facade",
-    "centresBadgeOpening": "Opening Q4 2026",
+    "centresBadgeOpening": "Delivery planned for March 2027",
     "centresCardCta": "Discover the project",
     "centresMoreP1": "Other openings are currently under study in Toulouse.",
     "centresMoreLink": "Join our interest list",
@@ -549,8 +552,8 @@
     "proofP1": "We are not starting from scratch. In Bordeaux, our 4 operating locations (Nansouty, Jardin Public, Pey-Berland, Chartrons) are full or being marketed, with a community of around twenty practitioners: psychologists, psychotherapists, sophrologists, naturopaths, osteopaths, hypnotherapists. We are bringing this expertise to Toulouse.",
     "proofCtaBordeaux": "See our Bordeaux spaces",
     "proofCtaApproach": "Our approach",
-    "formTitle": "Be the first to hear about Toulouse openings",
-    "formSubtitle": "Leave us your details and your project. We will contact you as soon as an office matching your needs is available.",
+    "formTitle": "Visit Toulouse Capitole and plan your practice",
+    "formSubtitle": "Tell us about your profession, rental schedule and availability for a visit. Nicolas responds within 24 hours.",
     "formFirstName": "First name *",
     "formLastName": "Last name *",
     "formEmail": "Email *",
@@ -565,18 +568,18 @@
     "formDateLabel": "Target move-in date",
     "formDatePlaceholder": "Select a period",
     "formMessageLabel": "Message (optional)",
-    "formMessagePlaceholder": "Describe your setup project in Toulouse",
+    "formMessagePlaceholder": "Your availability for a visit and your plans for a practice in Toulouse",
     "formConsentPrefix": "I agree that my data will be processed by",
     "formConsentMiddle": "as part of my request, in accordance with the",
     "formConsentLinkText": "privacy policy",
-    "formSubmit": "Join the Toulouse interest list",
+    "formSubmit": "Send my enquiry to Nicolas",
     "formSubmitting": "Sending…",
     "toastConsentRequired": "Please accept the processing of your data.",
     "toastRequiredFields": "Please fill in the required fields.",
     "toastInvalidEmail": "Invalid email.",
     "toastInvalidPhone": "Invalid phone number.",
     "toastRateLimited": "A request has already been sent recently. Please try again shortly.",
-    "toastSuccess": "Thank you! We will contact you as soon as an office matching your project is available.",
+    "toastSuccess": "Thank you! Your enquiry has been sent. Nicolas responds within 24 hours.",
     "toastError": "An error occurred. Please try again.",
     "neighbourhoodOptions": {
       "capitole": "Capitole",
@@ -598,7 +601,7 @@
       "toBeDefined": "To be defined"
     },
     "dateOptions": {
-      "fromOpening": "From opening, Q4 2026",
+      "fromOpening": "At planned delivery in March 2027",
       "within6Months": "Within 6 months of opening",
       "during2027": "During 2027",
       "later": "Later",
@@ -607,16 +610,16 @@
     "faqTitle": "Frequently asked questions: Toulouse",
     "faq": {
       "q1": "When will the first I-CA.RE office open in Toulouse?",
-      "a1": "Our first Toulouse opening is planned for the fourth quarter of 2026, a stone's throw from Place du Capitole. The building permit has been obtained and works are starting soon.",
+      "a1": "Works at Toulouse Capitole are planned to begin in November 2026. The five offices are scheduled for delivery in March 2027. Visits are available now by appointment with Nicolas.",
       "q2": "In which Toulouse neighbourhoods does I-CA.RE plan to open?",
       "a2": "Beyond Capitole, we are studying several other central Toulouse neighbourhoods to progressively cover the pink city. People registered on our interest list are informed first about new openings.",
       "q3": "What rents does I-CA.RE charge in Toulouse?",
-      "a3": "Rents range from €550 to €800 excluding charges per month, depending on the office surface (11 to 15 sqm) and its specifics. Offices are fully turnkey: no fit-out costs to plan for.",
-      "q4": "How can I be informed first about availability in Toulouse?",
-      "a4": "Sign up to our Toulouse interest list via the form above. We will contact you as soon as an office matching your project is available, before public listings are published."
+      "a3": "The five offices are offered at €700 to €800 per month, including all taxes and charges; VAT is not applicable. Prices vary by floor area (11.32 to 14.39 sqm). Ask Nicolas for the room details and rental terms.",
+      "q4": "Can I visit before delivery?",
+      "a4": "Yes. Use the form above to suggest suitable dates and tell us about your profession. Nicolas responds within 24 hours to arrange a visit and discuss your plans."
     },
     "ctaFinalTitle": "Discuss your setup project in Toulouse",
-    "ctaFinalDesc": "Join the interest list to receive the information first, or contact us directly to discuss your project."
+    "ctaFinalDesc": "Explore the neighbourhood and plans during a visit. Discuss the rooms, rental terms and your moving schedule with Nicolas."
   },
   "cabinetJournee": {
     "heroTag": "Day Office",
@@ -695,7 +698,7 @@
     "homeTitle": "Care & Wellbeing Offices in Bordeaux | I-CA.RE",
     "homeDesc": "Shared care spaces in Bordeaux and Toulouse. Confidential, acoustically treated practice rooms for care, paramedical and wellbeing professions.",
     "projectsTitle": "Our Care Spaces | I-CA.RE",
-    "projectsDesc": "Discover I-CA.RE care real estate operations: care offices, rents from €600 to €800/month. Bordeaux metropolitan area.",
+    "projectsDesc": "Explore I-CA.RE care offices in Bordeaux and Toulouse: available rooms, upcoming centres, visits and detailed rental terms.",
     "professionalsTitle": "Set Up Your Practice in Bordeaux or Toulouse | I-CA.RE",
     "professionalsDesc": "The process to set up your practice with I-CA.RE: we discuss your project, propose a space, manage fit-out then handover. Apply online.",
     "approachTitle": "Our Approach | I-CA.RE, Family Real Estate Firm Dedicated to Care Spaces",
@@ -707,7 +710,7 @@
     "locationBordeauxTitle": "Office for Rent Bordeaux | Consultation Rooms | I-CA.RE",
     "locationBordeauxDesc": "Consultation offices for rent in Bordeaux for care and wellbeing professionals: psychologists, therapists, osteopaths, nurses. Discover I-CA.RE spaces.",
     "locationToulouseTitle": "Office for Rent in Toulouse | I-CA.RE Care Spaces",
-    "locationToulouseDesc": "I-CA.RE is coming to Toulouse: turnkey care offices in the heart of the city. First opening Q4 2026 near Capitole, more neighbourhoods to follow. 11 to 15 sqm, €550 to €800/month.",
+    "locationToulouseDesc": "5 offices to rent in Toulouse Capitole, rue de Mirepoix. Delivery planned for March 2027, visits available now. Nicolas responds within 24 hours.",
     "cabinetJourneeTitle": "Day Office: Mix & Match Pricing | I-CA.RE",
     "cabinetJourneeDesc": "The I-CA.RE mix & match: an office shared by the day between several practitioners. Pricing grid from one to three fixed days per week, identical across all sites.",
     "faqTitle": "Frequently Asked Questions | I-CA.RE",

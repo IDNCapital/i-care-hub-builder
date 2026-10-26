@@ -139,6 +139,10 @@ export default function ProjetDetail() {
     quarterLabel(project.date_ouverture_cible, lang === "fr" ? "T" : "Q") ??
     t("projectDetail.deliveryUnknown");
 
+  const enquiryTarget = lang === "fr" && hasInstallationPages(project.status) && project.slug_installation
+    ? "#demande-installation"
+    : `${localePath(lang, "contact")}?centre=${encodeURIComponent(project.name)}`;
+
   const heroSrc = getProjectHero(project.slug, project.hero_image_url);
   const gallery = getProjectGallery(project.slug, project.image_gallery);
   const lightboxImages: LightboxImage[] = (() => {
@@ -190,7 +194,7 @@ export default function ProjetDetail() {
         ) : (
           <VisuelsAVenir className="w-full h-full" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent pointer-events-none" />
         <div className="absolute bottom-0 left-0 right-0 pb-12 pointer-events-none">
           <div className="container">
             <Link to={localePath(lang, "projects")} className="pointer-events-auto inline-flex items-center text-sm text-background/80 hover:text-background mb-4 transition-colors">
@@ -210,10 +214,14 @@ export default function ProjetDetail() {
         </div>
       </section>
 
-      <section className="py-6 border-b border-border lg:hidden">
-        <div className="container flex gap-3">
-          <Button variant="hero" asChild className="flex-1"><Link to={localePath(lang, "contact")}>{t("projectDetail.requestAvailability")}</Link></Button>
-          <Button variant="hero-outline" asChild className="flex-1"><Link to={localePath(lang, "contact")}>{t("projectDetail.scheduleVisit")}</Link></Button>
+      <section className="py-6 border-b border-border">
+        <div className="container max-w-3xl mb-5">
+          <p className="text-lg leading-relaxed">{shortDesc}</p>
+          <p className="text-sm font-medium mt-3">{t("projectDetail.contactPromise")}</p>
+        </div>
+        <div className="container flex flex-wrap gap-3 max-w-3xl">
+          <Button variant="hero" asChild className="flex-1"><Link to={enquiryTarget} onClick={() => { if (enquiryTarget.startsWith("#")) document.getElementById("demande-installation")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>{t("projectDetail.requestAvailability")}</Link></Button>
+          <Button variant="hero-outline" asChild className="flex-1"><Link to={enquiryTarget} onClick={() => { if (enquiryTarget.startsWith("#")) document.getElementById("demande-installation")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>{t("projectDetail.visitRequest")}</Link></Button>
         </div>
       </section>
 
@@ -227,7 +235,7 @@ export default function ProjetDetail() {
               <div className="bg-secondary border border-border rounded-2xl p-6 text-center max-w-3xl mx-auto">
                 <p className="text-sm text-muted-foreground leading-relaxed">{t("projects.fullNotice")}</p>
                 <Button size="sm" variant="outline" asChild className="mt-4">
-                  <Link to={localePath(lang, "contact")}>
+                  <Link to={enquiryTarget} onClick={() => { if (enquiryTarget.startsWith("#")) document.getElementById("demande-installation")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
                     {t("common.contactUs")}
                     <ArrowRight className="ml-1.5 h-4 w-4" />
                   </Link>
@@ -250,8 +258,8 @@ export default function ProjetDetail() {
                 <p className="text-base font-heading text-foreground mb-2">{t("projects.availabilityNoticeTitle")}</p>
                 <p className="text-sm text-muted-foreground leading-relaxed">{t("projects.availabilityNoticeBody", { label })}</p>
                 <Button size="sm" variant="outline" asChild className="mt-4">
-                  <Link to={localePath(lang, "contact")}>
-                    {t("projectDetail.scheduleVisit")}
+                  <Link to={enquiryTarget} onClick={() => { if (enquiryTarget.startsWith("#")) document.getElementById("demande-installation")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
+                    {t("projectDetail.visitRequest")}
                     <ArrowRight className="ml-1.5 h-4 w-4" />
                   </Link>
                 </Button>
@@ -281,14 +289,14 @@ export default function ProjetDetail() {
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
               <Ruler className="w-8 h-8 text-primary mx-auto mb-3" />
-              <p className="text-lg font-bold">{lang === "fr" ? "600 à 800 €" : "600 to 800 €"}</p>
+              <p className="text-lg font-bold">{t("projectDetail.rentOnRequest")}</p>
               <p className="text-sm text-muted-foreground">{t("projectDetail.rent")}</p>
-              <p className="text-xs text-muted-foreground mt-1">{lang === "fr" ? "HC" : "excl. charges"}</p>
+
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
               <Phone className="w-8 h-8 text-primary mx-auto mb-3" />
               <p className="text-lg font-semibold mb-1">{t("projectDetail.interested")}</p>
-              <Button size="sm" asChild><Link to={localePath(lang, "contact")}>{t("common.contactUs")}</Link></Button>
+              <Button size="sm" asChild><Link to={enquiryTarget} onClick={() => { if (enquiryTarget.startsWith("#")) document.getElementById("demande-installation")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>{t("common.contactUs")}</Link></Button>
             </div>
           </div>
 
@@ -363,10 +371,10 @@ export default function ProjetDetail() {
 
               <div className="space-y-3">
                 <Button variant="hero" asChild className="w-full">
-                  <Link to={localePath(lang, "contact")}>{t("projectDetail.requestAvailability")}<ArrowRight className="ml-2 h-5 w-5" /></Link>
+                  <Link to={enquiryTarget} onClick={() => { if (enquiryTarget.startsWith("#")) document.getElementById("demande-installation")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>{t("projectDetail.requestAvailability")}<ArrowRight className="ml-2 h-5 w-5" /></Link>
                 </Button>
                 <Button variant="hero-outline" asChild className="w-full">
-                  <Link to={localePath(lang, "contact")}>{t("projectDetail.scheduleVisit")}<ArrowRight className="ml-2 h-5 w-5" /></Link>
+                  <Link to={enquiryTarget} onClick={() => { if (enquiryTarget.startsWith("#")) document.getElementById("demande-installation")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>{t("projectDetail.visitRequest")}<ArrowRight className="ml-2 h-5 w-5" /></Link>
                 </Button>
               </div>
             </div>
@@ -402,13 +410,13 @@ export default function ProjetDetail() {
       )}
 
       {lang === "fr" && hasInstallationPages(project.status) && project.slug_installation && (
-        <section className="section-padding">
+        <section id="demande-installation" className="section-padding scroll-mt-24">
           <div className="container max-w-3xl">
             <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-3">
-              Manifester son intérêt
+              Votre installation
             </p>
             <h2 className="font-display text-3xl md:text-4xl font-normal text-foreground mb-4">
-              Vous projetez de vous installer ici ?
+              Visiter ce lieu et préparer votre installation
             </h2>
             <p className="text-base text-muted-foreground mb-8">
               {project.status === "en_exploitation" ? (
@@ -417,6 +425,7 @@ export default function ProjetDetail() {
                 <>Ce cabinet <BrandName /> est en pré-lancement. Laissez-nous quelques informations pour recevoir en priorité les disponibilités de bureaux, les conditions de location et le planning d'ouverture prévisionnel.</>
               )}
             </p>
+            <p className="text-base font-medium mb-6">{t("projectDetail.contactPromise")}</p>
             <FormulaireInteretInstallation
               villeSlug={project.slug_installation}
               villeLabel={cabinetNomCourt(project.name)}
@@ -449,7 +458,7 @@ export default function ProjetDetail() {
             )}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" asChild>
-                <Link to={localePath(lang, "contact")}>{t("projectDetail.requestAvailability")}<ArrowRight className="ml-2 h-5 w-5" /></Link>
+                <Link to={enquiryTarget} onClick={() => { if (enquiryTarget.startsWith("#")) document.getElementById("demande-installation")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>{t("projectDetail.requestAvailability")}<ArrowRight className="ml-2 h-5 w-5" /></Link>
               </Button>
               <Button variant="hero-outline" asChild>
                 <Link to={`${localePath(lang, "professionals")}#candidature`}>{t("projectDetail.applyNow")}</Link>

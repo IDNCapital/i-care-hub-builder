@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -45,8 +45,10 @@ export default function Contact() {
     { id: "investisseur", backendType: "investisseur", icon: Briefcase, title: t("contact.types.investisseur"), description: t("contact.types.investisseurDesc") },
   ];
 
-  const [selectedType, setSelectedType] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ nom: "", email: "", telephone: "", organisation: "", message: "" });
+  const [searchParams] = useSearchParams();
+  const centre = (searchParams.get("centre") ?? "").slice(0, 120);
+  const [selectedType, setSelectedType] = useState<string | null>(centre ? "professionnel" : null);
+  const [formData, setFormData] = useState({ nom: "", email: "", telephone: "", organisation: "", message: centre ? (lang === "fr" ? `Je souhaite organiser une visite de ${centre}.` : `I would like to arrange a visit to ${centre}.`) : "" });
   const [honeypot, setHoneypot] = useState("");
   const [rgpdConsent, setRgpdConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
