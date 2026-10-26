@@ -194,7 +194,7 @@ export default function ProjetDetail() {
         ) : (
           <VisuelsAVenir className="w-full h-full" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent pointer-events-none" />
         <div className="absolute bottom-0 left-0 right-0 pb-12 pointer-events-none">
           <div className="container">
             <Link to={localePath(lang, "projects")} className="pointer-events-auto inline-flex items-center text-sm text-background/80 hover:text-background mb-4 transition-colors">
