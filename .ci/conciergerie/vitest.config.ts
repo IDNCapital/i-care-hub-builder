@@ -11,7 +11,7 @@ export default {
   root: projectRoot,
   cacheDir: path.join(projectRoot, 'proof/.vite-cache'),
   esbuild: { jsx: 'automatic' },
-  test: { environment: 'jsdom', include: ['src/pages/DecrireMonBesoin.fiabilite.test.tsx'] },
+  test: { environment: 'jsdom', include: ['.ci/conciergerie/DecrireMonBesoin.fiabilite.test.tsx'] },
   resolve: { alias: [
     { find: '@', replacement: path.join(projectRoot, 'src') },
     ...['react', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'react-dom', 'react-dom/client'].map(name => ({ find: new RegExp('^' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$'), replacement: rootRequire.resolve(name) })),

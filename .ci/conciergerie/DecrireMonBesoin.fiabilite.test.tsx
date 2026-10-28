@@ -2,7 +2,7 @@ import { act, type ReactNode } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import DecrireMonBesoin from './DecrireMonBesoin';
+import DecrireMonBesoin from '../../src/pages/DecrireMonBesoin';
 
 type Row = { id: string; problematiques: unknown };
 type Reply = { data: Row[] | null; error: { message: string } | null; count: number | null };

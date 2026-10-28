@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - "src/pages/DecrireMonBesoin.tsx"
-      - "src/pages/DecrireMonBesoin.fiabilite.test.tsx"
+      - ".ci/conciergerie/DecrireMonBesoin.fiabilite.test.tsx"
       - "src/components/Layout.tsx"
       - "src/components/SeoHead.tsx"
       - "src/components/ui/**"
@@ -39,5 +39,5 @@ jobs:
       - name: Install the isolated pinned test tools without scripts
         run: npm ci --prefix .ci/conciergerie --ignore-scripts --no-audit --no-fund
       - run: .ci/conciergerie/node_modules/.bin/vitest run --config .ci/conciergerie/vitest.config.ts
-      - run: node_modules/.bin/eslint src/pages/DecrireMonBesoin.tsx src/pages/DecrireMonBesoin.fiabilite.test.tsx
+      - run: node_modules/.bin/eslint src/pages/DecrireMonBesoin.tsx .ci/conciergerie/DecrireMonBesoin.fiabilite.test.tsx
       - run: node_modules/.bin/tsc --noEmit -p .ci/conciergerie/tsconfig.json
