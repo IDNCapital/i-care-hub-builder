@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { ChargementPage } from "@/components/ChargementPage";
 import { SeoHead } from "@/components/SeoHead";
@@ -22,8 +22,34 @@ interface ArticleRow {
   updated_at: string;
 }
 
+
+function initialSsrHead() {
+  if (typeof document === "undefined") return { canonical: null as string | null, nodes: [] as { node: Element; markup: string }[] };
+  const canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href ?? null;
+  const nodes = canonical ? Array.from(document.head.querySelectorAll('title,meta[name="description"],meta[name="robots"],link[rel="canonical"],link[rel="alternate"],meta[property^="og:"],meta[name^="twitter:"]')).map(node => ({ node, markup: node.outerHTML })) : [];
+  return { canonical, nodes };
+}
+
 export default function ArticleDetail() {
   const { slug } = useParams<{ slug: string }>();
+  const { pathname } = useLocation();
+  const [initial] = useState(() => ({
+    pathname,
+    ...initialSsrHead(),
+  }));
+  const [navigated, setNavigated] = useState(false);
+  useEffect(() => { if (pathname !== initial.pathname) setNavigated(true); }, [pathname, initial.pathname]);
+  const provisional = navigated || pathname !== initial.pathname || (initial.canonical !== null && initial.canonical !== new URL(pageUrl(pathname)).href);
+  useLayoutEffect(() => {
+    if (!initial.canonical || initial.canonical === new URL(pageUrl(pathname)).href) return;
+    for (const { node, markup } of initial.nodes) {
+      if (node.parentNode === document.head && node.outerHTML === markup) node.remove();
+    }
+  }, [initial, pathname]);
+  return <ArticleCourant key={slug ?? ""} slug={slug} pathname={pathname} provisional={provisional} />;
+}
+
+function ArticleCourant({ slug, pathname, provisional }: { slug: string | undefined; pathname: string; provisional: boolean }) {
   const [article, setArticle] = useState<ArticleRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [errored, setErrored] = useState(false);
@@ -33,36 +59,43 @@ export default function ArticleDetail() {
     setLoading(true);
     setErrored(false);
     (async () => {
-      // La RLS ne renvoie que les articles au statut publié.
-      const { data, error } = await supabase
-        .from("articles")
-        .select("slug, titre, chapo, contenu, meta_title, meta_description, published_at, updated_at")
-        .eq("slug", slug ?? "")
-        .maybeSingle();
-      if (cancelled) return;
-      if (error) {
-        setErrored(true);
-        setArticle(null);
-      } else {
-        setArticle((data as ArticleRow) ?? null);
+      try {
+        // La RLS ne renvoie que les articles au statut publié.
+        const { data, error, status } = await supabase
+          .from("articles")
+          .select("slug, titre, chapo, contenu, meta_title, meta_description, published_at, updated_at")
+          .eq("slug", slug ?? "")
+          .maybeSingle();
+        if (cancelled) return;
+        if (error !== null || status !== 200 || data === undefined) throw new Error("Article inconnu");
+        if (data === null) {
+          setArticle(null);
+          return;
+        }
+        const row = data as ArticleRow;
+        if (row.slug !== slug || typeof row.titre !== "string" || typeof row.chapo !== "string" || typeof row.contenu !== "string" || typeof row.updated_at !== "string" || [row.meta_title, row.meta_description, row.published_at].some(value => value !== null && typeof value !== "string")) throw new Error("Article incoherent");
+        setArticle(row);
+      } catch {
+        if (!cancelled) { setErrored(true); setArticle(null); }
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      setLoading(false);
     })();
     return () => {
       cancelled = true;
     };
   }, [slug]);
 
-  if (loading) {
-    return <ChargementPage mode="loading" />;
-  }
-
-  if (errored) {
-    return <ChargementPage mode="error" />;
+  if (loading || errored) {
+    return <>
+      {provisional && <SeoHead title={loading ? "Chargement de l'article | I-CA.RE" : "Article indisponible | I-CA.RE"} description="Le contenu de cet article ne peut pas encore être confirmé." path={pathname} noIndex />}
+      <p role={loading ? "status" : "alert"} className="sr-only">{loading ? "Chargement de l'article..." : "L'article est indisponible pour le moment."}</p>
+      <ChargementPage mode={loading ? "loading" : "error"} />
+    </>;
   }
 
   if (!article) {
-    return <NotFound />;
+    return <><link rel="canonical" href={pageUrl(pathname)} /><NotFound /></>;
   }
 
   const canonicalPath = `/patients/articles/${article.slug}`;

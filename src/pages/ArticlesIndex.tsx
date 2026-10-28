@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
@@ -9,26 +9,57 @@ import { pageUrl } from "@/lib/siteUrl";
 
 const CANONICAL_PATH = "/patients/articles";
 
+
+function initialSsrHead() {
+  if (typeof document === "undefined") return { canonical: null as string | null, nodes: [] as { node: Element; markup: string }[] };
+  const canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href ?? null;
+  const nodes = canonical ? Array.from(document.head.querySelectorAll('title,meta[name="description"],meta[name="robots"],link[rel="canonical"],link[rel="alternate"],meta[property^="og:"],meta[name^="twitter:"]')).map(node => ({ node, markup: node.outerHTML })) : [];
+  return { canonical, nodes };
+}
+
 export default function ArticlesIndex() {
+  const [initialHead] = useState(initialSsrHead);
+  useLayoutEffect(() => {
+    if (!initialHead.canonical || initialHead.canonical === new URL(pageUrl(CANONICAL_PATH)).href) return;
+    for (const { node, markup } of initialHead.nodes) {
+      if (node.parentNode === document.head && node.outerHTML === markup) node.remove();
+    }
+  }, [initialHead]);
   const [articles, setArticles] = useState<ArticleCardData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [errored, setErrored] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
+    setErrored(false);
+    setArticles([]);
     (async () => {
-      // La RLS ne renvoie que les articles au statut publié.
-      const { data, error } = await supabase
-        .from("articles")
-        .select("slug, titre, chapo, published_at")
-        .order("published_at", { ascending: false });
-      if (cancelled) return;
-      setArticles(error ? [] : ((data ?? []) as ArticleCardData[]));
-      setLoading(false);
+      try {
+        // La RLS ne renvoie que les articles au statut publié.
+        const { data, error, count, status } = await supabase
+          .from("articles")
+          .select("slug, titre, chapo, published_at", { count: "exact" })
+          .order("published_at", { ascending: false });
+        if (cancelled) return;
+        if (error !== null || ![200, 206].includes(status) || !Array.isArray(data) || !Number.isInteger(count) || count !== data.length) throw new Error("Catalogue inconnu ou incomplet");
+        const slugs = new Set<string>();
+        for (const row of data) {
+          if (!row || typeof row.slug !== "string" || !row.slug || slugs.has(row.slug) || typeof row.titre !== "string" || typeof row.chapo !== "string" || (row.published_at !== null && typeof row.published_at !== "string")) throw new Error("Article incoherent");
+          slugs.add(row.slug);
+        }
+        setArticles(data as ArticleCardData[]);
+      } catch {
+        if (!cancelled) setErrored(true);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     })();
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [attempt]);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -60,10 +91,10 @@ export default function ArticlesIndex() {
         description="Les articles de l'Espace Patients I-CA.RE : repères clairs sur le soin, le paramédical et le bien-être, et orientation vers la bonne praticienne ou le bon praticien."
         path={CANONICAL_PATH}
       />
-      <script
+      {!loading && !errored && <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      />}
 
       {/* Hero */}
       <section className="pt-28 pb-10 md:pt-32 md:pb-14 bg-cream">
@@ -89,8 +120,13 @@ export default function ArticlesIndex() {
       <section className="bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 max-w-5xl">
           {loading ? (
-            <div className="flex items-center justify-center py-16">
+            <div role="status" aria-label="Chargement des articles" className="flex items-center justify-center py-16">
               <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+            </div>
+          ) : errored ? (
+            <div role="alert" className="bg-cream rounded-2xl p-10 text-center">
+              <p className="font-heading text-xl mb-6">Le contenu n'a pas pu être chargé.</p>
+              <Button variant="outline" size="lg" onClick={() => setAttempt(value => value + 1)}>Réessayer</Button>
             </div>
           ) : articles.length === 0 ? (
             <div className="bg-cream rounded-2xl p-10 text-center">
