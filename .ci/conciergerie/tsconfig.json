@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "types": ["node"],
+    "paths": {
+      "@/*": ["src/*"],
+      "vitest": [".ci/conciergerie/node_modules/vitest/dist/index.d.ts"]
+    }
+  },
+  "include": ["../../src/pages/DecrireMonBesoin.tsx", "../../src/pages/DecrireMonBesoin.fiabilite.test.tsx", "../../src/vite-env.d.ts"]
+}
