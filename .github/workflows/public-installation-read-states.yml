@@ -1,0 +1,48 @@
+name: Public installation read states
+
+on:
+  pull_request:
+    paths:
+      - "src/pages/SinstallerIndex.tsx"
+      - "src/pages/SinstallerDetail.tsx"
+      - "src/hooks/useInstallation.ts"
+      - "src/components/FormulaireInteretInstallation.tsx"
+      - "src/components/SinstallerLinksCabinet.tsx"
+      - "src/components/SeoHead.tsx"
+      - "src/components/CabinetVisuel.tsx"
+      - "src/lib/installation.ts"
+      - "src/types/installation.ts"
+      - "src/lib/projectImages.ts"
+      - "src/lib/siteUrl.ts"
+      - "src/lib/routes.ts"
+      - "src/integrations/supabase/**"
+      - "tsconfig*.json"
+      - "package*.json"
+      - "bun.lock"
+      - ".ci/public-installation/**"
+      - ".github/workflows/public-installation-read-states.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: .ci/public-installation/package-lock.json
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.4"
+      - name: Install the frozen root dependencies without scripts
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install the isolated pinned test tools without scripts
+        run: npm ci --prefix .ci/public-installation --ignore-scripts --no-audit --no-fund
+      - run: .ci/public-installation/node_modules/.bin/vitest run --config .ci/public-installation/vitest.config.ts
+      - run: node_modules/.bin/eslint src/pages/SinstallerIndex.tsx src/pages/SinstallerDetail.tsx src/hooks/useInstallation.ts .ci/public-installation/Sinstaller.complet.test.tsx .ci/public-installation/hooks.complet.test.tsx .ci/public-installation/vitest.config.ts
+      - run: node_modules/.bin/tsc --noEmit -p .ci/public-installation/tsconfig.json
