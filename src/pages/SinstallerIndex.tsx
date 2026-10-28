@@ -1,16 +1,24 @@
 import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MapPin, ArrowRight } from "lucide-react";
-import { useProfessionsInstallation, useCabinetsInstallation } from "@/hooks/useInstallation";
+import { useProfessionsInstallation, useCabinetsInstallation, InstallationLecture } from "@/hooks/useInstallation";
 import { cabinetNomCourt, libelleOuverture, installationUrl } from "@/lib/installation";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
 import { CabinetVisuel } from "@/components/CabinetVisuel";
 import { pageUrl } from "@/lib/siteUrl";
 
 export default function SinstallerIndex() {
-  const { data: professions = [] } = useProfessionsInstallation();
-  const { data: cabinets = [] } = useCabinetsInstallation();
+  const location = useLocation();
+  const visite = `${location.key}:${location.pathname}`;
+  return <InstallationLecture visite={visite}><SinstallerCourant /></InstallationLecture>;
+}
+
+function SinstallerCourant() {
+  const lectureProfessions = useProfessionsInstallation();
+  const lectureCabinets = useCabinetsInstallation();
+  const professions = lectureProfessions.data ?? [];
+  const cabinets = lectureCabinets.data ?? [];
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -65,6 +73,9 @@ export default function SinstallerIndex() {
           <h2 className="text-3xl md:text-4xl font-heading font-normal mb-10">
             Cabinets ouverts et en ouverture
           </h2>
+          {lectureCabinets.isLoading && <p role="status">Chargement des cabinets…</p>}
+          {lectureCabinets.isError && <div role="alert"><p>Les cabinets ne peuvent pas être chargés.</p><button type="button" className="underline p-3" onClick={() => void lectureCabinets.retry()}>Réessayer les cabinets</button></div>}
+          {!lectureCabinets.isLoading && !lectureCabinets.isError && cabinets.length === 0 && <p>Aucun cabinet proposé actuellement.</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {cabinets.map((c) => (
               <article
@@ -107,6 +118,10 @@ export default function SinstallerIndex() {
           <h2 className="text-3xl md:text-4xl font-heading font-normal mb-10">
             Professions accueillies
           </h2>
+          {lectureProfessions.isLoading && <p role="status">Chargement des professions…</p>}
+          {lectureProfessions.isError && <div role="alert"><p>Les professions ne peuvent pas être chargées.</p><button type="button" className="underline p-3" onClick={() => void lectureProfessions.retry()}>Réessayer les professions</button></div>}
+          {!lectureProfessions.isLoading && !lectureProfessions.isError && professions.length === 0 && <p>Aucune profession proposée actuellement.</p>}
+          {(lectureCabinets.isError || lectureCabinets.isLoading) && <p>Les liens d'installation seront disponibles après le chargement des cabinets.</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {professions.map((p) => (
               <article key={p.id} className="bg-background rounded-lg p-6 border border-border">

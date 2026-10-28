@@ -1,10 +1,9 @@
 import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { MapPin, ChevronRight } from "lucide-react";
 import NotFound from "@/pages/NotFound";
-import { useInstallationPage, useProfessions, useCabinetsInstallation } from "@/hooks/useInstallation";
-import { ChargementPage } from "@/components/ChargementPage";
+import { useInstallationPage, useProfessions, useCabinetsInstallation, InstallationLecture } from "@/hooks/useInstallation";
 import { cabinetNomCourt, libelleOuverture, aVille } from "@/lib/installation";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import { FormulaireInteretInstallation } from "@/components/FormulaireInteretInstallation";
@@ -29,24 +28,41 @@ function parsePostalAddress(address: string | null, city: string) {
 }
 
 export default function SinstallerDetail() {
+  const location = useLocation();
+  const visite = `${location.key}:${location.pathname}`;
+  return <InstallationLecture visite={visite}><SinstallerCourant /></InstallationLecture>;
+}
+
+function EtatLecture({ nom, lecture }: { nom: string; lecture: { isLoading: boolean; isError: boolean; retry: () => Promise<void> } }) {
+  if (lecture.isLoading) return <p role="status">Chargement : {nom}…</p>;
+  if (!lecture.isError) return null;
+  return <div role="alert"><p>Impossible de charger : {nom}.</p><button type="button" className="underline p-3" onClick={() => void lecture.retry()}>Réessayer : {nom}</button></div>;
+}
+
+function SinstallerCourant() {
   const { profession, ville } = useParams<{ profession: string; ville: string }>();
-  const { data, isLoading, isError } = useInstallationPage(profession ?? "", ville ?? "");
-  const { data: professions } = useProfessions();
-  const { data: cabinetsInstallation } = useCabinetsInstallation();
-  const projetCabinet = cabinetsInstallation?.find((c) => c.slug_installation === ville);
+  const lecture = useInstallationPage(profession ?? "", ville ?? "");
+  const { data, isLoading, isError, lectures } = lecture;
+  const lectureProfessions = useProfessions();
+  const lectureCabinets = useCabinetsInstallation();
+  const professions = lectureProfessions.data;
+  const cabinetsInstallation = lectureCabinets.data;
+  const projetCabinet = cabinetsInstallation?.find((c) => c.slug_installation === ville && c.id === data?.projet_id);
+  const cheminCourant = `/sinstaller/${profession ?? ""}/${ville ?? ""}`;
 
   if (isLoading) {
     return (
       <Layout>
+        <SeoHead title="Chargement de l'offre d'installation | I-CA.RE" description="Chargement des informations de cette offre." path={cheminCourant} noIndex />
         <div className="container pt-32 pb-16">
-          <p className="text-muted-foreground">Chargement…</p>
+          <p role="status" className="text-muted-foreground">Chargement…</p>
         </div>
       </Layout>
     );
   }
 
   if (isError) {
-    return <ChargementPage mode="error" />;
+    return <Layout><SeoHead title="Offre d'installation indisponible | I-CA.RE" description="Les informations de cette offre ne peuvent pas être chargées." path={cheminCourant} noIndex /><div className="container pt-32 pb-16"><EtatLecture nom="l'offre d'installation" lecture={lecture} /></div></Layout>;
   }
 
   if (!data) {
@@ -54,7 +70,7 @@ export default function SinstallerDetail() {
   }
 
   const nomCourt = cabinetNomCourt(data.cabinet_nom_complet);
-  const ouvertureLabel = libelleOuverture(projetCabinet?.status, data.date_ouverture);
+  const ouvertureLabel = projetCabinet ? libelleOuverture(projetCabinet.status, data.date_ouverture) : "";
   const professionLower = data.profession_libelle.toLowerCase();
   const path = data.url_path;
   const canonical = pageUrl(path);
@@ -63,7 +79,7 @@ export default function SinstallerDetail() {
   const visuels = getCabinetVisuals(projetCabinet?.slug);
   const visuelAlt = `Cabinet pour ${professionLower} à louer, I‑CA.RE ${nomCourt}`;
 
-  const professionRow = professions?.find((p) => p.slug === data.profession_slug);
+  const professionRow = professions?.find((p) => p.slug === data.profession_slug && p.id === data.profession_id);
   const nomInclusifPluriel = professionRow?.nom_inclusif_pluriel ?? data.profession_libelle.toLowerCase();
 
   const contenuVille = data.contenuVille;
@@ -183,11 +199,18 @@ export default function SinstallerDetail() {
             <span>
               {data.cabinet_adresse}
               <br />
-              <span className="text-primary font-medium">{ouvertureLabel}</span>
+              {ouvertureLabel && <span className="text-primary font-medium">{ouvertureLabel}</span>}
             </span>
           </p>
         </div>
       </section>
+
+      <section className="bg-background"><div className="container max-w-4xl py-4">
+        <EtatLecture nom="les références du cabinet" lecture={lectureCabinets} />
+        {!lectureCabinets.isLoading && !lectureCabinets.isError && !projetCabinet && <div><p>Les références du cabinet ne correspondent pas à cette offre. Le statut d'ouverture reste à confirmer.</p><button type="button" className="underline p-3" onClick={() => void Promise.all([lecture.retry(), lectureCabinets.retry()])}>Actualiser l'offre et le cabinet</button></div>}
+        <EtatLecture nom="les références de la profession" lecture={lectureProfessions} />
+        {!lectureProfessions.isLoading && !lectureProfessions.isError && !professionRow && <div><p>Les références de la profession ne correspondent pas à cette offre.</p><button type="button" className="underline p-3" onClick={() => void Promise.all([lecture.retry(), lectureProfessions.retry()])}>Actualiser l'offre et la profession</button></div>}
+      </div></section>
 
       {projetCabinet && (
         <section className="bg-background border-b border-border">
@@ -215,7 +238,8 @@ export default function SinstallerDetail() {
           <h2 className="text-2xl md:text-3xl font-heading font-normal mb-6">
             Le cabinet
           </h2>
-          {contenuVille?.cabinet_details_md ? (
+          <EtatLecture nom="les informations du cabinet" lecture={lectures.ville} />
+          {lectures.ville.isLoading || lectures.ville.isError ? null : contenuVille?.cabinet_details_md ? (
             <MarkdownContent content={contenuVille.cabinet_details_md} />
           ) : (
             <p className="text-base text-muted-foreground leading-relaxed">
@@ -249,6 +273,8 @@ export default function SinstallerDetail() {
           </div>
         </section>
       )}
+
+      <section className="bg-background"><div className="container max-w-3xl py-4"><EtatLecture nom="les informations de la profession" lecture={lectures.profession} /></div></section>
 
       {/* Exercer comme {profession} */}
       {hasProfessionContent && (
@@ -299,6 +325,8 @@ export default function SinstallerDetail() {
           </div>
         </div>
       </section>
+
+      <section className="bg-background"><div className="container max-w-3xl py-4"><EtatLecture nom="les informations communes" lecture={lectures.commun} /></div></section>
 
       {/* Sections communes */}
       {contenuCommun.map((bloc, idx) => (
