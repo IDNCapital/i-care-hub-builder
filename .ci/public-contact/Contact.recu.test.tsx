@@ -59,3 +59,21 @@ describe('Saisie, contexte et nouvelle tentative',()=>{
 describe('Reçu du relais',()=>{
  it('une réponse marquée comme erreur de relais ne prouve pas un refus avant insertion',async()=>{const r=refus('invalid_phone',400);r.response.headers.set('x-relay-error','true');h.invoke.mockResolvedValue(r);await mount();await ready();await submit();expect(text()).toContain('Résultat non confirmé');expect(envoyer().disabled).toBe(true);expect(h.success).not.toHaveBeenCalled();expect(h.analytics).not.toHaveBeenCalled();});
 });
+
+
+// La classification réelle doit refuser la coercition d'un JSON mal formé.
+import { readFileSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
+import * as ts from 'typescript';
+describe('CONTRAT_CODE_STRING',()=>{it('un tableau JSON ne prouve pas un refus avant insertion',async()=>{
+ const source=readFileSync('src/pages/Contact.tsx','utf8');
+ const ast=ts.createSourceFile('Contact.tsx',source,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
+ const fn=ast.statements.find(n=>ts.isFunctionDeclaration(n)&&n.name?.text==='qualifierRecu');
+ if(!fn)throw Error('Classificateur réel absent');
+ const code=ts.transpileModule(fn.getText(ast)+'\nexports.qualifierRecu=qualifierRecu;', {compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText;
+ const context:{exports:{qualifierRecu?:(v:unknown)=>Promise<{etat:string}>};Response:typeof Response}={exports:{},Response};
+ runInNewContext(code,context);
+ const qualifier=context.exports.qualifierRecu;if(!qualifier)throw Error('Classificateur non chargé');
+ const response=new Response(JSON.stringify({error:['invalid_email']}),{status:400});
+ expect((await qualifier({data:null,error:{context:response},response})).etat).toBe('inconnu');
+});});

@@ -48,7 +48,7 @@ async function qualifierRecu(value: unknown): Promise<Recu> {
       const corps: unknown = await r.response.clone().json();
       if (corps && typeof corps === "object" && !Array.isArray(corps)) {
         const code = (corps as Record<string, unknown>).error;
-        if ((r.response.status === 429 && code === "rate_limited") || (r.response.status === 400 && ["invalid_type", "missing_fields", "invalid_email", "invalid_phone", "invalid_profession"].includes(String(code)))) return { etat: "refuse" };
+        if (typeof code === "string" && ((r.response.status === 429 && code === "rate_limited") || (r.response.status === 400 && ["invalid_type", "missing_fields", "invalid_email", "invalid_phone", "invalid_profession"].includes(code)))) return { etat: "refuse" };
       }
     } catch { /* Une réponse illisible ne prouve pas l'absence d'écriture. */ }
   }
