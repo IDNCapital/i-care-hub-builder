@@ -1,0 +1,40 @@
+name: Investor access current states
+
+on:
+  pull_request:
+    paths:
+      - "src/pages/InvestisseurVerify.tsx"
+      - "src/pages/InvestisseurMemo.tsx"
+      - "src/lib/routes.ts"
+      - "supabase/functions/check-investor-access/**"
+      - "supabase/functions/verify-investor-token/**"
+      - "tsconfig*.json"
+      - "package*.json"
+      - "bun.lock"
+      - ".ci/investor-access/**"
+      - ".github/workflows/investor-access-read-states.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: .ci/investor-access/package-lock.json
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.4"
+      - name: Install the frozen root dependencies without scripts
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install the isolated pinned test tools without scripts
+        run: npm ci --prefix .ci/investor-access --ignore-scripts --no-audit --no-fund
+      - run: .ci/investor-access/node_modules/.bin/vitest run --config .ci/investor-access/vitest.config.ts
+      - run: node_modules/.bin/eslint src/pages/InvestisseurVerify.tsx src/pages/InvestisseurMemo.tsx .ci/investor-access/Investisseur.acces.test.tsx .ci/investor-access/vitest.config.ts
+      - run: node_modules/.bin/tsc --noEmit -p .ci/investor-access/tsconfig.json
