@@ -1,0 +1,41 @@
+name: Public contact request receipts
+
+on:
+  pull_request:
+    paths:
+      - "src/pages/Contact.tsx"
+      - "src/integrations/supabase/**"
+      - "src/lib/analytics.ts"
+      - "src/lib/routes.ts"
+      - "src/locales/**"
+      - "src/components/ui/**"
+      - "tsconfig*.json"
+      - "package*.json"
+      - "bun.lock"
+      - ".ci/public-contact/**"
+      - ".github/workflows/public-contact-receipts.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: .ci/public-contact/package-lock.json
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.4"
+      - name: Install the frozen root dependencies without scripts
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install the isolated pinned test tools without scripts
+        run: npm ci --prefix .ci/public-contact --ignore-scripts --no-audit --no-fund
+      - run: .ci/public-contact/node_modules/.bin/vitest run --config .ci/public-contact/vitest.config.ts
+      - run: node_modules/.bin/eslint src/pages/Contact.tsx .ci/public-contact/Contact.recu.test.tsx .ci/public-contact/vitest.config.ts
+      - run: node_modules/.bin/tsc --noEmit -p .ci/public-contact/tsconfig.json
