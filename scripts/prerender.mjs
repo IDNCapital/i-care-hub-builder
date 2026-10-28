@@ -141,6 +141,12 @@ const ROUTES = [
   { path: "/location-cabinet-bordeaux", type: "strategic" },
   { path: "/location-cabinet-toulouse", type: "strategic" },
   { path: "/cabinet-a-la-journee", type: "strategic" },
+  // Pages « cabinet à louer » par site, lot ENTRANT-GOOGLE-PAGES-1 (donnees statiques sourcees).
+  { path: "/cabinet-a-louer/bordeaux-chartrons", type: "strategic" },
+  { path: "/cabinet-a-louer/le-bouscat", type: "strategic" },
+  { path: "/cabinet-a-louer/toulouse-capitole", type: "strategic" },
+  { path: "/cabinet-a-louer/floirac", type: "strategic" },
+  { path: "/cabinet-a-louer/bordeaux-jardin-public", type: "strategic" },
   { path: "/insights", type: "strategic" },
   { path: "/insights/cabinet-medical-bordeaux", type: "strategic" },
   { path: "/insights/budget-cabinet-bordeaux", type: "strategic" },
