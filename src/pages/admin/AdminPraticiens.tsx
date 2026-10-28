@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -82,6 +82,8 @@ export type AvisCache = {
   last_updated_at: string;
 };
 
+export type ReadState = "loading" | "ready" | "error";
+
 export type Cabinet = {
   slug: string;
   name: string;
@@ -133,7 +135,9 @@ function isIncomplete(p: Praticien): { incomplete: boolean; reasons: string[] } 
 export default function AdminPraticiens() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [loading, setLoading] = useState(true);
+  const [readStates, setReadStates] = useState<Record<"praticiens" | "cache" | "cabinets", ReadState>>({ praticiens: "loading", cache: "loading", cabinets: "loading" });
+  const mounted = useRef(false);
+  const generations = useRef({ praticiens: 0, cache: 0, cabinets: 0 });
   const [praticiens, setPraticiens] = useState<Praticien[]>([]);
   const [cache, setCache] = useState<Map<string, AvisCache>>(new Map());
   const [cabinets, setCabinets] = useState<Cabinet[]>([]);
@@ -146,48 +150,78 @@ export default function AdminPraticiens() {
   const [refreshingAvis, setRefreshingAvis] = useState(false);
   const tagsReviewFilter = searchParams.get("filter") === "tags-review";
 
-  const fetchAll = async () => {
-    setLoading(true);
+  // Each source owns its receipt, so an unavailable reference cannot hide the list.
+  const loadRead = async <T,>(
+    source: keyof typeof readStates,
+    read: () => Promise<T>,
+    clear: () => void,
+    accept: (data: T) => void,
+  ) => {
+    if (!mounted.current) return;
+    const generation = ++generations.current[source];
     const token = getAdminToken();
-    if (!token) {
-      navigate("/admin/login");
-      return;
-    }
-
-    // Note: RLS publique ne montre que validee+actif. On utilise une RPC dédiée admin
-    // côté backend pour tout voir. Faute d'RPC, on passe par une lecture limitée :
-    // on appelle une edge function qui renvoie tout. Pour l'instant on lit ce qui est
-    // visible côté public + on requête via un appel admin via service role.
+    const current = () => mounted.current && generations.current[source] === generation;
+    clear();
+    setReadStates((states) => ({ ...states, [source]: "loading" }));
     try {
-      const result = await callAdminFunction<{ praticiens: Praticien[] }>(
-        "admin-list-praticiens",
-        {},
-      );
-      setPraticiens(result.praticiens ?? []);
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Erreur de chargement");
+      if (!token) {
+        navigate("/admin/login");
+        throw new Error("Session admin expirée");
+      }
+      const data = await read();
+      if (!current()) return;
+      if (getAdminToken() !== token) throw new Error("Session admin modifiée");
+      accept(data);
+      setReadStates((states) => ({ ...states, [source]: "ready" }));
+    } catch {
+      if (current()) setReadStates((states) => ({ ...states, [source]: "error" }));
     }
+  };
 
-    // Cache avis : lecture publique
-    const { data: cacheRows } = await supabase
-      .from("avis_google_cache")
+  const fetchPraticiens = () => loadRead("praticiens", async () => {
+    const result = await callAdminFunction<{ praticiens: Praticien[] }>("admin-list-praticiens", {});
+    const rows = result?.praticiens;
+    if (!Array.isArray(rows) || rows.some((p) => !p ||
+      ["id", "slug", "cabinet_slug", "prenom", "nom", "profession", "statut_validation", "preview_token", "tags_extraction_status"].some((key) => typeof p[key as keyof Praticien] !== "string") ||
+      typeof p.actif !== "boolean" ||
+      [p.specialites, p.problematiques, p.specialites_derivees, p.problematiques_derivees].some((tags) => !Array.isArray(tags) || tags.some((tag) => typeof tag !== "string"))) ||
+      new Set(rows.map((p) => p.id)).size !== rows.length) throw new Error("Réponse praticiens invalide");
+    return rows;
+  }, () => setPraticiens([]), setPraticiens);
+
+  const fetchCache = () => loadRead("cache", async () => {
+    const { data, error } = await supabase.from("avis_google_cache")
       .select("place_id,rating,user_ratings_total,google_display_name,last_updated_at");
-    const m = new Map<string, AvisCache>();
-    (cacheRows ?? []).forEach((r) => m.set(r.place_id, r as AvisCache));
-    setCache(m);
+    if (error || !Array.isArray(data) || data.some((r) => !r || typeof r.place_id !== "string" || typeof r.last_updated_at !== "string" ||
+      (r.rating !== null && (typeof r.rating !== "number" || !Number.isFinite(r.rating))) ||
+      (r.user_ratings_total !== null && (!Number.isInteger(r.user_ratings_total) || r.user_ratings_total < 0))) ||
+      new Set(data.map((r) => r.place_id)).size !== data.length) throw new Error("Réponse cache invalide");
+    return new Map(data.map((r) => [r.place_id, r as AvisCache]));
+  }, () => setCache(new Map()), setCache);
 
-    // Cabinets : projets exploite + en_construction
-    const { data: projetsRows } = await supabase
-      .from("projets")
-      .select("slug,name,city,status")
+  const fetchCabinets = () => loadRead("cabinets", async () => {
+    const { data, error } = await supabase.from("projets").select("slug,name,city,status")
       .in("status", ["en_exploitation", "en_travaux"]);
-    setCabinets((projetsRows ?? []) as Cabinet[]);
+    if (error || !Array.isArray(data) || data.some((r) => !r ||
+      [r.slug, r.name, r.city, r.status].some((v) => typeof v !== "string")) ||
+      new Set(data.map((r) => r.slug)).size !== data.length) throw new Error("Réponse cabinets invalide");
+    return data as Cabinet[];
+  }, () => setCabinets([]), setCabinets);
 
-    setLoading(false);
+  const fetchAll = async () => {
+    await Promise.all([fetchPraticiens(), fetchCache(), fetchCabinets()]);
   };
 
   useEffect(() => {
-    fetchAll();
+    mounted.current = true;
+    const activeGenerations = generations.current;
+    void fetchAll();
+    return () => {
+      mounted.current = false;
+      activeGenerations.praticiens++;
+      activeGenerations.cache++;
+      activeGenerations.cabinets++;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -346,11 +380,13 @@ export default function AdminPraticiens() {
         <main className="min-h-screen bg-background">
           {/* Header */}
           <header className="border-b bg-card sticky top-0 z-10">
-            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h1 className="text-xl font-semibold">Praticiens</h1>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  {counts.total} fiches · {counts.validees} validées · {counts.enAttente} en attente de retour
+                  {readStates.praticiens === "ready"
+                    ? `${counts.total} fiches chargées · ${counts.validees} validées · ${counts.enAttente} en attente de retour (total non vérifié)`
+                    : readStates.praticiens === "loading" ? "Chargement des fiches…" : "Fiches indisponibles"}
                   {tagsReviewFilter && (
                     <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-[11px] bg-[#D9C7A1]/30 text-anthracite">
                       Vue : tags à vérifier
@@ -365,7 +401,7 @@ export default function AdminPraticiens() {
                   )}
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button onClick={() => openEdit(null)} size="sm">
                   <Plus className="w-4 h-4 mr-1.5" /> Nouveau praticien
                 </Button>
@@ -399,9 +435,9 @@ export default function AdminPraticiens() {
                     Rafraîchir les avis
                   </Button>
                   <span className="text-xs text-muted-foreground whitespace-nowrap">
-                    {avisPlusAncien
+                    {readStates.cache === "loading" ? "Chargement du cache…" : readStates.cache === "error" ? "Cache indisponible" : avisPlusAncien
                       ? `Cache le plus ancien : ${avisPlusAncien}`
-                      : "Cache vide"}
+                      : cache.size === 0 ? "Cache vide" : "Date du cache indisponible"}
                   </span>
                 </div>
                 <Button onClick={() => navigate("/admin/idn-os-webhooks")} variant="outline" size="sm">
@@ -420,6 +456,19 @@ export default function AdminPraticiens() {
             </div>
           </header>
 
+          <section aria-label="État des lectures" className="max-w-7xl mx-auto px-6 pt-4 space-y-2">
+            <p className="text-xs text-muted-foreground">Les nombres portent sur les fiches reçues ; le total du registre n'est pas vérifié.</p>
+            {readStates.praticiens !== "loading" && <Button type="button" variant="outline" size="sm" onClick={() => void fetchPraticiens()}>
+              {readStates.praticiens === "error" ? "Réessayer les fiches" : "Actualiser les fiches"}
+            </Button>}
+            {([{ source: "cache", label: "Avis Google", retry: fetchCache }, { source: "cabinets", label: "Cabinets", retry: fetchCabinets }] as const).map(({ source, label, retry }) => (
+              <div key={source} className="text-sm" role={readStates[source] === "error" ? "alert" : "status"}>
+                {readStates[source] === "error" ? `${label} indisponibles. ` : readStates[source] === "loading" ? `Chargement : ${label}…` : source === "cabinets" && cabinets.length === 0 ? "Aucun cabinet reçu." : ""}
+                {readStates[source] === "error" && <Button type="button" size="sm" variant="outline" onClick={() => void retry()}>Réessayer : {label}</Button>}
+              </div>
+            ))}
+          </section>
+
           {/* Filtres */}
           <section className="max-w-7xl mx-auto px-6 py-4 space-y-3">
             <div className="flex flex-wrap gap-3 items-center">
@@ -432,7 +481,7 @@ export default function AdminPraticiens() {
                   className="pl-9"
                 />
               </div>
-              <Select value={cabinetFilter} onValueChange={setCabinetFilter}>
+              <Select value={cabinetFilter} onValueChange={setCabinetFilter} disabled={readStates.cabinets !== "ready"}>
                 <SelectTrigger className="w-[220px]">
                   <SelectValue placeholder="Tous les cabinets" />
                 </SelectTrigger>
@@ -476,14 +525,16 @@ export default function AdminPraticiens() {
           {/* Liste */}
           <section className="max-w-7xl mx-auto px-6 pb-12">
             <Card className="overflow-hidden">
-              {loading ? (
-                <div className="p-12 text-center text-muted-foreground">
+              {readStates.praticiens === "loading" ? (
+                <div role="status" className="p-12 text-center text-muted-foreground">
                   <Loader2 className="w-5 h-5 animate-spin inline-block mr-2" />
                   Chargement…
                 </div>
+              ) : readStates.praticiens === "error" ? (
+                <div role="alert" className="p-6 text-center">Les fiches ne peuvent pas être chargées. Réessayez la lecture.</div>
               ) : filtered.length === 0 ? (
                 <div className="p-12 text-center text-muted-foreground">
-                  Aucun praticien ne correspond aux filtres.
+                  Aucun praticien ne correspond aux filtres dans les fiches reçues.
                 </div>
               ) : (
                 <div className="overflow-x-auto">
@@ -557,13 +608,13 @@ export default function AdminPraticiens() {
                               </span>
                             </td>
                             <td className="px-4 py-3 text-xs">
-                              {c && c.rating ? (
+                              {readStates.cache === "loading" ? "Chargement…" : readStates.cache === "error" ? "Avis indisponibles" : c && c.rating ? (
                                 <span className="inline-flex items-center gap-1">
                                   <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                                   {c.rating} · {c.user_ratings_total ?? 0}
                                 </span>
                               ) : (
-                                <span className="text-muted-foreground">, </span>
+                                <span className="text-muted-foreground">Pas de note reçue</span>
                               )}
                             </td>
                             <td className="px-4 py-3">
@@ -612,6 +663,8 @@ export default function AdminPraticiens() {
                 praticien={editing}
                 cabinets={cabinets}
                 cache={cache}
+                cacheState={readStates.cache}
+                cabinetsState={readStates.cabinets}
                 onSaved={handleSaved}
                 onCancel={() => setDrawerOpen(false)}
               />

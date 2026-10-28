@@ -37,7 +37,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { callAdminFunction } from "@/lib/adminAuth";
-import type { AvisCache, Cabinet, Praticien } from "@/pages/admin/AdminPraticiens";
+import type { AvisCache, Cabinet, Praticien, ReadState } from "@/pages/admin/AdminPraticiens";
 import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
 import {
   Tooltip,
@@ -168,19 +168,29 @@ function parseTags(s: string): string[] {
     .filter(Boolean);
 }
 
-export function PraticienDrawer({
-  praticien,
-  cabinets,
-  cache,
-  onSaved,
-  onCancel,
-}: {
+type DrawerProps = {
   praticien: Praticien | null;
   cabinets: Cabinet[];
   cache: Map<string, AvisCache>;
+  cacheState?: ReadState;
+  cabinetsState?: ReadState;
   onSaved: () => void;
   onCancel: () => void;
-}) {
+};
+
+export function PraticienDrawer(props: DrawerProps) {
+  return <PraticienForm key={props.praticien?.id ?? "new"} {...props} />;
+}
+
+function PraticienForm({
+  praticien,
+  cabinets,
+  cache,
+  cacheState = "ready",
+  cabinetsState = "ready",
+  onSaved,
+  onCancel,
+}: DrawerProps) {
   const [form, setForm] = useState<FormState>(() => fromPraticien(praticien));
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -355,7 +365,7 @@ export function PraticienDrawer({
           <RadioGroup
             value={form.genre}
             onValueChange={(v) => update("genre", v)}
-            className="flex gap-4 mt-1"
+            className="flex flex-wrap gap-4 mt-1"
           >
             {[
               { v: "F", l: "Femme" },
@@ -372,8 +382,10 @@ export function PraticienDrawer({
         </div>
         <div>
           <Label>Cabinet *</Label>
+          {cabinetsState !== "ready" ? <p role={cabinetsState === "error" ? "alert" : "status"} className="text-xs text-muted-foreground">{cabinetsState === "error" ? "Cabinets indisponibles. Réessayez leur lecture dans la liste." : "Chargement des cabinets…"}</p> : cabinets.length === 0 && <p className="text-xs text-muted-foreground">Aucun cabinet reçu.</p>}
           <Select
             value={form.cabinet_slug}
+            disabled={cabinetsState !== "ready"}
             onValueChange={(v) => update("cabinet_slug", v)}
           >
             <SelectTrigger className="mt-1">
@@ -567,6 +579,10 @@ export function PraticienDrawer({
             {!form.google_place_id ? (
               <span className="inline-flex items-center gap-1 text-muted-foreground">
                 <AlertCircle className="w-3.5 h-3.5" /> Aucun Place ID
+              </span>
+            ) : cacheState !== "ready" ? (
+              <span role={cacheState === "error" ? "alert" : "status"} className="text-muted-foreground">
+                {cacheState === "error" ? "Cache indisponible. Réessayez sa lecture dans la liste." : "Chargement du cache…"}
               </span>
             ) : cacheEntry && cacheEntry.rating ? (
               <span className="inline-flex items-center gap-1 text-green-700 dark:text-green-400">
