@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
@@ -19,10 +19,16 @@ const TICKET_KEYS = ["<100k", "100-250k", "250-500k", "500k-1M", ">1M"] as const
 
 export default function InvestisseurInteret() {
   const { i18n } = useTranslation();
-  const { pathname } = useLocation();
-  return <InteretCourant key={`${pathname}:${i18n.language === "en" ? "en" : "fr"}`} />;
+  const location = useLocation();
+  const cle = `${location.key}:${location.pathname}${location.search}${location.hash}:${i18n.language === "en" ? "en" : "fr"}`;
+  const contexte = useRef<{ cle: string; active: boolean } | null>(null);
+  if (!contexte.current || contexte.current.cle !== cle) {
+    if (contexte.current) contexte.current.active = false;
+    contexte.current = { cle, active: true };
+  }
+  return <InteretCourant key={cle} contexte={contexte.current} />;
 }
-function InteretCourant() {
+function InteretCourant({ contexte }: { contexte: { active: boolean } }) {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
@@ -44,14 +50,14 @@ function InteretCourant() {
   const [emailTentative, setEmailTentative] = useState("");
   const occupe = useRef(false);
   const visite = useRef({ active: false, numero: 0 });
-  useEffect(() => {
-    const actuelle = visite.current; actuelle.active = true;
-    return () => { actuelle.active = false; ++actuelle.numero; };
-  }, []);
+  useLayoutEffect(() => {
+    const actuelle = visite.current; actuelle.active = true; contexte.active = true;
+    return () => { actuelle.active = false; contexte.active = false; ++actuelle.numero; };
+  }, [contexte]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (occupe.current || !visite.current.active) return;
+    if (occupe.current || !visite.current.active || !contexte.active) return;
 
     if (!consent) {
       toast.error(t("interestForm.errorConsent"));
@@ -70,7 +76,7 @@ function InteretCourant() {
 
     occupe.current = true;
     const numero = ++visite.current.numero;
-    const courante = () => visite.current.active && visite.current.numero === numero;
+    const courante = () => contexte.active && visite.current.active && visite.current.numero === numero;
     setEmailTentative(formData.email.trim().toLowerCase().slice(0, 255));
     setIsSubmitting(true);
 
@@ -110,13 +116,13 @@ function InteretCourant() {
       if (!res.ok || res.status !== 200 || (result.error !== undefined && result.error !== null)) throw Error("Reçu non confirmé");
       if (result.status === "already_verified" && typeof result.access_token === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(result.access_token)) {
         localStorage.setItem("icare_investor_token", result.access_token);
-        toast.success(t("interestForm.successExisting"));
+        try { toast.success(t("interestForm.successExisting")); } catch { /* Le reçu ne dépend pas du toast. */ }
         navigate(localePath(lang, "investmentMemo"));
         return;
       }
       if (result.status === "verification_sent" && result.access_token === undefined) {
         setEmailSent(true);
-        Analytics.formSubmission("investor_interest", localePath(lang, "investmentInterest"));
+        try { Analytics.formSubmission("investor_interest", localePath(lang, "investmentInterest")); } catch { /* Le reçu reste acquis si la mesure échoue. */ }
       } else if (result.status === "email_already_sent" && result.access_token === undefined) {
         setIssue("recent");
       } else throw Error("Reçu non confirmé");
