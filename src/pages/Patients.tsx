@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
 import { localePath } from "@/lib/routes";
@@ -27,16 +28,20 @@ export default function Patients() {
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const path = localePath(lang, "patients");
-  const { data: praticiens, loading } = usePraticiensPublics();
-  const mode = resolvePatientsIndexMode(praticiens.length);
+  const { data: praticiens, loading, error, retry } = usePraticiensPublics();
+  const mode = !loading && !error ? resolvePatientsIndexMode(praticiens.length) : null;
 
   const seoTitle =
-    mode === "ouvert"
+    mode === null
+      ? "Espace Patients I-CA.RE | Annuaire"
+      : mode === "ouvert"
       ? "Annuaire des praticiennes et praticiens I-CA.RE | Bordeaux"
       : "Espace Patients I-CA.RE | En cours de lancement";
 
   const seoDesc =
-    mode === "ouvert"
+    mode === null
+      ? "Consultez l'annuaire des praticiennes et praticiens I-CA.RE."
+      : mode === "ouvert"
       ? "Trouvez une praticienne ou un praticien du soin, paramédical et bien-être à Bordeaux. Annuaire qualitatif I-CA.RE."
       : `L'annuaire I-CA.RE ouvre publiquement quand ${SEUIL_OUVERTURE_INDEX_PATIENTS} spécialistes ont validé leur fiche. Découvrez les premières fiches déjà publiées.`;
 
@@ -77,9 +82,9 @@ export default function Patients() {
         title={seoTitle}
         description={seoDesc}
         path={path}
-        noIndex={mode === "amorcage"}
+        noIndex={mode !== "ouvert"}
       />
-      {praticiens.length > 0 && (
+      {!loading && !error && praticiens.length > 0 && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -93,11 +98,18 @@ export default function Patients() {
           condition sur la longueur, pour que l'attente de prérendu soit
           inconditionnelle sur les deux routes. Voir ATTENTES_DOM dans
           scripts/prerender.mjs. */}
-      {!loading && <div hidden data-praticiens-annuaire={praticiens.length} />}
+      {!loading && !error && <div hidden data-praticiens-annuaire={praticiens.length} />}
       {loading ? (
-        <div className="pt-40 pb-40 flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+        <div role="status" className="pt-40 pb-40 flex items-center justify-center gap-3">
+          <Loader2 aria-hidden="true" className="w-8 h-8 animate-spin text-muted-foreground" />
+          <span>Chargement de l'annuaire…</span>
         </div>
+      ) : error ? (
+        <section className="pt-32 pb-20 px-4 max-w-3xl mx-auto space-y-4">
+          <h1 className="font-heading text-3xl">Annuaire momentanément indisponible</h1>
+          <p role="alert">Les fiches et leur nombre ne sont pas confirmés. Réessayez pour consulter l'annuaire.</p>
+          <Button onClick={retry}>Réessayer l'annuaire</Button>
+        </section>
       ) : mode === "ouvert" ? (
         <PatientsOuvert praticiens={praticiens} />
       ) : (

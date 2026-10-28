@@ -1,0 +1,26 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "vitest": [
+        ".ci/public-patients/node_modules/vitest/dist/index.d.ts"
+      ]
+    }
+  },
+  "include": [
+    "../../src/pages/Patients.tsx",
+    "../../src/components/patients/PatientsOuvert.tsx",
+    "../../src/hooks/usePraticiensPublics.ts",
+    "../../src/hooks/useSpecialites.ts",
+    "./Patients.complet.test.tsx",
+    "./hooks.complet.test.tsx",
+    "../../src/vite-env.d.ts"
+  ]
+}
