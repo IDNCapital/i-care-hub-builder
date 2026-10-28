@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,12 +29,45 @@ type FieldErrors = Partial<Record<"nom" | "email" | "telephone" | "consent" | "p
  * Appelle l'Edge Function `submit-demande-installation` (honeypot,
  * rate-limit, double email transactionnel).
  */
-export function FormulaireInteretInstallation({
+type Recu = { etat: "pret" | "confirme" | "refuse" | "inconnu"; id?: string; code?: string };
+async function qualifierRecu(value: unknown): Promise<Recu> {
+  if (!value || typeof value !== "object") return { etat: "inconnu" };
+  const r = value as { data?: unknown; error?: unknown; response?: unknown };
+  if (!(r.response instanceof Response) || r.response.headers.get("x-relay-error") === "true") return { etat: "inconnu" };
+  const data = r.data && typeof r.data === "object" && !Array.isArray(r.data) ? r.data as Record<string, unknown> : null;
+  if (r.response.status === 200 && r.error === null && data?.ok === true && !Object.prototype.hasOwnProperty.call(data, "error") && typeof data.id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(data.id)) return { etat: "confirme", id: data.id };
+  // Seuls les refus explicitement documentés avant INSERT autorisent une correction directe.
+  if (r.data === null && r.error && typeof r.error === "object" && (r.error as { context?: unknown }).context === r.response && [400, 429].includes(r.response.status)) {
+    try {
+      const corps: unknown = await r.response.clone().json();
+      if (corps && typeof corps === "object" && !Array.isArray(corps)) {
+        const code = (corps as Record<string, unknown>).error;
+        if (typeof code === "string" && ((r.response.status === 429 && code === "rate_limited") || (r.response.status === 400 && ["consent_required", "missing_profession", "invalid_name", "invalid_email", "invalid_phone", "invalid_profession", "invalid_ville"].includes(code)))) return { etat: "refuse", code };
+      }
+    } catch { /* Une réponse illisible ne prouve pas l'absence d'écriture. */ }
+  }
+  return { etat: "inconnu" };
+}
+
+type Visite = { cle: string; active: boolean };
+export function FormulaireInteretInstallation(props: Props) {
+  const location = useLocation();
+  const cle = JSON.stringify([location.key, location.pathname, location.search, location.hash, props.professionSlug ?? null, props.villeSlug ?? null]);
+  const visite = useRef<Visite | null>(null);
+  if (!visite.current || visite.current.cle !== cle) {
+    if (visite.current) visite.current.active = false;
+    visite.current = { cle, active: true };
+  }
+  return <InstallationCourante key={cle} {...props} visite={visite.current} />;
+}
+
+function InstallationCourante({
   professionSlug,
   villeSlug,
   professionLabel,
   villeLabel,
-}: Props) {
+  visite,
+}: Props & { visite: Visite }) {
   const professionLibre = !professionSlug;
   const villeLibre = !villeSlug;
   const { data: professions = [] } = useProfessions();
@@ -50,6 +83,16 @@ export function FormulaireInteretInstallation({
   const [selectedVille, setSelectedVille] = useState<string>(villeSlug ?? "__all__");
   const [state, setState] = useState<State>("idle");
   const [errors, setErrors] = useState<FieldErrors>({});
+  const [recu, setRecu] = useState<Recu>({ etat: "pret" });
+  const [preparerReprise, setPreparerReprise] = useState(false);
+  const verrou = useRef(false);
+  const generation = useRef(0);
+  const bloque = state === "submitting" || recu.etat === "inconnu" || recu.etat === "confirme";
+  useLayoutEffect(() => {
+    const compteur = generation;
+    visite.active = true;
+    return () => { visite.active = false; ++compteur.current; };
+  }, [visite]);
   const autreProfession = professionLibre && selectedProfession === "autre-profession";
 
   const isValid = useMemo(() => {
@@ -62,6 +105,7 @@ export function FormulaireInteretInstallation({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (verrou.current || !visite.active) return;
     const next: FieldErrors = {};
     if (nom.trim().length < 2) next.nom = "Merci d'indiquer votre nom (2 caractères minimum).";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) next.email = "Adresse email invalide.";
@@ -74,11 +118,16 @@ export function FormulaireInteretInstallation({
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
+    verrou.current = true;
+    const tentative = ++generation.current;
+    const sourceTentative = window.location.href;
+    const active = () => visite.active && generation.current === tentative;
+    setRecu({ etat: "pret" });
     setState("submitting");
     try {
       const villeToSend = villeSlug ?? (selectedVille === "__all__" ? null : selectedVille);
 
-      const { data, error } = await supabase.functions.invoke<{ ok?: boolean; id?: string; error?: string }>(
+      const reponse = await supabase.functions.invoke<{ ok?: boolean; id?: string; error?: string }>(
         "submit-demande-installation",
         {
           body: {
@@ -94,8 +143,17 @@ export function FormulaireInteretInstallation({
           },
         },
       );
-      if (error || !data?.ok) {
-        const code = data?.error ?? "unknown";
+      const preuve = await qualifierRecu(reponse);
+      if (!active()) return;
+      if (window.location.href !== sourceTentative) { setRecu({ etat: "inconnu" }); setState("error"); return; }
+      setRecu(preuve);
+      if (preuve.etat === "inconnu") {
+        setErrors({});
+        setState("error");
+        return;
+      }
+      if (preuve.etat === "refuse") {
+        const code = preuve.code ?? "unknown";
         const map: Record<string, string> = {
           consent_required: "Le consentement est obligatoire.",
           invalid_email: "Adresse email invalide.",
@@ -107,6 +165,7 @@ export function FormulaireInteretInstallation({
           rate_limited: "Trop de demandes envoyées, réessayez dans une heure.",
         };
         setErrors({ form: map[code] ?? "Une erreur est survenue. Merci de réessayer." });
+        verrou.current = false;
         setState("error");
         return;
       }
@@ -119,10 +178,12 @@ export function FormulaireInteretInstallation({
         // ignore analytics errors
       }
       setState("success");
-    } catch (err) {
-      console.error("[FormulaireInteretInstallation] submit error:", err);
-      setErrors({ form: "Une erreur est survenue. Merci de réessayer." });
-      setState("error");
+    } catch {
+      if (active()) {
+        setRecu({ etat: "inconnu" });
+        setErrors({});
+        setState("error");
+      }
     }
   };
 
@@ -139,12 +200,14 @@ export function FormulaireInteretInstallation({
           Nicolas revient vers vous <strong className="text-foreground">sous 24 h</strong>{" "}
           avec les informations détaillées sur les espaces disponibles et les conditions d'installation.
         </p>
+        <p role="status" className="mt-4 text-sm text-muted-foreground">Référence d'enregistrement : <span className="break-all">{recu.id}</span></p>
       </div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+      <fieldset disabled={bloque} className="space-y-5 min-w-0">
       {/* Honeypot invisible (off-screen, pas display:none) */}
       <div
         aria-hidden="true"
@@ -318,6 +381,9 @@ export function FormulaireInteretInstallation({
       </div>
       {errors.consent && <p className="text-sm text-destructive">{errors.consent}</p>}
 
+      </fieldset>
+      {recu.etat === "refuse" && <p role="status" className="text-sm">Cette tentative a été refusée avant enregistrement. Corrigez votre saisie ou patientez avant une nouvelle tentative.</p>}
+      {recu.etat === "inconnu" && <div role="alert" className="space-y-3 text-sm"><p>Résultat non confirmé. Votre demande a pu être enregistrée. Votre saisie est conservée ; évitez de la renvoyer sans vérification auprès de l'équipe.</p>{!preparerReprise ? <Button type="button" variant="outline" className="h-auto whitespace-normal" onClick={() => setPreparerReprise(true)}>Préparer une autre tentative</Button> : <><p>Déverrouiller ne supprime ni n'annule la première tentative. Aucun envoi ne sera effectué par ce geste.</p><Button type="button" variant="outline" className="h-auto whitespace-normal" onClick={() => { ++generation.current; verrou.current = false; setPreparerReprise(false); setRecu({ etat: "pret" }); setErrors({}); setState("idle"); }}>Je comprends le risque de doublon et je souhaite modifier ma demande</Button></>}</div>}
       {errors.form && (
         <div className="rounded-md bg-destructive/10 border border-destructive/30 p-3 text-sm text-destructive">
           {errors.form}
@@ -329,7 +395,7 @@ export function FormulaireInteretInstallation({
           type="submit"
           variant="hero"
           size="lg"
-          disabled={!isValid || state === "submitting"}
+          disabled={!isValid || bloque}
           className="w-full sm:w-auto"
         >
           {state === "submitting" ? (
