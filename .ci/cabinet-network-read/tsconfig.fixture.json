@@ -1,0 +1,1 @@
+{"extends":"./tsconfig.json","include":["../../src/components/SectionPraticiensDuCabinet.tsx","../../src/vite-env.d.ts","./fixture/**/*.ts","./fixture/**/*.tsx"]}

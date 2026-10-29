@@ -20,7 +20,7 @@ export function SectionPraticiensDuCabinet({
   cabinetNomCourt,
   cabinetUrl,
 }: Props) {
-  const { data: praticiens, loading } = usePraticiensCabinet(cabinetSlug);
+  const { data: praticiens, loading, error, retry } = usePraticiensCabinet(cabinetSlug);
 
   // Marqueur data-praticiens-cabinet : il porte le nombre de fiches rendues,
   // et vaut "0" quand la requete a abouti sans resultat. Sans lui, deux etats
@@ -29,7 +29,15 @@ export function SectionPraticiensDuCabinet({
   // attendre. Le JSON-LD de cette section vit dans le corps depuis le lot 2 :
   // il n'existe que tant que la section rend, la capture doit donc attendre un
   // fait declare et non une duree. Voir ATTENTES_DOM dans scripts/prerender.mjs.
-  if (loading) return null;
+  if (loading) return <div role="status" className="container py-8 text-sm text-muted-foreground">Chargement du réseau de ce cabinet…</div>;
+  if (error) return (
+    <div role="alert" className="container py-8 text-center space-y-3">
+      <p className="text-sm text-muted-foreground">Le réseau de ce cabinet n'a pas pu être reçu. Sa présence reste inconnue.</p>
+      <button type="button" onClick={() => void retry()} className="inline-flex min-h-11 items-center underline underline-offset-2 rounded focus:outline-none focus:ring-2 focus:ring-primary">
+        Réessayer le réseau
+      </button>
+    </div>
+  );
   if (praticiens.length === 0) return <div hidden data-praticiens-cabinet="0" />;
 
   const max = Math.min(praticiens.length, 8);
@@ -66,7 +74,7 @@ export function SectionPraticiensDuCabinet({
     >
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalBusinessLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalBusinessLd).replace(/</g, "\\u003c") }}
       />
       <div className="container">
         <div className="max-w-3xl mx-auto text-center mb-10">
@@ -81,6 +89,11 @@ export function SectionPraticiensDuCabinet({
           </p>
         </div>
 
+        {praticiens.length > max && (
+          <p className="text-center text-sm text-muted-foreground mb-6">
+            Les {max} premières fiches sont affichées sur {praticiens.length} praticiens du cabinet.
+          </p>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {visibles.map((p) => (
             <CartePraticienPublic

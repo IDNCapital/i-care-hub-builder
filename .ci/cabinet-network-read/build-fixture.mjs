@@ -1,0 +1,10 @@
+import { build } from 'esbuild';
+import { resolve } from 'node:path';
+import { createRequire } from 'node:module';
+import { mkdir, copyFile } from 'node:fs/promises';
+const rootResolve=createRequire(resolve('package.json')).resolve;
+const aliases=Object.fromEntries(['react','react/jsx-runtime','react/jsx-dev-runtime','react-dom','react-dom/client','react-dom/test-utils','react-router-dom','react-router','lucide-react'].map(name=>[name,rootResolve(name)]));
+const fixture=resolve('.ci/cabinet-network-read/fixture'),out=resolve('.ci/cabinet-network-read/proof/browser-dist');
+await mkdir(out,{recursive:true});
+await build({entryPoints:[resolve(fixture,'main.tsx')],bundle:true,jsx:'automatic',outfile:resolve(out,'app.js'),format:'esm',define:{'process.env.NODE_ENV':'"production"'},alias:{...aliases,'@/integrations/supabase/client':resolve(fixture,'source.ts'),'@':resolve('src')}});
+await copyFile(resolve(fixture,'index.html'),resolve(out,'index.html'));
