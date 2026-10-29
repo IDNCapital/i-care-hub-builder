@@ -27,7 +27,12 @@ import { JSONLD_EXPECTATIONS } from "./jsonLdExpectations.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, "..", "dist");
-const PORT = 45678;
+// Port du serveur local de capture : attribue par le systeme (0) a chaque
+// passe, sauf PRERENDER_PORT impose. Un port fixe (45678 jusqu'au lot
+// ENTRANT-GOOGLE-PAGES-1C) echoue en EADDRINUSE des qu'un autre socket le
+// tient sur la machine, avant toute capture : c'est ce qui a rendu rouges P1
+// et P4 du filet isole sur le run 40868690270, sans rapport avec les donnees.
+const PORT_DEMANDE = process.env.PRERENDER_PORT ? Number(process.env.PRERENDER_PORT) : 0;
 const OPTIONAL = process.env.PRERENDER_OPTIONAL === "true";
 
 // ── Reprise par route ───────────────────────────────────────────────
@@ -736,7 +741,13 @@ async function main() {
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.end(SHELL);
   });
-  await new Promise((resolve) => server.listen(PORT, resolve));
+  await new Promise((resolve, reject) => {
+    server.once("error", (err) => {
+      reject(new Error(`[prerender] Serveur local de capture indisponible sur le port ${PORT_DEMANDE} : ${err?.code || err?.message || err}`));
+    });
+    server.listen(PORT_DEMANDE, resolve);
+  });
+  const PORT = server.address().port;
   console.log(`[prerender] Serving dist/ on http://localhost:${PORT}`);
 
   // 2. Launch browser

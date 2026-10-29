@@ -263,7 +263,7 @@ export default function CabinetALouer() {
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2">
                   {resumeOffre(c)}, ou à temps partiel dès {formatLoyer(GRILLE_TEMPS_PARTIEL[0].loyerMensuelEur)}{" "}
-                  {MENTION_TEMPS_PARTIEL}, dans un lieu partagé entre {p.pluriel} et autres professionnels du
+                  {MENTION_TEMPS_PARTIEL}, dans un lieu partagé ouvert aux {p.pluriel} et aux autres professionnels du
                   médical et du paramédical.
                 </p>
                 <Link

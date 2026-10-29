@@ -290,7 +290,7 @@ export const CABINETS_A_LOUER: CabinetALouer[] = [
     lots: [
       // project_units 31c1cd7d-59bb-4b24-b003-d90e9ec630a1
       { libelle: "Cabinet 1", surfaceM2: 14.39, loyerMensuelEur: 800, statut: "en_travaux", disponibleLe: "2027-03-01" },
-      // project_units e7960eb4-e472-4ede-8680-8e47ec7442fe
+      // project_units e7960eb4-e471-4ede-8680-8e47ec7442fe
       { libelle: "Cabinet 2", surfaceM2: 11.32, loyerMensuelEur: 700, statut: "en_travaux", disponibleLe: "2027-03-01" },
       // project_units b0617f7c-99ba-4b53-8edb-5e7d11566758
       { libelle: "Cabinet 3", surfaceM2: 11.72, loyerMensuelEur: 700, statut: "en_travaux", disponibleLe: "2027-03-01" },

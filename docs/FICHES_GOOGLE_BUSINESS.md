@@ -27,7 +27,7 @@ Sources : base IDN OS (tables `projects` et `project_units`, SELECT du 28/10/202
 - **Description** (692 caractères sur 750) :
 
 ```
-I-CA.RE Chartrons est un lieu partagé pour praticiens du médical et du paramédical au 20 cours Saint Louis, dans le quartier des Chartrons à Bordeaux. Deux cabinets sont disponibles à la location à temps plein : le cabinet 1 de 11,1 m² à 690 € par mois et le cabinet 5 de 13,1 m² à 790 € par mois, loyer hors charges, non assujetti à la TVA. À temps partiel, un cabinet partagé à la journée : 190, 340 ou 460 € par mois, charges comprises, pour un, deux ou trois jours fixes par semaine. Médecins, kinésithérapeutes, ostéopathes, psychologues, orthophonistes, infirmiers, sages femmes, diététiciens et autres praticiens de santé y exercent sans investir dans un local. Visite sur rendez vous.
+I-CA.RE Chartrons est un lieu partagé pour praticiens du médical et du paramédical au 20 cours Saint Louis, dans le quartier des Chartrons à Bordeaux. Deux cabinets sont disponibles à la location à temps plein : le cabinet 1 de 11,1 m² à 690 € par mois et le cabinet 5 de 13,1 m² à 790 € par mois, loyer hors charges, non assujetti à la TVA. À temps partiel, un cabinet partagé à la journée : 190, 340 ou 460 € par mois, charges comprises, pour un, deux ou trois jours fixes par semaine. Médecins, kinésithérapeutes, ostéopathes, psychologues, orthophonistes, infirmiers, sages femmes, diététiciens et autres praticiens de santé peuvent y exercer sans investir dans un local. Visite sur rendez vous.
 ```
 
 Variantes de titre et de méta par recherche visée (une section par profession sur la page, pas de page dupliquée) :
