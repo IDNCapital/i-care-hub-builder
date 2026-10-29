@@ -26,6 +26,7 @@ import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import * as esbuild from "esbuild";
+import ts from "typescript";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -79,34 +80,105 @@ async function lireRouteMap() {
 // ── 2. App.tsx : ce que le routeur sert ─────────────────────────────
 // Les routes anglaises sont imbriquees sous <Route path="/en/*">, donc
 // relatives : leur chemin absolu se reconstitue en prefixant /en.
+function sourceStructuree(chemin, nom, genre) {
+  const source = ts.createSourceFile(nom, readFileSync(join(ROOT, chemin), "utf8"), ts.ScriptTarget.Latest, true, genre);
+  if (source.parseDiagnostics.length) throw new Error(`Lecture de ${nom} non confirmee : syntaxe illisible.`);
+  return source;
+}
+
+function sansParentheses(expression) {
+  while (expression && ts.isParenthesizedExpression(expression)) expression = expression.expression;
+  return expression;
+}
+
+function chaineLitterale(expression) {
+  const value = sansParentheses(expression);
+  return value && (ts.isStringLiteral(value) || ts.isNoSubstitutionTemplateLiteral(value)) ? value.text : null;
+}
+
 function lireApp() {
-  const txt = readFileSync(join(ROOT, "src/App.tsx"), "utf8");
-  const debutNid = txt.indexOf('path="/en/*"');
-  const finNid = txt.indexOf("</Routes></LangSync>", debutNid);
+  const source = sourceStructuree("src/App.tsx", "App.tsx", ts.ScriptKind.TSX);
   const fixes = new Set();
   const parametrees = new Set();
   const navigate = new Set();
-  for (const m of txt.matchAll(/<Route\b/g)) {
-    const bout = txt.slice(m.index, m.index + 600);
-    const pm = bout.match(/path="([^"]+)"/);
-    if (!pm) continue;
-    let p = pm[1];
-    if (["/en/*", "/*", "/fr/*", "*"].includes(p)) continue;
-    if (m.index > debutNid && m.index < finNid) p = "/en" + (p === "/" ? "" : p);
-    const q = norm(p);
-    if (/element=\{<Navigate/.test(bout)) navigate.add(q);
-    (q.includes(":") ? parametrees : fixes).add(q);
-  }
+  let routeurTrouve = false;
+  const parcourir = (node, prefixe = "") => {
+    const ouverture = ts.isJsxElement(node) ? node.openingElement : ts.isJsxSelfClosingElement(node) ? node : null;
+    if (ouverture?.tagName.getText(source) === "Routes") {
+      routeurTrouve = true;
+      const enfantsLitteraux = enfants => {
+        for (const enfant of enfants) {
+          if (ts.isJsxText(enfant) && !enfant.text.trim()) continue;
+          if (ts.isJsxExpression(enfant) && !enfant.expression) continue;
+          if (ts.isJsxFragment(enfant)) { enfantsLitteraux(enfant.children); continue; }
+          const tag = ts.isJsxElement(enfant) ? enfant.openingElement.tagName.getText(source) : ts.isJsxSelfClosingElement(enfant) ? enfant.tagName.getText(source) : null;
+          if (tag === "Route") continue;
+          if (tag === "React.Fragment" && ts.isJsxElement(enfant)) { enfantsLitteraux(enfant.children); continue; }
+          throw new Error("Lecture de App.tsx non confirmee : enfants de Routes non litteraux.");
+        }
+      };
+      if (ts.isJsxElement(node)) enfantsLitteraux(node.children);
+    }
+    if (ouverture?.tagName.getText(source) === "Route") {
+      const attributs = ouverture.attributes.properties;
+      if (attributs.some(ts.isJsxSpreadAttribute)) throw new Error("Lecture de App.tsx non confirmee : attributs de Route calcules.");
+      const chemins = attributs.filter(a => ts.isJsxAttribute(a) && a.name.getText(source) === "path");
+      if (chemins.length > 1) throw new Error("Lecture de App.tsx non confirmee : chemin de Route ambigu.");
+      if (chemins.length === 1) {
+        const init = chemins[0].initializer;
+        const p = chaineLitterale(init && ts.isJsxExpression(init) ? init.expression : init);
+        if (p === null) throw new Error("Lecture de App.tsx non confirmee : chemin de Route non litteral.");
+        if (p === "/en/*") prefixe = "/en";
+        else if (!["/*", "/fr/*", "*"].includes(p)) {
+          const q = norm(prefixe ? prefixe + (p === "/" ? "" : p.startsWith("/") ? p : "/" + p) : p);
+          const elements = attributs.filter(a => ts.isJsxAttribute(a) && a.name.getText(source) === "element");
+          if (elements.length > 1) throw new Error("Lecture de App.tsx non confirmee : element de Route ambigu.");
+          const element = elements[0]?.initializer;
+          const rendu = element && ts.isJsxExpression(element) ? sansParentheses(element.expression) : null;
+          const tag = rendu && ts.isJsxElement(rendu) ? rendu.openingElement.tagName : rendu && ts.isJsxSelfClosingElement(rendu) ? rendu.tagName : null;
+          if (tag?.getText(source) === "Navigate") navigate.add(q);
+          (q.includes(":") ? parametrees : fixes).add(q);
+        }
+      }
+    }
+    ts.forEachChild(node, child => parcourir(child, prefixe));
+  };
+  parcourir(source);
+  if (!routeurTrouve) throw new Error("Lecture de App.tsx non confirmee : aucun routeur Routes reconnu.");
   return { fixes, parametrees, navigate };
 }
 
 // ── 3. prerender.mjs : ce qui est servi en HTML statique ────────────
 function lirePrerendu() {
-  const txt = readFileSync(join(ROOT, "scripts/prerender.mjs"), "utf8");
+  const source = sourceStructuree("scripts/prerender.mjs", "prerender.mjs", ts.ScriptKind.JS);
   const bloc = (nom, cle) => {
-    const d = txt.indexOf(`const ${nom} = [`);
-    const b = txt.slice(d, d + txt.slice(d).indexOf("\n];"));
-    return new Set([...b.matchAll(new RegExp(`${cle}:\\s*"([^"]+)"`, "g"))].map((x) => norm(x[1])));
+    const declarations = source.statements.filter(ts.isVariableStatement).flatMap(s => [...s.declarationList.declarations])
+      .filter(d => ts.isIdentifier(d.name) && d.name.text === nom);
+    const tableau = declarations.length === 1 ? sansParentheses(declarations[0].initializer) : null;
+    if (!tableau || !ts.isArrayLiteralExpression(tableau)) throw new Error(`Lecture de prerender.mjs non confirmee : ${nom} absent, ambigu ou non litteral.`);
+    // Consommateurs presents : copie par spread et iteration for-of.
+    // Tout autre acces au tableau exige une qualification du lecteur, sans
+    // executer ce fichier ni supposer qu'un alias ne le modifie pas.
+    const verifierUsages = node => {
+      if (ts.isIdentifier(node) && node.text === nom && node !== declarations[0].name) {
+        const parent = node.parent;
+        const copie = ts.isSpreadElement(parent) && parent.expression === node && ts.isArrayLiteralExpression(parent.parent);
+        const iteration = ts.isForOfStatement(parent) && parent.expression === node;
+        const cle = (ts.isPropertyAssignment(parent) || ts.isPropertyAccessExpression(parent)) && parent.name === node;
+        if (!copie && !iteration && !cle) throw new Error(`Lecture de prerender.mjs non confirmee : usage de ${nom} non qualifie.`);
+      }
+      ts.forEachChild(node, verifierUsages);
+    };
+    verifierUsages(source);
+    const chemins = new Set();
+    for (const ligne of tableau.elements) {
+      if (!ts.isObjectLiteralExpression(ligne) || ligne.properties.some(p => ts.isSpreadAssignment(p) || (p.name && ts.isComputedPropertyName(p.name)))) throw new Error(`Lecture de prerender.mjs non confirmee : ligne de ${nom} non litterale.`);
+      const proprietes = ligne.properties.filter(p => p.name && (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name)) && p.name.text === cle);
+      const valeur = proprietes.length === 1 && ts.isPropertyAssignment(proprietes[0]) ? chaineLitterale(proprietes[0].initializer) : null;
+      if (valeur === null || !valeur.trim()) throw new Error(`Lecture de prerender.mjs non confirmee : chemin de ${nom} inconnu.`);
+      chemins.add(norm(valeur));
+    }
+    return chemins;
   };
   return { routes: bloc("ROUTES", "path"), redirections: bloc("REDIRECTS", "from") };
 }
@@ -122,7 +194,15 @@ function lireInterdits() {
 // ── 4. sitemap de base ──────────────────────────────────────────────
 function lireSitemap() {
   const txt = readFileSync(join(ROOT, "public/sitemap.xml"), "utf8");
-  return new Set([...txt.matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => norm(x[1].replace(/^https?:\/\/i-ca\.re/, ""))));
+  const xml = txt.replace(/^\uFEFF/, "").replace(/<!--[^]*?-->/g, "").replace(/^\s*<\?xml[^]*?\?>/, "").trim();
+  const root = /^<urlset\b[^>]*>([^]*)<\/urlset>$/.exec(xml);
+  const vide = /^<urlset\b[^>]*\/\s*>$/.test(xml);
+  if (!root && !vide) throw new Error("Lecture de sitemap.xml non confirmee : racine non reconnue.");
+  const corps = root?.[1] ?? "";
+  const locs = [...corps.matchAll(/<loc>([^<]+)<\/loc>/g)];
+  const nombre = expression => [...corps.matchAll(expression)].length;
+  if (locs.length !== nombre(/<loc\b[^>]*>/g) || locs.length !== nombre(/<\/loc\s*>/g) || locs.length !== nombre(/<url(?:\s[^>]*)?>/g) || locs.length !== nombre(/<\/url\s*>/g)) throw new Error("Lecture de sitemap.xml non confirmee : inventaire loc incomplet.");
+  return new Set(locs.map((x) => norm(x[1].replace(/^https?:\/\/i-ca\.re/, ""))));
 }
 
 const main = async () => {
