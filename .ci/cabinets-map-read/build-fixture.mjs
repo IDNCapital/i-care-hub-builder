@@ -1,0 +1,11 @@
+import { build } from 'esbuild';
+import { resolve } from 'node:path';
+import { createRequire } from 'node:module';
+const rootResolve=createRequire(resolve('package.json')).resolve;
+const reactAliases=Object.fromEntries(['react','react/jsx-runtime','react/jsx-dev-runtime','react-dom','react-dom/client','react-dom/test-utils','react-router-dom','react-router','lucide-react'].map(name=>[name,rootResolve(name)]));
+import { mkdir, copyFile } from 'node:fs/promises';
+const fixture=resolve('.ci/cabinets-map-read/fixture');
+const out=resolve('.ci/cabinets-map-read/proof/browser-dist');
+await mkdir(out,{recursive:true});
+await build({entryPoints:[resolve(fixture,'main.tsx')],bundle:true,jsx:'automatic',outfile:resolve(out,'app.js'),format:'esm',define:{'process.env.NODE_ENV':'"production"'},alias:{...reactAliases,'leaflet/dist/leaflet.css':resolve('node_modules/leaflet/dist/leaflet.css'),'@/integrations/supabase/client':resolve(fixture,'source.ts'),'@':resolve('src'),'react-i18next':resolve(fixture,'i18n.ts'),'react-leaflet':resolve(fixture,'react-leaflet.tsx'),'leaflet':resolve(fixture,'leaflet.ts')},loader:{'.png':'dataurl'}});
+await copyFile(resolve(fixture,'index.html'),resolve(out,'index.html'));

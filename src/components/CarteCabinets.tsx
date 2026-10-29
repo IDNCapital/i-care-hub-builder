@@ -15,12 +15,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Crosshair } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
-import { openingForecastLabel } from "@/lib/centres";
+import { openingForecastLabel, quarterLabel } from "@/lib/centres";
 import { marqueAffichee } from "@/lib/brand";
 import { parseLat, parseLng } from "@/lib/geo";
 import { MapErrorBoundary } from "@/components/MapErrorBoundary";
@@ -42,6 +42,80 @@ type Cabinet = {
   googlePlaceId: string | null;
   dateOuvertureCible: string | null;
 };
+
+
+type CabinetSource = {
+  slug: string; name: string; address: string | null; city: string;
+  status: string; lat: unknown; lng: unknown; google_place_id: string | null;
+  date_ouverture_cible: string | null;
+};
+
+type CabinetRead =
+  | { status: "loading" | "error" }
+  | { status: "ready"; generation: number; cabinets: Cabinet[]; excludedCount: number };
+
+const MAP_PAGE_SIZE = 200;
+const MAP_MAX_PAGES = 50;
+const MAP_MAX_ROWS = 10000;
+
+function isCabinetSource(value: unknown): value is CabinetSource {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const row = value as Record<string, unknown>;
+  return typeof row.slug === "string" && row.slug.trim().length > 0 &&
+    typeof row.name === "string" && typeof row.city === "string" &&
+    typeof row.status === "string" &&
+    (row.address === null || typeof row.address === "string") &&
+    (row.google_place_id === null || typeof row.google_place_id === "string") &&
+    (row.date_ouverture_cible === null || typeof row.date_ouverture_cible === "string");
+}
+
+/** Reçu entier seulement : le plafond serveur peut être inférieur à range().
+ *  Le slug est UNIQUE dans le schéma versionné ; il départage les noms égaux.
+ *  Un compte stable ne constitue pas un instantané transactionnel. */
+async function readGeolocatedCabinets(isCurrent: () => boolean) {
+  const sources: CabinetSource[] = [];
+  const slugs = new Set<string>();
+  let expectedCount: number | null = null;
+  for (let page = 0; page < MAP_MAX_PAGES; page++) {
+    if (!isCurrent()) return null;
+    const { data, error, count } = await supabase
+      .from("projets")
+      .select("slug, name, address, city, status, lat, lng, google_place_id, date_ouverture_cible", { count: "exact" })
+      .not("lat", "is", null)
+      .not("lng", "is", null)
+      .order("name")
+      .order("slug")
+      .range(sources.length, sources.length + MAP_PAGE_SIZE - 1);
+    if (!isCurrent()) return null;
+    if (error || !Array.isArray(data) || !Number.isSafeInteger(count) ||
+        count < 0 || count > MAP_MAX_ROWS || data.length > MAP_PAGE_SIZE) {
+      throw new Error("Incomplete map receipt");
+    }
+    if (expectedCount !== null && count !== expectedCount) throw new Error("Unstable map receipt");
+    expectedCount = count;
+    for (const row of data as unknown[]) {
+      if (!isCabinetSource(row) || slugs.has(row.slug)) throw new Error("Invalid map receipt");
+      slugs.add(row.slug);
+      sources.push(row);
+    }
+    if (sources.length > count) throw new Error("Contradictory map receipt");
+    if (sources.length === count) {
+      const cabinets = sources.map((r): Cabinet | null => {
+        const lat = parseLat(r.lat);
+        const lng = parseLng(r.lng);
+        if (lat === null || lng === null) return null;
+        return {
+          slug: r.slug, name: r.name, address: r.address ?? "", city: r.city,
+          status: r.status, lat, lng, googlePlaceId: r.google_place_id,
+          dateOuvertureCible: r.date_ouverture_cible,
+        };
+      }).filter((r): r is Cabinet => r !== null);
+      return { cabinets, excludedCount: sources.length - cabinets.length };
+    }
+    if (data.length === 0) throw new Error("Truncated map receipt");
+  }
+  throw new Error("Map receipt limit");
+}
 
 /** Mapping ville -> métropole. */
 const CITY_TO_METRO: Record<string, string> = {
@@ -175,75 +249,59 @@ export function CarteCabinets({
   height,
   showSidebar = true,
 }: CarteCabinetsProps) {
-  const [cabinets, setCabinets] = useState<Cabinet[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  /** Nombre de lignes reçues mais écartées (coordonnées invalides). Ne
-   *  jamais exposer les valeurs brutes rejetées ni leur origine. */
-  const [excludedCount, setExcludedCount] = useState(0);
-  const [cityFilter, setCityFilter] = useState<CityFilter>("all");
-  const [selected, setSelected] = useState<string | null>(
+  const [read, setRead] = useState<CabinetRead>({ status: "loading" });
+  const generation = useRef(0);
+  const [filterView, setFilterView] = useState<{ slug: string | null; filter: CityFilter }>({ slug: null, filter: "all" });
+  const [fallbackSelection, setFallbackSelection] = useState<string | null>(
     centerOnProp !== "all" ? centerOnProp : null,
   );
   const [fitTrigger, setFitTrigger] = useState(0);
+  const [tilesUnavailable, setTilesUnavailable] = useState(false);
   const markerRefs = useRef<Record<string, L.Marker>>({});
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const contextKey = location.key;
+  const currentContext = useRef(contextKey);
+  currentContext.current = contextKey;
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
+  const cabinets = useMemo(() => read.status === "ready" ? read.cabinets : [], [read]);
+  const excludedCount = read.status === "ready" ? read.excludedCount : 0;
+  const requestedSlug = searchParams.get("cabinet") ?? fallbackSelection;
+  const selectedCabinet = cabinets.find((c) => c.slug === requestedSlug);
+  const selected = selectedCabinet?.slug ?? null;
+  const cityFilter = selectedCabinet && filterView.slug !== selectedCabinet.slug
+    ? metroOf(selectedCabinet.city) : filterView.filter;
+  const sidebarVisible = showSidebar || tilesUnavailable;
 
-  // Load data
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      const { data, error: err } = await supabase
-        .from("projets")
-        .select("slug, name, address, city, status, lat, lng, google_place_id, date_ouverture_cible")
-        .not("lat", "is", null)
-        .not("lng", "is", null)
-        .order("name");
-      if (cancelled) return;
-      if (err) {
-        setError(err.message);
-        setLoading(false);
-        return;
-      }
-      const rows: Cabinet[] = (data ?? [])
-        .map((r): Cabinet | null => {
-          const lat = parseLat(r.lat);
-          const lng = parseLng(r.lng);
-          if (lat === null || lng === null) return null;
-          return {
-            slug: r.slug,
-            name: r.name,
-            address: r.address ?? "",
-            city: r.city,
-            status: r.status,
-            lat,
-            lng,
-            googlePlaceId: r.google_place_id,
-            dateOuvertureCible: r.date_ouverture_cible,
-          };
-        })
-        .filter((r): r is Cabinet => r !== null);
-      setExcludedCount((data ?? []).length - rows.length);
-      setCabinets(rows);
-      setLoading(false);
-
-      // Deep-link: ?cabinet=slug
-      const slugParam = searchParams.get("cabinet");
-      if (slugParam) {
-        const found = rows.find((r) => r.slug === slugParam);
-        if (found) {
-          setCityFilter(metroOf(found.city));
-          setSelected(found.slug);
-        }
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const loadCabinets = useCallback(async () => {
+    const current = ++generation.current;
+    setRead({ status: "loading" });
+    setTilesUnavailable(false);
+    markerRefs.current = {};
+    try {
+      const result = await readGeolocatedCabinets(() => generation.current === current);
+      if (result && generation.current === current) setRead({ status: "ready", generation: current, ...result });
+    } catch {
+      if (generation.current === current) setRead({ status: "error" });
+    }
   }, []);
+
+  const cancelRead = useCallback(() => { generation.current++; }, []);
+  useEffect(() => {
+    void loadCabinets();
+    return cancelRead;
+  }, [loadCabinets, cancelRead]);
+
+  // La lecture ne capture pas la recherche : l'URL courante choisit toujours
+  // dans le reçu entier courant, même si elle change pendant la réception.
+  useEffect(() => {
+    if (!fallbackSelection || !selectedCabinet || searchParams.has("cabinet")) return;
+    const next = new URLSearchParams(searchParams);
+    next.set("cabinet", selectedCabinet.slug);
+    setSearchParams(next, { replace: true });
+    setFallbackSelection(null);
+  }, [fallbackSelection, selectedCabinet, searchParams, setSearchParams]);
 
   // Metro counts
   const metros = useMemo(() => {
@@ -263,22 +321,6 @@ export function CarteCabinets({
 
   const isActive = (status: string) => status === "en_exploitation";
 
-  // Update URL when selection changes
-  useEffect(() => {
-    if (selected) {
-      const next = new URLSearchParams(searchParams);
-      next.set("cabinet", selected);
-      setSearchParams(next, { replace: true });
-    } else {
-      if (searchParams.has("cabinet")) {
-        const next = new URLSearchParams(searchParams);
-        next.delete("cabinet");
-        setSearchParams(next, { replace: true });
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected]);
-
   // Open popup after flyTo finishes
   useEffect(() => {
     if (!selected) return;
@@ -289,20 +331,35 @@ export function CarteCabinets({
     return () => clearTimeout(timer);
   }, [selected]);
 
+  const updateSelection = useCallback((slug: string | null) => {
+    if (read.status !== "ready" || read.generation !== generation.current || currentContext.current !== contextKey) return;
+    if (slug && !cabinets.some((c) => c.slug === slug)) return;
+    setFallbackSelection(null);
+    const next = new URLSearchParams(searchParams);
+    if (slug) next.set("cabinet", slug);
+    else next.delete("cabinet");
+    setSearchParams(next, { replace: true });
+  }, [read, cabinets, searchParams, setSearchParams, contextKey]);
+
   const handleSelectSlug = useCallback((slug: string) => {
-    setSelected(slug);
-  }, []);
+    if (read.status !== "ready" || read.generation !== generation.current || currentContext.current !== contextKey) return;
+    setFilterView({ slug, filter: cityFilter });
+    updateSelection(slug);
+  }, [read, contextKey, cityFilter, updateSelection]);
 
   const handleFilterChange = useCallback((city: CityFilter) => {
-    setCityFilter(city);
-    setSelected(null);
+    if (read.status !== "ready" || read.generation !== generation.current || currentContext.current !== contextKey) return;
+    setFilterView({ slug: null, filter: city });
+    updateSelection(null);
     setFitTrigger((t) => t + 1);
-  }, []);
+  }, [read, updateSelection, contextKey]);
 
   const handleRecenter = useCallback(() => {
-    setSelected(null);
+    if (read.status !== "ready" || read.generation !== generation.current || currentContext.current !== contextKey) return;
+    setFilterView({ slug: null, filter: cityFilter });
+    updateSelection(null);
     setFitTrigger((t) => t + 1);
-  }, []);
+  }, [read, updateSelection, contextKey, cityFilter]);
 
   // Default visual height
   const mapHeight = height ?? "min(70vh, 520px)";
@@ -317,12 +374,13 @@ export function CarteCabinets({
         zoom={12}
         scrollWheelZoom={false}
         style={{ width: "100%", height: "100%" }}
-        aria-label="Carte des cabinets I‑CA.RE"
+        aria-label={lang === "fr" ? "Carte des cabinets I‑CA.RE" : "I‑CA.RE office map"}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           className="i-care-tiles"
+          eventHandlers={{ tileerror: () => setTilesUnavailable(true) }}
         />
         <MapController cabinets={filtered} selected={selected} fitTrigger={fitTrigger} />
         {filtered.map((c) => {
@@ -336,17 +394,20 @@ export function CarteCabinets({
               ? ICON_WORK_HL
               : ICON_WORK;
           const mapsUrl = active ? googleMapsPlaceUrl(c.name, c.googlePlaceId) : null;
-          const forecast = openingForecastLabel(c.dateOuvertureCible);
+          const quarter = quarterLabel(c.dateOuvertureCible, "Q");
+          const forecast = lang === "fr" ? openingForecastLabel(c.dateOuvertureCible)
+            : quarter ? `Expected opening ${quarter}` : "Opening upcoming";
           return (
             <Marker
               key={c.slug}
               position={[c.lat, c.lng]}
               icon={icon}
               eventHandlers={{
-                click: () => setSelected(c.slug),
+                click: () => handleSelectSlug(c.slug),
               }}
               ref={(ref) => {
                 if (ref) markerRefs.current[c.slug] = ref;
+                else delete markerRefs.current[c.slug];
               }}
               alt={`Cabinet I-CA.RE ${c.name}, ${c.address}`}
             >
@@ -380,7 +441,7 @@ export function CarteCabinets({
                           marginBottom: 4,
                         }}
                       >
-                        En travaux
+                        {lang === "fr" ? "En travaux" : "Under construction"}
                       </span>
                       <div
                         style={{
@@ -407,7 +468,7 @@ export function CarteCabinets({
                   </p>
                   <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                     <Link
-                      to={`/projets/${c.slug}`}
+                      to={lang === "fr" ? `/projets/${c.slug}` : `/en/projects/${c.slug}`}
                       style={{
                         display: "inline-block",
                         backgroundColor: SAGE,
@@ -422,7 +483,7 @@ export function CarteCabinets({
                         textDecoration: "none",
                       }}
                     >
-                      Voir le cabinet
+                      {lang === "fr" ? "Voir le cabinet" : "View office"}
                     </Link>
                     {mapsUrl && (
                       <a
@@ -443,7 +504,7 @@ export function CarteCabinets({
                           backgroundColor: "transparent",
                         }}
                       >
-                        Ouvrir dans Google Maps
+                        {lang === "fr" ? "Ouvrir dans Google Maps" : "Open in Google Maps"}
                       </a>
                     )}
                   </div>
@@ -454,26 +515,34 @@ export function CarteCabinets({
         })}
       </MapContainer>
     );
-  }, [filtered, selected, fitTrigger]);
+  }, [filtered, selected, fitTrigger, lang, handleSelectSlug]);
 
-  if (loading) {
+  const projectsHref = lang === "fr" ? "/projets" : "/en/projects";
+  if (read.status !== "ready") {
     return (
       <div
-        className="flex items-center justify-center bg-muted/30 rounded-md"
-        style={{ height: mapHeight }}
+        role={read.status === "error" ? "alert" : "status"}
+        className="flex flex-col items-center justify-center gap-3 bg-muted/30 rounded-md p-6 text-center"
+        style={read.status === "loading" ? { height: mapHeight } : undefined}
       >
-        <p className="text-sm text-muted-foreground">Chargement de la carte…</p>
+        <p className="text-sm text-muted-foreground">
+          {read.status === "loading"
+            ? lang === "fr" ? "Chargement des cabinets…" : "Loading offices…"
+            : lang === "fr"
+              ? "La liste complète des cabinets n'a pas pu être reçue."
+              : "The complete office list could not be received."}
+        </p>
+        {read.status === "error" && (
+          <button type="button" onClick={() => void loadCabinets()} className="min-h-11 underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[#9EB8A5]/40 rounded">
+            {lang === "fr" ? "Réessayer" : "Try again"}
+          </button>
+        )}
+        <Link to={projectsHref} className="min-h-11 inline-flex items-center text-sm font-medium underline underline-offset-2 focus:outline-none focus:ring-2 focus:ring-[#9EB8A5]/40 rounded">
+          {lang === "fr" ? "Voir tous les cabinets" : "See all offices"}
+        </Link>
       </div>
     );
   }
-  if (error) {
-    return (
-      <div className="flex items-center justify-center bg-destructive/10 rounded-md p-6">
-        <p className="text-sm text-destructive">Carte indisponible : {error}</p>
-      </div>
-    );
-  }
-  const projectsHref = lang === "fr" ? "/projets" : "/en/projects";
 
   if (cabinets.length === 0) {
     // Si des lignes ont été reçues mais toutes écartées (coordonnées
@@ -502,9 +571,16 @@ export function CarteCabinets({
   }
 
   return (
-    <div className={`grid grid-cols-1 ${showSidebar ? "lg:grid-cols-3" : ""} gap-6`}>
+    <div className={`grid grid-cols-1 ${sidebarVisible ? "lg:grid-cols-3" : ""} gap-6`}>
       {/* Carte */}
-      <div className={showSidebar ? "lg:col-span-2" : ""}>
+      <div className={sidebarVisible ? "lg:col-span-2" : ""}>
+        {tilesUnavailable && (
+          <p role="status" className="text-sm text-muted-foreground mb-3">
+            {lang === "fr"
+              ? "Certaines tuiles de la carte n’ont pas pu être chargées. La liste des cabinets reste disponible."
+              : "Some map tiles could not be loaded. The office list remains available."}
+          </p>
+        )}
         {excludedCount > 0 && (
           <p className="text-xs text-muted-foreground mb-2">
             {lang === "fr"
@@ -528,8 +604,8 @@ export function CarteCabinets({
             <button
               type="button"
               onClick={handleRecenter}
-              aria-label="Recentrer sur tous les cabinets"
-              title="Recentrer sur tous les cabinets"
+              aria-label={lang === "fr" ? "Recentrer sur tous les cabinets" : "Recenter on all offices"}
+              title={lang === "fr" ? "Recentrer sur tous les cabinets" : "Recenter on all offices"}
               className="absolute top-3 right-3 z-[400] bg-white hover:bg-[#F6F5F0] border border-[#9EB8A5]/40 rounded-md w-10 h-10 flex items-center justify-center shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-[#9EB8A5]"
               style={{ color: ANTHRACITE }}
             >
@@ -540,18 +616,18 @@ export function CarteCabinets({
       </div>
 
       {/* Sidebar */}
-      {showSidebar && (
+      {sidebarVisible && (
         <aside className="lg:col-span-1 flex flex-col" style={{ maxHeight: mapHeight }}>
-          <h2 className="font-heading text-xl text-foreground mb-3">Nos cabinets</h2>
+          <h2 className="font-heading text-xl text-foreground mb-3">{lang === "fr" ? "Nos cabinets" : "Our offices"}</h2>
 
           {/* Filtres ville */}
           <div
             role="radiogroup"
-            aria-label="Filtrer les cabinets par métropole"
+            aria-label={lang === "fr" ? "Filtrer les cabinets par métropole" : "Filter offices by metropolitan area"}
             className="flex flex-wrap gap-2 mb-4"
           >
             <FilterPill
-              label={`Toutes (${cabinets.length})`}
+              label={`${lang === "fr" ? "Toutes" : "All"} (${cabinets.length})`}
               active={cityFilter === "all"}
               onClick={() => handleFilterChange("all")}
             />
@@ -600,15 +676,15 @@ export function CarteCabinets({
                           color: ANTHRACITE,
                         }}
                       >
-                        {active ? "Actif" : "En travaux"}
+                        {lang === "fr" ? active ? "Actif" : "En travaux" : active ? "Active" : "Under construction"}
                       </span>
                     </div>
                     <Link
-                      to={`/projets/${c.slug}`}
+                      to={lang === "fr" ? `/projets/${c.slug}` : `/en/projects/${c.slug}`}
                       onClick={(e) => e.stopPropagation()}
                       className="inline-block mt-2 text-xs font-medium text-primary hover:underline"
                     >
-                      Voir le cabinet →
+                      {lang === "fr" ? "Voir le cabinet →" : "View office →"}
                     </Link>
                   </button>
                 </li>

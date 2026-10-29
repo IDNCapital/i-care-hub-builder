@@ -1,0 +1,8 @@
+import { createContext, useContext, useState, useEffect, useImperativeHandle, forwardRef, type ReactNode } from 'react';
+const PopupContext=createContext({open:'',setOpen:(_v:string)=>{}});
+const MarkerContext=createContext('');
+export function MapContainer({children}:{children:ReactNode}){const[open,setOpen]=useState('');return <PopupContext.Provider value={{open,setOpen}}><div style={{height:'100%',background:'#e2eae5',position:'relative',padding:16}}><p style={{fontSize:12}}>Carte simulée localement, aucune tuile téléchargée</p>{children}</div></PopupContext.Provider>;}
+export function TileLayer({eventHandlers}:{eventHandlers:{tileerror?:()=>void}}){useEffect(()=>{if(new URLSearchParams(location.search).get('scene')==='tiles')eventHandlers?.tileerror?.();},[]);return null;}
+export const Marker=forwardRef(({children,alt,eventHandlers}:{children:ReactNode;alt:string;eventHandlers:{click:()=>void}},ref)=>{const{setOpen}=useContext(PopupContext);useImperativeHandle(ref,()=>({openPopup:()=>setOpen(alt)}),[setOpen,alt]);return <MarkerContext.Provider value={alt}><button type="button" onClick={eventHandlers.click} aria-label={alt} style={{fontSize:11,margin:3,border:'1px solid #9eb8a5',borderRadius:8,padding:5}}>{alt.split(',')[0]}</button>{children}</MarkerContext.Provider>;});
+export function Popup({children}:{children:ReactNode}){const{open}=useContext(PopupContext),alt=useContext(MarkerContext);return open===alt?<div style={{position:'absolute',left:16,right:16,top:160,padding:16,background:'white',boxShadow:'0 2px 8px #888',borderRadius:8}}>{children}</div>:null;}
+export const useMap=()=>({invalidateSize(){},setView(){},flyTo(){},fitBounds(){},flyToBounds(){}});

@@ -1,0 +1,295 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* I-CA.RE Official Brand Colors */
+    --sage: 138 18% 67%;       /* #9EB8A5 */
+    --cream: 48 33% 95%;       /* #F6F5F0 */
+    --anthracite: 0 0% 17%;    /* #2B2B2B */
+    --gold: 37 30% 74%;        /* #D9C7A1 */
+    
+    /* Core tokens mapped to brand */
+    --background: 48 33% 95%;
+    --foreground: 0 0% 17%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 17%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 17%;
+
+    --primary: 138 18% 67%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 100%;
+    --secondary-foreground: 0 0% 17%;
+
+    --muted: 48 20% 90%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 37 30% 74%;
+    --accent-foreground: 0 0% 17%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 15% 87%;
+    --input: 40 15% 87%;
+    --ring: 138 18% 67%;
+
+    --radius: 0.5rem;
+
+    /* Shadows: soft and minimal */
+    --shadow-soft: 0 2px 12px -2px hsl(0 0% 17% / 0.05);
+    --shadow-card: 0 4px 20px -4px hsl(0 0% 17% / 0.07);
+    --shadow-elevated: 0 8px 30px -8px hsl(0 0% 17% / 0.1);
+
+    /* Dark form section tokens */
+    --form-dark-bg: 0 0% 12%;         /* #1F1F1F */
+    --form-dark-border: 0 0% 100% / 0.15;
+    --form-dark-text: 48 33% 95%;     /* #F6F5F0 */
+    --form-dark-placeholder: 48 33% 95% / 0.45;
+    --form-dark-focus: 138 18% 67%;   /* #9EB8A5 */
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Lato', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    @apply font-semibold tracking-tight text-foreground;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  /* Editorial body styling for insight articles */
+  .insight-body h2 {
+    @apply text-xl font-heading font-bold mb-2.5 mt-0;
+  }
+  .insight-body h3 {
+    @apply text-base font-heading font-semibold mb-2 mt-4;
+  }
+  .insight-body p {
+    @apply text-muted-foreground leading-relaxed mb-2.5;
+  }
+  .insight-body ul, .insight-body ol {
+    @apply pl-5 space-y-1 text-muted-foreground mb-2.5;
+  }
+  .insight-body section {
+    @apply scroll-mt-20;
+  }
+
+  .container-tight {
+    @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+
+  /* Animations: slow, calm fades only */
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.7s ease-out forwards;
+  }
+
+  /* Staggered animations */
+  .stagger-1 { animation-delay: 0.15s; }
+  .stagger-2 { animation-delay: 0.3s; }
+  .stagger-3 { animation-delay: 0.45s; }
+  .stagger-4 { animation-delay: 0.6s; }
+
+  /* Card styles */
+  .card-premium {
+    @apply bg-card rounded-xl p-6 md:p-8 shadow-card transition-all duration-500;
+  }
+
+  .card-premium:hover {
+    @apply shadow-elevated;
+    transform: translateY(-2px);
+  }
+
+  /* Section titles: Playfair Display */
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-4;
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .section-subtitle {
+    @apply text-lg md:text-xl text-muted-foreground max-w-2xl;
+    font-family: 'Lato', system-ui, sans-serif;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    @apply relative overflow-hidden rounded-xl bg-card p-8 md:p-12 lg:p-16 shadow-card;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    @apply h-1.5 rounded-full bg-muted overflow-hidden;
+  }
+
+  .progress-bar-fill {
+    @apply h-full rounded-full bg-primary transition-all duration-500 ease-out;
+  }
+
+  /* CTA text style */
+  .cta-text {
+    font-family: 'Lato', system-ui, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 700;
+  }
+
+
+  /* Header blur: reduced on mobile for performance */
+  .header-blur {
+    background: rgba(246, 245, 240, 0.80);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(43, 43, 43, 0.06);
+  }
+
+  @media (min-width: 768px) {
+    .header-blur {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+  }
+}
+
+/* ── Dark form section styling ── */
+.form-dark-section input,
+.form-dark-section textarea {
+  background: hsl(var(--form-dark-bg)) !important;
+  border-color: hsl(var(--form-dark-border)) !important;
+  color: hsl(var(--form-dark-text)) !important;
+  border-radius: 0.5rem;
+}
+
+.form-dark-section input::placeholder,
+.form-dark-section textarea::placeholder {
+  color: hsl(var(--form-dark-placeholder)) !important;
+}
+
+.form-dark-section input:focus,
+.form-dark-section textarea:focus,
+.form-dark-section input:focus-visible,
+.form-dark-section textarea:focus-visible {
+  outline: none !important;
+  ring: none !important;
+  border-color: hsl(var(--form-dark-focus)) !important;
+  box-shadow: 0 0 0 2px hsl(138 18% 67% / 0.25) !important;
+  --tw-ring-shadow: none !important;
+  --tw-ring-color: transparent !important;
+}
+
+/* ── Global focus ring override (sage green) ── */
+input:focus-visible,
+textarea:focus-visible,
+[role="combobox"]:focus-visible,
+button[data-state]:focus-visible {
+  --tw-ring-color: hsl(var(--ring));
+  box-shadow: 0 0 0 2px hsl(138 18% 67% / 0.25);
+  border-color: hsl(138 18% 67%);
+  outline: none;
+}
+
+/* ── Dark section Select trigger ── */
+.form-dark-section [data-radix-select-trigger],
+.form-dark-section [role="combobox"] {
+  background: hsl(var(--form-dark-bg)) !important;
+  border-color: hsl(var(--form-dark-border)) !important;
+  color: hsl(var(--form-dark-text)) !important;
+}
+
+.form-dark-section [data-radix-select-trigger]:focus,
+.form-dark-section [role="combobox"]:focus {
+  border-color: hsl(var(--form-dark-focus)) !important;
+  box-shadow: 0 0 0 2px hsl(138 18% 67% / 0.25) !important;
+  outline: none !important;
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .font-body {
+    font-family: 'Lato', system-ui, sans-serif;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes heroKenBurns {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-0.2%, -0.2%, 0) scale(1.15);
+  }
+}
+
+/* Carte cabinets : harmonisation des tuiles OSM avec la charte (sauge/crème) */
+.i-care-tiles {
+  /* Désature les tuiles, ajoute une teinte chaude et adoucit le contraste
+     pour rester cohérent avec la palette sauge/crème du site. */
+  filter: grayscale(0.55) saturate(0.65) brightness(1.05) contrast(0.92) sepia(0.12);
+}
+.leaflet-container {
+  background: #F6F5F0; /* CREAM, évite les bords blancs lors des flyTo */
+}
