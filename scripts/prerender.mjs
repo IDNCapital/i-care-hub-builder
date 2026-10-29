@@ -146,7 +146,6 @@ const ROUTES = [
   { path: "/cabinet-a-louer/le-bouscat", type: "strategic" },
   { path: "/cabinet-a-louer/toulouse-capitole", type: "strategic" },
   { path: "/cabinet-a-louer/floirac", type: "strategic" },
-  { path: "/cabinet-a-louer/bordeaux-jardin-public", type: "strategic" },
   { path: "/insights", type: "strategic" },
   { path: "/insights/cabinet-medical-bordeaux", type: "strategic" },
   { path: "/insights/budget-cabinet-bordeaux", type: "strategic" },

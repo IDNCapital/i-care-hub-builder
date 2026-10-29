@@ -44,7 +44,7 @@ export default function BlogTrouverCabinet() {
         },
         {
           q: "Combien coûte un cabinet à Bordeaux ?",
-          a: "Le coût d'un cabinet à Bordeaux varie selon le quartier, la surface et les prestations incluses. Chez I‑CA.RE, les loyers incluent les charges, l'accès à la salle d'attente, l'entretien des espaces communs et l'assurance du lieu, pour un budget maîtrisé et sans surprise.",
+          a: "Le coût d'un cabinet à Bordeaux varie selon le quartier, la surface et les prestations incluses. Chez I‑CA.RE, le bail à temps plein s'entend en loyer hors charges, non assujetti à la TVA, avec l'accès à la salle d'attente et aux espaces communs ; les formules à temps partiel (cabinet à la journée) sont charges comprises.",
         },
       ]
     : [
@@ -58,7 +58,7 @@ export default function BlogTrouverCabinet() {
         },
         {
           q: "How much does an office in Bordeaux cost?",
-          a: "The cost of an office in Bordeaux varies depending on the neighbourhood, surface area and included services. At I‑CA.RE, rents include utilities, waiting room access, common area maintenance and premises insurance, for a controlled budget with no surprises.",
+          a: "The cost of an office in Bordeaux varies depending on the neighbourhood, surface area and included services. At I‑CA.RE, the full-time lease is quoted as rent excluding charges, not subject to VAT, with access to the waiting room and common areas; part-time options (office by the day) include charges.",
         },
       ];
 

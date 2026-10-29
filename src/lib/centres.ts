@@ -43,7 +43,7 @@ export const STATIC_CENTRES: StaticCentre[] = [
   { id: "pey-berland", name: "Pey-Berland", address: "6 rue Père Louis de Jabrun, 33000 Bordeaux", status: "full", slug: "i-ca-re-pey-berland", region: "bordeaux" },
   { id: "floirac", name: "Floirac", address: "23 avenue de la Libération, 33270 Floirac", status: "coming_soon", slug: "i-ca-re-floirac", region: "bordeaux" },
   { id: "lormont", name: "Lormont", address: "1 rue Marc Tallavi, 33310 Lormont", status: "coming_soon", slug: "i-ca-re-lormont", region: "bordeaux" },
-  { id: "toulouse-capitole", name: "Toulouse Capitole", address: "5 rue de Mirepoix, 31000 Toulouse", status: "coming_soon", slug: "i-ca-re-toulouse-capitole", region: "toulouse" },
+  { id: "toulouse-capitole", name: "Toulouse Capitole", address: "5ter rue Mirepoix, 31000 Toulouse", status: "coming_soon", slug: "i-ca-re-toulouse-capitole", region: "toulouse" },
   { id: "le-bouscat", name: "Le Bouscat", address: "212 avenue de la Libération Charles de Gaulle, 33110 Le Bouscat", status: "coming_soon", slug: "i-ca-re-le-bouscat", region: "bordeaux" },
 ];
 

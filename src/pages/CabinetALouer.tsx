@@ -10,36 +10,40 @@ import { cabinetNomCourt } from "@/lib/installation";
 import { marqueAffichee } from "@/lib/brand";
 import { pageUrl } from "@/lib/siteUrl";
 import {
+  GRILLE_TEMPS_PARTIEL,
+  MENTION_TEMPS_PARTIEL,
+  MENTION_TEMPS_PLEIN,
   cabinetALouerParSlug,
   cheminCabinetALouer,
+  deProfession,
   formatDate,
   formatLoyer,
-  formatSurface,
   fourchettes,
+  libelleFormule,
   lienContactCabinet,
   resumeOffre,
+  surfaceLot,
   type CabinetALouer as Cabinet,
   type LotALouer,
 } from "@/lib/cabinetsALouer";
 import NotFound from "./NotFound";
 
-function statutLot(l: LotALouer, ouvert: boolean): string {
+function statutLot(l: LotALouer, c: Cabinet): string {
+  const ouvert = c.ouvert;
+  if (c.disponibiliteLots) return c.disponibiliteLots;
   if (l.disponibleLe) return `Disponible le ${formatDate(l.disponibleLe)}`;
   if (l.statut === "libre") return ouvert ? "Libre" : "Libre, date de disponibilité à confirmer";
   if (l.statut === "en_travaux") return "En travaux, date à confirmer";
   return "Ouverture prévue en 2027";
 }
 
-function libelleEtage(etage: string): string {
-  return etage === "RDC" ? "rez de chaussée" : etage === "R+1" ? "1er étage" : etage;
-}
-
 /** Donnees structurees : le lieu (MedicalBusiness) et ses offres visibles, plus le fil d'Ariane. */
 function jsonLd(c: Cabinet, chemin: string) {
-  const offres = c.lots.map((l) => {
+  const offresTempsPlein = c.lots.map((l) => {
+    const surface = surfaceLot(l);
     const offre: Record<string, unknown> = {
       "@type": "Offer",
-      name: `${l.nombre ? `${l.nombre} cabinets` : l.libelle}${l.surfaceM2 ? `, ${formatSurface(l.surfaceM2)}` : ""}`,
+      name: `${l.nombre ? `${l.nombre} cabinets` : l.libelle}${surface ? `, ${surface}` : ""}, ${MENTION_TEMPS_PLEIN}`,
       price: l.loyerMensuelEur,
       priceCurrency: "EUR",
       priceSpecification: {
@@ -51,16 +55,30 @@ function jsonLd(c: Cabinet, chemin: string) {
       },
       url: pageUrl(chemin),
     };
-    if (l.disponibleLe) offre.availabilityStarts = l.disponibleLe;
+    if (l.disponibleLe && !c.disponibiliteLots) offre.availabilityStarts = l.disponibleLe;
     return offre;
   });
+  const offresTempsPartiel = GRILLE_TEMPS_PARTIEL.map((g) => ({
+    "@type": "Offer",
+    name: `Temps partiel, ${libelleFormule(g).toLowerCase()}, ${MENTION_TEMPS_PARTIEL}`,
+    price: g.loyerMensuelEur,
+    priceCurrency: "EUR",
+    priceSpecification: {
+      "@type": "UnitPriceSpecification",
+      price: g.loyerMensuelEur,
+      priceCurrency: "EUR",
+      unitText: "mois",
+      referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" },
+    },
+    url: pageUrl(chemin),
+  }));
+  const offres = [...offresTempsPlein, ...offresTempsPartiel];
   const adresse: Record<string, unknown> = {
     "@type": "PostalAddress",
     addressLocality: c.ville,
     postalCode: c.codePostal,
     addressCountry: "FR",
   };
-  // L'adresse de Toulouse est publiee sans numero (point ouvert) : streetAddress reste la rue seule.
   adresse.streetAddress = c.rue;
   return [
     {
@@ -168,17 +186,14 @@ export default function CabinetALouer() {
                 <h3 className="text-lg font-heading font-semibold mb-2">
                   {l.nombre ? `${l.nombre} cabinets` : l.libelle}
                 </h3>
-                <p className="text-2xl font-bold mb-2">{formatLoyer(l.loyerMensuelEur)}</p>
-                {l.surfaceM2 !== undefined && (
+                <p className="text-2xl font-bold">{formatLoyer(l.loyerMensuelEur)}</p>
+                <p className="text-xs text-muted-foreground mb-2">{MENTION_TEMPS_PLEIN}</p>
+                {surfaceLot(l) && (
                   <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-                    <Ruler className="w-4 h-4" aria-hidden="true" /> {formatSurface(l.surfaceM2)}
-                    {l.etage ? `, ${libelleEtage(l.etage)}` : ""}
+                    <Ruler className="w-4 h-4" aria-hidden="true" /> {surfaceLot(l)}
                   </p>
                 )}
-                {l.surfaceM2 === undefined && l.etage && (
-                  <p className="text-sm text-muted-foreground">{libelleEtage(l.etage)}</p>
-                )}
-                <p className="text-sm mt-2">{statutLot(l, c.ouvert)}</p>
+                <p className="text-sm mt-2">{statutLot(l, c)}</p>
               </li>
             ))}
           </ul>
@@ -187,6 +202,30 @@ export default function CabinetALouer() {
               <li key={p}>{p}</li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      <section className="section-padding" aria-labelledby="temps-partiel">
+        <div className="container max-w-5xl">
+          <h2 id="temps-partiel" className="section-title">À temps partiel : la grille à la journée</h2>
+          <p className="text-muted-foreground mb-6">
+            Un cabinet partagé à la journée entière entre plusieurs praticiens, chacun sur ses jours fixes de la
+            semaine, loué nu. Tarifs {MENTION_TEMPS_PARTIEL}.
+          </p>
+          <ul className="grid sm:grid-cols-3 gap-4">
+            {GRILLE_TEMPS_PARTIEL.map((g) => (
+              <li key={g.jours} className="card-premium p-5">
+                <h3 className="text-lg font-heading font-semibold mb-2">{libelleFormule(g)}</h3>
+                <p className="text-2xl font-bold">{formatLoyer(g.loyerMensuelEur)}</p>
+                <p className="text-xs text-muted-foreground">{MENTION_TEMPS_PARTIEL}</p>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 text-sm">
+            <Link to="/cabinet-a-la-journee" className="font-semibold text-primary inline-flex items-center gap-1.5">
+              Découvrir le cabinet à la journée <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+          </p>
         </div>
       </section>
 
@@ -220,11 +259,12 @@ export default function CabinetALouer() {
             {c.professions.map((p) => (
               <div key={p.slug} id={p.slug} className="scroll-mt-28">
                 <h3 className="text-lg font-heading font-semibold mb-2">
-                  {Terme} de {p.singulier} à louer {c.aLieu}
+                  {Terme} {deProfession(p.singulier)} à louer {c.aLieu}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2">
-                  {resumeOffre(c)}, dans un lieu partagé entre {p.pluriel} et autres praticiens de santé et de
-                  bien être.
+                  {resumeOffre(c)}, ou à temps partiel dès {formatLoyer(GRILLE_TEMPS_PARTIEL[0].loyerMensuelEur)}{" "}
+                  {MENTION_TEMPS_PARTIEL}, dans un lieu partagé entre {p.pluriel} et autres professionnels du
+                  médical et du paramédical.
                 </p>
                 <Link
                   to={lienContactCabinet(c, { profession: p.slug, provenance })}

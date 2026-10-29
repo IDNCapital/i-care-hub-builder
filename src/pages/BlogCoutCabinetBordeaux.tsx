@@ -47,7 +47,7 @@ export default function BlogCoutCabinetBordeaux() {
           },
           {
             q: "Peut-on partager un cabinet entre praticiens ?",
-            a: "Oui, de nombreux praticiens choisissent des espaces mutualisés pour optimiser les coûts et bénéficier d'un environnement professionnel structuré avec salle d'attente, entretien et charges incluses.",
+            a: "Oui, de nombreux praticiens choisissent des espaces mutualisés pour optimiser les coûts et bénéficier d'un environnement professionnel structuré avec salle d'attente et entretien des espaces communs.",
           },
         ]
       : [
@@ -61,7 +61,7 @@ export default function BlogCoutCabinetBordeaux() {
           },
           {
             q: "Can practitioners share an office?",
-            a: "Yes, many practitioners choose shared spaces to optimise costs and benefit from a structured professional environment with waiting room, maintenance and charges included.",
+            a: "Yes, many practitioners choose shared spaces to optimise costs and benefit from a structured professional environment with a waiting room and maintained common areas.",
           },
         ];
 
