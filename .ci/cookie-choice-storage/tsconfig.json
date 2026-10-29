@@ -1,0 +1,37 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "strict": true,
+    "types": [
+      "node"
+    ],
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "vitest": [
+        ".ci/cookie-choice-storage/node_modules/vitest/dist/index.d.ts"
+      ],
+      "react": [
+        "node_modules/@types/react"
+      ],
+      "react/*": [
+        "node_modules/@types/react/*"
+      ],
+      "react-dom": [
+        "node_modules/@types/react-dom"
+      ],
+      "react-dom/*": [
+        "node_modules/@types/react-dom/*"
+      ]
+    }
+  },
+  "include": [
+    "../../src/components/CookieBanner.tsx",
+    "../../src/hooks/useAnalytics.ts",
+    "../../src/lib/analyticsConsent.ts",
+    "./CookieBanner.test.tsx"
+  ]
+}
