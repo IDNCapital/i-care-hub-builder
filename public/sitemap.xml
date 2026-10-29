@@ -419,4 +419,26 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Pages « cabinet à louer » par site, lot ENTRANT-GOOGLE-PAGES-1, FR seulement -->
+  <url>
+    <loc>https://i-ca.re/cabinet-a-louer/bordeaux-chartrons/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/cabinet-a-louer/le-bouscat/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/cabinet-a-louer/toulouse-capitole/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://i-ca.re/cabinet-a-louer/floirac/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>

@@ -513,7 +513,7 @@
       "q3": "Can you share an office in Bordeaux?",
       "a3": "Yes, office sharing is possible and encouraged. Several practitioners can share time slots in the same office, reducing costs while benefiting from a high-quality professional space.",
       "q4": "How much does it cost to rent a healthcare office in Bordeaux?",
-      "a4": "In Chartrons, room 1 (11.1 sqm) is offered at €690/month and room 5 (13.1 sqm) at €790/month, including all taxes and charges; VAT is not applicable. Rents at other centres depend on the room and rental option. Nicolas provides detailed terms within 24 hours."
+      "a4": "In Chartrons, room 1 (11.1 sqm) is offered at €690/month and room 5 (13.1 sqm) at €790/month, rent excluding charges, not subject to VAT. Rents at other centres depend on the room and rental option. Nicolas provides detailed terms within 24 hours."
     },
     "ctaTitle": "Discuss your setup project",
     "ctaDesc": "Looking for a therapy office or healthcare office for rent in Bordeaux? Contact us to discuss your project."
@@ -614,7 +614,7 @@
       "q2": "In which Toulouse neighbourhoods does I-CA.RE plan to open?",
       "a2": "Beyond Capitole, we are studying several other central Toulouse neighbourhoods to progressively cover the pink city. People registered on our interest list are informed first about new openings.",
       "q3": "What rents does I-CA.RE charge in Toulouse?",
-      "a3": "The five offices are offered at €700 to €800 per month, including all taxes and charges; VAT is not applicable. Prices vary by floor area (11.32 to 14.39 sqm). Ask Nicolas for the room details and rental terms.",
+      "a3": "The five offices are offered at €700 to €800 per month, rent excluding charges, not subject to VAT. Prices vary by floor area (11.32 to 14.39 sqm). Ask Nicolas for the room details and rental terms.",
       "q4": "Can I visit before delivery?",
       "a4": "Yes. Use the form above to suggest suitable dates and tell us about your profession. Nicolas responds within 24 hours to arrange a visit and discuss your plans."
     },
@@ -669,11 +669,11 @@
     "pricingLeaseNote": "This day-based offer is separate from the full-time professional lease presented in our FAQ.",
     "pricing": {
       "oneDayLabel": "One fixed day per week",
-      "oneDayPrice": "€190 incl. VAT/month",
+      "oneDayPrice": "€190/month, charges included",
       "twoDaysLabel": "Two fixed days per week",
-      "twoDaysPrice": "€340 incl. VAT/month",
+      "twoDaysPrice": "€340/month, charges included",
       "threeDaysLabel": "Three fixed days per week",
-      "threeDaysPrice": "€460 incl. VAT/month"
+      "threeDaysPrice": "€460/month, charges included"
     },
     "pricingIncludesTitle": "The price covers",
     "pricingIncludes": "The office, common areas, cleaning of the common areas and cleaning products.",

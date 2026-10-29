@@ -43,6 +43,8 @@ export const JSONLD_EXPECTATIONS = [
   { match: (p) => /^\/patients\/specialite\/./.test(p), label: "specialite", expect: ["CollectionPage", "ItemList", "BreadcrumbList"] },
   { match: (p) => /^\/patients\/articles\/./.test(p), label: "article patients", expect: ["Article", "BreadcrumbList"] },
   { match: (p) => /^\/sinstaller\/[^/]+\/./.test(p), label: "matrice installation", expect: ["MedicalBusiness", "Service", "BreadcrumbList"] },
+  // Pages « cabinet a louer » par site, lot ENTRANT-GOOGLE-PAGES-1 : le lieu, ses offres visibles et le fil d'Ariane.
+  { match: (p) => /^\/cabinet-a-louer\/./.test(p), label: "cabinet a louer", expect: ["MedicalBusiness", "BreadcrumbList"] },
 ];
 
 /** Regle applicable a une route, ou null si la route n'est pas controlee. */

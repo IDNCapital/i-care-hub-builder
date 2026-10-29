@@ -19,6 +19,7 @@
 // de garde et allait capturer. Le vert de bout en bout se prend dans le depot
 // complet avec `bun run build:ci`.
 import { spawnSync } from "node:child_process";
+import { createServer as creerServeurTcp } from "node:net";
 import {
   cpSync,
   mkdtempSync,
@@ -262,18 +263,54 @@ const CAS = [
         echecs.push("la passe a continue vers la capture malgre la garde");
     },
   },
+  {
+    // Regression du run 40868690270 (lot ENTRANT-GOOGLE-PAGES-1C) : P1 et P4
+    // rouges en CI sur un port de capture fixe deja tenu par un autre socket.
+    // Le port historique est occupe pendant le cas ; la passe saine doit
+    // quand meme atteindre la frontiere navigateur.
+    nom: "P8 prerender, donnees saines, ancien port de capture 45678 occupe : passe continue jusqu'a la frontiere navigateur",
+    script: "prerender.mjs",
+    options: { fixture: "sain.json", optional: false },
+    portOccupe: 45678,
+    verifier(res, bac, echecs) {
+      if (res.sortie.includes("GARDE DECLENCHEE")) echecs.push("garde declenchee sur donnees saines");
+      if (res.sortie.includes("EADDRINUSE")) echecs.push("serveur local de capture en EADDRINUSE");
+      if (!res.sortie.includes("FRONTIERE_NAVIGATEUR_ATTEINTE"))
+        echecs.push("la passe n'a pas atteint la frontiere navigateur avec le port 45678 occupe");
+    },
+  },
 ];
+
+// Occupe un port pendant un cas. Si un autre socket le tient deja, la
+// condition du cas est remplie telle quelle : on n'echoue pas pour autant.
+function occuperPort(port) {
+  return new Promise((resolve) => {
+    const s = creerServeurTcp();
+    s.once("error", () => resolve(null));
+    s.listen(port, () => resolve(s));
+  });
+}
+
+// Fin de la sortie du processus enfant, imprimee sur un cas rouge : sans
+// elle, le journal de CI ne dit pas pourquoi la passe s'est arretee.
+function finDeSortie(sortie) {
+  return (sortie || "").trim().split(NL).slice(-12).map((l) => `        | ${l}`).join(NL);
+}
 
 let rouges = 0;
 for (const cas of CAS) {
   const bac = creerBac();
   let echecs = [];
+  let sortie = "";
+  const occupant = cas.portOccupe ? await occuperPort(cas.portOccupe) : null;
   try {
     const res = executer(bac, cas.script, cas.options);
+    sortie = res.sortie;
     cas.verifier(res, bac, echecs);
   } catch (err) {
     echecs.push(`exception du test : ${err && err.message}`);
   } finally {
+    if (occupant) await new Promise((r) => occupant.close(r));
     rmSync(bac, { recursive: true, force: true });
   }
   if (echecs.length === 0) {
@@ -282,6 +319,7 @@ for (const cas of CAS) {
     rouges++;
     console.log(`ROUGE ${cas.nom}`);
     for (const e of echecs) console.log(`      - ${e}`);
+    if (sortie) console.log(`      sortie du processus (fin) :${NL}${finDeSortie(sortie)}`);
   }
 }
 

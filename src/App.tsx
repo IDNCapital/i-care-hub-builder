@@ -22,6 +22,7 @@ import NotFound from "./pages/NotFound";
 import LocationCabinetBordeaux from "./pages/LocationCabinetBordeaux";
 import LocationCabinetToulouse from "./pages/LocationCabinetToulouse";
 import CabinetALaJournee from "./pages/CabinetALaJournee";
+import CabinetALouer from "./pages/CabinetALouer";
 import FAQ from "./pages/FAQ";
 import BlogTrouverCabinet from "./pages/BlogTrouverCabinet";
 import BlogCoutCabinetBordeaux from "./pages/BlogCoutCabinetBordeaux";
@@ -253,6 +254,8 @@ const App = () => (
                 path="/ressources/exercer-en-lieu-pluridisciplinaire"
                 element={<RessourcesLieuPluridisciplinaire />}
               />
+              {/* Pages « cabinet à louer », une par site : lot ENTRANT-GOOGLE-PAGES-1, FR seulement */}
+              <Route path="/cabinet-a-louer/:site" element={<CabinetALouer />} />
               <Route path="*" element={<NotFound />} />
             </Routes></LangSync>} />
           </Routes>

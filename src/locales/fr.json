@@ -513,7 +513,7 @@
       "q3": "Peut-on partager un cabinet à Bordeaux ?",
       "a3": "Oui, le partage de cabinet est possible et encouragé. Plusieurs praticiens peuvent se répartir les créneaux d'un même cabinet, ce qui permet de réduire les coûts tout en bénéficiant d'un espace professionnel de qualité.",
       "q4": "Combien coûte la location d'un cabinet paramédical à Bordeaux ?",
-      "a4": "Aux Chartrons, le cabinet 1 de 11,1 m² est proposé à 690 €/mois et le cabinet 5 de 13,1 m² à 790 €/mois, toutes taxes et charges comprises, TVA non applicable. Les loyers des autres centres dépendent du bureau et de la formule. Nicolas vous transmet les conditions détaillées sous 24 h."
+      "a4": "Aux Chartrons, le cabinet 1 de 11,1 m² est proposé à 690 €/mois et le cabinet 5 de 13,1 m² à 790 €/mois, loyer hors charges, non assujetti à la TVA. Les loyers des autres centres dépendent du bureau et de la formule. Nicolas vous transmet les conditions détaillées sous 24 h."
     },
     "ctaTitle": "Échanger sur votre projet d'installation",
     "ctaDesc": "Vous cherchez un cabinet thérapeute à Bordeaux ou un cabinet paramédical à louer ? Contactez-nous pour discuter de votre projet."
@@ -614,7 +614,7 @@
       "q2": "Dans quels quartiers de Toulouse I-CA.RE prévoit-il d'ouvrir ?",
       "a2": "Au-delà du Capitole, nous étudions plusieurs autres quartiers centraux toulousains pour mailler progressivement la ville rose. Les personnes inscrites à notre liste d'intérêt sont informées en priorité des nouvelles ouvertures.",
       "q3": "Quels sont les loyers pratiqués par I-CA.RE à Toulouse ?",
-      "a3": "Les cinq cabinets sont proposés de 700 à 800 € par mois, toutes taxes et charges comprises, TVA non applicable, selon la surface (11,32 à 14,39 m²). Demandez à Nicolas la fiche du cabinet et les conditions de location.",
+      "a3": "Les cinq cabinets sont proposés de 700 à 800 € par mois, loyer hors charges, non assujetti à la TVA, selon la surface (11,32 à 14,39 m²). Demandez à Nicolas la fiche du cabinet et les conditions de location.",
       "q4": "Peut-on visiter avant la livraison ?",
       "a4": "Oui. Utilisez le formulaire ci-dessus pour proposer vos disponibilités et préciser votre activité. Nicolas vous répond sous 24 h pour organiser une visite et préparer votre installation."
     },
@@ -669,11 +669,11 @@
     "pricingLeaseNote": "Cette offre à la journée est distincte du bail professionnel à temps plein présenté dans notre foire aux questions.",
     "pricing": {
       "oneDayLabel": "Un jour fixe par semaine",
-      "oneDayPrice": "190 € TTC par mois",
+      "oneDayPrice": "190 € par mois, charges comprises",
       "twoDaysLabel": "Deux jours fixes par semaine",
-      "twoDaysPrice": "340 € TTC par mois",
+      "twoDaysPrice": "340 € par mois, charges comprises",
       "threeDaysLabel": "Trois jours fixes par semaine",
-      "threeDaysPrice": "460 € TTC par mois"
+      "threeDaysPrice": "460 € par mois, charges comprises"
     },
     "pricingIncludesTitle": "Le tarif couvre",
     "pricingIncludes": "Le cabinet, les espaces communs, le ménage des parties communes et les produits d'entretien.",
