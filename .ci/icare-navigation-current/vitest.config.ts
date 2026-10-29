@@ -1,0 +1,2 @@
+import {defineConfig}from'vitest/config';import{fileURLToPath}from'node:url';import{aliases}from'./aliases.mjs';const root=fileURLToPath(new URL('../../',import.meta.url));export default defineConfig({root,esbuild:{jsx:'automatic'},resolve:{alias:aliases},test:{environment:'jsdom',setupFiles:['.ci/icare-navigation-current/setup.ts'],include:['.ci/icare-navigation-current/Header.test.tsx'],cache:false}});
+
