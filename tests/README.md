@@ -4,7 +4,7 @@ Exécuter `node tests/run-tests.mjs` avec Node 24. La CI lance ces tests avant l
 
 Les 14 cas exécutent les vrais scripts de sitemap et de prerender sur des fixtures temporaires : données saines, données invalides, panne réseau et anomalie suivie d'une panne. Une anomalie déjà constatée doit empêcher la publication, même avec `PRERENDER_OPTIONAL=true`. Les artefacts précédents doivent rester intacts.
 
-Les accès réseau, DOM et navigateur sont remplacés par des doubles explicites. Le serveur local temporaire du prerender doit pouvoir ouvrir son port 45678 ; ne pas lancer simultanément un autre prerender sur ce port. Les cas sains de prerender vérifient l'arrivée au navigateur, pas une capture complète. Celle-ci est couverte séparément par `bun run build:ci` et les contrôles de pages de la CI.
+Les accès réseau, DOM et navigateur sont remplacés par des doubles explicites. Le serveur local temporaire du prerender reçoit un port attribué par le système à chaque passe (port 0, `scripts/prerender.mjs` ligne 35), sauf si `PRERENDER_PORT` en impose un ; aucun port fixe n'est requis. L'ancien port 45678 n'est plus utilisé : le cas P8 l'occupe volontairement pour prouver que la passe continue. Les cas sains de prerender vérifient l'arrivée au navigateur, pas une capture complète. Celle-ci est couverte séparément par `bun run build:ci` et les contrôles de pages de la CI.
 
 Les doubles restent sous `tests/doubles/modules`, puis sont copiés dans le `node_modules` temporaire de chaque cas. Aucun runtime mutable ni donnée de production ne sert de fixture.
 
