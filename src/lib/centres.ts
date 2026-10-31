@@ -37,7 +37,7 @@ export function openingForecastLabel(dateStr: string | null | undefined): string
  * quarterLabel/openingForecastLabel.
  */
 export const STATIC_CENTRES: StaticCentre[] = [
-  { id: "chartrons", name: "Chartrons", address: "20 cours Saint Louis, 33300 Bordeaux", status: "available", slug: "i-ca-re-chartrons", region: "bordeaux" },
+  { id: "chartrons", name: "Chartrons", address: "20 cours Saint Louis, 33300 Bordeaux", status: "available", slug: "i-ca-re-chartrons", region: "bordeaux", availabilityLabel: "Cabinet 1 partagé (lundi, jeudi, vendredi et samedi libres) ; cabinet 5 disponible à temps plein", availabilityLabelEn: "Room 1 shared (Monday, Thursday, Friday and Saturday free); room 5 available full time" },
   { id: "jardin-public", name: "Jardin Public", address: "38 cours du Maréchal Foch, 33000 Bordeaux", status: "full", slug: "i-ca-re-jardin-public", region: "bordeaux" },
   { id: "nansouty", name: "Nansouty", address: "106 bis rue Bertrand de Goth, 33800 Bordeaux", status: "full", slug: "i-ca-re-nansouty", region: "bordeaux" },
   { id: "pey-berland", name: "Pey-Berland", address: "6 rue Père Louis de Jabrun, 33000 Bordeaux", status: "full", slug: "i-ca-re-pey-berland", region: "bordeaux" },

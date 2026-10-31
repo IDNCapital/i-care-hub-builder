@@ -177,10 +177,14 @@ export const CABINETS_A_LOUER: CabinetALouer[] = [
     ville: "Bordeaux",
     region: "bordeaux",
     projetSlug: "i-ca-re-chartrons",
-    titreAnnonce: "Cabinet de praticien à louer aux Chartrons, Bordeaux : 11 à 13 m², dès 690 € par mois",
-    seoTitle: "Cabinet à louer aux Chartrons, Bordeaux : 11 à 13 m², dès 690 € | I-CA.RE",
+    // Lot SITE-ICARE-OFFRE-ALIGN-1 (30/10/2026) : fiche d'offre Acquisition/OFFRE_ICARE.md
+    // (section 2) ; le cabinet 1 n'est plus propose a temps plein (projet de bail
+    // a temps partiel Largeau, mardi et mercredi des le 01/01/2027, leases 7624fefb,
+    // decisions de Nicolas du 29/10/2026 16:5x et du 30/10/2026 15:41).
+    titreAnnonce: "Cabinet de praticien à louer aux Chartrons, Bordeaux : 13,1 m² à 790 € par mois, ou à temps partiel",
+    seoTitle: "Cabinet à louer aux Chartrons, Bordeaux : 13,1 m², 790 € ou temps partiel | I-CA.RE",
     seoDescription:
-      "Deux cabinets de praticien à louer au 20 cours Saint Louis, Bordeaux Chartrons : 11,1 m² à 690 € et 13,1 m² à 790 € par mois hors charges. Visite sur rendez vous.",
+      "Cabinet de praticien au 20 cours Saint Louis, Bordeaux Chartrons : 13,1 m² à 790 € par mois hors charges, ou à temps partiel dès 190 € charges comprises. Visite sur rendez vous.",
     chapeau:
       "I-CA.RE ouvre aux praticiens indépendants un lieu partagé au 20 cours Saint Louis, 33300 Bordeaux, dans le quartier des Chartrons.",
     pointsCles: [
@@ -188,10 +192,13 @@ export const CABINETS_A_LOUER: CabinetALouer[] = [
       "Vous exercez dans un cadre professionnel, aux côtés d'autres praticiens, sans investir dans un local.",
       "Visite sur rendez vous.",
     ],
-    disponibilite: "Deux cabinets libres.",
+    // Jours libres du cabinet 1 : fiche d'offre, section 2 (cabinet 1 pris le mardi
+    // et le mercredi par le projet de bail Largeau ; lundi, jeudi, vendredi et samedi
+    // proposables a temps partiel).
+    disponibilite:
+      "Un cabinet libre à temps plein. Le cabinet 1 (11,1 m²) est partagé à temps partiel : lundi, jeudi, vendredi et samedi encore libres.",
     lots: [
-      // project_units 1e82c668-fda1-4a6c-824e-8a497c3337bd
-      { libelle: "Cabinet 1", surfaceM2: 11.1, loyerMensuelEur: 690, statut: "libre" },
+      // Cabinet 1 (project_units 1e82c668) retire des lots a temps plein : voir ci dessus.
       // project_units e448d816-f9ce-4467-ada8-76086e467798
       { libelle: "Cabinet 5", surfaceM2: 13.1, loyerMensuelEur: 790, statut: "libre" },
     ],
