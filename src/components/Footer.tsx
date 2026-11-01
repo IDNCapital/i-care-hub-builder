@@ -196,6 +196,7 @@ export function Footer() {
     { name: lang === "fr" ? "Guides pratiques" : "Practical guides", href: localePath(lang, "insights") },
     { name: lang === "fr" ? "S'installer" : "Setting up", href: lang === "fr" ? "/sinstaller" : localePath(lang, "professionals") },
     { name: lang === "fr" ? "Cabinet à louer Bordeaux" : "Office Bordeaux", href: localePath(lang, "locationBordeaux") },
+    { name: lang === "fr" ? "Cabinet à louer Toulouse" : "Office Toulouse", href: localePath(lang, "locationToulouse") },
     { name: t("cabinetJournee.footerLabel"), href: localePath(lang, "cabinetJournee") },
   ];
 

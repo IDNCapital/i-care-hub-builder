@@ -14,6 +14,7 @@ import type {
   InstallationContentProfession,
   InstallationContentVille,
 } from "@/types/installation";
+import { avecAdresseCapitole } from "@/lib/capitoleAdresse";
 
 export interface Profession {
   id: string;
@@ -104,7 +105,8 @@ export function useCabinetsPipeline() {
         .not("slug_installation", "is", null)
         .order("date_ouverture_cible", { ascending: true });
       if (error) throw error;
-      return (data ?? []) as unknown as CabinetPipeline[];
+      // Toulouse Capitole : adresse du 31/10/2026, independante de la ligne en base.
+      return (data ?? []).map(avecAdresseCapitole) as unknown as CabinetPipeline[];
     },
   });
 }
@@ -124,7 +126,8 @@ export function useCabinetsInstallation() {
         .not("slug_installation", "is", null)
         .order("date_ouverture_cible", { ascending: true });
       if (error) throw error;
-      return (data ?? []) as unknown as CabinetInstallation[];
+      // Toulouse Capitole : adresse du 31/10/2026, independante de la ligne en base.
+      return (data ?? []).map(avecAdresseCapitole) as unknown as CabinetInstallation[];
     },
   });
 }
