@@ -14,6 +14,8 @@ import {
   Calendar,
   CheckCircle2,
   Phone,
+  FileDown,
+  Users,
 } from "lucide-react";
 import { useProject } from "@/hooks/useProjects";
 import { ChargementPage } from "@/components/ChargementPage";
@@ -32,6 +34,27 @@ import { Lightbox, type LightboxImage } from "@/components/Lightbox";
 import { assetUrl, pageUrl } from "@/lib/siteUrl";
 import { SectionAvisGoogle } from "@/components/avis/SectionAvisGoogle";
 import { marqueAffichee } from "@/lib/brand";
+import {
+  CAPITOLE_SLUG,
+  CAPITOLE_SEO_TITRE,
+  CAPITOLE_SEO_DESCRIPTION,
+  CAPITOLE_OG,
+  CAPITOLE_TEMPS_PLEIN_TITRE,
+  CAPITOLE_TEMPS_PARTIEL_TITRE,
+  CAPITOLE_CONDITIONS,
+  CAPITOLE_LOTS,
+  CAPITOLE_CARNET,
+  CAPITOLE_MENTION_PROJECTIONS,
+  CAPITOLE_MENTION_PROJECTIONS_EN,
+  CAPITOLE_POUR_QUI_TITRE,
+  CAPITOLE_POUR_QUI_METIERS,
+  CAPITOLE_POUR_QUI_ELARGI,
+  CAPITOLE_PROJECTIONS,
+  avecAdresseCapitole,
+  formatLoyer,
+  formatSurface,
+  phraseTempsPartielCapitole,
+} from "@/lib/capitoleOffre";
 
 /**
  * OG images dédiées (1200×630) pour les pages /projets/[cabinet] exploitées.
@@ -65,7 +88,9 @@ const PROJECT_OG_IMAGES: Record<
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: project, isLoading, isError } = useProject(slug || "");
+  const { data: projectBrut, isLoading, isError } = useProject(slug || "");
+  // Toulouse Capitole : adresse decidee le 31/10/2026, independante de la ligne en base.
+  const project = projectBrut ? avecAdresseCapitole(projectBrut) : projectBrut;
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -143,8 +168,16 @@ export default function ProjetDetail() {
     ? "#demande-installation"
     : `${localePath(lang, "contact")}?centre=${encodeURIComponent(project.name)}`;
 
+  const isCapitole = project.slug === CAPITOLE_SLUG;
   const heroSrc = getProjectHero(project.slug, project.hero_image_url);
-  const gallery = getProjectGallery(project.slug, project.image_gallery);
+  // Toulouse Capitole : la galerie montre les dix projections IA (public/visuels),
+  // la facade reelle reste l'image d'en tete.
+  const gallery = isCapitole
+    ? CAPITOLE_PROJECTIONS.map((p) => `${p.base}.jpg`)
+    : getProjectGallery(project.slug, project.image_gallery);
+  const legendeCapitole = (i: number) =>
+    lang === "fr" ? CAPITOLE_PROJECTIONS[i]?.legende : CAPITOLE_PROJECTIONS[i]?.legendeEn;
+  const loyersCapitole = CAPITOLE_LOTS.map((l) => l.loyerMensuelEur);
   const lightboxImages: LightboxImage[] = (() => {
     const list: LightboxImage[] = [];
     const seen = new Set<string>();
@@ -154,7 +187,7 @@ export default function ProjetDetail() {
     }
     gallery.forEach((url, i) => {
       if (!seen.has(url)) {
-        list.push({ src: url, alt: marqueAffichee(`${project.name}, ${i + 1}`) });
+        list.push({ src: url, alt: isCapitole ? (legendeCapitole(i) ?? "") : marqueAffichee(`${project.name}, ${i + 1}`) });
         seen.add(url);
       }
     });
@@ -166,10 +199,10 @@ export default function ProjetDetail() {
   return (
     <Layout>
       <SeoHead
-        title={`${project.name} | I-CA.RE`}
-        description={shortDesc}
+        title={isCapitole && lang === "fr" ? CAPITOLE_SEO_TITRE : `${project.name} | I-CA.RE`}
+        description={isCapitole && lang === "fr" ? CAPITOLE_SEO_DESCRIPTION : shortDesc}
         path={lang === "fr" ? `/projets/${slug}` : `/en/projects/${slug}`}
-        {...(PROJECT_OG_IMAGES[project.slug] ?? {})}
+        {...(isCapitole ? CAPITOLE_OG : (PROJECT_OG_IMAGES[project.slug] ?? {}))}
       />
       <script
         type="application/ld+json"
@@ -223,6 +256,16 @@ export default function ProjetDetail() {
           <Button variant="hero" asChild className="flex-1"><Link to={enquiryTarget} onClick={() => { if (enquiryTarget.startsWith("#")) document.getElementById("demande-installation")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>{t("projectDetail.requestAvailability")}</Link></Button>
           <Button variant="hero-outline" asChild className="flex-1"><Link to={enquiryTarget} onClick={() => { if (enquiryTarget.startsWith("#")) document.getElementById("demande-installation")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>{t("projectDetail.visitRequest")}</Link></Button>
         </div>
+        {isCapitole && lang === "fr" && (
+          <div className="container max-w-3xl mt-3">
+            <Button variant="outline" asChild className="w-full">
+              <a href={CAPITOLE_CARNET.href} download={CAPITOLE_CARNET.nomFichier} data-testid="capitole-carnet-haut">
+                <FileDown className="mr-2 h-4 w-4" />
+                {CAPITOLE_CARNET.libelle}
+              </a>
+            </Button>
+          </div>
+        )}
       </section>
 
       {/* Full notice for completed centres */}
@@ -289,8 +332,17 @@ export default function ProjetDetail() {
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
               <Ruler className="w-8 h-8 text-primary mx-auto mb-3" />
-              <p className="text-lg font-bold">{t("projectDetail.rentOnRequest")}</p>
-              <p className="text-sm text-muted-foreground">{t("projectDetail.rent")}</p>
+              {isCapitole && lang === "fr" && loyersCapitole.length > 0 ? (
+                <>
+                  <p className="text-lg font-bold">{formatLoyer(Math.min(...loyersCapitole))} à {formatLoyer(Math.max(...loyersCapitole))}</p>
+                  <p className="text-sm text-muted-foreground">par mois hors charges, temps plein</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-lg font-bold">{t("projectDetail.rentOnRequest")}</p>
+                  <p className="text-sm text-muted-foreground">{t("projectDetail.rent")}</p>
+                </>
+              )}
 
             </div>
             <div className="bg-secondary rounded-2xl p-6 text-center">
@@ -312,10 +364,95 @@ export default function ProjetDetail() {
                 <p className="text-muted-foreground whitespace-pre-line text-sm leading-relaxed">{t("projectDetail.architecturalQualityDesc")}</p>
               </div>
 
-              <div className="mt-6 bg-secondary rounded-2xl p-6">
-                <p className="text-sm text-muted-foreground leading-relaxed">{t("projectDetail.rentDetails")}</p>
-              </div>
-              {(() => {
+              {isCapitole && lang === "fr" ? (
+                <>
+                  <div id="tarifs" className="mt-6 bg-secondary rounded-2xl p-6 scroll-mt-24" data-testid="capitole-tarifs">
+                    <h3 className="text-xl font-semibold mb-4">{CAPITOLE_TEMPS_PLEIN_TITRE}</h3>
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="text-left text-muted-foreground border-b border-border">
+                          <th scope="col" className="py-2 font-medium">Cabinet</th>
+                          <th scope="col" className="py-2 font-medium text-right">Surface</th>
+                          <th scope="col" className="py-2 font-medium text-right">Loyer mensuel</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {CAPITOLE_LOTS.map((lot) => (
+                          <tr key={lot.libelle} className="border-b border-border/60 last:border-0">
+                            <th scope="row" className="py-2 text-left font-medium">{lot.libelle}</th>
+                            <td className="py-2 text-right">{lot.surfaceM2 != null ? formatSurface(lot.surfaceM2) : ""}</td>
+                            <td className="py-2 text-right font-semibold">{formatLoyer(lot.loyerMensuelEur)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <h3 className="text-xl font-semibold mt-8 mb-3">{CAPITOLE_TEMPS_PARTIEL_TITRE}</h3>
+                    <p className="text-sm leading-relaxed" data-testid="capitole-temps-partiel">{phraseTempsPartielCapitole()}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed mt-6">{CAPITOLE_CONDITIONS}</p>
+                    <Button variant="outline" asChild className="mt-6 w-full sm:w-auto">
+                      <a href={CAPITOLE_CARNET.href} download={CAPITOLE_CARNET.nomFichier} data-testid="capitole-carnet">
+                        <FileDown className="mr-2 h-4 w-4" />
+                        {CAPITOLE_CARNET.libelle}
+                      </a>
+                    </Button>
+                  </div>
+
+                  <div className="mt-6 bg-secondary rounded-2xl p-6" data-testid="capitole-pour-qui">
+                    <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                      <Users className="w-5 h-5 text-primary" />
+                      {CAPITOLE_POUR_QUI_TITRE}
+                    </h3>
+                    <ul className="flex flex-wrap gap-2 mb-4">
+                      {CAPITOLE_POUR_QUI_METIERS.map((m) => (
+                        <li key={m} className="text-sm px-3 py-1 rounded-full bg-background border border-border">{m}</li>
+                      ))}
+                    </ul>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{CAPITOLE_POUR_QUI_ELARGI}</p>
+                  </div>
+                </>
+              ) : (
+                <div className="mt-6 bg-secondary rounded-2xl p-6">
+                  <p className="text-sm text-muted-foreground leading-relaxed">{t("projectDetail.rentDetails")}</p>
+                </div>
+              )}
+              {isCapitole ? (
+                <div className="mt-12" data-testid="capitole-galerie">
+                  <h3 className="text-2xl font-semibold mb-3">{t("projectDetail.gallery")}</h3>
+                  <p className="text-sm text-muted-foreground mb-6">
+                    {lang === "fr" ? CAPITOLE_MENTION_PROJECTIONS : CAPITOLE_MENTION_PROJECTIONS_EN}
+                  </p>
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    {CAPITOLE_PROJECTIONS.map((p, i) => {
+                      const legende = legendeCapitole(i) ?? "";
+                      const idx = galleryIndexInLightbox(`${p.base}.jpg`);
+                      return (
+                        <figure key={p.base}>
+                          <button
+                            type="button"
+                            onClick={() => setLightboxIndex(idx >= 0 ? idx : 0)}
+                            aria-label={`${lang === "fr" ? "Afficher en plein écran" : "View full screen"} : ${legende}`}
+                            className="block w-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-sage rounded-2xl"
+                          >
+                            <picture>
+                              <source srcSet={`${p.base}.webp`} type="image/webp" />
+                              <img
+                                src={`${p.base}.jpg`}
+                                alt={legende}
+                                width={1600}
+                                height={1000}
+                                loading={i < 2 ? "eager" : "lazy"}
+                                decoding="async"
+                                className="rounded-2xl w-full aspect-[16/10] object-cover bg-secondary"
+                              />
+                            </picture>
+                          </button>
+                          <figcaption className="text-sm text-muted-foreground mt-2 leading-relaxed">{legende}</figcaption>
+                        </figure>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (() => {
                 return gallery.length > 0 ? (
                   <div className="mt-12">
                     <h3 className="text-2xl font-semibold mb-6">{t("projectDetail.gallery")}</h3>

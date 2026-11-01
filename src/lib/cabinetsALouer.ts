@@ -13,7 +13,8 @@
  *     partiel : « charges comprises » ;
  *  2. Le Bouscat : aucune mention d'etage ; « livraison de l'ensemble fin mars
  *     2027 » (les dates par bureau de la base ne sont plus publiees) ;
- *  3. Toulouse : « 5ter rue Mirepoix » ;
+ *  3. Toulouse : « 5ter rue Mirepoix », remplace le 31/10/2026 par
+ *     « 5 ter rue de Mirepoix » (lot SITE-CAPITOLE-VISUELS-1) ;
  *  4. Floirac : « surfaces de 12 à 20 m² » ;
  *  5. Jardin Public complet (bail Viaud a partir de mars) : page retiree ;
  *  6. grille a temps partiel 190, 340, 460 EUR par mois charges comprises pour
@@ -275,8 +276,9 @@ export const CABINETS_A_LOUER: CabinetALouer[] = [
     nomCourt: "Toulouse Capitole",
     aLieu: "à Toulouse Capitole",
     terme: "cabinet",
-    // Reponse 3 de Nicolas du 29/10/2026 : « 5ter » (base : « 5t »).
-    rue: "5ter rue Mirepoix",
+    // Reponse 3 de Nicolas du 29/10/2026 : « 5ter » (base : « 5t ») ; forme
+    // « 5 ter rue de Mirepoix » decidee le 31/10/2026 (lot SITE-CAPITOLE-VISUELS-1).
+    rue: "5 ter rue de Mirepoix",
     codePostal: "31000",
     ville: "Toulouse",
     region: "toulouse",
@@ -284,9 +286,9 @@ export const CABINETS_A_LOUER: CabinetALouer[] = [
     titreAnnonce: "Cabinets de praticiens à louer à Toulouse Capitole, ouverture en mars 2027",
     seoTitle: "Cabinet à louer à Toulouse Capitole : 11 à 14 m², de 700 à 800 € | I-CA.RE",
     seoDescription:
-      "Cinq cabinets de praticien à louer au 5ter rue Mirepoix, Toulouse Capitole : 11,32 à 14,39 m², de 700 à 800 € par mois hors charges, dès le 01/03/2027.",
+      "Cinq cabinets de praticien à louer au 5 ter rue de Mirepoix, Toulouse Capitole : 11,32 à 14,39 m², de 700 à 800 € par mois hors charges, dès le 01/03/2027.",
     chapeau:
-      "I-CA.RE ouvre un lieu partagé au 5ter rue Mirepoix, 31000 Toulouse, dans le secteur Capitole. Les cabinets sont en cours d'aménagement ; ouverture en mars 2027.",
+      "I-CA.RE ouvre un lieu partagé au 5 ter rue de Mirepoix, 31000 Toulouse, dans le secteur Capitole. Les cabinets sont en cours d'aménagement ; ouverture en mars 2027.",
     pointsCles: [
       "Cinq cabinets au rez de chaussée.",
       POINT_PROFESSIONS,
@@ -309,7 +311,7 @@ export const CABINETS_A_LOUER: CabinetALouer[] = [
     professions: PROFESSIONS_ANNONCE,
     visuels: visuelsDepuisDepot("i-ca-re-toulouse-capitole", () => ({
       src: PROJECT_IMAGES["i-ca-re-toulouse-capitole"].hero,
-      legende: "Façade du bâtiment, 5ter rue Mirepoix, avant aménagement",
+      legende: "Façade du bâtiment, 5 ter rue de Mirepoix, avant aménagement",
       projection: false,
     })),
   },
