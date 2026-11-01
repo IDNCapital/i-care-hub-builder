@@ -24,6 +24,7 @@ import { openingForecastLabel } from "@/lib/centres";
 import { marqueAffichee } from "@/lib/brand";
 import { parseLat, parseLng } from "@/lib/geo";
 import { MapErrorBoundary } from "@/components/MapErrorBoundary";
+import { avecAdresseCapitole } from "@/lib/capitoleAdresse";
 
 const SAGE = "#9EB8A5";
 const SAGE_LIGHT = "#E2EAE5";
@@ -215,7 +216,8 @@ export function CarteCabinets({
           return {
             slug: r.slug,
             name: r.name,
-            address: r.address ?? "",
+            // Toulouse Capitole : adresse du 31/10/2026, independante de la ligne en base.
+            address: avecAdresseCapitole({ slug: r.slug, address: r.address }).address ?? "",
             city: r.city,
             status: r.status,
             lat,

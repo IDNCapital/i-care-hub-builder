@@ -2,7 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import {
@@ -50,6 +50,8 @@ import {
   CAPITOLE_POUR_QUI_METIERS,
   CAPITOLE_POUR_QUI_ELARGI,
   CAPITOLE_PROJECTIONS,
+  CAPITOLE_TEXTES,
+  CAPITOLE_DATE_OUVERTURE,
   avecAdresseCapitole,
   formatLoyer,
   formatSurface,
@@ -90,7 +92,11 @@ export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: projectBrut, isLoading, isError } = useProject(slug || "");
   // Toulouse Capitole : adresse decidee le 31/10/2026, independante de la ligne en base.
-  const project = projectBrut ? avecAdresseCapitole(projectBrut) : projectBrut;
+  // Memoise : un objet recree a chaque rendu relancait l'effet project_view a chaque rendu.
+  const project = useMemo(
+    () => (projectBrut ? avecAdresseCapitole(projectBrut) : projectBrut),
+    [projectBrut],
+  );
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -156,12 +162,22 @@ export default function ProjetDetail() {
     }
   };
 
-  const description = lang === "en" && project.long_description_en ? project.long_description_en : (project.long_description || project.short_description);
-  const shortDesc = lang === "en" && project.short_description_en ? project.short_description_en : project.short_description;
-  const features = lang === "en" && project.key_features_en ? project.key_features_en : project.key_features;
+  // Toulouse Capitole : chapeau, description et points cles du code (decisions du
+  // 31/10/2026), jamais ceux de la ligne en base, qui peut porter l'ancienne fiche.
+  const textesCapitole = project.slug === CAPITOLE_SLUG ? CAPITOLE_TEXTES[lang] : null;
+  const description = textesCapitole
+    ? textesCapitole.description
+    : lang === "en" && project.long_description_en ? project.long_description_en : (project.long_description || project.short_description);
+  const shortDesc = textesCapitole
+    ? textesCapitole.chapeau
+    : lang === "en" && project.short_description_en ? project.short_description_en : project.short_description;
+  const features = textesCapitole
+    ? textesCapitole.pointsCles
+    : lang === "en" && project.key_features_en ? project.key_features_en : project.key_features;
   // Libellé de livraison dérivé de projets.date_ouverture_cible (source de vérité unique)
+  // Toulouse Capitole : livraison de mars 2027 decidee le 31/10/2026, independante de la base.
   const deliveryLabel =
-    quarterLabel(project.date_ouverture_cible, lang === "fr" ? "T" : "Q") ??
+    quarterLabel(textesCapitole ? CAPITOLE_DATE_OUVERTURE : project.date_ouverture_cible, lang === "fr" ? "T" : "Q") ??
     t("projectDetail.deliveryUnknown");
 
   const enquiryTarget = lang === "fr" && hasInstallationPages(project.status) && project.slug_installation

@@ -17,16 +17,63 @@
  * porte deja ces valeurs (project_units, lus le 28/10/2026) : une seule source
  * dans le depot.
  *
- * Ces valeurs ne dependent pas de la base : la page reste juste meme avant les
- * mises a jour SQL proposees dans le rapport du lot.
+ * Pour ce slug, l'adresse, le chapeau, la description longue et les points cles
+ * affiches (et repris dans les donnees structurees) viennent de ce fichier, pas
+ * de la base : la ligne public.projets peut porter une ancienne fiche sans que la
+ * page l'affiche. La tuile de livraison de la fiche utilise aussi la date de ce
+ * fichier. Les autres colonnes (nom, ville, statut, typologie, surface, nombre
+ * de cabinets, coordonnees) restent lues en base.
+ * Les mises a jour SQL du rapport du lot alignent la base sur ces textes.
  */
 
 import { CABINETS_A_LOUER, GRILLE_TEMPS_PARTIEL, type LotALouer } from "@/lib/cabinetsALouer";
 import { assetUrl } from "@/lib/siteUrl";
+import { CAPITOLE_SLUG } from "@/lib/capitoleAdresse";
 
-export const CAPITOLE_SLUG = "i-ca-re-toulouse-capitole";
+export { CAPITOLE_SLUG, CAPITOLE_ADRESSE, avecAdresseCapitole } from "@/lib/capitoleAdresse";
 
-export const CAPITOLE_ADRESSE = "5 ter rue de Mirepoix, 31000 Toulouse";
+/** Livraison prevue en mars 2027 (decision du 31/10/2026), au format de projets.date_ouverture_cible. */
+export const CAPITOLE_DATE_OUVERTURE = "2027-03-01";
+
+export interface TextesCapitole {
+  chapeau: string;
+  description: string;
+  pointsCles: string[];
+}
+
+/**
+ * Textes de la fiche, identiques au SQL propose dans le rapport du lot (version
+ * francaise, sans le point « Accueil et attente, cuisine commune ») ; la version
+ * anglaise en est une traduction fidele, sans chiffre nouveau.
+ */
+export const CAPITOLE_TEXTES: Record<"fr" | "en", TextesCapitole> = {
+  fr: {
+    chapeau:
+      "Cinq cabinets de praticien à louer au 5 ter rue de Mirepoix, Toulouse Capitole, de 11,32 à 14,39 m². Livraison prévue en mars 2027, visites possibles dès maintenant.",
+    description:
+      "Au 5 ter rue de Mirepoix, 31000 Toulouse, dans le secteur Capitole, I-CA.RE aménage un lieu partagé de cinq cabinets pour les professionnels du soin et du bien être, médical et paramédical, avec un accueil et attente et une cuisine commune.\n\nTemps plein, loyer mensuel hors charges, TVA non applicable : de 700 € à 800 € par mois selon le cabinet (11,32 à 14,39 m²). Temps partiel à la journée : 190 € par mois (1 jour par semaine), 340 € (2 jours), 460 € (3 jours), charges comprises. Les conditions détaillées sont communiquées avant tout engagement.\n\nLivraison prévue en mars 2027. Visites possibles dès maintenant.",
+    pointsCles: [
+      "5 cabinets de 11,32 à 14,39 m²",
+      "Temps plein de 700 à 800 € par mois hors charges, TVA non applicable",
+      "Temps partiel dès 190 € par mois, charges comprises",
+      "Livraison prévue en mars 2027",
+      "Visites possibles dès maintenant",
+    ],
+  },
+  en: {
+    chapeau:
+      "Five practitioner offices to rent at 5 ter rue de Mirepoix, Toulouse Capitole, from 11.32 to 14.39 sqm. Delivery planned for March 2027, visits available now.",
+    description:
+      "At 5 ter rue de Mirepoix, 31000 Toulouse, in the Capitole area, I-CA.RE is fitting out a shared place with five offices for care and wellbeing professionals, medical and paramedical, with a reception and waiting area and a shared kitchen.\n\nFull time, monthly rent excluding charges, VAT not applicable: from €700 to €800 per month depending on the office (11.32 to 14.39 sqm). Part time by the day: €190 per month (1 day per week), €340 (2 days), €460 (3 days), charges included. Detailed terms are provided before any commitment.\n\nDelivery planned for March 2027. Visits available now.",
+    pointsCles: [
+      "5 offices from 11.32 to 14.39 sqm",
+      "Full time from €700 to €800 per month excluding charges, VAT not applicable",
+      "Part time from €190 per month, charges included",
+      "Delivery planned for March 2027",
+      "Visits available now",
+    ],
+  },
+};
 
 export const CAPITOLE_SEO_TITRE = "Cabinets à louer Toulouse Capitole, 5 ter rue de Mirepoix | I-CA.RE";
 
@@ -166,13 +213,4 @@ export function phraseTempsPartielCapitole(): string {
       : `${formatLoyer(f.loyerMensuelEur)} (${f.jours} jour${f.jours > 1 ? "s" : ""})`,
   );
   return `${parties.join(", ")}, ${CAPITOLE_TEMPS_PARTIEL_MENTION}.`;
-}
-
-/**
- * Corrige l'adresse lue en base pour Toulouse Capitole (la ligne inseree le
- * 21/04/2026 portait le numero 5 sans « ter »). Sans effet sur les autres projets.
- */
-export function avecAdresseCapitole<T extends { slug: string; address?: string | null }>(project: T): T {
-  if (project.slug !== CAPITOLE_SLUG) return project;
-  return { ...project, address: CAPITOLE_ADRESSE };
 }
