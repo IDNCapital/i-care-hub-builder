@@ -8,9 +8,12 @@ on:
   workflow_dispatch:
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# CI-COUT-7-1 (04/11/2026, budget Actions de 25 dollars par mois) : une PR a son
+# propre groupe et un nouveau commit annule son run precedent ; push main et
+# workflow_dispatch gardent le groupe pages, jamais annule (deploiement).
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.ref) || 'pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
