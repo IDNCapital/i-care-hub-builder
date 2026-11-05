@@ -263,6 +263,14 @@ const REDIRECTS = [
   { from: "/blog/combien-coute-cabinet-consultation-bordeaux", to: "/insights/budget-cabinet-bordeaux" },
   { from: "/en/blog/finding-office-bordeaux-practitioner", to: "/en/insights/medical-office-bordeaux" },
   { from: "/en/blog/consultation-office-cost-bordeaux", to: "/en/insights/office-budget-bordeaux" },
+
+  // FLOIRAC-SITE-RETRAIT (decision de Nicolas du 04/11/2026) : l'operation
+  // Floirac est retiree, ses trois pages publiques sortent du sitemap et du
+  // prerendu. Une souche renvoie les anciennes URL vers la page parente au lieu
+  // d'un 404, pour que liens et moteurs consolident vers une offre existante.
+  { from: "/projets/i-ca-re-floirac", to: "/projets" },
+  { from: "/en/projects/i-ca-re-floirac", to: "/en/projects" },
+  { from: "/cabinet-a-louer/floirac", to: "/location-cabinet-bordeaux" },
 ];
 
 // ── Resolution du navigateur ────────────────────────────────────────
