@@ -1,3 +1,4 @@
+import { isPublicProjectOffer } from "@/lib/publicProjectOffer";
 import { useMemo, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -38,7 +39,8 @@ export function FormulaireInteretInstallation({
   const professionLibre = !professionSlug;
   const villeLibre = !villeSlug;
   const { data: professions = [] } = useProfessions();
-  const { data: cabinets = [] } = useCabinetsInstallation();
+  const { data: cabinetsRecus = [] } = useCabinetsInstallation();
+  const cabinets = cabinetsRecus.filter((cabinet) => isPublicProjectOffer(cabinet.slug) && isPublicProjectOffer(cabinet.slug_installation));
 
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
@@ -125,6 +127,10 @@ export function FormulaireInteretInstallation({
       setState("error");
     }
   };
+
+  if (!isPublicProjectOffer(villeSlug) || !isPublicProjectOffer(selectedVille)) {
+    return <p role="status">Ce lieu ne fait plus partie de notre offre.</p>;
+  }
 
   if (state === "success") {
     return (

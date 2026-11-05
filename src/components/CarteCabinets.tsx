@@ -1,3 +1,4 @@
+import { isPublicProjectOffer } from "@/lib/publicProjectOffer";
 /**
  * CarteCabinets : Carte interactive Leaflet des cabinets I-CA.RE.
  *
@@ -208,7 +209,8 @@ export function CarteCabinets({
         setLoading(false);
         return;
       }
-      const rows: Cabinet[] = (data ?? [])
+      const publicRows = (data ?? []).filter((row) => isPublicProjectOffer(row.slug));
+      const rows: Cabinet[] = publicRows
         .map((r): Cabinet | null => {
           const lat = parseLat(r.lat);
           const lng = parseLng(r.lng);
@@ -227,7 +229,7 @@ export function CarteCabinets({
           };
         })
         .filter((r): r is Cabinet => r !== null);
-      setExcludedCount((data ?? []).length - rows.length);
+      setExcludedCount(publicRows.length - rows.length);
       setCabinets(rows);
       setLoading(false);
 

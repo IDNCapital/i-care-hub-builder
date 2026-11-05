@@ -1,3 +1,5 @@
+import { isPublicProjectOffer } from "@/lib/publicProjectOffer";
+import NotFound from "@/pages/NotFound";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
@@ -90,6 +92,11 @@ const PROJECT_OG_IMAGES: Record<
 
 export default function ProjetDetail() {
   const { slug } = useParams<{ slug: string }>();
+  if (!isPublicProjectOffer(slug)) return <NotFound />;
+  return <ProjetDetailOffre slug={slug} />;
+}
+
+function ProjetDetailOffre({ slug }: { slug: string | undefined }) {
   const { data: projectBrut, isLoading, isError } = useProject(slug || "");
   // Toulouse Capitole : adresse decidee le 31/10/2026, independante de la ligne en base.
   // Memoise : un objet recree a chaque rendu relancait l'effet project_view a chaque rendu.

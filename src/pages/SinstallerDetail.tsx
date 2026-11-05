@@ -1,3 +1,4 @@
+import { isPublicProjectOffer } from "@/lib/publicProjectOffer";
 import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
 import { Link, useParams } from "react-router-dom";
@@ -30,6 +31,11 @@ function parsePostalAddress(address: string | null, city: string) {
 
 export default function SinstallerDetail() {
   const { profession, ville } = useParams<{ profession: string; ville: string }>();
+  if (!isPublicProjectOffer(ville)) return <NotFound />;
+  return <SinstallerDetailOffre profession={profession} ville={ville} />;
+}
+
+function SinstallerDetailOffre({ profession, ville }: { profession: string | undefined; ville: string | undefined }) {
   const { data, isLoading, isError } = useInstallationPage(profession ?? "", ville ?? "");
   const { data: professions } = useProfessions();
   const { data: cabinetsInstallation } = useCabinetsInstallation();

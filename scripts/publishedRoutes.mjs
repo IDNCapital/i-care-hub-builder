@@ -220,6 +220,8 @@ export async function fetchInstallationMatrix() {
   const villes = villeRows
     .map((r) => String(r?.ville_slug ?? "").trim())
     .filter(Boolean)
+    // Floirac withdrawal: keep source data but stop publishing its installation routes.
+    .filter((ville) => ville !== "floirac" && ville !== "i-ca-re-floirac")
     .sort();
   const withContent = new Set(
     contentRows.map((r) => String(r?.profession_slug ?? "").trim()).filter(Boolean),

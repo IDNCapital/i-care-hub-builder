@@ -65,13 +65,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://i-ca.re/projets/i-ca-re-floirac/</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/projets/i-ca-re-floirac/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/projects/i-ca-re-floirac/" />
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://i-ca.re/projets/i-ca-re-lormont/</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/projets/i-ca-re-lormont/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/projects/i-ca-re-lormont/" />
@@ -117,13 +110,6 @@
     <loc>https://i-ca.re/en/projects/i-ca-re-pey-berland/</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/projets/i-ca-re-pey-berland/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/projects/i-ca-re-pey-berland/" />
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://i-ca.re/en/projects/i-ca-re-floirac/</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://i-ca.re/projets/i-ca-re-floirac/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://i-ca.re/en/projects/i-ca-re-floirac/" />
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -432,11 +418,6 @@
   </url>
   <url>
     <loc>https://i-ca.re/cabinet-a-louer/toulouse-capitole/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://i-ca.re/cabinet-a-louer/floirac/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

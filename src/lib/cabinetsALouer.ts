@@ -26,6 +26,7 @@
  * Le parrainage n'apparait sur aucune page publique (decision du 27/10).
  */
 
+import { isPublicProjectOffer } from "@/lib/publicProjectOffer";
 import { PROJECT_IMAGES } from "@/lib/projectImages";
 
 export type StatutLot = "libre" | "en_travaux" | "a_livrer";
@@ -164,7 +165,7 @@ function estProjection(src: string): boolean {
   return /(projection|insertion)/i.test(src);
 }
 
-export const CABINETS_A_LOUER: CabinetALouer[] = [
+const CABINETS_ARCHIVES: CabinetALouer[] = [
   {
     slug: "bordeaux-chartrons",
     ouvert: true,
@@ -359,6 +360,9 @@ export const CABINETS_A_LOUER: CabinetALouer[] = [
   // Jardin Public retire du lot : complet, bail Viaud a partir de mars (reponse 5 de
   // Nicolas du 29/10/2026). Page, fiche Google, sitemap et prerendu retires.
 ];
+
+// Keep the historical offer and media above without exposing it for rental.
+export const CABINETS_A_LOUER = CABINETS_ARCHIVES.filter((cabinet) => isPublicProjectOffer(cabinet.projetSlug));
 
 export function cabinetALouerParSlug(slug: string | undefined): CabinetALouer | undefined {
   return CABINETS_A_LOUER.find((c) => c.slug === slug);
