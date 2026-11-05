@@ -15,6 +15,7 @@ import InvestisseurMemo from "./pages/InvestisseurMemo";
 import InvestisseurVerify from "./pages/InvestisseurVerify";
 import NotreApproche from "./pages/NotreApproche";
 import Contact from "./pages/Contact";
+import { WithdrawnOfferContactGuard } from "./components/WithdrawnOfferContactGuard";
 import MentionsLegales from "./pages/MentionsLegales";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import PolitiqueCookies from "./pages/PolitiqueCookies";
@@ -169,7 +170,7 @@ const App = () => (
               <Route path="/investment/memo" element={<InvestisseurMemo />} />
               <Route path="/investment/verify" element={<InvestisseurVerify />} />
               <Route path="/our-approach" element={<NotreApproche />} />
-              <Route path="/contact" element={<Contact />} />
+              <Route path="/contact" element={<WithdrawnOfferContactGuard><Contact /></WithdrawnOfferContactGuard>} />
               <Route path="/legal" element={<MentionsLegales />} />
               <Route path="/privacy" element={<PolitiqueConfidentialite />} />
               <Route path="/cookies" element={<PolitiqueCookies />} />
@@ -222,7 +223,7 @@ const App = () => (
               <Route path="/investissement/memo" element={<InvestisseurMemo />} />
               <Route path="/investissement/verify" element={<InvestisseurVerify />} />
               <Route path="/notre-approche" element={<NotreApproche />} />
-              <Route path="/contact" element={<Contact />} />
+              <Route path="/contact" element={<WithdrawnOfferContactGuard><Contact /></WithdrawnOfferContactGuard>} />
               <Route path="/mentions-legales" element={<MentionsLegales />} />
               <Route path="/confidentialite" element={<PolitiqueConfidentialite />} />
               <Route path="/cookies" element={<PolitiqueCookies />} />

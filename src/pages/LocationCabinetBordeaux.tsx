@@ -1,3 +1,4 @@
+import { isPublicProjectOffer } from "@/lib/publicProjectOffer";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -28,7 +29,7 @@ export default function LocationCabinetBordeaux() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const { data: pipelineCabinets } = useCabinetsPipeline();
-  const cabinetsBordeaux = (pipelineCabinets ?? []).filter((c) => c.city !== "Toulouse");
+  const cabinetsBordeaux = (pipelineCabinets ?? []).filter((c) => isPublicProjectOffer(c.slug)).filter((c) => c.city !== "Toulouse");
 
   const centresWithImages = STATIC_CENTRES.filter((c) => c.slug && PROJECT_IMAGES[c.slug] && c.region === "bordeaux");
 

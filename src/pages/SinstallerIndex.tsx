@@ -1,3 +1,4 @@
+import { isPublicProjectOffer } from "@/lib/publicProjectOffer";
 import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
 import { Link } from "react-router-dom";
@@ -10,7 +11,8 @@ import { pageUrl } from "@/lib/siteUrl";
 
 export default function SinstallerIndex() {
   const { data: professions = [] } = useProfessionsInstallation();
-  const { data: cabinets = [] } = useCabinetsInstallation();
+  const { data: cabinetsRecus = [] } = useCabinetsInstallation();
+  const cabinets = cabinetsRecus.filter((cabinet) => isPublicProjectOffer(cabinet.slug) && isPublicProjectOffer(cabinet.slug_installation));
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",

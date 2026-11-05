@@ -138,7 +138,6 @@ const ROUTES = [
   { path: "/projets/i-ca-re-nansouty", type: "strategic" },
   { path: "/projets/i-ca-re-jardin-public", type: "strategic" },
   { path: "/projets/i-ca-re-pey-berland", type: "strategic" },
-  { path: "/projets/i-ca-re-floirac", type: "strategic" },
   { path: "/projets/i-ca-re-lormont", type: "strategic" },
   { path: "/projets/i-ca-re-toulouse-capitole", type: "strategic" },
   { path: "/projets/i-ca-re-le-bouscat", type: "strategic" },
@@ -150,7 +149,6 @@ const ROUTES = [
   { path: "/cabinet-a-louer/bordeaux-chartrons", type: "strategic" },
   { path: "/cabinet-a-louer/le-bouscat", type: "strategic" },
   { path: "/cabinet-a-louer/toulouse-capitole", type: "strategic" },
-  { path: "/cabinet-a-louer/floirac", type: "strategic" },
   { path: "/insights", type: "strategic" },
   { path: "/insights/cabinet-medical-bordeaux", type: "strategic" },
   { path: "/insights/budget-cabinet-bordeaux", type: "strategic" },
@@ -197,7 +195,6 @@ const ROUTES = [
   { path: "/en/projects/i-ca-re-nansouty", type: "strategic" },
   { path: "/en/projects/i-ca-re-jardin-public", type: "strategic" },
   { path: "/en/projects/i-ca-re-pey-berland", type: "strategic" },
-  { path: "/en/projects/i-ca-re-floirac", type: "strategic" },
   { path: "/en/projects/i-ca-re-lormont", type: "strategic" },
   { path: "/en/projects/i-ca-re-toulouse-capitole", type: "strategic" },
   { path: "/en/projects/i-ca-re-le-bouscat", type: "strategic" },
@@ -266,6 +263,14 @@ const REDIRECTS = [
   { from: "/blog/combien-coute-cabinet-consultation-bordeaux", to: "/insights/budget-cabinet-bordeaux" },
   { from: "/en/blog/finding-office-bordeaux-practitioner", to: "/en/insights/medical-office-bordeaux" },
   { from: "/en/blog/consultation-office-cost-bordeaux", to: "/en/insights/office-budget-bordeaux" },
+
+  // FLOIRAC-SITE-RETRAIT (decision de Nicolas du 04/11/2026) : l'operation
+  // Floirac est retiree, ses trois pages publiques sortent du sitemap et du
+  // prerendu. Une souche renvoie les anciennes URL vers la page parente au lieu
+  // d'un 404, pour que liens et moteurs consolident vers une offre existante.
+  { from: "/projets/i-ca-re-floirac", to: "/projets" },
+  { from: "/en/projects/i-ca-re-floirac", to: "/en/projects" },
+  { from: "/cabinet-a-louer/floirac", to: "/location-cabinet-bordeaux" },
 ];
 
 // ── Resolution du navigateur ────────────────────────────────────────

@@ -1,3 +1,5 @@
+import { isPublicProjectOffer } from "@/lib/publicProjectOffer";
+
 export type CentreStatus = "available" | "full" | "coming_soon";
 
 export interface StaticCentre {
@@ -36,7 +38,7 @@ export function openingForecastLabel(dateStr: string | null | undefined): string
  * Dates d'ouverture : dérivées de projets.date_ouverture_cible via
  * quarterLabel/openingForecastLabel.
  */
-export const STATIC_CENTRES: StaticCentre[] = [
+const CENTRES_ARCHIVES: StaticCentre[] = [
   { id: "chartrons", name: "Chartrons", address: "20 cours Saint Louis, 33300 Bordeaux", status: "available", slug: "i-ca-re-chartrons", region: "bordeaux", availabilityLabel: "Cabinet 1 partagé (lundi, jeudi, vendredi et samedi libres) ; cabinet 5 disponible à temps plein", availabilityLabelEn: "Room 1 shared (Monday, Thursday, Friday and Saturday free); room 5 available full time" },
   { id: "jardin-public", name: "Jardin Public", address: "38 cours du Maréchal Foch, 33000 Bordeaux", status: "full", slug: "i-ca-re-jardin-public", region: "bordeaux" },
   { id: "nansouty", name: "Nansouty", address: "106 bis rue Bertrand de Goth, 33800 Bordeaux", status: "full", slug: "i-ca-re-nansouty", region: "bordeaux" },
@@ -46,6 +48,9 @@ export const STATIC_CENTRES: StaticCentre[] = [
   { id: "toulouse-capitole", name: "Toulouse Capitole", address: "5 ter rue de Mirepoix, 31000 Toulouse", status: "coming_soon", slug: "i-ca-re-toulouse-capitole", region: "toulouse" },
   { id: "le-bouscat", name: "Le Bouscat", address: "212 avenue de la Libération Charles de Gaulle, 33110 Le Bouscat", status: "coming_soon", slug: "i-ca-re-le-bouscat", region: "bordeaux" },
 ];
+
+// Historical entries remain above; only the public offer is filtered.
+export const STATIC_CENTRES = CENTRES_ARCHIVES.filter((centre) => isPublicProjectOffer(centre.slug));
 
 export function getCentreBySlug(slug: string): StaticCentre | undefined {
   return STATIC_CENTRES.find((c) => c.slug === slug);

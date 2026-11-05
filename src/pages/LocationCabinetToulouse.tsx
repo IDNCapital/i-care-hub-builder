@@ -1,3 +1,4 @@
+import { isPublicProjectOffer } from "@/lib/publicProjectOffer";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,7 +41,7 @@ export default function LocationCabinetToulouse() {
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const { data: pipelineCabinets } = useCabinetsPipeline();
   const { data: professions = [] } = useProfessions();
-  const cabinetsToulouse = (pipelineCabinets ?? []).filter((c) => c.city === "Toulouse");
+  const cabinetsToulouse = (pipelineCabinets ?? []).filter((c) => isPublicProjectOffer(c.slug)).filter((c) => c.city === "Toulouse");
 
   const toulouseCapitoleHero = PROJECT_IMAGES["i-ca-re-toulouse-capitole"]?.hero;
   const toulouseCapitoleCentre = getCentreBySlug("i-ca-re-toulouse-capitole");
