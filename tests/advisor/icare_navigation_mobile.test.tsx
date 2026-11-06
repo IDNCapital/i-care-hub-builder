@@ -1,10 +1,13 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+// @vitest-environment jsdom
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { useLayoutEffect, useRef } from "react";
 import { MemoryRouter, useLocation, useNavigate, type NavigateFunction } from "react-router-dom";
 import { Header } from "../../src/components/Header";
-import { changerLangue } from "../../proof/closed/i18n";
-import { localePath } from "../../proof/readonly/src/lib/routes";
+import { changerLangue } from "./icare_navigation_mobile.i18n-double";
+import { localePath } from "../../src/lib/routes";
+vi.mock("react-i18next", () => import("./icare_navigation_mobile.i18n-double"));
+globalThis.ResizeObserver ??= class { observe() {} unobserve() {} disconnect() {} } as unknown as typeof ResizeObserver;
 let naviguer: NavigateFunction;
 function Page() {
  const location = useLocation(); naviguer = useNavigate();
