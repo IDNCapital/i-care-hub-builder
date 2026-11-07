@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { useState, useEffect, useMemo, memo } from "react";
+import { useState, useEffect, useMemo, useRef, memo, type KeyboardEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { getEquivalentPath, localePath } from "@/lib/routes";
 import { masquerSelecteurLangue } from "@/lib/espacePatients";
@@ -25,6 +25,19 @@ const Logo = memo(function Logo() {
 export const Header = memo(function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [practitionersOpen, setPractitionersOpen] = useState(false);
+  const boutonMenu = useRef<HTMLButtonElement>(null);
+  const fermerMenu = (retourFocus = false) => {
+    setIsOpen(false);
+    setPractitionersOpen(false);
+    if (retourFocus) boutonMenu.current?.focus();
+  };
+  const echapperMenu = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === "Escape" && isOpen) {
+      event.preventDefault();
+      event.stopPropagation();
+      fermerMenu(true);
+    }
+  };
   const location = useLocation();
   const { t, i18n } = useTranslation();
 
@@ -71,7 +84,7 @@ export const Header = memo(function Header() {
   useEffect(() => {
     setIsOpen(false);
     setPractitionersOpen(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.search, location.hash, location.key]);
 
   const isActive = (href: string) => {
     const homePath = localePath(lang, "home");
@@ -178,9 +191,14 @@ export const Header = memo(function Header() {
 
           {/* Mobile menu button */}
           <button
+            ref={boutonMenu}
+            onKeyDown={echapperMenu}
             className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            onClick={() => {
+              if (isOpen) fermerMenu(true);
+              else { setPractitionersOpen(false); setIsOpen(true); }
+            }}
+            aria-label={lang === "fr" ? (isOpen ? "Fermer le menu" : "Ouvrir le menu") : (isOpen ? "Close menu" : "Open menu")}
             aria-expanded={isOpen}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -189,7 +207,7 @@ export const Header = memo(function Header() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="lg:hidden py-4 animate-fade-in">
+          <div className="lg:hidden py-4 animate-fade-in" onKeyDown={echapperMenu}>
             <div className="flex flex-col space-y-2">
               {/* Praticiens : collapsible */}
               <button
@@ -215,7 +233,7 @@ export const Header = memo(function Header() {
                     <Link
                       key={item.name}
                       to={item.href}
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => fermerMenu()}
                       className={cn(
                         "px-4 py-2.5 text-sm rounded-lg transition-colors",
                         isActive(item.href)
@@ -239,7 +257,7 @@ export const Header = memo(function Header() {
                       ? "text-foreground bg-muted"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
                   )}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => fermerMenu()}
                 >
                   {item.name}
                 </Link>
@@ -251,7 +269,7 @@ export const Header = memo(function Header() {
                   to={switchPath}
                   onClick={() => {
                     i18n.changeLanguage(otherLang);
-                    setIsOpen(false);
+                    fermerMenu();
                   }}
                   className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground"
                 >
@@ -262,7 +280,7 @@ export const Header = memo(function Header() {
               <div className="pt-4 flex flex-col space-y-2">
                 <Link
                   to={`${localePath(lang, "professionals")}#candidature`}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => fermerMenu()}
                   className="inline-flex w-full items-center justify-center min-h-[44px] whitespace-nowrap rounded-md bg-sage text-[#1E392B] font-sans font-bold uppercase text-[14px] tracking-[0.10em] px-7 py-[14px] transition-all duration-200 ease-out hover:bg-[#C5D4CA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9C7A1] focus-visible:ring-offset-[3px] focus-visible:ring-offset-background"
                 >
                   {t("nav.joinCta")}

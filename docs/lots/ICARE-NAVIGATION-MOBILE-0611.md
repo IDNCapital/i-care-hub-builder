@@ -1,0 +1,14 @@
+# ICARE-NAVIGATION-MOBILE-0611
+Le menu mobile Icare conservait son sous-menu après une fermeture manuelle, ne fermait pas sur Escape et restait ouvert après une navigation de fragment sur la même page. Trois causaux ont confirmé ces comportements sur le Header canonique3c881cf1 le06/11 à20:49:35, avec vrai React et MemoryRouter.
+
+Le bouton et le panneau mobiles partagent maintenant une fermeture qui réinitialise le sous-menu. Escape ferme et ramène le focus au bouton. Une navigation, y compris recherche, fragment et historique, ferme sans voler le focus à la page. Les libellés de commande suivent FR/EN. Les liens, destinations, textes de contenu, CTA, logique de langue et règle Patients sont conservés.
+
+Périmètre : src/components/Header.tsx ; nouveau tests/advisor/icare_navigation_mobile.test.tsx ; cette note et proof/. Professionnels, InvestisseurInteret, contacts et tous les producteurs restent inchangés. Les vingt PR ouvertes ont été contrôlées par leurs listes de fichiers avant édition, sans collision.
+
+Validation locale : huit nouveaux cas verts à20:49:55. Revue auteur a ensuite trouvé un vol de focus desktop dans la première correction ; nouveau causal rouge à20:50:43, gestionnaire limité aux deux surfaces mobiles, puis trois cas Escape affectés verts à20:50:56. Aucun passage global final des neuf cas affirmé. Types stricts zéro diagnostic. Les dépendances de présentation et de routes sont des copies canoniques exactes ; React, Router et Radix sont réels. Le module i18n est un double de contrat fermé, son paquet étant absent du runtime existant.
+
+Limites : aucune recette physique mobile, lecteur d'écran, build complet, PR, CI finale ou publication. Aucun SDK, réseau, formulaire, envoi ou navigation extérieure exécuté. Refus Icare create_tree antérieur conservé sans rejeu ni autre canal. Claude examine l'admission sur tête courante et reste intégrateur.
+
+Paquet : python3 proof/CHECK_PACKAGE.py vérifie les empreintes puis applique patch et inverse dans une copie temporaire pour comparer les trois produits. Les causaux, sorties et invariants sont dans proof/.
+
+Adaptation manager à l'admission (06/11/2026) : le test livré importait proof/closed/i18n et proof/readonly/src/lib/routes, absents du dépôt. Le double i18n est versionné tel quel sous tests/advisor/icare_navigation_mobile.i18n-double.ts (sha256 2ad35ae5 identique à proof/closed/i18n.ts) et branché par vi.mock("react-i18next") ; routes est lu dans src/lib/routes.ts (git 175e0660, identique à la copie readonly) ; environnement jsdom et ResizeObserver de test déclarés dans le fichier. Cas inchangés. Comme tests/advisor-readers, ce test n'est pas joué par la CI : vitest et Testing Library ne sont pas des dépendances du dépôt. Rejeu manager : npm install --no-save vitest@3.2.4 @testing-library/react@16.3.0 @testing-library/dom@10.4.0 puis npx vitest run tests/advisor/icare_navigation_mobile.test.tsx (9 verts ; 6 rouges sur l'ancien Header).
