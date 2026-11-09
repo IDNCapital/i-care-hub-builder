@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "vitest": [
+        ".ci/public-guides/node_modules/vitest/dist/index.d.ts"
+      ]
+    }
+  },
+  "include": [
+    "../../src/hooks/useProblematiques.ts",
+    "../../src/pages/ProblematiquesIndex.tsx",
+    "../../src/pages/ProblematiqueDetail.tsx",
+    "./*.test.tsx",
+    "../../src/vite-env.d.ts"
+  ]
+}
