@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { ChargementPage } from "@/components/ChargementPage";
@@ -22,6 +22,16 @@ function truncateDesc(text: string, max = 155): string {
 
 export default function SpecialiteDetail() {
   const { slug } = useParams<{ slug: string }>();
+  return <VisiteSpecialite key={slug ?? "sans-slug"} />;
+}
+
+function VisiteSpecialite() {
+  const [tentative, setTentative] = useState(0);
+  return <LectureSpecialite key={tentative} reessayer={() => setTentative(n => n + 1)} />;
+}
+
+function LectureSpecialite({ reessayer }: { reessayer: () => void }) {
+  const { slug } = useParams<{ slug: string }>();
   const { data: specialites, loading: loadingS, error: errorS } = useSpecialites();
   const { data: praticiens, loading: loadingPr, error: errorPr } = usePraticiensPublics();
 
@@ -35,12 +45,18 @@ export default function SpecialiteDetail() {
     return praticiens.filter((pr) => matchSpecialite(pr, specialite));
   }, [praticiens, specialite]);
 
-  if (loadingS || loadingPr) {
-    return <ChargementPage mode="loading" />;
+  if (errorS || errorPr) {
+    return <Layout><section className="pt-40 pb-40 px-4 text-center space-y-4">
+      <h1 className="font-heading text-2xl">La fiche ne peut pas être reçue pour le moment.</h1>
+      <div role="status">{errorS && <p>Spécialités indisponibles.</p>}{errorPr && <p>Praticiens indisponibles.</p>}</div>
+      <p>La lecture ne confirme ni une absence de spécialité ni une liste vide de praticiens.</p>
+      <Button variant="gold" size="lg" onClick={reessayer}>Réessayer la lecture</Button>
+      <p><a href="/patients/" className="underline">Revenir à l'annuaire</a></p>
+    </section></Layout>;
   }
 
-  if (errorS || errorPr) {
-    return <ChargementPage mode="error" />;
+  if (loadingS || loadingPr) {
+    return <ChargementPage mode="loading" />;
   }
 
   if (!specialite) {
