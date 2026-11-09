@@ -1,0 +1,43 @@
+name: Public conciergerie receipts
+
+on:
+  pull_request:
+    paths:
+      - "src/pages/DecrireMonBesoin.tsx"
+      - ".ci/conciergerie/DecrireMonBesoin.fiabilite.test.tsx"
+      - "src/components/Layout.tsx"
+      - "src/components/SeoHead.tsx"
+      - "src/components/ui/**"
+      - "src/lib/analytics.ts"
+      - "src/integrations/supabase/**"
+      - "supabase/functions/submit-demande-conciergerie/index.ts"
+      - "tsconfig*.json"
+      - "package*.json"
+      - "bun.lock"
+      - ".ci/conciergerie/**"
+      - ".github/workflows/conciergerie-receipts.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: .ci/conciergerie/package-lock.json
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.4"
+      - name: Install the frozen root dependencies without scripts
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install the isolated pinned test tools without scripts
+        run: npm ci --prefix .ci/conciergerie --ignore-scripts --no-audit --no-fund
+      - run: .ci/conciergerie/node_modules/.bin/vitest run --config .ci/conciergerie/vitest.config.ts
+      - run: node_modules/.bin/eslint src/pages/DecrireMonBesoin.tsx .ci/conciergerie/DecrireMonBesoin.fiabilite.test.tsx
+      - run: node_modules/.bin/tsc --noEmit -p .ci/conciergerie/tsconfig.json
