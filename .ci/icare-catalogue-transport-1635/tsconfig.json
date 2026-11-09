@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "baseUrl": "../..",
+    "paths": {
+      "@/integrations/supabase/client": [
+        ".ci/icare-catalogue-transport-1635/client.ts"
+      ],
+      "@/*": [
+        "src/*"
+      ],
+      "@/components/Layout": [
+        ".ci/icare-catalogue-transport-1635/ui.tsx"
+      ],
+      "@/components/SeoHead": [
+        ".ci/icare-catalogue-transport-1635/ui.tsx"
+      ],
+      "@/components/CarteCabinetsSection": [
+        ".ci/icare-catalogue-transport-1635/ui.tsx"
+      ],
+      "@/components/ui/button": [
+        ".ci/icare-catalogue-transport-1635/ui.tsx"
+      ],
+      "@/assets/*": [
+        ".ci/icare-catalogue-transport-1635/asset.ts"
+      ]
+    },
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "types": [
+      "react",
+      "react-dom",
+      "node"
+    ]
+  },
+  "include": [
+    "../../src/hooks/useProjects.ts",
+    "Catalogue.transport.test.tsx",
+    "client.ts",
+    "../../src/pages/Projets.tsx",
+    "ui.tsx"
+  ]
+}

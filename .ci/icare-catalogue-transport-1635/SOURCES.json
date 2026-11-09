@@ -1,0 +1,104 @@
+[
+  {
+    "path": "src/hooks/useProjects.ts",
+    "bytes": 3533,
+    "sha256": "93fb9e8e5c1df15c1942a67fe0a6bb3927068b77bb093115a8949cf93f2036d2",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/src/hooks/useProjects.ts",
+    "kind": "local_preimage"
+  },
+  {
+    "path": "src/integrations/supabase/types.ts",
+    "bytes": 43742,
+    "sha256": "7cd667882232ef298ba14818ccf544fee54923ef580af5ca74d7034c22ff8e59",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/src/integrations/supabase/types.ts",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/pages/Projets.tsx",
+    "bytes": 13066,
+    "sha256": "a666664cd302b0699891592cd82a9c4f4919469e9547026293e78a335fcf0799",
+    "source": "/private/tmp/advisor-icare-catalogue-transport-1635/primary-main/src/pages/Projets.tsx",
+    "kind": "prepared_UI_candidate_now_composed_from_primary",
+    "primary_bytes": 11919,
+    "primary_sha256": "516365c8c6b709c2c41213bd751aca1b189c4124c5cae52a5329a37c92c86ae8",
+    "primary_git_blob": "ebe1928bfd5d005b5d98521fbe6da658afa26c98",
+    "prepared_source": "/private/tmp/advisor-icare-catalogue-0431/src/pages/Projets.tsx"
+  },
+  {
+    "path": "src/lib/centres.ts",
+    "bytes": 5279,
+    "sha256": "f2e28ae875c10d182a4a7116ed616ed8e02027ea72c8e5a5dd24f813aaff0d09",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/src/lib/centres.ts",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/lib/projectImages.ts",
+    "bytes": 9637,
+    "sha256": "453a1f4d5f68434a37a137e0d48b658094f70bb875a0a806c61bfec2d19d66a3",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/src/lib/projectImages.ts",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/lib/routes.ts",
+    "bytes": 5153,
+    "sha256": "38710839d4882d97fd5d01543aeddd0634a285db9e2f139322e2621706c9a3ef",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/src/lib/routes.ts",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/lib/utils.ts",
+    "bytes": 169,
+    "sha256": "d1f1e0d62cb8d8d1e04c26e14de842d8a151f75812d81b046c65b5d1fe8e4b27",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/src/lib/utils.ts",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/components/BrandName.tsx",
+    "bytes": 2204,
+    "sha256": "8e842b57c0ae9523e7f7cb45fc99e6808e8571866c0127abecac1aa486c8886f",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/src/components/BrandName.tsx",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/components/VisuelsAVenir.tsx",
+    "bytes": 949,
+    "sha256": "94944ddfa490f6c1f9452d006a3cef5522cc30a923453ca0d7438b287a57be0b",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/src/components/VisuelsAVenir.tsx",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/components/FadeImage.tsx",
+    "bytes": 1152,
+    "sha256": "1887abd4e214efa448a97467a4446e054e9f04934d519f6d35adc72004d256f9",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/src/components/FadeImage.tsx",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/locales/fr.json",
+    "bytes": 54079,
+    "sha256": "a35d10d758af2ef7197173db1f5f26a67c3a3ad2e31d594b6d66315828ffeac9",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/src/locales/fr.json",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/locales/en.json",
+    "bytes": 49109,
+    "sha256": "a9428cc5969e1001c2d946e8bf67a3b92a65d61887a446e447b145a769eb76ff",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/src/locales/en.json",
+    "kind": "readonly"
+  },
+  {
+    "path": "eslint.config.js",
+    "bytes": 765,
+    "sha256": "c55264234fef783629810643d995cd522c3adaeb60e7157906310607292015a3",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/eslint.config.js",
+    "kind": "readonly"
+  },
+  {
+    "path": "package.json",
+    "bytes": 3591,
+    "sha256": "51a7c53bd9c31493e186f8e1a6c118b27b3b59c091644c133e370650b3a4f8fd",
+    "source": "/private/tmp/advisor-icare-catalogue-0431/package.json",
+    "kind": "readonly"
+  }
+]
