@@ -1,0 +1,42 @@
+name: Public professionals receipts
+
+on:
+  pull_request:
+    paths:
+      - "src/pages/Professionnels.tsx"
+      - "src/lib/analytics.ts"
+      - "src/lib/routes.ts"
+      - "src/hooks/useInstallation.ts"
+      - "src/components/ui/**"
+      - "src/integrations/supabase/**"
+      - "supabase/functions/send-contact-lead/**"
+      - "tsconfig*.json"
+      - "package*.json"
+      - "bun.lock"
+      - ".ci/public-professionals/**"
+      - ".github/workflows/public-professionals-receipts.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: .ci/public-professionals/package-lock.json
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.4"
+      - name: Install the frozen root dependencies without scripts
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install the isolated pinned test tools without scripts
+        run: npm ci --prefix .ci/public-professionals --ignore-scripts --no-audit --no-fund
+      - run: .ci/public-professionals/node_modules/.bin/vitest run --config .ci/public-professionals/vitest.config.ts
+      - run: node_modules/.bin/eslint src/pages/Professionnels.tsx .ci/public-professionals/Professionnels.recu.test.tsx .ci/public-professionals/vitest.config.ts
+      - run: node_modules/.bin/tsc --noEmit -p .ci/public-professionals/tsconfig.json

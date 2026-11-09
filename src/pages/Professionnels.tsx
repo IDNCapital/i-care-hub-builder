@@ -5,9 +5,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
@@ -31,7 +31,26 @@ import { InlineBrand } from "@/components/BrandName";
 import { ICARE_TELEPHONE_AFFICHAGE } from "@/lib/contact";
 import { useProfessions } from "@/hooks/useInstallation";
 
+async function refusAvantEcriture(error: unknown): Promise<string | null> {
+  if (!error || typeof error !== "object") return null;
+  const { name, context } = error as { name?: unknown; context?: unknown };
+  if (name !== "FunctionsHttpError" || !(context instanceof Response) || ![400, 429].includes(context.status)) return null;
+  try {
+    const body: unknown = await context.clone().json();
+    if (!body || typeof body !== "object" || Array.isArray(body)) return null;
+    const code = (body as { error?: unknown }).error;
+    if (context.status === 429) return code === "rate_limited" ? code : null;
+    return typeof code === "string" && ["invalid_type", "missing_fields", "invalid_email", "invalid_phone", "invalid_profession"].includes(code) ? code : null;
+  } catch { return null; }
+}
+
 export default function Professionnels() {
+  const location = useLocation();
+  const { i18n } = useTranslation();
+  return <ProfessionnelsCourants key={`${location.key}:${location.pathname}:${i18n.language}`} />;
+}
+
+function ProfessionnelsCourants() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const { data: professions = [] } = useProfessions();
@@ -74,11 +93,19 @@ export default function Professionnels() {
   const [honeypot, setHoneypot] = useState("");
   const [rgpdConsent, setRgpdConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [etatEnvoi, setEtatEnvoi] = useState<"pret" | "envoi" | "refuse" | "inconnu" | "reprise" | "confirme">("pret");
+  const envoi = useRef<{ active: boolean; phase: "pret" | "envoi" | "inconnu" | "confirme" }>({ active: false, phase: "pret" });
+  useLayoutEffect(() => {
+    const courant = envoi.current;
+    courant.active = true;
+    return () => { courant.active = false; };
+  }, []);
 
   const showCabinetConfig = formData.cabinetCount === "4+" || formData.cabinetCount === "custom";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!envoi.current.active || envoi.current.phase !== "pret") return;
     if (honeypot) return;
     if (!rgpdConsent) { toast.error(t("professionals.formErrorConsent")); return; }
     if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.profession || !formData.ville.trim() || !formData.cabinetCount) {
@@ -89,10 +116,12 @@ export default function Professionnels() {
     const phoneRegex = /^[+\d\s.\-()]{6,30}$/;
     if (!phoneRegex.test(formData.phone.trim())) { toast.error(t("professionals.formErrorPhone")); return; }
 
+    envoi.current.phase = "envoi";
+    setEtatEnvoi("envoi");
     setIsSubmitting(true);
     try {
       const params = new URLSearchParams(window.location.search);
-      const { data, error } = await supabase.functions.invoke("send-contact-lead", {
+      const { data, error, response } = await supabase.functions.invoke("send-contact-lead", {
         body: {
           type: "cabinet_request",
           firstname: formData.firstName,
@@ -119,19 +148,34 @@ export default function Professionnels() {
           },
         },
       });
-      if (error) throw error;
-      if (data?.error === "rate_limited") { toast.error(t("professionals.formErrorRateLimit")); return; }
-      if (data?.error) throw new Error(data.error);
-
-      toast.success(t("professionals.formSuccess"));
-      Analytics.formSubmission("installation_praticien", window.location.pathname);
+      if (!envoi.current.active) return;
+      const refuse = await refusAvantEcriture(error);
+      if (!envoi.current.active) return;
+      if (refuse) {
+        envoi.current.phase = "pret";
+        setEtatEnvoi("refuse");
+        toast.error(t(refuse === "rate_limited" ? "professionals.formErrorRateLimit" : "professionals.formErrorGeneric"));
+        return;
+      }
+      if (error !== null || !(response instanceof Response) || response.status !== 200 || !data || typeof data !== "object" || Array.isArray(data) || data.status !== "ok"
+        || "error" in data || typeof data.lead_id !== "string"
+        || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(data.lead_id)) {
+        envoi.current.phase = "inconnu";
+        setEtatEnvoi("inconnu");
+        return;
+      }
+      envoi.current.phase = "confirme";
+      setEtatEnvoi("confirme");
+      toast.success(lang === "fr" ? "Demande enregistrée." : "Request recorded.");
+      try { void Promise.resolve(Analytics.formSubmission("installation_praticien", window.location.pathname)).catch(() => {}); } catch { /* La mesure ne change pas le reçu. */ }
       setFormData({ firstName: "", lastName: "", email: "", phone: "", organisation: "", website: "", profession: "", ville: "", neighbourhood: "", dateInstallation: "", cabinetCount: "", cabinetConfig: "", message: "" });
       setRgpdConsent(false);
-    } catch (err) {
-      console.error("Form submission error:", err);
-      toast.error(t("professionals.formErrorGeneric"));
+    } catch {
+      if (!envoi.current.active) return;
+      envoi.current.phase = "inconnu";
+      setEtatEnvoi("inconnu");
     } finally {
-      setIsSubmitting(false);
+      if (envoi.current.active) setIsSubmitting(false);
     }
   };
 
@@ -284,7 +328,8 @@ export default function Professionnels() {
               <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4 text-background">{t("professionals.formTitle")}</h2>
               <p className="text-background/70 text-lg">{t("professionals.formSubtitle")}</p>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-6 form-dark-section">
+            <form onSubmit={handleSubmit} className="space-y-6 form-dark-section" aria-busy={isSubmitting}>
+              <fieldset disabled={isSubmitting} className="space-y-6 min-w-0">
               {/* Honeypot */}
               <div className="absolute -left-[9999px]" aria-hidden="true">
                 <input type="text" name="website_url_confirm" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
@@ -421,7 +466,13 @@ export default function Professionnels() {
                 </Label>
               </div>
 
-              <Button type="submit" variant="hero" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-14 text-sm transition-colors duration-200" disabled={isSubmitting}>
+              </fieldset>
+              {etatEnvoi === "refuse" && <p role="alert" className="text-[#F6F5F0]">{lang === "fr" ? "Cette tentative a été refusée avant enregistrement. Votre saisie est conservée ; vous pouvez la corriger puis renvoyer." : "This attempt was refused before recording. Your entries are kept; you can correct them and submit again."}</p>}
+              {etatEnvoi === "inconnu" && <div role="alert" className="space-y-3 text-[#F6F5F0]"><p>{lang === "fr" ? "Résultat indéterminé. La demande a pu être enregistrée. Votre saisie est conservée ; vérifiez sa réception avant de la renvoyer." : "The result is unknown. Your request may have been recorded. Your entries are kept; check receipt before submitting again."}</p><Button type="button" variant="outline" className="border-white/60 text-[#F6F5F0] hover:bg-white/10" onClick={() => setEtatEnvoi("reprise")}>{lang === "fr" ? "Préparer une reprise" : "Prepare a retry"}</Button></div>}
+              {etatEnvoi === "reprise" && <div role="alert" className="space-y-3 text-[#F6F5F0]"><p>{lang === "fr" ? "Aucune vérification de réception n'est reçue par le site. Le résultat reste inconnu ; une nouvelle soumission peut créer un doublon." : "The site has received no verification of receipt. The result remains unknown; a new submission may create a duplicate."}</p><Button type="button" variant="outline" className="border-white/60 text-[#F6F5F0] hover:bg-white/10" onClick={() => { envoi.current.phase = "pret"; setEtatEnvoi("pret"); }}>{lang === "fr" ? "Revenir à la saisie avec ce risque" : "Return to the form with this risk"}</Button></div>}
+
+              {etatEnvoi === "confirme" && <div role="status" className="space-y-3 text-[#F6F5F0]"><p>{lang === "fr" ? "Demande enregistrée." : "Request recorded."}</p><Button type="button" variant="outline" className="border-white/60 text-[#F6F5F0] hover:bg-white/10" onClick={() => { envoi.current.phase = "pret"; setEtatEnvoi("pret"); }}>{lang === "fr" ? "Préparer une nouvelle demande" : "Prepare a new request"}</Button></div>}
+              <Button type="submit" variant="hero" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-14 text-sm transition-colors duration-200" disabled={isSubmitting || etatEnvoi === "inconnu" || etatEnvoi === "reprise" || etatEnvoi === "confirme"}>
                 {isSubmitting ? (
                   <><Loader2 className="mr-2 h-5 w-5 animate-spin" />{t("professionals.formSubmitting")}</>
                 ) : (

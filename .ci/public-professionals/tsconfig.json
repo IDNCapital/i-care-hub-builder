@@ -1,0 +1,40 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "vitest": [
+        ".ci/public-professionals/node_modules/vitest/dist/index.d.ts"
+      ],
+      "react": [
+        "node_modules/@types/react"
+      ],
+      "react/*": [
+        "node_modules/@types/react/*"
+      ],
+      "react-dom": [
+        "node_modules/@types/react-dom"
+      ],
+      "react-dom/*": [
+        "node_modules/@types/react-dom/*"
+      ],
+      "@tanstack/react-query": [
+        "node_modules/@tanstack/react-query"
+      ],
+      "@tanstack/query-core": [
+        "node_modules/@tanstack/query-core"
+      ]
+    }
+  },
+  "include": [
+    "../../src/pages/Professionnels.tsx",
+    "./Professionnels.recu.test.tsx",
+    "../../src/vite-env.d.ts"
+  ]
+}
