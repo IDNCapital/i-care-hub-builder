@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "types": ["node"],
+    "paths": {
+      "@/*": ["src/*"],
+      "vitest": [".ci/investor-interest/node_modules/vitest/dist/index.d.ts"]
+    }
+  },
+  "include": ["../../src/pages/InvestisseurInteret.tsx", "./InvestisseurInteret.recu.test.tsx", "../../src/vite-env.d.ts"]
+}
