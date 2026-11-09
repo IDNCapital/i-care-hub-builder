@@ -17,7 +17,9 @@ import { CarteCabinetsSection } from "@/components/CarteCabinetsSection";
 export default function Projets() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
-  const { data: projects } = useProjects();
+  const { data, isPending, isFetching, isError, refetch } = useProjects();
+  const waiting = isPending || isFetching;
+  const projects = waiting || isError ? undefined : data;
 
   const badgeLabel = (status: CentreStatus) => centreStatusLabel(status, t);
   const badgeStyles = centreStatusBadgeClass;
@@ -63,6 +65,23 @@ export default function Projets() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="container py-6" aria-live="polite">
+        {waiting ? (
+          <p role="status">{lang === "fr" ? "Chargement des informations complémentaires..." : "Loading additional information..."}</p>
+        ) : isError ? (
+          <div role="alert" className="space-y-3">
+            <p>{lang === "fr" ? "Informations complémentaires indisponibles. Les implantations restent consultables." : "Additional information unavailable. You can still browse the locations."}</p>
+            <Button variant="outline" onClick={() => { void refetch({ cancelRefetch: false }); }}>
+              {lang === "fr" ? "Réessayer" : "Try again"}
+            </Button>
+          </div>
+        ) : (
+          <p role="status">{lang === "fr"
+            ? (projects?.length ? "Informations complémentaires reçues." : "Aucune information complémentaire reçue.")
+            : (projects?.length ? "Additional information received." : "No additional information received.")}</p>
+        )}
       </section>
 
       {/* Carte interactive des cabinets */}

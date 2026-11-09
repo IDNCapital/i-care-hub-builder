@@ -1,0 +1,50 @@
+name: Public cabinets read states
+
+on:
+  pull_request:
+    paths:
+      - "src/pages/Projets.tsx"
+      - "src/hooks/useProjects.ts"
+      - "src/pages/ProjetDetail.tsx"
+      - "src/pages/Investissement.tsx"
+      - "src/components/Layout.tsx"
+      - "src/components/SeoHead.tsx"
+      - "src/components/CarteCabinets*.tsx"
+      - "src/components/BrandName.tsx"
+      - "src/components/FadeImage.tsx"
+      - "src/components/VisuelsAVenir.tsx"
+      - "src/components/ui/**"
+      - "src/lib/centres.ts"
+      - "src/lib/projectImages.ts"
+      - "src/lib/routes.ts"
+      - "src/integrations/supabase/**"
+      - "tsconfig*.json"
+      - "package*.json"
+      - "bun.lock"
+      - ".ci/public-cabinets/**"
+      - ".github/workflows/public-cabinets-read-states.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: .ci/public-cabinets/package-lock.json
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.4"
+      - name: Install the frozen root dependencies without scripts
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install the isolated pinned test tools without scripts
+        run: npm ci --prefix .ci/public-cabinets --ignore-scripts --no-audit --no-fund
+      - run: .ci/public-cabinets/node_modules/.bin/vitest run --config .ci/public-cabinets/vitest.config.ts
+      - run: node_modules/.bin/eslint src/pages/Projets.tsx src/hooks/useProjects.ts .ci/public-cabinets/Projets.fiabilite.test.tsx
+      - run: node_modules/.bin/tsc --noEmit -p .ci/public-cabinets/tsconfig.json
