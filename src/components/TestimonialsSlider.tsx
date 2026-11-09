@@ -35,7 +35,7 @@ export function TestimonialsSlider() {
       location: t(`testimonials.items.${index}.location`),
       address: t(`testimonials.items.${index}.address`),
       phone: t(`testimonials.items.${index}.phone`),
-      email: t(`testimonials.items.${index}.email`),
+      email: t(`testimonials.items.${index}.email`, { defaultValue: "" }).trim(),
       website: t(`testimonials.items.${index}.website`),
     });
     index++;
@@ -152,12 +152,14 @@ export function TestimonialsSlider() {
 
                     <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground/70">
                       {item.phone && <span>{item.phone}</span>}
-                      <a
-                        href={`mailto:${item.email}`}
-                        className="hover:text-primary transition-colors"
-                      >
-                        {item.email}
-                      </a>
+                      {item.email && (
+                        <a
+                          href={`mailto:${item.email}`}
+                          className="hover:text-primary transition-colors"
+                        >
+                          {item.email}
+                        </a>
+                      )}
                       {item.website && (
                         <a
                           href={`https://${item.website}`}
