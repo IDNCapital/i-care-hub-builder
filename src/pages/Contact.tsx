@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link, useSearchParams } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
-import { useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
@@ -35,6 +35,15 @@ function getUtmParams() {
   };
 }
 
+type CibleRefus = "type" | "nom" | "email" | "message" | "consentement";
+const IDS_REFUS: Record<CibleRefus, string> = {
+  type: "types-contact",
+  nom: "nom",
+  email: "email",
+  message: "message",
+  consentement: "rgpd-contact",
+};
+
 export default function Contact() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
@@ -53,16 +62,79 @@ export default function Contact() {
   const [rgpdConsent, setRgpdConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const contactRef = useRef<HTMLDivElement>(null);
+  const prefixeRefus = useId();
+  const [refus, setRefus] = useState<{ cible: CibleRefus; cleMessage: string } | null>(null);
+
+  const attributsRefus = (cible: CibleRefus) => refus?.cible === cible
+    ? { "aria-invalid": true, "aria-describedby": `${prefixeRefus}-${cible}` } as const
+    : undefined;
+  const erreurLocale = (cible: CibleRefus) => refus?.cible === cible
+    ? <p id={`${prefixeRefus}-${cible}`} role="alert" className="text-sm text-destructive">{t(refus.cleMessage)}</p>
+    : null;
+
+  // Le focus intervient après l'insertion de la description dans le DOM.
+  useEffect(() => {
+    if (refus) contactRef.current?.querySelector<HTMLElement>(`[id="${IDS_REFUS[refus.cible]}"]`)?.focus();
+  }, [refus]);
+
+  useEffect(() => {
+    if (!refus) return;
+    const email = contactRef.current?.querySelector<HTMLInputElement>("#email");
+    const champCorrige = {
+      type: Boolean(selectedType),
+      nom: Boolean(formData.nom.trim()),
+      email: email?.validity.valid && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()),
+      message: Boolean(formData.message.trim()),
+      consentement: rgpdConsent,
+    };
+    if (champCorrige[refus.cible]) setRefus(null);
+  }, [refus, selectedType, formData.nom, formData.email, formData.message, rgpdConsent]);
+
+  const handleInvalid = (event: React.FormEvent<HTMLFormElement>) => {
+    if (honeypot) return;
+    const champ = event.target;
+    if (!(champ instanceof HTMLInputElement || champ instanceof HTMLTextAreaElement)) return;
+    if (champ.id !== "nom" && champ.id !== "email" && champ.id !== "message") return;
+
+    // Les contraintes du navigateur bloquent toujours la soumission.
+    // Notre message et notre focus remplacent l'infobulle native.
+    event.preventDefault();
+    const premierChampInvalide = Array.from(event.currentTarget.elements).find((controle) =>
+      (controle instanceof HTMLInputElement || controle instanceof HTMLTextAreaElement) &&
+      controle.willValidate && !controle.validity.valid,
+    );
+    if (champ !== premierChampInvalide) return;
+    setRefus({
+      cible: champ.id,
+      cleMessage: champ.validity.valueMissing ? "contact.errorRequired" : "contact.errorEmail",
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (honeypot) return;
-    if (!selectedType) { toast.error(t("contact.selectType")); return; }
+    if (!selectedType) {
+      setRefus({ cible: "type", cleMessage: "contact.selectType" });
+      toast.error(t("contact.selectType"));
+      return;
+    }
     if (!formData.nom.trim() || !formData.email.trim() || !formData.message.trim()) {
+      const cible = !formData.nom.trim() ? "nom" : !formData.email.trim() ? "email" : "message";
+      setRefus({ cible, cleMessage: "contact.errorRequired" });
       toast.error(t("contact.errorRequired")); return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email.trim())) { toast.error(t("contact.errorEmail")); return; }
-    if (!rgpdConsent) { toast.error(t("contact.errorConsent")); return; }
+    if (!emailRegex.test(formData.email.trim())) {
+      setRefus({ cible: "email", cleMessage: "contact.errorEmail" });
+      toast.error(t("contact.errorEmail"));
+      return;
+    }
+    if (!rgpdConsent) {
+      setRefus({ cible: "consentement", cleMessage: "contact.errorConsent" });
+      toast.error(t("contact.errorConsent"));
+      return;
+    }
 
     const selectedConfig = contactTypes.find((ct) => ct.id === selectedType);
     const backendType = selectedConfig?.backendType || "contact_general";
@@ -158,21 +230,29 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="max-w-3xl mx-auto">
+          <div ref={contactRef} className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="section-title mb-4">{t("contact.sendMessage")}</h2>
               <p className="text-muted-foreground">{t("contact.sendMessageDesc")}</p>
             </div>
-            <div className="grid sm:grid-cols-3 gap-4 mb-8">
+            <div
+              id="types-contact"
+              role="group"
+              aria-label={t("contact.selectType")}
+              tabIndex={-1}
+              {...attributsRefus("type")}
+              className="grid sm:grid-cols-3 gap-4 mb-8 focus:outline focus:outline-2 focus:outline-offset-4"
+            >
               {contactTypes.map((type) => (
-                <button key={type.id} onClick={() => setSelectedType(type.id)} className={`p-6 rounded-2xl border-2 transition-all text-left ${selectedType === type.id ? "border-primary bg-primary/10" : "border-border hover:border-primary/50"}`}>
+                <button key={type.id} aria-pressed={selectedType === type.id} onClick={() => setSelectedType(type.id)} className={`p-6 rounded-2xl border-2 transition-all text-left ${selectedType === type.id ? "border-primary bg-primary/10" : "border-border hover:border-primary/50"}`}>
                   <type.icon className={`w-8 h-8 mb-4 ${selectedType === type.id ? "text-primary" : "text-muted-foreground"}`} />
                   <h3 className="font-semibold mb-1">{type.title}</h3>
                   <p className="text-sm text-muted-foreground">{type.description}</p>
                 </button>
               ))}
             </div>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            {erreurLocale("type")}
+            <form onSubmit={handleSubmit} onInvalidCapture={handleInvalid} className="space-y-6">
               {/* Honeypot */}
               <div className="absolute -left-[9999px]" aria-hidden="true">
                 <input type="text" name="company_url" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
@@ -181,11 +261,13 @@ export default function Contact() {
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="nom">{t("contact.fullName")} *</Label>
-                  <Input id="nom" value={formData.nom} onChange={(e) => setFormData({ ...formData, nom: e.target.value })} required maxLength={200} />
+                  <Input id="nom" {...attributsRefus("nom")} value={formData.nom} onChange={(e) => setFormData({ ...formData, nom: e.target.value })} required maxLength={200} />
+                  {erreurLocale("nom")}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">{t("contact.email")} *</Label>
-                  <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required maxLength={255} />
+                  <Input id="email" type="email" {...attributsRefus("email")} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required maxLength={255} />
+                  {erreurLocale("email")}
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
@@ -200,16 +282,19 @@ export default function Contact() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="message">{t("contact.message")} *</Label>
-                <Textarea id="message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder={t("contact.messagePlaceholder")} rows={6} required maxLength={5000} />
+                <Textarea id="message" {...attributsRefus("message")} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} placeholder={t("contact.messagePlaceholder")} rows={6} required maxLength={5000} />
+                {erreurLocale("message")}
               </div>
 
               <div className="flex items-start gap-3">
-                <Checkbox id="rgpd-contact" checked={rgpdConsent} onCheckedChange={(checked) => setRgpdConsent(checked === true)} className="mt-1" />
+                <Checkbox id="rgpd-contact" {...attributsRefus("consentement")} checked={rgpdConsent} onCheckedChange={(checked) => setRgpdConsent(checked === true)} className="mt-1" />
                 <Label htmlFor="rgpd-contact" className="text-sm leading-relaxed cursor-pointer text-muted-foreground">
                   <InlineBrand>{t("contact.rgpd")}</InlineBrand>{" "}
                   <Link to={localePath(lang, "privacy")} className="text-primary underline underline-offset-4 hover:text-primary/80">{t("contact.rgpdLink")}</Link>. *
                 </Label>
               </div>
+
+              {erreurLocale("consentement")}
 
               <Button type="submit" variant="hero" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? (
