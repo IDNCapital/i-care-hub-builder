@@ -1,0 +1,62 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "baseUrl": "../..",
+    "types": [
+      "vite/client",
+      "react",
+      "react-dom",
+      "node"
+    ],
+    "paths": {
+      "@/integrations/supabase/client": [
+        ".ci/icare-annuaire-transport-1635/client.ts"
+      ],
+      "@/components/Layout": [
+        ".ci/icare-annuaire-transport-1635/ui.tsx"
+      ],
+      "@/components/SeoHead": [
+        ".ci/icare-annuaire-transport-1635/ui.tsx"
+      ],
+      "@/components/CarteCabinetsSection": [
+        ".ci/icare-annuaire-transport-1635/ui.tsx"
+      ],
+      "@/components/ui/button": [
+        ".ci/icare-annuaire-transport-1635/ui.tsx"
+      ],
+      "@/components/ui/input": [
+        ".ci/icare-annuaire-transport-1635/ui.tsx"
+      ],
+      "@/components/ui/sheet": [
+        ".ci/icare-annuaire-transport-1635/ui.tsx"
+      ],
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "../../src/hooks/usePraticiensPublics.ts",
+    "../../src/hooks/useSpecialites.ts",
+    "../../src/pages/Patients.tsx",
+    "../../src/components/patients/PatientsOuvert.tsx",
+    "Annuaire.transport.test.tsx",
+    "ui.tsx",
+    "client.ts"
+  ]
+}
