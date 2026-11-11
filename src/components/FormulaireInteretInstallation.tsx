@@ -1,5 +1,6 @@
 import { isPublicProjectOffer } from "@/lib/publicProjectOffer";
-import { useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { useProfessions, useCabinetsInstallation } from "@/hooks/useInstallation";
 import { cabinetNomCourt } from "@/lib/installation";
+import { localePath } from "@/lib/routes";
 import { Analytics } from "@/lib/analytics";
 
 interface Props {
@@ -23,7 +25,64 @@ interface Props {
 }
 
 type State = "idle" | "submitting" | "success" | "error";
-type FieldErrors = Partial<Record<"nom" | "email" | "telephone" | "consent" | "profession" | "message" | "form", string>>;
+type InstallationField = "nom" | "email" | "telephone" | "consent" | "profession" | "message";
+type FieldErrors = Partial<Record<InstallationField | "form", string>>;
+
+const englishProfessions: Record<string, string> = {
+  osteopathe: "Osteopaths", sophrologue: "Sophrologists", psychologue: "Psychologists",
+  psychotherapeute: "Psychotherapists", "dieteticien-nutritionniste": "Dietitians and nutritionists",
+  naturopathe: "Naturopaths", hypnotherapeute: "Hypnotherapists", "medecin-generaliste": "General practitioners",
+  "medecin-specialiste": "Medical specialists", "sage-femme": "Midwives", "chirurgien-dentiste": "Dentists",
+  "masseur-kinesitherapeute": "Physiotherapists", infirmier: "Nurses", orthophoniste: "Speech therapists",
+  "autre-profession": "Other healthcare profession",
+};
+
+const copy = {
+  fr: {
+    profession: "Profession", practice: "Cabinet visé", chooseProfession: "Sélectionnez votre profession",
+    preferredPractice: "Cabinet souhaité (facultatif)", allPractices: "Tous les cabinets", name: "Nom", email: "Email",
+    phone: "Téléphone (facultatif)", project: "Votre projet d'installation", optional: "(facultatif)",
+    otherHelp: "Indiquez votre profession dans le champ « Votre projet d'installation » ci-dessous.",
+    placeholder: "Précisez votre calendrier envisagé, votre mode d'exercice actuel, vos besoins particuliers (surface, équipements, temps partagé)…",
+    characters: "caractères", consent: "J'accepte que mes informations soient utilisées par I‑CA.RE pour traiter ma demande d'installation, conformément à la",
+    privacy: "politique de confidentialité", send: "Envoyer ma demande", sending: "Envoi en cours…", honeypot: "Ne pas remplir",
+    unavailable: "Ce lieu ne fait plus partie de notre offre.", sent: "Demande envoyée", success: "Votre demande a bien été envoyée",
+    reply: "Nicolas revient vers vous", deadline: "sous 24 h", details: "avec les informations détaillées sur les espaces disponibles et les conditions d'installation.",
+    fields: {
+      nom: "Merci d'indiquer votre nom (2 caractères minimum).", email: "Adresse email invalide.",
+      telephone: "Numéro de téléphone invalide.", consent: "Le consentement est obligatoire.",
+      profession: "Merci de choisir votre profession.", message: "Merci de préciser votre profession dans le message.",
+    },
+    server: {
+      consent_required: "Le consentement est obligatoire.", invalid_email: "Adresse email invalide.", invalid_name: "Nom invalide.",
+      invalid_phone: "Numéro de téléphone invalide.", invalid_profession: "Profession inconnue.", invalid_ville: "Cabinet inconnu.",
+      missing_profession: "Merci de choisir votre profession.", rate_limited: "Trop de demandes envoyées, réessayez dans une heure.",
+      unknown: "Une erreur est survenue. Merci de réessayer.",
+    },
+  },
+  en: {
+    profession: "Profession", practice: "Selected practice", chooseProfession: "Select your profession",
+    preferredPractice: "Preferred practice (optional)", allPractices: "All practices", name: "Name", email: "Email",
+    phone: "Phone (optional)", project: "Your practice project", optional: "(optional)",
+    otherHelp: "Specify your profession in the ‘Your practice project’ field below.",
+    placeholder: "Describe your planned timeline, current practice and specific needs (space, equipment, shared use)…",
+    characters: "characters", consent: "I agree that I‑CA.RE may use my information to process my practice enquiry, in accordance with the",
+    privacy: "privacy policy", send: "Send my request", sending: "Sending…", honeypot: "Leave empty",
+    unavailable: "This location is no longer part of our offer.", sent: "Request sent", success: "Your request has been sent",
+    reply: "Nicolas will get back to you", deadline: "within 24 hours", details: "with details of the available spaces and the conditions for setting up your practice.",
+    fields: {
+      nom: "Enter your name (at least 2 characters).", email: "Enter a valid email address.",
+      telephone: "Enter a valid phone number.", consent: "Consent is required.",
+      profession: "Select your profession.", message: "Specify your profession in the message.",
+    },
+    server: {
+      consent_required: "Consent is required.", invalid_email: "Enter a valid email address.", invalid_name: "Enter a valid name.",
+      invalid_phone: "Enter a valid phone number.", invalid_profession: "Unknown profession.", invalid_ville: "Unknown practice.",
+      missing_profession: "Select your profession.", rate_limited: "Too many requests. Try again in one hour.",
+      unknown: "An error occurred. Please try again.",
+    },
+  },
+};
 
 /**
  * Formulaire d'intérêt installation (pattern B, réutilisable).
@@ -36,6 +95,14 @@ export function FormulaireInteretInstallation({
   professionLabel,
   villeLabel,
 }: Props) {
+  const { i18n } = useTranslation();
+  const english = (i18n.resolvedLanguage ?? i18n.language).split("-")[0] === "en";
+  const text = copy[english ? "en" : "fr"];
+  const professionName = (slug: string, label: string) => english
+    ? englishProfessions[slug] ?? label
+    : label;
+  const formRef = useRef<HTMLFormElement>(null);
+  const errorPrefix = useId();
   const professionLibre = !professionSlug;
   const villeLibre = !villeSlug;
   const { data: professions = [] } = useProfessions();
@@ -61,6 +128,22 @@ export function FormulaireInteretInstallation({
     if (professionLibre && !selectedProfession) return false;
     return true;
   }, [nom, email, consent, professionLibre, selectedProfession]);
+
+  const errorId = (field: InstallationField) => `${errorPrefix}-${field}`;
+  const errorAttributes = (field: InstallationField) => errors[field]
+    ? { "aria-invalid": true, "aria-describedby": errorId(field) } as const
+    : undefined;
+  const fieldError = (field: InstallationField) => errors[field] && (
+    <p id={errorId(field)} className="text-sm text-destructive mt-1">
+      {text.fields[field]}
+    </p>
+  );
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+    }
+  }, [errors]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,17 +181,7 @@ export function FormulaireInteretInstallation({
       );
       if (error || !data?.ok) {
         const code = data?.error ?? "unknown";
-        const map: Record<string, string> = {
-          consent_required: "Le consentement est obligatoire.",
-          invalid_email: "Adresse email invalide.",
-          invalid_name: "Nom invalide.",
-          invalid_phone: "Numéro de téléphone invalide.",
-          invalid_profession: "Profession inconnue.",
-          invalid_ville: "Cabinet inconnu.",
-          missing_profession: "Merci de choisir votre profession.",
-          rate_limited: "Trop de demandes envoyées, réessayez dans une heure.",
-        };
-        setErrors({ form: map[code] ?? "Une erreur est survenue. Merci de réessayer." });
+        setErrors({ form: code });
         setState("error");
         return;
       }
@@ -123,34 +196,34 @@ export function FormulaireInteretInstallation({
       setState("success");
     } catch (err) {
       console.error("[FormulaireInteretInstallation] submit error:", err);
-      setErrors({ form: "Une erreur est survenue. Merci de réessayer." });
+      setErrors({ form: "unknown" });
       setState("error");
     }
   };
 
   if (!isPublicProjectOffer(villeSlug) || !isPublicProjectOffer(selectedVille)) {
-    return <p role="status">Ce lieu ne fait plus partie de notre offre.</p>;
+    return <p role="status">{text.unavailable}</p>;
   }
 
   if (state === "success") {
     return (
-      <div className="bg-secondary rounded-lg p-8 border border-border text-center">
+      <div role="status" className="bg-secondary rounded-lg p-8 border border-border text-center">
         <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-4">
-          Demande envoyée
+          {text.sent}
         </p>
         <h3 className="font-heading text-2xl md:text-3xl font-normal text-foreground mb-4">
-          Votre demande a bien été envoyée
+          {text.success}
         </h3>
         <p className="text-base text-muted-foreground max-w-lg mx-auto">
-          Nicolas revient vers vous <strong className="text-foreground">sous 24 h</strong>{" "}
-          avec les informations détaillées sur les espaces disponibles et les conditions d'installation.
+          {text.reply} <strong className="text-foreground">{text.deadline}</strong>{" "}
+          {text.details}
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+    <form ref={formRef} aria-busy={state === "submitting"} onSubmit={handleSubmit} className="space-y-5" noValidate>
       {/* Honeypot invisible (off-screen, pas display:none) */}
       <div
         aria-hidden="true"
@@ -163,7 +236,7 @@ export function FormulaireInteretInstallation({
           overflow: "hidden",
         }}
       >
-        <label htmlFor="website">Ne pas remplir</label>
+        <label htmlFor="website">{text.honeypot}</label>
         <input
           id="website"
           name="website"
@@ -180,13 +253,13 @@ export function FormulaireInteretInstallation({
         <div className="bg-secondary rounded-md p-4 text-sm">
           {professionLabel && (
             <p className="mb-1">
-              <span className="text-muted-foreground">Profession : </span>
-              <span className="font-medium text-foreground">{professionLabel}</span>
+              <span className="text-muted-foreground">{text.profession} : </span>
+              <span className="font-medium text-foreground">{professionName(professionSlug ?? "", professionLabel)}</span>
             </p>
           )}
           {villeLabel && (
             <p>
-              <span className="text-muted-foreground">Cabinet visé : </span>
+              <span className="text-muted-foreground">{text.practice} : </span>
               <span className="font-medium text-foreground">{villeLabel}</span>
             </p>
           )}
@@ -198,36 +271,36 @@ export function FormulaireInteretInstallation({
         <>
           <div>
             <Label htmlFor="profession">
-              Profession <span className="text-primary">*</span>
+              {text.profession} <span className="text-primary">*</span>
             </Label>
             <Select value={selectedProfession} onValueChange={setSelectedProfession}>
-              <SelectTrigger id="profession" className="mt-1.5">
-                <SelectValue placeholder="Sélectionnez votre profession" />
+              <SelectTrigger id="profession" {...errorAttributes("profession")} className="mt-1.5">
+                <SelectValue placeholder={text.chooseProfession} />
               </SelectTrigger>
               <SelectContent>
                 {professions.map((p) => (
                   <SelectItem key={p.id} value={p.slug}>
-                    {p.nom_inclusif_pluriel}
+                    {professionName(p.slug, p.nom_inclusif_pluriel)}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            {errors.profession && <p className="text-sm text-destructive mt-1">{errors.profession}</p>}
+            {fieldError("profession")}
             {autreProfession && (
               <p className="text-xs text-muted-foreground mt-1">
-                Indiquez votre profession dans le champ « Votre projet d'installation » ci-dessous.
+                {text.otherHelp}
               </p>
             )}
           </div>
           {villeLibre && (
             <div>
-              <Label htmlFor="ville">Cabinet souhaité (facultatif)</Label>
+              <Label htmlFor="ville">{text.preferredPractice}</Label>
               <Select value={selectedVille} onValueChange={setSelectedVille}>
                 <SelectTrigger id="ville" className="mt-1.5">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="__all__">Tous les cabinets</SelectItem>
+                  <SelectItem value="__all__">{text.allPractices}</SelectItem>
                   {cabinets.map((c) => (
                     <SelectItem key={c.id} value={c.slug_installation}>
                       {cabinetNomCourt(c.name)}
@@ -242,10 +315,11 @@ export function FormulaireInteretInstallation({
 
       <div>
         <Label htmlFor="nom">
-          Nom <span className="text-primary">*</span>
+          {text.name} <span className="text-primary">*</span>
         </Label>
         <Input
           id="nom"
+          {...errorAttributes("nom")}
           type="text"
           autoComplete="name"
           value={nom}
@@ -254,15 +328,16 @@ export function FormulaireInteretInstallation({
           className="mt-1.5"
           required
         />
-        {errors.nom && <p className="text-sm text-destructive mt-1">{errors.nom}</p>}
+        {fieldError("nom")}
       </div>
 
       <div>
         <Label htmlFor="email">
-          Email <span className="text-primary">*</span>
+          {text.email} <span className="text-primary">*</span>
         </Label>
         <Input
           id="email"
+          {...errorAttributes("email")}
           type="email"
           autoComplete="email"
           value={email}
@@ -271,13 +346,14 @@ export function FormulaireInteretInstallation({
           className="mt-1.5"
           required
         />
-        {errors.email && <p className="text-sm text-destructive mt-1">{errors.email}</p>}
+        {fieldError("email")}
       </div>
 
       <div>
-        <Label htmlFor="telephone">Téléphone (facultatif)</Label>
+        <Label htmlFor="telephone">{text.phone}</Label>
         <Input
           id="telephone"
+          {...errorAttributes("telephone")}
           type="tel"
           autoComplete="tel"
           value={telephone}
@@ -285,48 +361,49 @@ export function FormulaireInteretInstallation({
           maxLength={20}
           className="mt-1.5"
         />
-        {errors.telephone && <p className="text-sm text-destructive mt-1">{errors.telephone}</p>}
+        {fieldError("telephone")}
       </div>
 
       <div>
         <Label htmlFor="message">
-          Votre projet d'installation {autreProfession ? <span className="text-primary">*</span> : "(facultatif)"}
+          {text.project} {autreProfession ? <span className="text-primary">*</span> : text.optional}
         </Label>
         <Textarea
           id="message"
+          {...errorAttributes("message")}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           maxLength={2000}
           rows={5}
           aria-required={autreProfession}
-          placeholder="Précisez votre calendrier envisagé, votre mode d'exercice actuel, vos besoins particuliers (surface, équipements, temps partagé)…"
+          placeholder={text.placeholder}
           className="mt-1.5"
         />
-        <p className="text-xs text-muted-foreground mt-1">{message.length} / 2000 caractères</p>
-        {errors.message && <p className="text-sm text-destructive mt-1">{errors.message}</p>}
+        <p className="text-xs text-muted-foreground mt-1">{message.length} / 2000 {text.characters}</p>
+        {fieldError("message")}
       </div>
 
       <div className="flex items-start gap-3">
         <Checkbox
           id="consent"
+          {...errorAttributes("consent")}
           checked={consent}
           onCheckedChange={(v) => setConsent(v === true)}
           className="mt-0.5"
         />
         <Label htmlFor="consent" className="text-sm font-normal leading-relaxed cursor-pointer">
-          J'accepte que mes informations soient utilisées par I‑CA.RE pour traiter ma demande
-          d'installation, conformément à la{" "}
-          <Link to="/confidentialite/" className="text-primary underline hover:no-underline">
-            politique de confidentialité
+          {text.consent}{" "}
+          <Link to={localePath(english ? "en" : "fr", "privacy")} className="text-primary underline hover:no-underline">
+            {text.privacy}
           </Link>
           . <span className="text-primary">*</span>
         </Label>
       </div>
-      {errors.consent && <p className="text-sm text-destructive">{errors.consent}</p>}
+      {fieldError("consent")}
 
       {errors.form && (
-        <div className="rounded-md bg-destructive/10 border border-destructive/30 p-3 text-sm text-destructive">
-          {errors.form}
+        <div role="alert" className="rounded-md bg-destructive/10 border border-destructive/30 p-3 text-sm text-destructive">
+          {text.server[errors.form as keyof typeof text.server] ?? text.server.unknown}
         </div>
       )}
 
@@ -341,10 +418,10 @@ export function FormulaireInteretInstallation({
           {state === "submitting" ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Envoi en cours…
+              {text.sending}
             </>
           ) : (
-            "Envoyer ma demande"
+            text.send
           )}
         </Button>
       </div>

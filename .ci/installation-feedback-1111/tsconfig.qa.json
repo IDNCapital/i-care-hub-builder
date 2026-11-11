@@ -1,0 +1,29 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "types": [
+      "react",
+      "react-dom"
+    ],
+    "baseUrl": "../..",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "vitest": [
+        ".ci/installation-feedback-1111/node_modules/vitest/dist/index.d.ts"
+      ],
+      "@testing-library/dom": [
+        ".ci/installation-feedback-1111/node_modules/@testing-library/dom/types/index.d.ts"
+      ],
+      "@testing-library/jest-dom/vitest": [
+        ".ci/installation-feedback-1111/node_modules/@testing-library/jest-dom/types/vitest.d.ts"
+      ]
+    }
+  },
+  "include": [
+    "../../tests/advisor/FormulaireInteretInstallation.langue.test.tsx",
+    "closedEnvironment.ts",
+    "../../src/vite-env.d.ts"
+  ]
+}

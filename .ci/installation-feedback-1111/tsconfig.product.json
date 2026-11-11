@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "types": [
+      "react",
+      "react-dom"
+    ]
+  },
+  "include": [
+    "../../src/components/FormulaireInteretInstallation.tsx",
+    "../../src/vite-env.d.ts"
+  ]
+}
