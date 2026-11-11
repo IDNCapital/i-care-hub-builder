@@ -246,6 +246,7 @@
     "formErrorConsent": "Veuillez accepter la politique de confidentialité.",
     "formErrorRequired": "Veuillez remplir les champs obligatoires.",
     "formErrorEmail": "Veuillez saisir une adresse email valide.",
+    "formErrorWebsite": "Veuillez saisir une adresse web valide.",
     "formErrorPhone": "Veuillez saisir un numéro de téléphone valide.",
     "formErrorGeneric": "Une erreur est survenue. Veuillez réessayer.",
     "formErrorRateLimit": "Demande déjà envoyée. Veuillez patienter une minute.",

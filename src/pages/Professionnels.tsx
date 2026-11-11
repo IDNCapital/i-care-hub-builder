@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
-import { useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
@@ -30,6 +30,25 @@ import { FadeImage } from "@/components/FadeImage";
 import { InlineBrand } from "@/components/BrandName";
 import { ICARE_TELEPHONE_AFFICHAGE } from "@/lib/contact";
 import { useProfessions } from "@/hooks/useInstallation";
+
+const CHAMPS_REQUIS = ["firstName", "lastName", "email", "phone", "profession", "ville", "cabinetCount"] as const;
+const CHAMPS_NATIFS = ["firstName", "lastName", "email", "phone", "ville", "website"] as const;
+type ChampRequis = typeof CHAMPS_REQUIS[number];
+type ChampRefus = ChampRequis | "website" | "rgpd";
+type MotifRefus = "required" | "email" | "phone" | "website" | "consent";
+type Refus = Partial<Record<ChampRefus, MotifRefus>>;
+
+const CLES_REFUS = {
+  required: "professionals.formErrorRequired",
+  email: "professionals.formErrorEmail",
+  phone: "professionals.formErrorPhone",
+  website: "professionals.formErrorWebsite",
+  consent: "professionals.formErrorConsent",
+} as const;
+
+function champRequisRenseigne(champ: ChampRequis, valeur: string) {
+  return Boolean(champ === "profession" || champ === "cabinetCount" ? valeur : valeur.trim());
+}
 
 export default function Professionnels() {
   const { t, i18n } = useTranslation();
@@ -75,20 +94,109 @@ export default function Professionnels() {
   const [rgpdConsent, setRgpdConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const formRef = useRef<HTMLFormElement>(null);
+  const prefixeRefus = useId();
+  const [refus, setRefus] = useState<Refus>({});
+  const [focusRefus, setFocusRefus] = useState<{ champ: ChampRefus } | null>(null);
+
+  // Le champ reçoit le focus une fois sa description affichée.
+  useEffect(() => {
+    if (focusRefus) formRef.current?.querySelector<HTMLElement>(`[id="${focusRefus.champ}"]`)?.focus();
+  }, [focusRefus]);
+
+  useEffect(() => {
+    const valideNativement = (champ: "email" | "website") => {
+      const controle = formRef.current?.elements.namedItem(champ);
+      return controle instanceof HTMLInputElement && controle.validity.valid;
+    };
+    const formatsCorriges = {
+      consent: rgpdConsent,
+      email: valideNativement("email") && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()),
+      phone: /^[+\d\s.\-()]{6,30}$/.test(formData.phone.trim()),
+      website: valideNativement("website"),
+    };
+    setRefus((actuels) => {
+      let restants = actuels;
+      for (const [champ, motif] of Object.entries(actuels) as [ChampRefus, MotifRefus][]) {
+        const corrige = motif === "required"
+          ? champ !== "rgpd" && champ !== "website" && champRequisRenseigne(champ, formData[champ])
+          : formatsCorriges[motif];
+        if (corrige) {
+          if (restants === actuels) restants = { ...actuels };
+          delete restants[champ];
+        }
+      }
+      return restants;
+    });
+  }, [formData, rgpdConsent]);
+
+  const signalerRefus = (erreurs: Refus) => {
+    setRefus(erreurs);
+    const champ = Object.keys(erreurs)[0] as ChampRefus;
+    setFocusRefus({ champ });
+  };
+
+  const erreurId = (champ: ChampRefus) => `${prefixeRefus}-${champ}`;
+  const attributsRefus = (champ: ChampRefus) => refus[champ]
+    ? { "aria-invalid": true, "aria-describedby": erreurId(champ) } as const
+    : undefined;
+  const rendreRefus = (champ: ChampRefus) => {
+    const motif = refus[champ];
+    if (!motif) return null;
+    const message = t(CLES_REFUS[motif]);
+    return <p id={erreurId(champ)} role="alert" className="text-sm text-red-200">{message}</p>;
+  };
+
   const showCabinetConfig = formData.cabinetCount === "4+" || formData.cabinetCount === "custom";
+
+  const handleInvalid = (event: React.FormEvent<HTMLFormElement>) => {
+    if (honeypot || !(event.target instanceof HTMLInputElement)) return;
+    const controle = event.target;
+    const champ = CHAMPS_NATIFS.find((id) => id === controle.id);
+    if (!champ) return;
+
+    // La contrainte native bloque la soumission. Seule son infobulle est remplacée.
+    event.preventDefault();
+    const premierChampInvalide = Array.from(event.currentTarget.elements).find((element) =>
+      element instanceof HTMLInputElement && element.willValidate && !element.validity.valid,
+    );
+    if (controle !== premierChampInvalide) return;
+    const motif = controle.validity.valueMissing ? "required" : champ === "website" ? "website" : "email";
+    signalerRefus({ [champ]: motif });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (honeypot) return;
-    if (!rgpdConsent) { toast.error(t("professionals.formErrorConsent")); return; }
+    if (!rgpdConsent) {
+      toast.error(t("professionals.formErrorConsent"));
+      signalerRefus({ rgpd: "consent" });
+      return;
+    }
     if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.profession || !formData.ville.trim() || !formData.cabinetCount) {
-      toast.error(t("professionals.formErrorRequired")); return;
+      const erreurs: Refus = {};
+      for (const champ of CHAMPS_REQUIS) {
+        if (!champRequisRenseigne(champ, formData[champ])) erreurs[champ] = "required";
+      }
+      toast.error(t("professionals.formErrorRequired"));
+      signalerRefus(erreurs);
+      return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email.trim())) { toast.error(t("professionals.formErrorEmail")); return; }
+    if (!emailRegex.test(formData.email.trim())) {
+      toast.error(t("professionals.formErrorEmail"));
+      signalerRefus({ email: "email" });
+      return;
+    }
     const phoneRegex = /^[+\d\s.\-()]{6,30}$/;
-    if (!phoneRegex.test(formData.phone.trim())) { toast.error(t("professionals.formErrorPhone")); return; }
+    if (!phoneRegex.test(formData.phone.trim())) {
+      toast.error(t("professionals.formErrorPhone"));
+      signalerRefus({ phone: "phone" });
+      return;
+    }
 
+    setRefus({});
+    setFocusRefus(null);
     setIsSubmitting(true);
     try {
       const params = new URLSearchParams(window.location.search);
@@ -284,7 +392,7 @@ export default function Professionnels() {
               <h2 className="text-3xl md:text-4xl font-heading font-semibold mb-4 text-background">{t("professionals.formTitle")}</h2>
               <p className="text-background/70 text-lg">{t("professionals.formSubtitle")}</p>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-6 form-dark-section">
+            <form ref={formRef} onSubmit={handleSubmit} onInvalidCapture={handleInvalid} className="space-y-6 form-dark-section">
               {/* Honeypot */}
               <div className="absolute -left-[9999px]" aria-hidden="true">
                 <input type="text" name="website_url_confirm" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
@@ -294,21 +402,25 @@ export default function Professionnels() {
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="firstName" className="text-[#F6F5F0]">{t("professionals.formFirstName")} *</Label>
-                  <Input id="firstName" value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} className="h-12" required maxLength={100} />
+                  <Input id="firstName" {...attributsRefus("firstName")} value={formData.firstName} onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} className="h-12" required maxLength={100} />
+                  {rendreRefus("firstName")}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName" className="text-[#F6F5F0]">{t("professionals.formLastName")} *</Label>
-                  <Input id="lastName" value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} className="h-12" required maxLength={100} />
+                  <Input id="lastName" {...attributsRefus("lastName")} value={formData.lastName} onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} className="h-12" required maxLength={100} />
+                  {rendreRefus("lastName")}
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-[#F6F5F0]">{t("professionals.formEmail")} *</Label>
-                  <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="h-12" required maxLength={255} />
+                  <Input id="email" {...attributsRefus("email")} type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="h-12" required maxLength={255} />
+                  {rendreRefus("email")}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="phone" className="text-[#F6F5F0]">{t("professionals.formPhone")} *</Label>
-                  <Input id="phone" type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder={ICARE_TELEPHONE_AFFICHAGE} className="h-12" required maxLength={30} />
+                  <Input id="phone" {...attributsRefus("phone")} type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder={ICARE_TELEPHONE_AFFICHAGE} className="h-12" required maxLength={30} />
+                  {rendreRefus("phone")}
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
@@ -318,13 +430,14 @@ export default function Professionnels() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="website" className="text-[#F6F5F0]">{t("professionals.formWebsite")}</Label>
-                  <Input id="website" type="url" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} placeholder="https://" className="h-12" maxLength={300} />
+                  <Input id="website" {...attributsRefus("website")} type="url" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} placeholder="https://" className="h-12" maxLength={300} />
+                  {rendreRefus("website")}
                 </div>
               </div>
 
               {/* Project fields */}
               <div className="space-y-2">
-                <Label className="text-[#F6F5F0]">{t("professionals.formProfession")} *</Label>
+                <Label htmlFor="profession" className="text-[#F6F5F0]">{t("professionals.formProfession")} *</Label>
                 {/*
                   key porteuse du correctif : le <select> natif caché généré par Radix
                   (aria-hidden, lu par les robots, lecteurs d'écran et l'autofill) est
@@ -340,7 +453,7 @@ export default function Professionnels() {
                   value={formData.profession}
                   onValueChange={(v) => setFormData({ ...formData, profession: v })}
                 >
-                  <SelectTrigger className={darkSelectTrigger}>
+                  <SelectTrigger id="profession" aria-required="true" {...attributsRefus("profession")} className={darkSelectTrigger}>
                     <SelectValue placeholder={t("professionals.formProfessionPlaceholder")} />
                   </SelectTrigger>
                   <SelectContent className={darkSelectContent}>
@@ -354,12 +467,14 @@ export default function Professionnels() {
                     </SelectItem>
                   </SelectContent>
                 </Select>
+                {rendreRefus("profession")}
               </div>
 
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="ville" className="text-[#F6F5F0]">{t("professionals.formCity")} *</Label>
-                  <Input id="ville" value={formData.ville} onChange={(e) => setFormData({ ...formData, ville: e.target.value })} placeholder={t("professionals.formCityPlaceholder")} className="h-12" required maxLength={100} />
+                  <Input id="ville" {...attributsRefus("ville")} value={formData.ville} onChange={(e) => setFormData({ ...formData, ville: e.target.value })} placeholder={t("professionals.formCityPlaceholder")} className="h-12" required maxLength={100} />
+                  {rendreRefus("ville")}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="neighbourhood" className="text-[#F6F5F0]">{t("professionals.formNeighbourhood")}</Label>
@@ -384,9 +499,9 @@ export default function Professionnels() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-[#F6F5F0]">{t("professionals.formCabinetCount")} *</Label>
+                  <Label htmlFor="cabinetCount" className="text-[#F6F5F0]">{t("professionals.formCabinetCount")} *</Label>
                   <Select value={formData.cabinetCount} onValueChange={(v) => setFormData({ ...formData, cabinetCount: v, cabinetConfig: v !== "4+" && v !== "custom" ? "" : formData.cabinetConfig })}>
-                    <SelectTrigger className={darkSelectTrigger}>
+                    <SelectTrigger id="cabinetCount" aria-required="true" {...attributsRefus("cabinetCount")} className={darkSelectTrigger}>
                       <SelectValue placeholder={t("professionals.formCabinetCountPlaceholder")} />
                     </SelectTrigger>
                     <SelectContent className={darkSelectContent}>
@@ -397,6 +512,7 @@ export default function Professionnels() {
                       ))}
                     </SelectContent>
                   </Select>
+                  {rendreRefus("cabinetCount")}
                   <p className="text-[#F6F5F0]/50 text-xs leading-relaxed mt-1.5">{t("professionals.formCabinetCountHint")}</p>
                 </div>
               </div>
@@ -414,12 +530,14 @@ export default function Professionnels() {
               </div>
 
               <div className="flex items-start gap-3">
-                <Checkbox id="rgpd" checked={rgpdConsent} onCheckedChange={(checked) => setRgpdConsent(checked === true)} className="mt-1 border-white/30 data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-[#1F1F1F]" />
+                <Checkbox id="rgpd" {...attributsRefus("rgpd")} checked={rgpdConsent} onCheckedChange={(checked) => setRgpdConsent(checked === true)} className="mt-1 border-white/30 data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-[#1F1F1F]" />
                 <Label htmlFor="rgpd" className="text-[#F6F5F0]/70 text-sm leading-relaxed cursor-pointer">
                   <InlineBrand>{t("professionals.formRgpd")}</InlineBrand>{" "}
                   <Link to={localePath(lang, "privacy")} className="underline hover:text-[#F6F5F0]">{t("professionals.formRgpdLink")}</Link>. *
                 </Label>
               </div>
+
+              {rendreRefus("rgpd")}
 
               <Button type="submit" variant="hero" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-14 text-sm transition-colors duration-200" disabled={isSubmitting}>
                 {isSubmitting ? (

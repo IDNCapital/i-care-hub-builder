@@ -1,0 +1,61 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": false,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "baseUrl": "../..",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@/components/Layout": [
+        "./.ci/professionnels-refus-1011/ports.tsx"
+      ],
+      "react": [
+        "./node_modules/@types/react/index.d.ts"
+      ],
+      "react/jsx-runtime": [
+        "./node_modules/@types/react/jsx-runtime.d.ts"
+      ],
+      "react/jsx-dev-runtime": [
+        "./node_modules/@types/react/jsx-dev-runtime.d.ts"
+      ],
+      "vitest": [
+        "./.ci/professionnels-refus-1011/node_modules/vitest/dist/index.d.ts"
+      ],
+      "@testing-library/jest-dom/vitest": [
+        "./.ci/professionnels-refus-1011/node_modules/@testing-library/jest-dom/types/vitest.d.ts"
+      ],
+      "@testing-library/dom": [
+        "./.ci/professionnels-refus-1011/node_modules/@testing-library/dom/types/index.d.ts"
+      ]
+    },
+    "typeRoots": [
+      "../../node_modules/@types"
+    ],
+    "types": [
+      "react",
+      "react-dom"
+    ]
+  },
+  "include": [
+    "../../src/pages/Professionnels.tsx",
+    "../../src/vite-env.d.ts",
+    "../../tests/advisor/Professionnels.refusAccessibles.test.tsx",
+    "./closedEnvironment.ts",
+    "./testing.tsx",
+    "./ports.tsx",
+    "./node_modules/@testing-library/jest-dom/types/vitest.d.ts"
+  ]
+}

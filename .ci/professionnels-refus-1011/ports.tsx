@@ -1,0 +1,11 @@
+import type { ReactNode } from "react";
+import type { useProfessions as RealUseProfessions } from "../../src/hooks/useInstallation";
+export const ui = { errors: [] as string[], forbidden: [] as string[] };
+const deny = (name: string): never => { ui.forbidden.push(name); throw Error("CAPACITE FERMEE " + name); };
+export const supabase = new Proxy({}, { get() { return deny("SDK"); } });
+export const Analytics = new Proxy({}, { get() { return deny("Analytics"); } });
+export const toast = { error: (message: string) => { ui.errors.push(message); }, success: () => deny("toast.success") };
+export const Layout = ({ children }: { children: ReactNode }) => <main>{children}</main>;
+export const SeoHead = (_props: Record<string, unknown>) => null;
+export const FadeImage = (_props: Record<string, unknown>) => null;
+export const useProfessions = (): Pick<ReturnType<typeof RealUseProfessions>, "data"> => ({ data: [{ id: "fixture-profession", slug: "medecins", nom_masculin_singulier: "Médecin", nom_feminin_singulier: "Médecin", nom_inclusif_pluriel: "Médecins", ordre_affichage: 1, actif: true }] });
