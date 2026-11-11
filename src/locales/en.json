@@ -246,6 +246,7 @@
     "formErrorConsent": "Please accept the privacy policy.",
     "formErrorRequired": "Please fill in all required fields.",
     "formErrorEmail": "Please enter a valid email address.",
+    "formErrorWebsite": "Please enter a valid website URL.",
     "formErrorPhone": "Please enter a valid phone number.",
     "formErrorGeneric": "An error occurred. Please try again.",
     "formErrorRateLimit": "Request already sent. Please wait a minute.",
