@@ -18,6 +18,7 @@ import { Analytics } from "@/lib/analytics";
 import { localePath } from "@/lib/routes";
 import { marqueAffichee } from "@/lib/brand";
 import {
+  DATE_RELEVE_DISPONIBILITES,
   GRILLE_TEMPS_PARTIEL,
   MENTION_TEMPS_PARTIEL,
   MENTION_TEMPS_PLEIN,
@@ -391,6 +392,9 @@ export function SectionDisponibilitesVisite({ lieux = lieuxAccueil() }: { lieux?
           <h2 id="disponibilites-titre" className="section-title">Cabinets disponibles et prix</h2>
           <p className="section-subtitle mx-auto">
             Les cabinets libres dans nos lieux ouverts à la location, avec leur loyer. Choisissez un lieu et demandez une visite.
+          </p>
+          <p className="text-xs text-muted-foreground mt-2" data-releve={DATE_RELEVE_DISPONIBILITES}>
+            Disponibilités relevées le {formatDate(DATE_RELEVE_DISPONIBILITES)}.
           </p>
         </div>
 

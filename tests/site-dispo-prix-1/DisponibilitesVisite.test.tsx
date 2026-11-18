@@ -31,7 +31,7 @@ vi.mock("@/integrations/supabase/client", () => ({
 }));
 vi.mock("@/lib/analytics", () => ({ Analytics: { formSubmission: (f: string) => ports.mesures.push(f) } }));
 
-import { CABINETS_A_LOUER, type CabinetALouer } from "@/lib/cabinetsALouer";
+import { CABINETS_A_LOUER, DATE_RELEVE_DISPONIBILITES, resumeOffre, type CabinetALouer } from "@/lib/cabinetsALouer";
 import {
   LIEU_A_CONSEILLER,
   corpsDemandeVisite,
@@ -59,7 +59,7 @@ const DATE_OK = "2031-01-15";
 
 function remplir(valeurs: Partial<Record<string, string>> = {}) {
   const v = {
-    "visite-lieu": "bordeaux-chartrons",
+    "visite-lieu": "le-bouscat",
     "visite-nom": "Personne Fictive",
     "visite-email": "personne@example.invalid",
     "visite-source": "linkedin",
@@ -80,8 +80,9 @@ beforeEach(() => {
 afterEach(() => cleanup());
 
 describe("lieux affiches (filtre des projets clos)", () => {
-  it("D1 garde Chartrons, Le Bouscat et Toulouse Capitole, jamais Floirac", () => {
-    expect(lieuxAccueil().map((c) => c.slug)).toEqual(["bordeaux-chartrons", "le-bouscat", "toulouse-capitole"]);
+  it("D1 garde Le Bouscat et Toulouse Capitole, ni Chartrons (aucun lot libre au releve) ni Floirac", () => {
+    expect(lieuxAccueil().map((c) => c.slug)).toEqual(["le-bouscat", "toulouse-capitole"]);
+    expect(CABINETS_A_LOUER.map((c) => c.slug)).toContain("bordeaux-chartrons");
     expect(lieuxAccueil().some((c) => /floirac/i.test(c.slug + c.projetSlug + c.nom))).toBe(false);
   });
 
@@ -95,10 +96,10 @@ describe("lieux affiches (filtre des projets clos)", () => {
   it("D3 conservation : cabinets rendus = lots des lieux publics, aucun mot Floirac dans la section", () => {
     monter();
     const listes = screen.getAllByRole("list", { name: /^Cabinets disponibles/ });
-    expect(listes).toHaveLength(3);
+    expect(listes).toHaveLength(2);
     const attendus = lieuxAccueil().reduce((n, c) => n + c.lots.length, 0);
     expect(listes.reduce((n, l) => n + within(l).getAllByRole("listitem").length, 0)).toBe(attendus);
-    expect(attendus).toBe(1 + 9 + 5);
+    expect(attendus).toBe(9 + 4);
     expect(texte(document.body)).not.toMatch(/floirac/i);
   });
 });
@@ -106,19 +107,42 @@ describe("lieux affiches (filtre des projets clos)", () => {
 describe("prix affiches", () => {
   it("P1 chaque lot porte son loyer propre hors charges, la grille a temps partiel est 190, 340, 460", () => {
     monter();
-    const chartrons = texte(screen.getByRole("article", { name: /Chartrons/ }));
-    expect(chartrons).toContain("Cabinet 5");
-    expect(chartrons).toContain("13,1 m²");
-    expect(chartrons).toContain("790 € par mois");
-    expect(chartrons).toContain("loyer hors charges, non assujetti à la TVA");
+    expect(screen.queryByRole("article", { name: /Chartrons/ })).toBeNull();
     const bouscat = texte(screen.getByRole("article", { name: /Le Bouscat/ }));
     for (const p of ["800", "850", "770", "700", "790", "730", "910"]) expect(bouscat).toContain(`${p} € par mois`);
     expect(bouscat).toContain("Livraison fin mars 2027");
     const toulouse = texte(screen.getByRole("article", { name: /Toulouse Capitole/ }));
     expect(toulouse).toContain("Disponible le 01/03/2027");
+    expect(toulouse).toContain("loyer hors charges, non assujetti à la TVA");
+    expect(toulouse).not.toContain("Cabinet 3");
+    for (const p of ["800", "700", "750"]) expect(toulouse).toContain(`${p} € par mois`);
     const page = texte(document.body);
     for (const p of ["190", "340", "460"]) expect(page).toContain(`${p} € par mois`);
     expect(page).toContain("charges comprises");
+  });
+
+  it("P3 releves du 19/11/2026 : Le Bouscat 9 bureaux de 700 a 910, Toulouse 4 cabinets de 700 a 800", () => {
+    const par = (slug: string) => lieuxAccueil().find((c) => c.slug === slug)!;
+    expect(par("le-bouscat").lots.map((l) => l.libelle)).toEqual(
+      ["Bureau 1", "Bureau 2", "Bureau 4", "Bureau 5", "Bureau 6", "Bureau 7", "Bureau 8", "Bureau 9", "Bureau 10"],
+    );
+    expect(par("le-bouscat").lots.map((l) => l.loyerMensuelEur)).toEqual([800, 850, 770, 770, 700, 790, 730, 730, 910]);
+    expect(par("toulouse-capitole").lots.map((l) => [l.libelle, l.loyerMensuelEur])).toEqual(
+      [["Cabinet 1", 800], ["Cabinet 2", 700], ["Cabinet 4", 750], ["Cabinet 5", 750]],
+    );
+  });
+
+  it("P4 la date de releve est une constante et s'affiche sur l'accueil", () => {
+    expect(DATE_RELEVE_DISPONIBILITES).toBe("2026-11-19");
+    monter();
+    expect(texte(document.getElementById("disponibilites"))).toContain("Disponibilités relevées le 19/11/2026");
+  });
+
+  it("P5 Chartrons : aucun lot a temps plein, resume sans prix ni infini", () => {
+    const chartrons = CABINETS_A_LOUER.find((c) => c.slug === "bordeaux-chartrons")!;
+    expect(chartrons.lots).toEqual([]);
+    expect(resumeOffre(chartrons)).toBe("Aucun cabinet à temps plein disponible");
+    expect(JSON.stringify(chartrons)).not.toMatch(/790|Infinity/);
   });
 
   it("P2 aucun lieu public : la section ne s'affiche pas", () => {
@@ -167,8 +191,8 @@ describe("demande de visite", () => {
       utm_medium: "formulaire-visite-accueil",
       extra_data: {
         formulaire: "visite-accueil",
-        lieu: "bordeaux-chartrons",
-        lieu_nom: "I-CA.RE Chartrons",
+        lieu: "le-bouscat",
+        lieu_nom: "I-CA.RE Le Bouscat",
         source_declaree: "linkedin",
         source_declaree_libelle: "LinkedIn",
         creneau_date: DATE_OK,
@@ -176,7 +200,7 @@ describe("demande de visite", () => {
       },
     });
     const message = String(corps.message);
-    expect(message).toContain("Lieu : I-CA.RE Chartrons");
+    expect(message).toContain("Lieu : I-CA.RE Le Bouscat");
     expect(message).toContain("Créneau souhaité : 15/01/2031, matin (9 h à 12 h)");
     expect(message).toContain("Connu par : LinkedIn");
     expect(message).toContain("Psychologue, deux jours par semaine.");
