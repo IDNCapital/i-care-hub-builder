@@ -23,6 +23,7 @@ import { TestimonialsSlider } from "@/components/TestimonialsSlider";
 import { FadeImage } from "@/components/FadeImage";
 import { InlineBrand } from "@/components/BrandName";
 import { CarteCabinetsSection } from "@/components/CarteCabinetsSection";
+import { SectionDisponibilitesVisite } from "@/components/accueil/DisponibilitesVisite";
 
 export default function Index() {
   const { t, i18n } = useTranslation();
@@ -87,9 +88,19 @@ export default function Index() {
                 </Link>
               </Button>
             </div>
+            {lang === "fr" && (
+              <p className="mt-6 opacity-0 animate-fade-up stagger-3">
+                <a href="#disponibilites" className="text-white underline underline-offset-4 hover:text-white/80">
+                  Voir les cabinets disponibles et leurs prix
+                </a>
+              </p>
+            )}
           </div>
         </div>
       </section>
+
+      {/* SITE-DISPO-PRIX-1 : cabinets disponibles, prix et demande de visite (textes en français) */}
+      {lang === "fr" && <SectionDisponibilitesVisite />}
 
       {/* Practitioner Promise */}
       <section className="section-padding">

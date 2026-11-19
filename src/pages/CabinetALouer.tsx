@@ -174,12 +174,18 @@ export default function CabinetALouer() {
       <section className="section-padding bg-muted/50" aria-labelledby="offre">
         <div className="container max-w-5xl">
           <h2 id="offre" className="section-title">
-            {f.nombreLots > 1 ? `${Terme === "Bureau" ? "Bureaux" : "Cabinets"} disponibles` : `${Terme} disponible`} {c.aLieu}
+            {f.nombreLots === 0
+              ? `Aucun ${Terme.toLowerCase()} à temps plein disponible`
+              : f.nombreLots > 1
+                ? `${Terme === "Bureau" ? "Bureaux" : "Cabinets"} disponibles`
+                : `${Terme} disponible`}{" "}
+            {c.aLieu}
           </h2>
           <p className="text-muted-foreground mb-8 flex items-start gap-2">
             <CalendarDays className="w-5 h-5 mt-0.5 flex-shrink-0 text-primary" aria-hidden="true" />
             <span>{c.disponibilite}</span>
           </p>
+          {c.lots.length > 0 && (
           <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {c.lots.map((l) => (
               <li key={l.libelle} className="card-premium p-5">
@@ -197,6 +203,7 @@ export default function CabinetALouer() {
               </li>
             ))}
           </ul>
+          )}
           <ul className="mt-8 space-y-2 list-disc pl-5 text-muted-foreground">
             {c.pointsCles.map((p) => (
               <li key={p}>{p}</li>
@@ -262,8 +269,8 @@ export default function CabinetALouer() {
                   {Terme} {deProfession(p.singulier)} à louer {c.aLieu}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2">
-                  {resumeOffre(c)}, ou à temps partiel dès {formatLoyer(GRILLE_TEMPS_PARTIEL[0].loyerMensuelEur)}{" "}
-                  {MENTION_TEMPS_PARTIEL}, dans un lieu partagé ouvert aux {p.pluriel} et aux autres professionnels du
+                  {c.lots.length > 0 ? `${resumeOffre(c)}, ou à temps partiel dès` : "À temps partiel dès"}{" "}
+                  {formatLoyer(GRILLE_TEMPS_PARTIEL[0].loyerMensuelEur)} {MENTION_TEMPS_PARTIEL}, dans un lieu partagé ouvert aux {p.pluriel} et aux autres professionnels du
                   médical et du paramédical.
                 </p>
                 <Link

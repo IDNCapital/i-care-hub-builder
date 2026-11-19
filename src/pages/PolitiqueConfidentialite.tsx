@@ -107,9 +107,22 @@ function FrVersion() {
             Pour les praticiennes et praticiens disposant d'une fiche Google Business Profile publique et l'ayant signalé à <BrandName />, leur fiche Espace Patients peut afficher la note moyenne et les derniers avis publics récupérés depuis l'API Google Places. Ces avis sont la propriété de leurs auteurs et de Google ; ils sont reproduits avec mention de la source, lien direct vers la fiche Google originale, et date de dernière synchronisation. Aucune modération ni filtrage n'est opéré par <BrandName /> sur ces avis.
           </p>
 
+          <h3 className="text-xl font-semibold mt-8 mb-3">g) Formulaire « Demande de visite » (page d'accueil)</h3>
+          <ul className="space-y-1 text-muted-foreground">
+            <li>• Nom</li>
+            <li>• Adresse email</li>
+            <li>• Téléphone (le cas échéant)</li>
+            <li>• Lieu à visiter</li>
+            <li>• Source déclarée : comment vous avez connu <BrandName />, avec une précision libre si vous choisissez « Autre »</li>
+            <li>• Créneau souhaité : date et moment de la journée</li>
+            <li>• Message libre (le cas échéant)</li>
+            <li>• Consentement RGPD</li>
+          </ul>
+
           <h2 className="text-2xl font-semibold mt-10 mb-4">4. Finalités du traitement</h2>
           <ul className="space-y-1 text-muted-foreground">
             <li>• Répondre aux demandes envoyées via le formulaire de contact</li>
+            <li>• Organiser les visites de cabinets demandées via le formulaire « Demande de visite » de la page d'accueil, et connaître l'origine des demandes (source déclarée)</li>
             <li>• Recontacter les personnes ayant manifesté un intérêt investisseur</li>
             <li>• Assurer le suivi des prospects investisseurs</li>
             <li>• Améliorer le fonctionnement du site</li>
@@ -132,6 +145,7 @@ function FrVersion() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">6. Durée de conservation</h2>
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
             <li><strong className="text-foreground">Demandes de contact :</strong> 3 ans à compter du dernier échange</li>
+            <li><strong className="text-foreground">Demandes de visite (source déclarée, créneau souhaité, date et moment) :</strong> 3 ans à compter du dernier échange, comme les demandes de contact</li>
             <li><strong className="text-foreground">Prospects investisseurs :</strong> 5 ans à compter du dernier contact</li>
             <li><strong className="text-foreground">Données de navigation :</strong> selon la durée légale applicable aux cookies</li>
             <li><strong className="text-foreground">Demandes via le formulaire « Décrire mon besoin » :</strong> 2 ans à compter du dernier échange, ou suppression sur simple demande</li>
@@ -294,9 +308,22 @@ function EnVersion() {
             For practitioners with a public Google Business Profile who have notified <BrandName />, their Patient Space profile may display the average rating and latest public reviews retrieved from the Google Places API. These reviews remain the property of their authors and Google; they are reproduced with source attribution, a direct link to the original Google profile, and the date of last synchronisation. No moderation or filtering is performed by <BrandName /> on these reviews.
           </p>
 
+          <h3 className="text-xl font-semibold mt-8 mb-3">g) "Visit request" form (home page)</h3>
+          <ul className="space-y-1 text-muted-foreground">
+            <li>• Name</li>
+            <li>• Email address</li>
+            <li>• Phone number (where applicable)</li>
+            <li>• Place to visit</li>
+            <li>• Declared source: how you heard about <BrandName />, with a free-text detail if you choose "Other"</li>
+            <li>• Preferred slot: date and time of day</li>
+            <li>• Free message (where applicable)</li>
+            <li>• GDPR consent</li>
+          </ul>
+
           <h2 className="text-2xl font-semibold mt-10 mb-4">4. Purpose of Processing</h2>
           <ul className="space-y-1 text-muted-foreground">
             <li>• Responding to enquiries sent via the contact form</li>
+            <li>• Arranging the office visits requested through the "Visit request" form on the home page, and knowing where requests come from (declared source)</li>
             <li>• Following up with persons who have expressed investor interest</li>
             <li>• Managing investor prospect tracking</li>
             <li>• Improving website functionality</li>
@@ -319,6 +346,7 @@ function EnVersion() {
           <h2 className="text-2xl font-semibold mt-10 mb-4">6. Data Retention</h2>
           <ul className="space-y-2 text-muted-foreground list-none pl-0">
             <li><strong className="text-foreground">Contact enquiries:</strong> up to 3 years from last exchange</li>
+            <li><strong className="text-foreground">Visit requests (declared source, preferred slot, date and time of day):</strong> up to 3 years from last exchange, as for contact enquiries</li>
             <li><strong className="text-foreground">Investor prospects:</strong> up to 5 years from last contact</li>
             <li><strong className="text-foreground">Browsing data:</strong> in accordance with applicable cookie legislation</li>
             <li><strong className="text-foreground">"Describe my need" form requests:</strong> 2 years from last exchange, or deletion on request</li>

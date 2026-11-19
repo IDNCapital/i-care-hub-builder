@@ -49,9 +49,9 @@ export interface TextesCapitole {
 export const CAPITOLE_TEXTES: Record<"fr" | "en", TextesCapitole> = {
   fr: {
     chapeau:
-      "Cinq cabinets de praticien à louer au 5 ter rue de Mirepoix, Toulouse Capitole, de 11,32 à 14,39 m². Livraison prévue en mars 2027, visites possibles dès maintenant.",
+      "Quatre cabinets de praticien disponibles au 5 ter rue de Mirepoix, Toulouse Capitole, de 11,32 à 14,39 m². Livraison prévue en mars 2027, visites possibles dès maintenant.",
     description:
-      "Au 5 ter rue de Mirepoix, 31000 Toulouse, dans le secteur Capitole, I-CA.RE aménage un lieu partagé de cinq cabinets pour les professionnels du soin et du bien être, médical et paramédical, avec un accueil et attente et une cuisine commune.\n\nTemps plein, loyer mensuel hors charges, TVA non applicable : de 700 € à 800 € par mois selon le cabinet (11,32 à 14,39 m²). Temps partiel à la journée : 190 € par mois (1 jour par semaine), 340 € (2 jours), 460 € (3 jours), charges comprises. Les conditions détaillées sont communiquées avant tout engagement.\n\nLivraison prévue en mars 2027. Visites possibles dès maintenant.",
+      "Au 5 ter rue de Mirepoix, 31000 Toulouse, dans le secteur Capitole, I-CA.RE aménage un lieu partagé de cinq cabinets, dont quatre disponibles à la location, pour les professionnels du soin et du bien être, médical et paramédical, avec un accueil et attente et une cuisine commune.\n\nTemps plein, loyer mensuel hors charges, TVA non applicable : de 700 € à 800 € par mois selon le cabinet (11,32 à 14,39 m²). Temps partiel à la journée : 190 € par mois (1 jour par semaine), 340 € (2 jours), 460 € (3 jours), charges comprises. Les conditions détaillées sont communiquées avant tout engagement.\n\nLivraison prévue en mars 2027. Visites possibles dès maintenant.",
     pointsCles: [
       "5 cabinets de 11,32 à 14,39 m²",
       "Temps plein de 700 à 800 € par mois hors charges, TVA non applicable",
@@ -62,9 +62,9 @@ export const CAPITOLE_TEXTES: Record<"fr" | "en", TextesCapitole> = {
   },
   en: {
     chapeau:
-      "Five practitioner offices to rent at 5 ter rue de Mirepoix, Toulouse Capitole, from 11.32 to 14.39 sqm. Delivery planned for March 2027, visits available now.",
+      "Four practitioner offices available to rent at 5 ter rue de Mirepoix, Toulouse Capitole, from 11.32 to 14.39 sqm. Delivery planned for March 2027, visits available now.",
     description:
-      "At 5 ter rue de Mirepoix, 31000 Toulouse, in the Capitole area, I-CA.RE is fitting out a shared place with five offices for care and wellbeing professionals, medical and paramedical, with a reception and waiting area and a shared kitchen.\n\nFull time, monthly rent excluding charges, VAT not applicable: from €700 to €800 per month depending on the office (11.32 to 14.39 sqm). Part time by the day: €190 per month (1 day per week), €340 (2 days), €460 (3 days), charges included. Detailed terms are provided before any commitment.\n\nDelivery planned for March 2027. Visits available now.",
+      "At 5 ter rue de Mirepoix, 31000 Toulouse, in the Capitole area, I-CA.RE is fitting out a shared place with five offices, four of them available to rent, for care and wellbeing professionals, medical and paramedical, with a reception and waiting area and a shared kitchen.\n\nFull time, monthly rent excluding charges, VAT not applicable: from €700 to €800 per month depending on the office (11.32 to 14.39 sqm). Part time by the day: €190 per month (1 day per week), €340 (2 days), €460 (3 days), charges included. Detailed terms are provided before any commitment.\n\nDelivery planned for March 2027. Visits available now.",
     pointsCles: [
       "5 offices from 11.32 to 14.39 sqm",
       "Full time from €700 to €800 per month excluding charges, VAT not applicable",
@@ -78,7 +78,7 @@ export const CAPITOLE_TEXTES: Record<"fr" | "en", TextesCapitole> = {
 export const CAPITOLE_SEO_TITRE = "Cabinets à louer Toulouse Capitole, 5 ter rue de Mirepoix | I-CA.RE";
 
 export const CAPITOLE_SEO_DESCRIPTION =
-  "Cinq cabinets de praticien à louer au 5 ter rue de Mirepoix, Toulouse Capitole, de 11 à 14 m². Livraison prévue en mars 2027, visites possibles dès maintenant.";
+  "Quatre cabinets de praticien disponibles au 5 ter rue de Mirepoix, Toulouse Capitole, de 11 à 14 m². Livraison prévue en mars 2027, visites possibles dès maintenant.";
 
 export const CAPITOLE_OG = {
   ogImage: assetUrl("/og/og-projet-toulouse-capitole.jpg"),

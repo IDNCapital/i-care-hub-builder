@@ -63,6 +63,16 @@ export interface ProfessionCible {
   pluriel: string;
 }
 
+/**
+ * Date du releve des disponibilites et des loyers ci dessous (JJ/MM/AAAA et
+ * AAAA-MM-JJ). La source est un RELEVE MANUEL de la base IDN OS (tables
+ * project_units et leases) du 19/11/2026, en attendant une lecture en direct :
+ * tant que ce releve n'est pas rafraichi, les disponibilites affichees sont celles
+ * de cette date. Regle de releve : un lot qui porte un bail actif ou « À signer »
+ * n'est pas disponible.
+ */
+export const DATE_RELEVE_DISPONIBILITES = "2026-11-19";
+
 /** Mention de loyer des lots a temps plein (reponse 1 de Nicolas, 29/10/2026). */
 export const MENTION_TEMPS_PLEIN = "loyer hors charges, non assujetti à la TVA";
 /** Mention des formules a temps partiel (reponse 1 de Nicolas, 29/10/2026). */
@@ -183,10 +193,10 @@ const CABINETS_ARCHIVES: CabinetALouer[] = [
     // (section 2) ; le cabinet 1 n'est plus propose a temps plein (projet de bail
     // a temps partiel Largeau, mardi et mercredi des le 01/01/2027, leases 7624fefb,
     // decisions de Nicolas du 29/10/2026 16:5x et du 30/10/2026 15:41).
-    titreAnnonce: "Cabinet de praticien à louer aux Chartrons, Bordeaux : 13,1 m² à 790 € par mois, ou à temps partiel",
-    seoTitle: "Cabinet à louer aux Chartrons, Bordeaux : 13,1 m², 790 € ou temps partiel | I-CA.RE",
+    titreAnnonce: "Cabinets de praticiens aux Chartrons, Bordeaux : temps partiel dès 190 € par mois, aucun cabinet à temps plein disponible",
+    seoTitle: "Cabinet à temps partiel aux Chartrons, Bordeaux : dès 190 € par mois | I-CA.RE",
     seoDescription:
-      "Cabinet de praticien au 20 cours Saint Louis, Bordeaux Chartrons : 13,1 m² à 790 € par mois hors charges, ou à temps partiel dès 190 € charges comprises. Visite sur rendez vous.",
+      "Lieu partagé au 20 cours Saint Louis, Bordeaux Chartrons : aucun cabinet à temps plein disponible au 19/11/2026, formules à temps partiel dès 190 € par mois charges comprises. Visite sur rendez vous.",
     chapeau:
       "I-CA.RE ouvre aux praticiens indépendants un lieu partagé au 20 cours Saint Louis, 33300 Bordeaux, dans le quartier des Chartrons.",
     pointsCles: [
@@ -194,16 +204,14 @@ const CABINETS_ARCHIVES: CabinetALouer[] = [
       "Vous exercez dans un cadre professionnel, aux côtés d'autres praticiens, sans investir dans un local.",
       "Visite sur rendez vous.",
     ],
-    // Jours libres du cabinet 1 : fiche d'offre, section 2 (cabinet 1 pris le mardi
-    // et le mercredi par le projet de bail Largeau ; lundi, jeudi, vendredi et samedi
-    // proposables a temps partiel).
+    // Releve du 19/11/2026 : Cabinets 1 a 4 occupes, Cabinet 5 (790 EUR) porte un bail
+    // « À signer » a partir du 01/01/2027. Regle : un lot qui porte un bail actif ou a
+    // signer n'est pas affiche disponible. Plus aucun lot a temps plein : le lieu reste
+    // une page (lien existant, prerendu, sitemap) sans cabinet ni prix a temps plein, et
+    // il n'apparait plus sur l'accueil (lieuxAccueil ecarte les lieux sans lot).
     disponibilite:
-      "Un cabinet libre à temps plein. Le cabinet 1 (11,1 m²) est partagé à temps partiel : lundi, jeudi, vendredi et samedi encore libres.",
-    lots: [
-      // Cabinet 1 (project_units 1e82c668) retire des lots a temps plein : voir ci dessus.
-      // project_units e448d816-f9ce-4467-ada8-76086e467798
-      { libelle: "Cabinet 5", surfaceM2: 13.1, loyerMensuelEur: 790, statut: "libre" },
-    ],
+      "Aucun cabinet à temps plein disponible au 19/11/2026. Des jours à temps partiel peuvent rester libres : demandez une visite pour connaître les disponibilités.",
+    lots: [],
     professions: PROFESSIONS_ANNONCE,
     // Photos reelles prises a la livraison (12/10/2026, commentaire de src/lib/projectImages.ts) et plan.
     visuels: visuelsDepuisDepot("i-ca-re-chartrons", (src, i) => ({
@@ -287,23 +295,22 @@ const CABINETS_ARCHIVES: CabinetALouer[] = [
     titreAnnonce: "Cabinets de praticiens à louer à Toulouse Capitole, ouverture en mars 2027",
     seoTitle: "Cabinet à louer à Toulouse Capitole : 11 à 14 m², de 700 à 800 € | I-CA.RE",
     seoDescription:
-      "Cinq cabinets de praticien à louer au 5 ter rue de Mirepoix, Toulouse Capitole : 11,32 à 14,39 m², de 700 à 800 € par mois hors charges, dès le 01/03/2027.",
+      "Quatre cabinets de praticien à louer au 5 ter rue de Mirepoix, Toulouse Capitole : 11,32 à 14,39 m², de 700 à 800 € par mois hors charges, dès le 01/03/2027.",
     chapeau:
       "I-CA.RE ouvre un lieu partagé au 5 ter rue de Mirepoix, 31000 Toulouse, dans le secteur Capitole. Les cabinets sont en cours d'aménagement ; ouverture en mars 2027.",
     pointsCles: [
-      "Cinq cabinets au rez de chaussée.",
+      "Cabinets au rez de chaussée.",
       POINT_PROFESSIONS,
       "Un cadre professionnel partagé avec d'autres praticiens, en centre ville.",
       "Possibilité de réserver dès maintenant le cabinet de votre choix.",
     ],
-    disponibilite: "Cinq cabinets en travaux, disponibles le 01/03/2027.",
+    disponibilite: "Quatre cabinets en travaux, disponibles le 01/03/2027.",
     lots: [
       // project_units 31c1cd7d-59bb-4b24-b003-d90e9ec630a1
       { libelle: "Cabinet 1", surfaceM2: 14.39, loyerMensuelEur: 800, statut: "en_travaux", disponibleLe: "2027-03-01" },
       // project_units e7960eb4-e471-4ede-8680-8e47ec7442fe
       { libelle: "Cabinet 2", surfaceM2: 11.32, loyerMensuelEur: 700, statut: "en_travaux", disponibleLe: "2027-03-01" },
-      // project_units b0617f7c-99ba-4b53-8edb-5e7d11566758
-      { libelle: "Cabinet 3", surfaceM2: 11.72, loyerMensuelEur: 700, statut: "en_travaux", disponibleLe: "2027-03-01" },
+      // Cabinet 3 (project_units b0617f7c, 700 EUR) retire le 19/11/2026 : bail « À signer » a partir du 01/04/2027.
       // project_units 91cf632b-aba2-450f-9bf9-f5bd689ef7af
       { libelle: "Cabinet 4", surfaceM2: 12.88, loyerMensuelEur: 750, statut: "en_travaux", disponibleLe: "2027-03-01" },
       // project_units ab75b442-aac9-4368-b1d1-78883eaa31d0
@@ -414,8 +421,8 @@ export function fourchettes(c: CabinetALouer) {
     .flatMap((l) => [l.surfaceM2, l.surfaceMinM2, l.surfaceMaxM2])
     .filter((s): s is number => typeof s === "number");
   return {
-    loyerMin: Math.min(...loyers),
-    loyerMax: Math.max(...loyers),
+    loyerMin: loyers.length ? Math.min(...loyers) : undefined,
+    loyerMax: loyers.length ? Math.max(...loyers) : undefined,
     surfaceMin: surfaces.length ? Math.min(...surfaces) : undefined,
     surfaceMax: surfaces.length ? Math.max(...surfaces) : undefined,
     nombreLots: c.lots.reduce((n, l) => n + (l.nombre ?? 1), 0),
@@ -425,6 +432,7 @@ export function fourchettes(c: CabinetALouer) {
 /** Resume de l'offre en une phrase, calcule sur les lots publies. */
 export function resumeOffre(c: CabinetALouer): string {
   const f = fourchettes(c);
+  if (f.loyerMin === undefined || f.loyerMax === undefined) return "Aucun cabinet à temps plein disponible";
   const parties: string[] = [];
   if (f.surfaceMin !== undefined && f.surfaceMax !== undefined) {
     parties.push(
