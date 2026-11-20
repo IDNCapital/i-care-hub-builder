@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import nodemailer from "npm:nodemailer@6.9.16";
+import { buildInternalRecipients } from "../_shared/notificationRecipients.ts";
 
 // ─────────────────────────────────────────────────────────────────────
 // submit-demande-installation
@@ -407,7 +408,7 @@ Deno.serve(async (req) => {
       try {
         await transporter.sendMail({
           from: `"${mailFromName}" <${mailFromEmail}>`,
-          to: internalEmail,
+          ...buildInternalRecipients(internalEmail, mailFromEmail),
           replyTo: `"${escapeHtml(cleanNom)}" <${cleanEmail}>`,
           subject: `[I-CA.RE] Nouvelle demande installation — ${cleanNom} · ${professionLabel}${villeLabel ? ` · ${villeLabel}` : ""}`,
           html: notifHtml,
