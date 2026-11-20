@@ -53,7 +53,7 @@ export const CAPITOLE_TEXTES: Record<"fr" | "en", TextesCapitole> = {
     description:
       "Au 5 ter rue de Mirepoix, 31000 Toulouse, dans le secteur Capitole, I-CA.RE aménage un lieu partagé de cinq cabinets, dont quatre disponibles à la location, pour les professionnels du soin et du bien être, médical et paramédical, avec un accueil et attente et une cuisine commune.\n\nTemps plein, loyer mensuel hors charges, TVA non applicable : de 700 € à 800 € par mois selon le cabinet (11,32 à 14,39 m²). Temps partiel à la journée : 190 € par mois (1 jour par semaine), 340 € (2 jours), 460 € (3 jours), charges comprises. Les conditions détaillées sont communiquées avant tout engagement.\n\nLivraison prévue en mars 2027. Visites possibles dès maintenant.",
     pointsCles: [
-      "5 cabinets de 11,32 à 14,39 m²",
+      "5 cabinets, dont 4 disponibles, de 11,32 à 14,39 m²",
       "Temps plein de 700 à 800 € par mois hors charges, TVA non applicable",
       "Temps partiel dès 190 € par mois, charges comprises",
       "Livraison prévue en mars 2027",
@@ -66,7 +66,7 @@ export const CAPITOLE_TEXTES: Record<"fr" | "en", TextesCapitole> = {
     description:
       "At 5 ter rue de Mirepoix, 31000 Toulouse, in the Capitole area, I-CA.RE is fitting out a shared place with five offices, four of them available to rent, for care and wellbeing professionals, medical and paramedical, with a reception and waiting area and a shared kitchen.\n\nFull time, monthly rent excluding charges, VAT not applicable: from €700 to €800 per month depending on the office (11.32 to 14.39 sqm). Part time by the day: €190 per month (1 day per week), €340 (2 days), €460 (3 days), charges included. Detailed terms are provided before any commitment.\n\nDelivery planned for March 2027. Visits available now.",
     pointsCles: [
-      "5 offices from 11.32 to 14.39 sqm",
+      "5 offices, 4 available, from 11.32 to 14.39 sqm",
       "Full time from €700 to €800 per month excluding charges, VAT not applicable",
       "Part time from €190 per month, charges included",
       "Delivery planned for March 2027",
