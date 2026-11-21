@@ -93,17 +93,34 @@ function PraticienPublicCourant({ slug, reessayer }: { slug: string | undefined;
         }
         const { data: cab, error: cabinetError } = await supabase
           .from("projets")
-          .select("slug,name,city,address,show_address")
+          .select("slug,name,city,show_address")
           .eq("slug", data.cabinet_slug)
           .abortSignal(transport.signal)
           .maybeSingle();
         if (!isCurrent()) return;
-        if (cabinetError || cab === undefined || (cab !== null && (cab.slug !== data.cabinet_slug || typeof cab.name !== "string" || typeof cab.city !== "string" || typeof cab.show_address !== "boolean" || (cab.address !== null && typeof cab.address !== "string")))) {
+        if (cabinetError || cab === undefined || (cab !== null && (
+          cab.slug !== data.cabinet_slug || typeof cab.name !== "string" || typeof cab.city !== "string" ||
+          typeof cab.show_address !== "boolean"
+        ))) {
           setErrored(true);
           return;
         }
+        let adresse: string | null = null;
+        if (cab?.show_address) {
+          const vue = await supabase.from("projets").select("slug,address,show_address")
+            .eq("slug", cab.slug).eq("show_address", true).abortSignal(transport.signal).maybeSingle();
+          if (!isCurrent()) return;
+          if (vue.error || vue.data === undefined || (vue.data !== null && (
+            vue.data.slug !== cab.slug || vue.data.show_address !== true ||
+            (vue.data.address !== null && typeof vue.data.address !== "string")
+          ))) {
+            setErrored(true);
+            return;
+          }
+          adresse = vue.data?.address ?? null;
+        }
         setPraticien(data);
-        setCabinet(cab);
+        setCabinet(cab ? { ...cab, address: adresse } : null);
       } catch {
         if (isCurrent()) setErrored(true);
       } finally {

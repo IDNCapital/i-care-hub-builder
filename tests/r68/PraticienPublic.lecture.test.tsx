@@ -85,8 +85,24 @@ describe("Fiche du praticien de la visite courante", () => {
       "profession", "slug", "specialites",
     ]);
     expect(demandes[1].filtres.slug).toBe("cab-alpha");
+    expect(demandes[1].colonnes.split(",")).not.toContain("address");
     expect(personne().name).toBe("alpha Exemple");
     expect(support.textContent).not.toContain("Adresse masquée");
+  });
+
+  it.each([true, false])("l’adresse ne vient que du reçu filtré sur sa publication courante (%s)", async publiee => {
+    repondre = async d => {
+      if (d.table === "praticiens") return recu(d);
+      if (d.colonnes.split(",").includes("address")) {
+        expect(d.filtres).toEqual({ slug: "cab-alpha", show_address: true });
+        return { data: publiee ? { slug: "cab-alpha", show_address: true, address: "Adresse visible" } : null, error: null };
+      }
+      return { data: { slug: "cab-alpha", name: "Cabinet", city: "Ville test", show_address: true }, error: null };
+    };
+    await ouvrir();
+    expect(demandes).toHaveLength(3);
+    expect(personne().worksFor.address.streetAddress).toBe(publiee ? "Adresse visible" : undefined);
+    expect(support.textContent?.includes("Adresse visible")).toBe(publiee);
   });
 
   it.each(["praticiens", "projets"])("une ancienne réponse %s ne remplace pas la visite suivante", async table => {
