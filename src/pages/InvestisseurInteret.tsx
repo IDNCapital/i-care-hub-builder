@@ -14,6 +14,8 @@ import { Analytics } from "@/lib/analytics";
 import { FileText, ArrowLeft, Mail } from "lucide-react";
 import { InlineBrand } from "@/components/BrandName";
 
+const DELAI_VERIFICATION_MS = 15_000;
+
 const PROFILE_KEYS = ["family_office", "investisseur_prive", "cgp", "banque", "autre"] as const;
 const TICKET_KEYS = ["<100k", "100-250k", "250-500k", "500k-1M", ">1M"] as const;
 
@@ -76,14 +78,26 @@ function InteretCourant() {
 
     occupe.current = true;
     const controller = new AbortController();
-    const courante = () => tentative.current?.controller === controller;
-    const timer = window.setTimeout(() => {
+    const adresse = window.location.href;
+    const visite = window.history.state?.key;
+    const fin = Date.now() + DELAI_VERIFICATION_MS;
+    const finMonotone = performance.now() + DELAI_VERIFICATION_MS;
+    const courante = () => tentative.current?.controller === controller
+      && window.location.href === adresse && window.history.state?.key === visite;
+    const expirer = () => {
       if (!courante()) return;
       tentative.current = null;
       controller.abort();
       setIssue("unknown");
       setIsSubmitting(false);
-    }, 15_000);
+    };
+    const timer = window.setTimeout(expirer, DELAI_VERIFICATION_MS);
+    const accepteReponse = () => {
+      if (!courante()) return false;
+      if (Date.now() < fin && performance.now() < finMonotone) return true;
+      expirer();
+      return false;
+    };
     tentative.current = { controller, timer };
     setEmailTentative(formData.email.trim().toLowerCase().slice(0, 255));
     setIsSubmitting(true);
@@ -114,26 +128,28 @@ function InteretCourant() {
         }
       );
 
-      if (!courante()) return;
+      if (!accepteReponse()) return;
+      if (res.headers?.get("x-relay-error") === "true") throw Error("Reçu non confirmé");
       const result = await res.json();
-      if (!courante()) return;
+      if (!accepteReponse()) return;
       if (!result || typeof result !== "object" || Array.isArray(result)) throw Error("Reçu non confirmé");
-      if (res.status === 400 && result.status === undefined && result.access_token === undefined && ["Missing required fields", "Invalid email"].includes(result.error)) {
+      const nombreChamps = Object.keys(result).length;
+      if (res.status === 400 && nombreChamps === 1 && ["Missing required fields", "Invalid email"].includes(result.error)) {
         occupe.current = false;
         toast.error(t("interestForm.errorGeneric"));
         return;
       }
       if (!res.ok || res.status !== 200 || (result.error !== undefined && result.error !== null)) throw Error("Reçu non confirmé");
-      if (result.status === "already_verified" && typeof result.access_token === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(result.access_token)) {
+      if (nombreChamps === 2 && result.status === "already_verified" && typeof result.access_token === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(result.access_token)) {
         localStorage.setItem("icare_investor_token", result.access_token);
         try { toast.success(t("interestForm.successExisting")); } catch { /* Le reçu ne dépend pas du toast. */ }
         navigate(localePath(lang, "investmentMemo"));
         return;
       }
-      if (result.status === "verification_sent" && result.access_token === undefined) {
+      if (nombreChamps === 1 && result.status === "verification_sent") {
         setEmailSent(true);
         try { Analytics.formSubmission("investor_interest", localePath(lang, "investmentInterest")); } catch { /* Le reçu reste acquis si la mesure échoue. */ }
-      } else if (result.status === "email_already_sent" && result.access_token === undefined) {
+      } else if (nombreChamps === 1 && result.status === "email_already_sent") {
         setIssue("recent");
       } else throw Error("Reçu non confirmé");
     } catch {

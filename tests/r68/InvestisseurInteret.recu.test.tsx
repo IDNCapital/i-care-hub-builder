@@ -427,3 +427,66 @@ it.each([
         vi.useRealTimers();
     }
 });
+
+it.each([
+  [200, { status: 'verification_sent', error: null }],
+  [400, { error: 'Invalid email', detail: 'non contractuel' }],
+])('classe un corps inattendu comme incertain (%s)', async (code, body) => {
+  h.fetch.mockResolvedValue(response(body, Number(code)));
+  await render();
+  await fill();
+  await submit();
+  expect(host.querySelector('[role="alert"]')).not.toBeNull();
+  expect(host.querySelector('form')).toBeNull();
+  expect(h.analytics).not.toHaveBeenCalled();
+});
+
+it('ignore un reçu qui précède le minuteur après une veille', async () => {
+  vi.useFakeTimers();
+  try {
+    const attente = defer();
+    h.fetch.mockResolvedValue({ ok: true, status: 200, json: () => attente.promise });
+    await render();
+    await fill();
+    await submit();
+    vi.setSystemTime(Date.now() + 16_000);
+    await act(async () => attente.resolve({
+      status: 'already_verified', access_token: '10000000-0000-4000-8000-000000000001'
+    }));
+    expect(host.querySelector('[role="alert"]')).not.toBeNull();
+    expect(h.navigate).not.toHaveBeenCalled();
+    expect(localStorage.getItem('icare_investor_token')).toBeNull();
+  } finally {
+    vi.useRealTimers();
+  }
+});
+
+it('ignore le reçu après une navigation native précédant le rendu de Router', async () => {
+  const initial = window.location.href;
+  const etat = window.history.state;
+  try {
+    const attente = defer();
+    h.fetch.mockReturnValue(attente.promise);
+    await render();
+    await fill();
+    await submit();
+    window.history.pushState({ key: 'suivante' }, '', '/ailleurs');
+    await act(async () => attente.resolve(response({status: 'verification_sent'})));
+    expect(h.analytics).not.toHaveBeenCalled();
+    expect(text()).not.toContain('Vérifiez vos emails');
+  } finally {
+    window.history.replaceState(etat, '', initial);
+  }
+});
+
+it('écarte un pseudo-reçu du relais', async () => {
+  h.fetch.mockResolvedValue({
+    ...response({status: 'verification_sent'}),
+    headers: new Headers({'x-relay-error': 'true'}),
+  });
+  await render();
+  await fill();
+  await submit();
+  expect(host.querySelector('[role="alert"]')).not.toBeNull();
+  expect(h.analytics).not.toHaveBeenCalled();
+});
