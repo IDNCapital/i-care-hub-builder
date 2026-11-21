@@ -5,8 +5,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useLayoutEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
@@ -18,6 +18,17 @@ const PROFILE_KEYS = ["family_office", "investisseur_prive", "cgp", "banque", "a
 const TICKET_KEYS = ["<100k", "100-250k", "250-500k", "500k-1M", ">1M"] as const;
 
 export default function InvestisseurInteret() {
+  const { i18n } = useTranslation();
+  const location = useLocation();
+  const cle = `${location.key}:${location.pathname}${location.search}${location.hash}:${i18n.language === "en" ? "en" : "fr"}`;
+  const contexte = useRef<{ cle: string; active: boolean } | null>(null);
+  if (!contexte.current || contexte.current.cle !== cle) {
+    if (contexte.current) contexte.current.active = false;
+    contexte.current = { cle, active: true };
+  }
+  return <InteretCourant key={cle} contexte={contexte.current} />;
+}
+function InteretCourant({ contexte }: { contexte: { active: boolean } }) {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
@@ -35,9 +46,18 @@ export default function InvestisseurInteret() {
     message: "",
   });
   const [consent, setConsent] = useState(false);
+  const [issue, setIssue] = useState<"form" | "unknown" | "recent">("form");
+  const [emailTentative, setEmailTentative] = useState("");
+  const occupe = useRef(false);
+  const visite = useRef({ active: false, numero: 0 });
+  useLayoutEffect(() => {
+    const actuelle = visite.current; actuelle.active = true; contexte.active = true;
+    return () => { actuelle.active = false; contexte.active = false; ++actuelle.numero; };
+  }, [contexte]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (occupe.current || !visite.current.active || !contexte.active) return;
 
     if (!consent) {
       toast.error(t("interestForm.errorConsent"));
@@ -54,6 +74,10 @@ export default function InvestisseurInteret() {
       return;
     }
 
+    occupe.current = true;
+    const numero = ++visite.current.numero;
+    const courante = () => contexte.active && visite.current.active && visite.current.numero === numero;
+    setEmailTentative(formData.email.trim().toLowerCase().slice(0, 255));
     setIsSubmitting(true);
 
     try {
@@ -82,35 +106,45 @@ export default function InvestisseurInteret() {
       );
 
       const result = await res.json();
-
-      if (result.status === "already_verified" && result.access_token) {
-        // Already verified: store token and redirect
+      if (!courante()) return;
+      if (!result || typeof result !== "object" || Array.isArray(result)) throw Error("Reçu non confirmé");
+      if (res.status === 400 && !result.status && ["Missing required fields", "Invalid email"].includes(result.error)) {
+        occupe.current = false;
+        toast.error(t("interestForm.errorGeneric"));
+        return;
+      }
+      if (!res.ok || res.status !== 200 || (result.error !== undefined && result.error !== null)) throw Error("Reçu non confirmé");
+      if (result.status === "already_verified" && typeof result.access_token === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(result.access_token)) {
         localStorage.setItem("icare_investor_token", result.access_token);
-        toast.success(t("interestForm.successExisting"));
+        try { toast.success(t("interestForm.successExisting")); } catch { /* Le reçu ne dépend pas du toast. */ }
         navigate(localePath(lang, "investmentMemo"));
         return;
       }
-
-      if (result.status === "verification_sent" || result.status === "email_already_sent") {
+      if (result.status === "verification_sent" && result.access_token === undefined) {
         setEmailSent(true);
-        // localePath et non un gabarit : `/${lang}/investment/interest` rendait
-        // "/fr/investment/interest" cote francais, un chemin qu'aucune page ne porte,
-        // la route reelle etant /investissement/interet.
-        Analytics.formSubmission("investor_interest", localePath(lang, "investmentInterest"));
-      } else if (result.error) {
-        throw new Error(result.error);
-      }
-    } catch (err) {
-      console.error("Investor lead submission error:", err);
-      toast.error(t("interestForm.errorGeneric"));
+        try { Analytics.formSubmission("investor_interest", localePath(lang, "investmentInterest")); } catch { /* Le reçu reste acquis si la mesure échoue. */ }
+      } else if (result.status === "email_already_sent" && result.access_token === undefined) {
+        setIssue("recent");
+      } else throw Error("Reçu non confirmé");
+    } catch {
+      if (courante()) setIssue("unknown");
     } finally {
-      setIsSubmitting(false);
+      if (courante()) setIsSubmitting(false);
     }
   };
 
   const updateField = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
+  if (issue !== "form") return <Layout><section role="alert" className="container pt-32 pb-20 max-w-2xl">
+    <h1 className="font-heading text-2xl mb-4">{lang === "en" ? "Sending is not confirmed" : "L'envoi n'est pas confirmé"}</h1>
+    <p className="mb-4">{emailTentative}</p>
+    <p className="mb-6">{issue === "recent"
+      ? (lang === "en" ? "A recent request already exists. No new email is confirmed. Check your inbox and spam folder before taking further action." : "Une demande récente existe déjà. Aucun nouvel email n'est confirmé. Vérifiez votre messagerie et vos spams avant toute nouvelle démarche.")
+      : (lang === "en" ? "The result of this attempt is unknown. An email may have been sent. This page will not send it again." : "Le résultat de cette tentative est inconnu. Un email peut avoir été envoyé. Cette page ne le renvoie pas.")}</p>
+    <Link to={localePath(lang, "investment")} className="underline">{t("interestForm.back")}</Link>
+  </section></Layout>;
 
   // Confirmation screen after form submission
   if (emailSent) {
@@ -132,23 +166,13 @@ export default function InvestisseurInteret() {
                   ? "A confirmation email has been sent to:"
                   : "Un email de confirmation vient d'être envoyé à :"}
               </p>
-              <p className="text-lg font-semibold mb-8">{formData.email}</p>
+              <p className="text-lg font-semibold mb-8">{emailTentative}</p>
               <p className="text-muted-foreground leading-relaxed mb-8">
                 {lang === "en"
                   ? "Click the link in the email to access the investment memo. The link is valid for 24 hours."
                   : "Cliquez sur le lien dans l'email pour accéder à la note d'investissement. Le lien est valide pendant 24 heures."}
               </p>
-              <p className="text-sm text-muted-foreground">
-                {lang === "en"
-                  ? "Didn't receive the email? Check your spam folder or"
-                  : "Vous n'avez pas reçu l'email ? Vérifiez vos spams ou"}{" "}
-                <button
-                  onClick={() => setEmailSent(false)}
-                  className="text-primary underline hover:no-underline"
-                >
-                  {lang === "en" ? "try again" : "réessayez"}
-                </button>.
-              </p>
+              <p className="text-sm text-muted-foreground">{lang === "en" ? "Check your spam folder. No new email will be sent from this confirmation." : "Vérifiez vos spams. Aucun nouvel email n'est renvoyé depuis cette confirmation."}</p>
             </div>
           </div>
         </section>
@@ -191,7 +215,7 @@ export default function InvestisseurInteret() {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6"><fieldset disabled={isSubmitting} className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="firstName">{t("interestForm.firstName")} *</Label>
@@ -269,7 +293,7 @@ export default function InvestisseurInteret() {
               <Button type="submit" variant="hero" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? t("interestForm.submitting") : t("interestForm.submit")}
               </Button>
-            </form>
+            </fieldset></form>
           </div>
         </div>
       </section>
