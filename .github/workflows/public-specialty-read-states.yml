@@ -1,0 +1,49 @@
+name: Public specialty read states
+
+on:
+  pull_request:
+    paths:
+      - "src/pages/SpecialiteDetail.tsx"
+      - "src/hooks/useSpecialites.ts"
+      - "src/hooks/usePraticiensPublics.ts"
+      - "src/lib/taxonomy.ts"
+      - "src/components/SeoHead.tsx"
+      - "src/integrations/supabase/**"
+      - "tsconfig*.json"
+      - "package*.json"
+      - "bun.lock"
+      - ".ci/public-specialty/**"
+      - ".github/workflows/public-specialty-read-states.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: .ci/public-specialty/package-lock.json
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.4"
+      - name: Install the frozen root dependencies without scripts
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install the isolated pinned test tools without scripts
+        run: npm ci --prefix .ci/public-specialty --ignore-scripts --no-audit --no-fund
+      - run: .ci/public-specialty/node_modules/.bin/vitest run --config .ci/public-specialty/vitest.config.ts
+      - name: Qualify the fixed annuaire hook contract without changing product files
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 8262bdf55600ce02870dcf6addbc7c8ac70280a0
+          mkdir -p "$RUNNER_TEMP/specialty-hooks-45"
+          git show FETCH_HEAD:src/hooks/useSpecialites.ts > "$RUNNER_TEMP/specialty-hooks-45/useSpecialites.ts"
+          git show FETCH_HEAD:src/hooks/usePraticiensPublics.ts > "$RUNNER_TEMP/specialty-hooks-45/usePraticiensPublics.ts"
+          PUBLIC_SPECIALTY_HOOKS_DIR="$RUNNER_TEMP/specialty-hooks-45" .ci/public-specialty/node_modules/.bin/vitest run --config .ci/public-specialty/vitest.config.ts -t INTEGRATION_ANNUAIRE45
+      - run: node_modules/.bin/eslint src/pages/SpecialiteDetail.tsx .ci/public-specialty/SpecialiteDetail.lecture.test.tsx .ci/public-specialty/vitest.config.ts
+      - run: node_modules/.bin/tsc --noEmit -p .ci/public-specialty/tsconfig.json
