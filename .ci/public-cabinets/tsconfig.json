@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "types": ["node"],
+    "paths": {
+      "@/*": ["src/*"],
+      "vitest": [".ci/public-cabinets/node_modules/vitest/dist/index.d.ts"]
+    }
+  },
+  "include": ["../../src/pages/Projets.tsx", "../../src/hooks/useProjects.ts", "./Projets.fiabilite.test.tsx", "../../src/vite-env.d.ts"]
+}
