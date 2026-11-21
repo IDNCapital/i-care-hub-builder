@@ -20,6 +20,10 @@ type CabinetForLd = {
 
 export default function PraticienPublic() {
   const { slug } = useParams<{ slug: string }>();
+  return <PraticienPublicCourant key={slug ?? ""} slug={slug} />;
+}
+
+function PraticienPublicCourant({ slug }: { slug: string | undefined }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [praticien, setPraticien] = useState<Praticien | null>(null);
@@ -41,37 +45,48 @@ export default function PraticienPublic() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      if (!slug) {
-        setNotFound(true);
-        setLoading(false);
-        return;
+      try {
+        if (!slug) {
+          setNotFound(true);
+          return;
+        }
+        const { data, error } = await supabase
+          .from("praticiens")
+          .select("*")
+          .eq("slug", slug)
+          .eq("statut_validation", "validee")
+          .eq("actif", true)
+          .maybeSingle();
+        if (cancelled) return;
+        if (error || data === undefined) {
+          setErrored(true);
+          return;
+        }
+        if (data === null) {
+          setNotFound(true);
+          return;
+        }
+        if (data.slug !== slug || typeof data.prenom !== "string" || typeof data.nom !== "string" || typeof data.profession !== "string" || typeof data.cabinet_slug !== "string" || !Array.isArray(data.specialites) || !data.specialites.every(value => typeof value === "string")) {
+          setErrored(true);
+          return;
+        }
+        const { data: cab, error: cabinetError } = await supabase
+          .from("projets")
+          .select("name,city,address,show_address")
+          .eq("slug", (data as Praticien).cabinet_slug)
+          .maybeSingle();
+        if (cancelled) return;
+        if (cabinetError || cab === undefined || (cab !== null && (typeof cab.name !== "string" || typeof cab.city !== "string" || typeof cab.show_address !== "boolean" || (cab.address !== null && typeof cab.address !== "string")))) {
+          setErrored(true);
+          return;
+        }
+        setPraticien(data as Praticien);
+        setCabinet(cab as CabinetForLd | null);
+      } catch {
+        if (!cancelled) setErrored(true);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      const { data, error } = await supabase
-        .from("praticiens")
-        .select("*")
-        .eq("slug", slug)
-        .eq("statut_validation", "validee")
-        .eq("actif", true)
-        .maybeSingle();
-      if (cancelled) return;
-      if (error) {
-        setErrored(true);
-        setLoading(false);
-        return;
-      }
-      if (!data) {
-        setNotFound(true);
-        setLoading(false);
-        return;
-      }
-      setPraticien(data as Praticien);
-      const { data: cab } = await supabase
-        .from("projets")
-        .select("name,city,address,show_address")
-        .eq("slug", (data as Praticien).cabinet_slug)
-        .maybeSingle();
-      if (!cancelled) setCabinet((cab ?? null) as CabinetForLd | null);
-      setLoading(false);
     })();
     return () => {
       cancelled = true;
@@ -84,7 +99,7 @@ export default function PraticienPublic() {
         className="min-h-screen flex items-center justify-center"
         style={{ backgroundColor: "#F6F5F0" }}
       >
-        <div className="flex items-center gap-2 text-sm" style={{ color: "#6B6B6B" }}>
+        <div role="status" className="flex items-center gap-2 text-sm" style={{ color: "#6B6B6B" }}>
           <Loader2 className="w-4 h-4 animate-spin" /> Chargement…
         </div>
       </main>
@@ -98,6 +113,7 @@ export default function PraticienPublic() {
         style={{ backgroundColor: "#F6F5F0" }}
       >
         <div
+          role="alert"
           className="max-w-md w-full text-center bg-white"
           style={{ border: "1px solid #E2EAE5", padding: 32, borderRadius: 12 }}
         >
@@ -232,6 +248,7 @@ export default function PraticienPublic() {
           </button>
         </div>
       </div>
+      {!cabinet && <p role="status" className="max-w-5xl mx-auto px-6 py-4">Aucun cabinet associé n'a été trouvé.</p>}
       <FichePraticien praticien={praticien} isPreview={false} />
     </>
   );
