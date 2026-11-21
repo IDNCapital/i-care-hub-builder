@@ -5,9 +5,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
@@ -50,7 +50,39 @@ function champRequisRenseigne(champ: ChampRequis, valeur: string) {
   return Boolean(champ === "profession" || champ === "cabinetCount" ? valeur : valeur.trim());
 }
 
+type Recu = { etat: "confirme"; id: string } | { etat: "refuse" | "limite" | "inconnu" };
+const delaiRecuMs = 15_000;
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const refusAvantInsertion = new Set(["invalid_type", "missing_fields", "invalid_email", "invalid_phone", "invalid_profession"]);
+
+function estObjet(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+async function qualifierRecu(resultat: { data: unknown; error: unknown; response?: Response }): Promise<Recu> {
+  const { data, error, response } = resultat;
+  if (!(response instanceof Response) || response.headers.get("x-relay-error") === "true") return { etat: "inconnu" };
+  if (response.status === 200 && error === null && estObjet(data) && Object.keys(data).length === 2 &&
+    data.status === "ok" && typeof data.lead_id === "string" && uuid.test(data.lead_id)) {
+    return { etat: "confirme", id: data.lead_id };
+  }
+  if (data !== null || !estObjet(error) || error.context !== response ||
+    (response.status !== 400 && response.status !== 429)) return { etat: "inconnu" };
+  const corps: unknown = await response.json();
+  if (!estObjet(corps) || Object.keys(corps).length !== 1 || typeof corps.error !== "string") return { etat: "inconnu" };
+  if (response.status === 429 && corps.error === "rate_limited") return { etat: "limite" };
+  if (response.status === 400 && refusAvantInsertion.has(corps.error)) return { etat: "refuse" };
+  return { etat: "inconnu" };
+}
+
 export default function Professionnels() {
+  const location = useLocation();
+  const { i18n } = useTranslation();
+  const visite = JSON.stringify([location.key, location.pathname, location.search, location.hash, i18n.language]);
+  return <ProfessionnelsCourant key={visite} />;
+}
+
+function ProfessionnelsCourant() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const { data: professions = [] } = useProfessions();
@@ -93,6 +125,16 @@ export default function Professionnels() {
   const [honeypot, setHoneypot] = useState("");
   const [rgpdConsent, setRgpdConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [recu, setRecu] = useState<Recu | null>(null);
+  const verrou = useRef(false);
+  const visiteActive = useRef(false);
+  const annuler = useRef<(() => void) | null>(null);
+  const bloque = isSubmitting || recu?.etat === "confirme" || recu?.etat === "inconnu";
+  useLayoutEffect(() => {
+    visiteActive.current = true;
+    return () => { visiteActive.current = false; annuler.current?.(); };
+  }, []);
 
   const formRef = useRef<HTMLFormElement>(null);
   const prefixeRefus = useId();
@@ -167,7 +209,7 @@ export default function Professionnels() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (honeypot) return;
+    if (!visiteActive.current || verrou.current || honeypot) return;
     if (!rgpdConsent) {
       toast.error(t("professionals.formErrorConsent"));
       signalerRefus({ rgpd: "consent" });
@@ -197,10 +239,22 @@ export default function Professionnels() {
 
     setRefus({});
     setFocusRefus(null);
+    verrou.current = true;
+    setRecu(null);
     setIsSubmitting(true);
+    const source = window.location.href;
+    const controller = new AbortController();
+    const echeance = Date.now() + delaiRecuMs;
+    const inconnu = () => {
+      setRecu({ etat: "inconnu" });
+      setIsSubmitting(false);
+    };
+    const timer = window.setTimeout(() => { controller.abort(); inconnu(); }, delaiRecuMs);
+    annuler.current = () => { window.clearTimeout(timer); controller.abort(); };
     try {
       const params = new URLSearchParams(window.location.search);
-      const { data, error } = await supabase.functions.invoke("send-contact-lead", {
+      const reponse = await supabase.functions.invoke("send-contact-lead", {
+        signal: controller.signal,
         body: {
           type: "cabinet_request",
           firstname: formData.firstName,
@@ -211,7 +265,7 @@ export default function Professionnels() {
           city: formData.ville,
           message: formData.message || t("professionals.formSubmit"),
           language: lang,
-          source_url: window.location.href,
+          source_url: source,
           honeypot,
           utm_source: params.get("utm_source") || undefined,
           utm_medium: params.get("utm_medium") || undefined,
@@ -227,20 +281,31 @@ export default function Professionnels() {
           },
         },
       });
-      if (error) throw error;
-      if (data?.error === "rate_limited") { toast.error(t("professionals.formErrorRateLimit")); return; }
-      if (data?.error) throw new Error(data.error);
-
-      toast.success(t("professionals.formSuccess"));
-      Analytics.formSubmission("installation_praticien", window.location.pathname);
-      setFormData({ firstName: "", lastName: "", email: "", phone: "", organisation: "", website: "", profession: "", ville: "", neighbourhood: "", dateInstallation: "", cabinetCount: "", cabinetConfig: "", message: "" });
-      setRgpdConsent(false);
-    } catch (err) {
-      console.error("Form submission error:", err);
-      toast.error(t("professionals.formErrorGeneric"));
+      if (!visiteActive.current || controller.signal.aborted) return;
+      const preuve = await qualifierRecu(reponse);
+      if (!visiteActive.current || controller.signal.aborted) return;
+      if (Date.now() >= echeance || window.location.href !== source) { inconnu(); return; }
+      setRecu(preuve);
+      if (preuve.etat === "confirme") {
+        try { Analytics.formSubmission("installation_praticien", window.location.pathname); }
+        catch { /* La mesure est indépendante du reçu. */ }
+      }
+      if (preuve.etat === "refuse" || preuve.etat === "limite") verrou.current = false;
+    } catch {
+      if (visiteActive.current && !controller.signal.aborted) inconnu();
     } finally {
-      setIsSubmitting(false);
+      window.clearTimeout(timer);
+      if (visiteActive.current && !controller.signal.aborted) setIsSubmitting(false);
+      annuler.current = null;
     }
+  };
+
+  const autreDemande = () => {
+    if (recu?.etat !== "confirme") return;
+    setRecu(null);
+    setFormData({ firstName: "", lastName: "", email: "", phone: "", organisation: "", website: "", profession: "", ville: "", neighbourhood: "", dateInstallation: "", cabinetCount: "", cabinetConfig: "", message: "" });
+    setRgpdConsent(false);
+    verrou.current = false;
   };
 
   // Dark section select classes
@@ -393,6 +458,7 @@ export default function Professionnels() {
               <p className="text-background/70 text-lg">{t("professionals.formSubtitle")}</p>
             </div>
             <form ref={formRef} onSubmit={handleSubmit} onInvalidCapture={handleInvalid} className="space-y-6 form-dark-section">
+              <fieldset disabled={bloque} className="min-w-0 space-y-6">
               {/* Honeypot */}
               <div className="absolute -left-[9999px]" aria-hidden="true">
                 <input type="text" name="website_url_confirm" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
@@ -448,7 +514,7 @@ export default function Professionnels() {
                   reconstruire ses options dans l'ordre du JSX. NE PAS SUPPRIMER.
                   La valeur choisie est conservée : elle vit dans formData (composant contrôlé).
                 */}
-                <Select
+                <Select disabled={bloque}
                   key={professions.length > 0 ? "loaded" : "loading"}
                   value={formData.profession}
                   onValueChange={(v) => setFormData({ ...formData, profession: v })}
@@ -485,7 +551,7 @@ export default function Professionnels() {
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label className="text-[#F6F5F0]">{t("professionals.formDate")}</Label>
-                  <Select value={formData.dateInstallation} onValueChange={(v) => setFormData({ ...formData, dateInstallation: v })}>
+                  <Select disabled={bloque} value={formData.dateInstallation} onValueChange={(v) => setFormData({ ...formData, dateInstallation: v })}>
                     <SelectTrigger className={darkSelectTrigger}>
                       <SelectValue placeholder={t("professionals.formDatePlaceholder")} />
                     </SelectTrigger>
@@ -500,7 +566,7 @@ export default function Professionnels() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="cabinetCount" className="text-[#F6F5F0]">{t("professionals.formCabinetCount")} *</Label>
-                  <Select value={formData.cabinetCount} onValueChange={(v) => setFormData({ ...formData, cabinetCount: v, cabinetConfig: v !== "4+" && v !== "custom" ? "" : formData.cabinetConfig })}>
+                  <Select disabled={bloque} value={formData.cabinetCount} onValueChange={(v) => setFormData({ ...formData, cabinetCount: v, cabinetConfig: v !== "4+" && v !== "custom" ? "" : formData.cabinetConfig })}>
                     <SelectTrigger id="cabinetCount" aria-required="true" {...attributsRefus("cabinetCount")} className={darkSelectTrigger}>
                       <SelectValue placeholder={t("professionals.formCabinetCountPlaceholder")} />
                     </SelectTrigger>
@@ -539,7 +605,19 @@ export default function Professionnels() {
 
               {rendreRefus("rgpd")}
 
-              <Button type="submit" variant="hero" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-14 text-sm transition-colors duration-200" disabled={isSubmitting}>
+              </fieldset>
+              {recu?.etat === "confirme" && <div role="status" className="space-y-2">
+                <p>{lang === "fr" ? "Votre demande a été enregistrée. Référence" : "Your request has been recorded. Reference"} : <span className="break-all">{recu.id}</span></p>
+                <Button type="button" variant="outline" onClick={autreDemande}>{lang === "fr" ? "Préparer une autre demande" : "Prepare another request"}</Button>
+              </div>}
+              {recu?.etat === "inconnu" && <p role="alert">{lang === "fr"
+                ? "Réception non confirmée. Votre demande a pu être enregistrée. Votre saisie est conservée. Contactez l’équipe avant tout nouvel envoi."
+                : "Receipt unconfirmed. Your request may have been recorded. Your details are retained. Contact the team before submitting again."}</p>}
+              {recu?.etat === "limite" && <p role="alert">{t("professionals.formErrorRateLimit")}</p>}
+              {recu?.etat === "refuse" && <p role="alert">{lang === "fr"
+                ? "La demande a été refusée avant son enregistrement. Vérifiez votre saisie."
+                : "The request was declined before it was recorded. Check your details."}</p>}
+              <Button type="submit" variant="hero" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-14 text-sm transition-colors duration-200" disabled={bloque}>
                 {isSubmitting ? (
                   <><Loader2 className="mr-2 h-5 w-5 animate-spin" />{t("professionals.formSubmitting")}</>
                 ) : (
