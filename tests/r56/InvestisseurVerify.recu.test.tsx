@@ -9,7 +9,7 @@ const langue = vi.hoisted(() => ({ language: "fr" }));
 vi.mock("react-i18next", () => ({ useTranslation: () => ({ i18n: langue }) }));
 vi.mock("@/components/Layout", () => ({ Layout: ({ children }: { children: ReactNode }) => <main>{children}</main> }));
 const cle = "icare_investor_token";
-const acces = "jeton-session-fictif-pour-la-recette";
+const acces = "00000000-0000-4000-8000-000000000001";
 const lecture = vi.fn<typeof fetch>();
 let racine: Root;
 let support: HTMLDivElement;
@@ -66,7 +66,8 @@ it.each(["fr", "en"])("le lien confirmé mène au vrai mémo après le contrôle
 
 it.each([
   [500, { error: "incident" }], [200, { status: "verified", access_token: "  " }],
-  [201, { status: "verified", access_token: acces }],
+  [201, { status: "verified", access_token: acces }], [200, { status: "verified", access_token: "x" }],
+  [200, { status: "verified", access_token: acces, error: "indisponible" }],
 ])("ne confirme pas la lecture incertaine et permet de revenir au formulaire sans la rejouer", async (status, corps) => {
   lecture.mockResolvedValue(reponse(corps, Number(status))); await ouvrir();
   expect(support.querySelector('[role="alert"]')).not.toBeNull(); expect(localStorage.getItem(cle)).toBeNull();
@@ -99,6 +100,13 @@ it("au-delà de quinze secondes, ne stocke pas un résultat tardif et ne renvoie
   vi.useFakeTimers(); let terminer!: (r: Response) => void;
   lecture.mockImplementation(() => new Promise(resolve => { terminer = resolve; }));
   await ouvrir(); await act(async () => { await vi.advanceTimersByTimeAsync(15000); terminer(reponse({ status: "verified", access_token: acces })); });
+  expect(support.querySelector('[role="alert"]')).not.toBeNull();
+  expect(localStorage.getItem(cle)).toBeNull(); expect(lecture).toHaveBeenCalledTimes(1);
+});
+
+it("une réponse du relais ne sert pas de reçu, même si son corps a la forme attendue", async () => {
+  const result = reponse({ status: "verified", access_token: acces });
+  result.headers.set("x-relay-error", "true"); lecture.mockResolvedValue(result); await ouvrir();
   expect(support.querySelector('[role="alert"]')).not.toBeNull();
   expect(localStorage.getItem(cle)).toBeNull(); expect(lecture).toHaveBeenCalledTimes(1);
 });

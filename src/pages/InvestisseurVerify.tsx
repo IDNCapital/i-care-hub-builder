@@ -54,12 +54,17 @@ function VerificationCourante({ token, lang }: { token: string | null; lang: "fr
           controller.abort();
           return;
         }
-        if (res.status === 200 && result?.status === "verified" && typeof result.access_token === "string" && result.access_token.trim()) {
+        // Le service émet exactement un UUID v4 natif après vérification du lien.
+        const champs = result && typeof result === "object" && !Array.isArray(result) ? Object.keys(result).sort().join(",") : "";
+        if (res.headers.get("x-relay-error") === "true") {
+          commit("unknown");
+        } else if (res.status === 200 && champs === "access_token,status" && result.status === "verified" &&
+            typeof result.access_token === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(result.access_token)) {
           localStorage.setItem("icare_investor_token", result.access_token);
           commit("success");
-        } else if (res.status === 400 && result?.error === "expired") {
+        } else if (res.status === 400 && champs === "error" && result.error === "expired") {
           commit("expired");
-        } else if (res.status === 400 && (result?.error === "invalid_token" || result?.error === "invalid_or_expired")) {
+        } else if (res.status === 400 && champs === "error" && (result?.error === "invalid_token" || result?.error === "invalid_or_expired")) {
           commit("error");
         } else {
           commit("unknown");
