@@ -1,7 +1,9 @@
 import { act, type ReactNode } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { MemoryRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "../../src/integrations/supabase/types";
+import { onlineManager, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Projets from "../../src/pages/Projets";
 import { useProject, useProjects } from "../../src/hooks/useProjects";
@@ -9,6 +11,7 @@ import { STATIC_CENTRES } from "../../src/lib/centres";
 
 type Reply = { status?: number; data: unknown; error: unknown; count?: number | null };
 const sdk = vi.hoisted(() => ({
+  natif: null as SupabaseClient<Database> | null,
   queue: [] as Array<Reply | Promise<Reply>>,
   requests: [] as Array<{ table: string; select?: unknown[]; orders: unknown[][]; range?: number[]; signal?: AbortSignal; eq?: unknown[] }>,
   lang: "fr",
@@ -16,6 +19,8 @@ const sdk = vi.hoisted(() => ({
 }));
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: { from: (table: string) => {
+    if (table !== "projets") throw new Error("Source hors recette");
+    if (sdk.natif) return sdk.natif.from(table);
     const request: typeof sdk.requests[number] = { table, orders: [] };
     sdk.requests.push(request);
     let promise: Promise<Reply> | undefined;
@@ -62,7 +67,7 @@ function Probe() { const query = useProjects(); return <output>{query.isError ? 
 function DetailProbe() { const query = useProject("cabinet-test"); return <output>{query.isSuccess ? query.data?.slug : "pending"}</output>; }
 
 beforeEach(() => {
-  sdk.queue = []; sdk.requests = []; sdk.lang = "fr"; sdk.seo.mockClear();
+  sdk.natif = null; sdk.queue = []; sdk.requests = []; sdk.lang = "fr"; sdk.seo.mockClear();
   host = document.createElement("div"); document.body.append(host);
   client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0, refetchOnWindowFocus: false } } });
 });
@@ -88,7 +93,7 @@ describe("catalogue public, vraie page et vrai hook React Query", () => {
     expect(alert()).toBeNull();
   });
   it("recoit le catalogue apres progression selon le plafond serveur reduit", async () => {
-    sdk.queue.push(ok([row("3")], 3), ok([row("2", "lieu-deux")], 3), ok([row("1")], 3));
+    sdk.queue.push(ok([row("3", "lieu-trois")], 3), ok([row("2", "lieu-deux")], 3), ok([row("1")], 3));
     await mount(<Probe />); await until(() => text().includes('"id":"1"'));
     expect(sdk.requests.map(r => r.range)).toEqual([[0, 199], [1, 200], [2, 201]]);
     expect(sdk.requests.every(r => JSON.stringify(r.select) === JSON.stringify(["*", { count: "exact" }]))).toBe(true);
@@ -245,4 +250,43 @@ it("un retour après la borne ne remplace jamais la nouvelle lecture", async () 
     expect(text()).toContain("Reçu actuel");
     expect(text()).not.toContain("Ancien reçu");
   } finally { vi.useRealTimers(); }
+});
+
+it("ne maintient pas les anciens compléments quand React Query indique le navigateur hors ligne", async () => {
+  onlineManager.setOnline(false);
+  try {
+    sdk.queue.push(ok([row()]));
+    await mount();
+    await until(() => text().includes("Description recue"));
+    expect(sdk.requests).toHaveLength(1);
+  } finally { onlineManager.setOnline(true); }
+});
+
+it("reçoit deux tranches HTTP avec le SDK natif et le compte Content-Range", async () => {
+  const appels: number[] = [];
+  const transport: typeof fetch = async (input, options) => {
+    const url = new URL(input instanceof Request ? input.url : String(input));
+    expect(url.origin).toBe("https://catalogue.invalid");
+    expect(url.pathname).toBe("/rest/v1/projets");
+    expect(options?.method).toBe("GET");
+    expect(options?.body).toBeUndefined();
+    expect(url.searchParams.get("order")).toBe("created_at.desc,id.desc");
+    expect(new Headers(options?.headers).get("Prefer")).toContain("count=exact");
+    const offset = Number(url.searchParams.get("offset"));
+    expect([0, 200]).toContain(offset);
+    appels.push(offset);
+    const taille = offset === 0 ? 200 : 1;
+    const donnes = Array.from({ length: taille }, (_, i) => row(String(offset + i), "lieu-" + (offset + i)));
+    return new Response(JSON.stringify(donnes), {
+      status: 206, headers: { "content-type": "application/json", "content-range": `${offset}-${offset + taille - 1}/201` },
+    });
+  };
+  sdk.natif = createClient<Database>("https://catalogue.invalid", "temoin", {
+    accessToken: async () => "session-fictive", global: { fetch: transport },
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+  });
+  await mount(<Probe />);
+  await until(() => text().includes('"id":"200"'));
+  expect(JSON.parse(text())).toHaveLength(201);
+  expect(appels).toEqual([0, 200]);
 });
