@@ -1,0 +1,40 @@
+name: Admin demandes read states
+
+on:
+  pull_request:
+    paths:
+      - "src/pages/admin/AdminDemandes.tsx"
+      - "src/lib/adminAuth.ts"
+      - "src/components/AdminGuard.tsx"
+      - "supabase/functions/admin-list-demandes/**"
+      - "src/components/ui/**"
+      - "tsconfig*.json"
+      - "package*.json"
+      - "bun.lock"
+      - ".ci/admin-demandes/**"
+      - ".github/workflows/admin-demandes-read-states.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: .ci/admin-demandes/package-lock.json
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.4"
+      - name: Install the frozen root dependencies without scripts
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install the isolated pinned test tools without scripts
+        run: npm ci --prefix .ci/admin-demandes --ignore-scripts --no-audit --no-fund
+      - run: .ci/admin-demandes/node_modules/.bin/vitest run --config .ci/admin-demandes/vitest.config.ts
+      - run: node_modules/.bin/eslint src/pages/admin/AdminDemandes.tsx .ci/admin-demandes/AdminDemandes.lecture.test.tsx .ci/admin-demandes/vitest.config.ts
+      - run: node_modules/.bin/tsc --noEmit -p .ci/admin-demandes/tsconfig.json
