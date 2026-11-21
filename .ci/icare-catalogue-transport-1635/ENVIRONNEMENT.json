@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-10-31T16:39:00.598191+00:00",
+  "installation": false,
+  "dependencies": "read-only symlinks to existing modules; frontend React19/query/i18n/lucide from i-care checkout, SDK/test tools from existing memo checkout",
+  "canonical_runtime_environment": "ICARE_CATALOGUE_RUNTIME=/Users/nico/dev/i-care-hub-builder/node_modules",
+  "packages": {
+    "react": {
+      "version": "19.2.1",
+      "package_sha256": "64f0e0fbcc34bfd1893814409c807f417f94cef59ac6ca68285a7b91cea58984"
+    },
+    "react-dom": {
+      "version": "19.2.1",
+      "package_sha256": "997da7f9facb4d54db3c162b0f728e71400bcbec06fee15f20220b33d26850f3"
+    },
+    "@tanstack/react-query": {
+      "version": "5.90.12",
+      "package_sha256": "89023513be3526af1a81ce20ecaec7bae8d6d84b723ebd34c512ac0566e6d600"
+    },
+    "@supabase/supabase-js": {
+      "version": "2.97.0",
+      "package_sha256": "09d856af30b54ac36dc58ce1032f816b3d6f78adac4a076f8cb13e9cd99b1f43"
+    },
+    "vitest": {
+      "version": "3.2.7",
+      "package_sha256": "3f3dc1ef7acc6ffac8d0a7f10c4460f98e36026837b57f774426d962d546d740"
+    },
+    "typescript": {
+      "version": "5.9.3",
+      "package_sha256": "822ef7ca6452205657b6288b066481ecf508bfbf43455d715cf7d3ec457561e6"
+    },
+    "lucide-react": {
+      "version": "0.556.0",
+      "package_sha256": "2c191e2f0bfd9a9b8baaf6902ef411391f022899481b51d23d7fd94ec1b28bce"
+    },
+    "react-i18next": {
+      "version": "16.5.4",
+      "package_sha256": "a4f2e3d2d304e45698dcd455586cd41f3209e221a294f1c0d48e69c3b85209db"
+    },
+    "i18next": {
+      "version": "25.8.13",
+      "package_sha256": "1b7b1167fbcc6b025df92526672b87fdce52c72081eb135a48662b4de27cbd22"
+    },
+    "@supabase/postgrest-js": {
+      "version": "2.97.0",
+      "package_sha256": "ccea4dde6a6eda8dd530ffce60a748ed05fa96710b818f0b2f920dd83197dd9f"
+    }
+  },
+  "SDK_variant": "2.97.0 matching Bun lock, explicit runtime alias to existing checkout",
+  "collector_CI": false,
+  "repository_jsdom_already_declared": true,
+  "repository_bun_jsdom": "29.0.2",
+  "full_repository_runtime_qualified": false
+}
