@@ -1,0 +1,48 @@
+name: Public articles read states
+
+on:
+  pull_request:
+    paths:
+      - "src/pages/ArticlesIndex.tsx"
+      - "src/pages/ArticleDetail.tsx"
+      - "src/components/ArticleCard.tsx"
+      - "src/components/ChargementPage.tsx"
+      - "src/components/Layout.tsx"
+      - "src/components/ui/MarkdownContent.tsx"
+      - "src/components/ui/button.tsx"
+      - "src/components/SeoHead.tsx"
+      - "src/lib/siteUrl.ts"
+      - "src/lib/brand.ts"
+      - "src/lib/routes.ts"
+      - "src/integrations/supabase/**"
+      - "src/pages/NotFound.tsx"
+      - "tsconfig*.json"
+      - "package*.json"
+      - "bun.lock"
+      - ".ci/public-articles/**"
+      - ".github/workflows/public-articles-read-states.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: .ci/public-articles/package-lock.json
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.4"
+      - name: Install the frozen root dependencies without scripts
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install the isolated pinned test tools without scripts
+        run: npm ci --prefix .ci/public-articles --ignore-scripts --no-audit --no-fund
+      - run: .ci/public-articles/node_modules/.bin/vitest run --config .ci/public-articles/vitest.config.ts
+      - run: node_modules/.bin/eslint src/pages/ArticlesIndex.tsx src/pages/ArticleDetail.tsx .ci/public-articles/Articles.fiabilite.test.tsx .ci/public-articles/vitest.config.ts
+      - run: node_modules/.bin/tsc --noEmit -p .ci/public-articles/tsconfig.json
