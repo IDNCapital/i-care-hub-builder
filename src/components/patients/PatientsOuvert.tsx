@@ -179,7 +179,7 @@ export function PatientsOuvert({ praticiens }: Props) {
   const [besoins, setBesoins] = useState<Set<string>>(new Set());
   const [publics, setPublics] = useState<Set<string>>(new Set());
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { data: specialites } = useSpecialites();
+  const { data: specialites, loading: specialitesLoading, error: specialitesError, retry: retrySpecialites } = useSpecialites();
 
   const specialitesAvecPraticiens = useMemo(
     () =>
@@ -400,13 +400,15 @@ export function PatientsOuvert({ praticiens }: Props) {
       </section>
 
       {/* Recherches fréquentes (Lot 11.3b) */}
-      {specialitesAvecPraticiens.length > 0 && (
+      {(specialitesLoading || specialitesError || specialitesAvecPraticiens.length > 0) && (
         <section className="pt-4 pb-8 bg-cream">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
             <h3 className="font-sans font-bold uppercase text-[11px] tracking-[0.15em] text-sage mb-4">
               Recherches fréquentes
             </h3>
-            <div className="flex flex-wrap gap-2 justify-center">
+            {specialitesLoading ? <p role="status" className="text-sm">Chargement des recherches fréquentes…</p>
+              : specialitesError ? <div className="space-y-3"><p role="alert" className="text-sm">Les recherches fréquentes ne sont pas disponibles. Les fiches et leurs filtres restent utilisables.</p><Button variant="outline" onClick={retrySpecialites}>Réessayer les recherches fréquentes</Button></div>
+              : <div className="flex flex-wrap gap-2 justify-center">
               {specialitesAvecPraticiens.map((s) => (
                 <a
                   key={s.slug}
@@ -416,7 +418,7 @@ export function PatientsOuvert({ praticiens }: Props) {
                   {s.nom}
                 </a>
               ))}
-            </div>
+            </div>}
           </div>
         </section>
       )}

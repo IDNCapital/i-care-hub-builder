@@ -1,0 +1,121 @@
+[
+  {
+    "path": "src/components/CartePraticienPublic.tsx",
+    "bytes": 2342,
+    "sha256": "bc9a11100d720c72b8bd14fbac9afd9039e50158deef9dd74643ca018ec0a80d",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/components/SeoHead.tsx",
+    "bytes": 4529,
+    "sha256": "2079d88d554ece4d35a63b31074ff1204f7ac4fed5de57d3e421f1ec74536069",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/components/patients/CartePraticien.tsx",
+    "bytes": 1615,
+    "sha256": "b73c2ad4dc338d9075afdbb76780d416519fcd331e9d373b3dff5b870f72cb95",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/components/patients/PatientsAmorcage.tsx",
+    "bytes": 3979,
+    "sha256": "ccb58d283625230d4a84908e92a2a43071660abc703b63f772fb9c6c892b7175",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/components/patients/PatientsOuvert.tsx",
+    "bytes": 15100,
+    "sha256": "1e23c328273294c92bbb01ab5b960f394da17065f00046b025bc605f530308d1",
+    "source": "primary",
+    "kind": "candidate"
+  },
+  {
+    "path": "src/config/patientsIndex.ts",
+    "bytes": 912,
+    "sha256": "4b0e0459cd564830aa4073dc5e7aa59731ed1fcc1768de609147d7bedd7880dd",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/hooks/usePraticiensPublics.ts",
+    "bytes": 5543,
+    "sha256": "e299ff7339d227e425d053ac121fd1b443c4ba00b3908578a80061aaf6c3a76a",
+    "source": "local0431",
+    "kind": "candidate"
+  },
+  {
+    "path": "src/hooks/useSpecialites.ts",
+    "bytes": 1244,
+    "sha256": "b93d364c1cab3b568013ea37813060cdc7a4579a9bf26d98b72645683e2f7ffd",
+    "source": "local0431",
+    "kind": "candidate"
+  },
+  {
+    "path": "src/integrations/supabase/types.ts",
+    "bytes": 43742,
+    "sha256": "7cd667882232ef298ba14818ccf544fee54923ef580af5ca74d7034c22ff8e59",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/lib/norm.js",
+    "bytes": 1442,
+    "sha256": "a8b41ee18eeb62e47e54762acd7cd09b905394f0abd9d3e42911a7f06dea5e47",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/lib/routes.ts",
+    "bytes": 5153,
+    "sha256": "38710839d4882d97fd5d01543aeddd0634a285db9e2f139322e2621706c9a3ef",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/lib/siteUrl.ts",
+    "bytes": 1075,
+    "sha256": "a89ff960c9d92fc63b9d8f7d61328254780040ca50f6ca7b0f2d8907b1a7c14e",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/lib/taxonomy.ts",
+    "bytes": 15243,
+    "sha256": "712f75caa87409aae534f6b0aff278300d56a1f172a3dc8bee4649b04362c578",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "src/pages/Patients.tsx",
+    "bytes": 4656,
+    "sha256": "a8f58c54e9e72df94b557bb74d291110a58f6db0ec330f61311e6ccacf4b4858",
+    "source": "primary",
+    "kind": "candidate"
+  },
+  {
+    "path": "src/vite-env.d.ts",
+    "bytes": 38,
+    "sha256": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "eslint.config.js",
+    "bytes": 765,
+    "sha256": "c55264234fef783629810643d995cd522c3adaeb60e7157906310607292015a3",
+    "source": "local0431",
+    "kind": "readonly"
+  },
+  {
+    "path": "package.json",
+    "bytes": 3591,
+    "sha256": "51a7c53bd9c31493e186f8e1a6c118b27b3b59c091644c133e370650b3a4f8fd",
+    "source": "local0431",
+    "kind": "readonly"
+  }
+]
