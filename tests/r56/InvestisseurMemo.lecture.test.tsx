@@ -1,6 +1,6 @@
 import { act, type ReactNode } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import InvestisseurMemo from "@/pages/InvestisseurMemo";
 
@@ -15,11 +15,15 @@ let racine: Root;
 function reponse(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json" } });
 }
+function ChangerVisite() {
+  const aller = useNavigate();
+  return <button id="visite-suivante" onClick={() => aller("?visite=suivante")}>Visite suivante</button>;
+}
 async function ouvrir() {
   const fr = langue.language === "fr";
   await act(async () => racine.render(
     <MemoryRouter initialEntries={[fr ? "/investissement/memo" : "/en/investment/memo"]}>
-      <Routes>
+      <ChangerVisite /><Routes>
         <Route path={fr ? "/investissement/memo" : "/en/investment/memo"} element={<InvestisseurMemo />} />
         <Route path={fr ? "/investissement/interet" : "/en/investment/interest"} element={<p>Formulaire témoin</p>} />
       </Routes>
@@ -89,6 +93,30 @@ it("attend une reprise explicite après expiration du délai et conserve le jeto
   expect(support.querySelector('[role="alert"]')).not.toBeNull(); expect(support.querySelector("h1")).toBeNull();
   expect(lecture).toHaveBeenCalledTimes(1); expect(localStorage.getItem(cle)).toBe(jeton);
   lecture.mockResolvedValueOnce(reponse({ valid: true }));
-  await act(async () => support.querySelector("button")!.click());
+  await act(async () => support.querySelector<HTMLButtonElement>("main button")!.click());
   expect(lecture).toHaveBeenCalledTimes(2); expect(support.querySelector("h1")).not.toBeNull();
+});
+
+it.each([
+  [{ valid: true, raison: "non confirmée" }, false], [{ valid: false, reason: "expired", autre: true }, false],
+  [{ valid: true }, true],
+])("ne donne pas d’effet aux données contradictoires ou au marqueur d’erreur du relais", async (corps, relais) => {
+  localStorage.setItem(cle, jeton);
+  const result = reponse(corps);
+  if (relais) result.headers.set("x-relay-error", "true");
+  lecture.mockResolvedValue(result); await ouvrir();
+  expect(support.querySelector("h1")).toBeNull(); expect(localStorage.getItem(cle)).toBe(jeton);
+  expect(support.querySelector('[role="alert"]')).not.toBeNull();
+});
+
+it("le remplacement de visite annule la première lecture, même en français sur le même chemin", async () => {
+  localStorage.setItem(cle, jeton);
+  let finir!: (r: Response) => void;
+  lecture.mockImplementationOnce(() => new Promise(resolve => { finir = resolve; }));
+  lecture.mockResolvedValueOnce(reponse({ valid: true })); await ouvrir();
+  const signal = lecture.mock.calls[0][1]?.signal;
+  await act(async () => (support.querySelector("#visite-suivante") as HTMLButtonElement).click());
+  await act(async () => finir(reponse({ valid: false, reason: "expired" })));
+  expect(signal?.aborted).toBe(true); expect(lecture).toHaveBeenCalledTimes(2);
+  expect(localStorage.getItem(cle)).toBe(jeton); expect(support.querySelector("h1")).not.toBeNull();
 });

@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { useState, useEffect } from "react";
@@ -63,10 +63,15 @@ function useInvestorAccess(lang: string) {
         const result = await res.json();
         if (!active) return;
         if (Date.now() >= deadline || localStorage.getItem("icare_investor_token") !== token) { invalidate(); return; }
-        if (res.status !== 200 || typeof result?.valid !== "boolean") { commit("unknown"); return; }
-        if (result.valid === true) {
+        if (res.status !== 200 || res.headers.get("x-relay-error") === "true" ||
+            typeof result !== "object" || result === null || Array.isArray(result)) {
+          commit("unknown");
+          return;
+        }
+        const champs = Object.keys(result).sort().join(",");
+        if (champs === "valid" && result.valid === true) {
           commit("granted");
-        } else if (result.reason === "expired") {
+        } else if (champs === "reason,valid" && result.valid === false && result.reason === "expired") {
           localStorage.removeItem("icare_investor_token");
           commit("denied");
         } else {
@@ -261,6 +266,11 @@ function DataTable({ title, rows }: { title: string; rows: { label: string; valu
 }
 
 export default function InvestisseurMemo() {
+  const visite = useLocation();
+  return <MemoDeLaVisite key={visite.key} />;
+}
+
+function MemoDeLaVisite() {
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
   const { state: accessState, retry } = useInvestorAccess(lang);
