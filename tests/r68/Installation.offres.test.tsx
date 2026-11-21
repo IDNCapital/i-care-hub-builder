@@ -116,6 +116,18 @@ it("relie la vue de l’offre, le cabinet et sa profession et respecte l’adres
   expect(requete.get("profession_slug")).toBe("eq.soin");
   expect(requete.get("select")?.split(",").sort()).toEqual(Object.keys(offre).sort());
 });
+it("préserve l’adresse de Capitole dans la fiche et les métadonnées lorsque les références restent en attente", async () => {
+  lecture.transport.mockImplementation(async (input, options) => {
+    if (String(input).includes("/projets?")) return new Promise<Response>(() => {});
+    return servir(input, options);
+  });
+  await afficher(offre.url_path);
+  await attendre(() => expect(host.textContent).toContain(CAPITOLE_ADRESSE));
+  expect(host.textContent).not.toContain(cabinet.address);
+  expect(document.querySelector('meta[name="description"]')?.getAttribute("content")).toContain(CAPITOLE_ADRESSE);
+  expect(host.querySelectorAll('script[type="application/ld+json"]').length).toBeGreaterThan(0);
+  expect(host.innerHTML).not.toContain(cabinet.address);
+});
 it.each(["floirac", "i-ca-re-floirac"])("ne lit aucune donnée d’une offre retirée (%s)", async (ville) => {
   await afficher("/sinstaller/soin/" + ville);
   expect(host.textContent).toContain("Offre introuvable");

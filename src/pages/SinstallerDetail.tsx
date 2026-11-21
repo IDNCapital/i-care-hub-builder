@@ -78,7 +78,9 @@ function SinstallerCourant() {
   const professionLower = data.profession_libelle.toLowerCase();
   const path = data.url_path;
   const canonical = pageUrl(path);
-  const adresse = projetCabinet?.slug === CAPITOLE_SLUG ? CAPITOLE_ADRESSE : data.cabinet_adresse;
+  // Le slug d’installation est déjà confirmé par la vue, indépendamment du complément cabinet.
+  const estCapitole = data.ville_slug === "toulouse-capitole" || projetCabinet?.slug === CAPITOLE_SLUG;
+  const adresse = estCapitole ? CAPITOLE_ADRESSE : data.cabinet_adresse;
   const postal = parsePostalAddress(adresse, data.cabinet_ville);
   const villeAvecPreposition = aVille(nomCourt);
   const visuels = getCabinetVisuals(projetCabinet?.slug);
