@@ -1,9 +1,9 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
 import { Loader2 } from "lucide-react";
 import {
   FileText,
@@ -15,57 +15,46 @@ import {
 } from "lucide-react";
 import { BrandName, InlineBrand } from "@/components/BrandName";
 
-type AccessState = "loading" | "granted" | "denied";
+type AccessState = "loading" | "granted" | "denied" | "error" | "storage";
 
 /**
  * Server-side token validation via check-investor-access edge function.
  * Falls back to denied if no token or validation fails.
  */
-function useInvestorAccess(): AccessState {
+type VisiteMemo = { active: boolean; lecture?: Promise<{ res: Response; result: unknown }> };
+function useInvestorAccess(token: string | null, storageError: boolean, visite: VisiteMemo, reessayer: () => void): AccessState {
   const [state, setState] = useState<AccessState>("loading");
-
+  useLayoutEffect(() => { visite.active = true; return () => { visite.active = false; }; }, [visite]);
   useEffect(() => {
-    const token = localStorage.getItem("icare_investor_token");
-    // Also support legacy sessionStorage for backward compat
-    const legacyToken = sessionStorage.getItem("icare_investor_access") === "granted";
-
-    if (!token && !legacyToken) {
-      setState("denied");
-      return;
-    }
-
-    // If only legacy access (no real token), deny: legacy is no longer trusted
+    let annule = false;
+    const active = () => !annule && visite.active;
+    if (storageError) { setState("storage"); return; }
     if (!token) {
-      sessionStorage.removeItem("icare_investor_access");
-      setState("denied");
+      try { if (sessionStorage.getItem("icare_investor_access") === "granted") sessionStorage.removeItem("icare_investor_access"); setState("denied"); }
+      catch { setState("storage"); }
       return;
     }
-
-    // Validate token server-side
-    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-    fetch(`https://${projectId}.supabase.co/functions/v1/check-investor-access`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-      },
-      body: JSON.stringify({ access_token: token }),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.valid) {
-          setState("granted");
-        } else {
-          // Token invalid or expired: clear it
-          localStorage.removeItem("icare_investor_token");
-          setState("denied");
-        }
-      })
-      .catch(() => {
-        setState("denied");
+    visite.lecture ??= (async () => {
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const res = await fetch(`https://${projectId}.supabase.co/functions/v1/check-investor-access`, {
+        method: "POST", headers: { "Content-Type": "application/json", "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY },
+        body: JSON.stringify({ access_token: token }),
       });
-  }, []);
-
+      const result: unknown = await res.json();
+      return { res, result };
+    })();
+    void visite.lecture.then(({ res, result }) => {
+      if (!active()) return;
+      try {
+        if (localStorage.getItem("icare_investor_token") !== token) { reessayer(); return; }
+        const r = result && typeof result === "object" && !Array.isArray(result) ? result as Record<string, unknown> : null;
+        if (res.status !== 200 || typeof r?.valid !== "boolean" || Object.prototype.hasOwnProperty.call(r, "error")) { setState("error"); return; }
+        if (r.valid === true) setState("granted");
+        else { localStorage.removeItem("icare_investor_token"); setState("denied"); }
+      } catch { if (active()) setState("storage"); }
+    }).catch(() => { if (active()) setState("error"); });
+    return () => { annule = true; };
+  }, [token, storageError, visite, reessayer]);
   return state;
 }
 
@@ -242,9 +231,28 @@ function DataTable({ title, rows }: { title: string; rows: { label: string; valu
 }
 
 export default function InvestisseurMemo() {
-  const accessState = useInvestorAccess();
+  const location = useLocation();
+  const { i18n } = useTranslation();
+  const [revision, setRevision] = useState(0);
+  const reessayer = useCallback(() => setRevision(n => n + 1), []);
+  useEffect(() => { window.addEventListener("storage", reessayer); window.addEventListener("focus", reessayer); return () => { window.removeEventListener("storage", reessayer); window.removeEventListener("focus", reessayer); }; }, [reessayer]);
+  let token: string | null = null;
+  let storageError = false;
+  try { token = localStorage.getItem("icare_investor_token"); } catch { storageError = true; }
+  const cle = `${location.key}:${location.pathname}:${i18n.language}:${token}:${storageError}:${revision}`;
+  const courant = useRef<{ cle: string; visite: VisiteMemo } | null>(null);
+  if (!courant.current || courant.current.cle !== cle) {
+    if (courant.current) courant.current.visite.active = false;
+    courant.current = { cle, visite: { active: true } };
+  }
+  return <MemoCourant key={cle} token={token} storageError={storageError} visite={courant.current.visite} reessayer={reessayer} />;
+}
+function MemoCourant({ token, storageError, visite, reessayer }: { token: string | null; storageError: boolean; visite: VisiteMemo; reessayer: () => void }) {
+  const accessState = useInvestorAccess(token, storageError, visite, reessayer);
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
+
+  if (accessState === "error" || accessState === "storage") return <Layout><section role="alert" className="container pt-32 pb-20"><h1>{accessState === "storage" ? (lang === "en" ? "Local storage unavailable" : "Stockage local indisponible") : (lang === "en" ? "Access unconfirmed" : "Accès non confirmé")}</h1><Button onClick={reessayer}>{lang === "en" ? "Retry access check" : "Réessayer la lecture d'accès"}</Button></section></Layout>;
 
   if (accessState === "denied") {
     return <Navigate to={localePath(lang, "investmentInterest")} replace />;
