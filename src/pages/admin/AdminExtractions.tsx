@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -61,35 +61,85 @@ function summarizeLog(entry: LogEntry | null): string {
   return bits.length ? bits.join(", ") : entry.status ?? "-";
 }
 
+function logLisible(value: unknown): boolean {
+  // Même dernier journal que le parseur existant ; aucun historique antérieur n'est requalifié.
+  if (!value) return true;
+  if (typeof value !== "object" || Array.isArray(value)) return false;
+  const log = value as Record<string, unknown>;
+  return ["ts", "status", "reason", "error", "confiance"].every(k => log[k] === undefined || log[k] === null || typeof log[k] === "string") &&
+    ["specialites_count", "problematiques_count"].every(k => log[k] === undefined || log[k] === null || (Number.isSafeInteger(log[k]) && Number(log[k]) >= 0));
+}
+
+function praticiensRecus(value: unknown): Praticien[] {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Réponse de lecture incomplète");
+  const enveloppe = value as Record<string, unknown>;
+  if ((enveloppe.error !== undefined && enveloppe.error !== null) || !Array.isArray(enveloppe.praticiens)) throw new Error("Réponse de lecture incomplète");
+  const ids = new Set<string>();
+  const nullable = (v: unknown) => v === null || typeof v === "string";
+  for (const item of enveloppe.praticiens) {
+    if (!item || typeof item !== "object" || Array.isArray(item)) throw new Error("Fiche reçue invalide");
+    const row = item as Record<string, unknown>;
+    if (typeof row.id !== "string" || !row.id.trim() || ids.has(row.id) ||
+      !["slug", "prenom", "nom", "profession", "cabinet_slug"].every(k => typeof row[k] === "string") ||
+      typeof row.tags_extraction_status !== "string" || !Object.prototype.hasOwnProperty.call(STATUS_META, row.tags_extraction_status) ||
+      !nullable(row.tags_extracted_at) || (typeof row.tags_extracted_at === "string" && !Number.isFinite(Date.parse(row.tags_extracted_at))) ||
+      !logLisible(lastLog(item as Praticien))) throw new Error("Fiche reçue invalide");
+    ids.add(row.id);
+  }
+  return enveloppe.praticiens as Praticien[];
+}
+
+type Lecture = { etat: "chargement" | "recu" | "erreur"; generation: number; praticiens: Praticien[]; erreur: string | null };
+
 export default function AdminExtractions() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [praticiens, setPraticiens] = useState<Praticien[]>([]);
+  const [lecture, setLecture] = useState<Lecture>({ etat: "chargement", generation: 0, praticiens: [], erreur: null });
   const [tab, setTab] = useState<Status>("error");
+  // Le verrou de relance appartient à la visite, hors des générations de lecture.
   const [reExtractingId, setReExtractingId] = useState<string | null>(null);
-
-  const fetchAll = async () => {
-    setLoading(true);
-    if (!getAdminToken()) {
+  const visite = useRef({ active: false, generation: 0 });
+  const fetchAll = useCallback(async () => {
+    if (!visite.current.active) return;
+    const generation = ++visite.current.generation;
+    const active = () => visite.current.active && visite.current.generation === generation;
+    const token = getAdminToken();
+    setLecture({ etat: "chargement", generation, praticiens: [], erreur: null });
+    if (!token) {
       navigate("/admin/login");
+      if (active()) setLecture({ etat: "erreur", generation, praticiens: [], erreur: "Session admin expirée" });
       return;
     }
     try {
-      const result = await callAdminFunction<{ praticiens: Praticien[] }>(
-        "admin-list-praticiens",
-        {},
-      );
-      setPraticiens(result.praticiens ?? []);
+      const result = await callAdminFunction<unknown>("admin-list-praticiens", {});
+      if (!active()) return;
+      if (getAdminToken() !== token) throw new Error("Session admin modifiée pendant la lecture");
+      setLecture({ etat: "recu", generation, praticiens: praticiensRecus(result), erreur: null });
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Erreur de chargement");
+      if (!active()) return;
+      const erreur = e instanceof Error && e.message ? e.message : "Erreur de chargement";
+      setLecture({ etat: "erreur", generation, praticiens: [], erreur });
+      toast.error(erreur);
     }
-    setLoading(false);
-  };
-
+  }, [navigate]);
   useEffect(() => {
-    fetchAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const courante = visite.current;
+    courante.active = true;
+    void fetchAll();
+    return () => { courante.active = false; ++courante.generation; };
+  }, [fetchAll]);
+  return <ExtractionsCourantes key={`${lecture.generation}:${lecture.etat}`} praticiens={lecture.praticiens}
+    loading={lecture.etat === "chargement"} erreur={lecture.erreur} fetchAll={fetchAll} tab={tab} setTab={setTab}
+    reExtractingId={reExtractingId} setReExtractingId={setReExtractingId} />;
+}
+
+type ExtractionsCourantesProps = {
+  praticiens: Praticien[]; loading: boolean; erreur: string | null; fetchAll: () => Promise<void>;
+  tab: Status; setTab: (tab: Status) => void;
+  reExtractingId: string | null; setReExtractingId: (id: string | null) => void;
+};
+function ExtractionsCourantes({ praticiens, loading, erreur, fetchAll, tab, setTab, reExtractingId, setReExtractingId }: ExtractionsCourantesProps) {
+  const navigate = useNavigate();
+  const connu = !loading && erreur === null;
 
   const groups = useMemo(() => {
     const g: Record<Status, Praticien[]> = {
@@ -225,15 +275,15 @@ export default function AdminExtractions() {
       <meta name="robots" content="noindex, nofollow" />
       <main className="min-h-screen bg-background">
         <header className="border-b bg-card sticky top-0 z-10">
-          <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="text-xl font-semibold">Suivi des extractions de tags</h1>
               <p className="text-xs text-muted-foreground mt-0.5">
                 <Sparkles className="w-3 h-3 inline-block mr-1" />
-                {counts.success} succès · {counts.review} à vérifier · {counts.error} erreurs · {counts.skipped} ignorés · {counts.pending} en attente
+                {connu ? <>{counts.success} succès · {counts.review} à vérifier · {counts.error} erreurs · {counts.skipped} ignorés · {counts.pending} en attente</> : loading ? "Chargement des comptes…" : "Comptes des extractions indisponibles"}
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -259,17 +309,18 @@ export default function AdminExtractions() {
         </header>
 
         <section className="max-w-7xl mx-auto px-6 py-6">
+          {connu && <p className="text-sm text-muted-foreground mb-4">Comptes calculés sur {praticiens.length} fiches reçues. Le serveur ne fournit pas de total global.</p>}
           <Tabs value={tab} onValueChange={(v) => setTab(v as Status)}>
-            <TabsList>
-              <TabsTrigger value="error">Erreurs ({counts.error})</TabsTrigger>
-              <TabsTrigger value="review">À vérifier ({counts.review})</TabsTrigger>
-              <TabsTrigger value="success">Succès ({counts.success})</TabsTrigger>
-              <TabsTrigger value="skipped">Ignorés ({counts.skipped})</TabsTrigger>
-              <TabsTrigger value="pending">En attente ({counts.pending})</TabsTrigger>
+            <TabsList className="grid h-auto w-full grid-cols-2 gap-1 sm:grid-cols-3 md:inline-flex md:w-auto">
+              <TabsTrigger value="error">Erreurs ({connu ? counts.error : "?"})</TabsTrigger>
+              <TabsTrigger value="review">À vérifier ({connu ? counts.review : "?"})</TabsTrigger>
+              <TabsTrigger value="success">Succès ({connu ? counts.success : "?"})</TabsTrigger>
+              <TabsTrigger value="skipped">Ignorés ({connu ? counts.skipped : "?"})</TabsTrigger>
+              <TabsTrigger value="pending">En attente ({connu ? counts.pending : "?"})</TabsTrigger>
             </TabsList>
             {(["error", "review", "success", "skipped", "pending"] as Status[]).map((s) => (
               <TabsContent key={s} value={s} className="mt-4">
-                <Card className="overflow-hidden">{renderRows(groups[s])}</Card>
+                <Card className="overflow-hidden">{erreur !== null ? <div role="alert" className="p-6"><p>Impossible de charger les états d'extraction. {erreur}</p><Button variant="outline" className="mt-4" onClick={fetchAll}>Réessayer la lecture</Button></div> : renderRows(groups[s])}</Card>
               </TabsContent>
             ))}
           </Tabs>
