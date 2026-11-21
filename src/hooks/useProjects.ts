@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Tables } from "@/integrations/supabase/types";
 
 export type Projet = Tables<"projets">;
+type ComplementCabinet = Pick<Projet, "id" | "slug" | "short_description" | "short_description_en" | "hero_image_url" | "date_ouverture_cible">;
 
 export function useProjects() {
   return useQuery({
@@ -27,7 +28,7 @@ export function useProjects() {
       };
       signal.addEventListener("abort", annuler, { once: true });
       const collecter = async () => {
-        const projects: Projet[] = [];
+        const projects: ComplementCabinet[] = [];
         const ids = new Set<string>();
         const slugs = new Set<string>();
         let expectedCount: number | undefined;
@@ -35,7 +36,7 @@ export function useProjects() {
           courante();
           const { data, error, count, status } = await supabase
             .from("projets")
-            .select("*", { count: "exact" })
+            .select("id,slug,short_description,short_description_en,hero_image_url,date_ouverture_cible", { count: "exact" })
             .order("created_at", { ascending: false })
             .order("id", { ascending: false })
             .range(projects.length, projects.length + 199)
@@ -57,8 +58,9 @@ export function useProjects() {
             }
             ids.add(project.id);
             slugs.add(project.slug);
+            const { id, slug, short_description, short_description_en, hero_image_url, date_ouverture_cible } = project;
+            projects.push({ id, slug, short_description, short_description_en, hero_image_url, date_ouverture_cible });
           }
-          projects.push(...data);
           if (projects.length > expectedCount) throw new Error("Catalogue incoherent");
           if (projects.length === expectedCount) { courante(); return projects; }
           if (data.length === 0) throw new Error("Catalogue incomplet");

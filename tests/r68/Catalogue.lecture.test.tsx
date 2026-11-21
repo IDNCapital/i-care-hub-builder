@@ -96,7 +96,7 @@ describe("catalogue public, vraie page et vrai hook React Query", () => {
     sdk.queue.push(ok([row("3", "lieu-trois")], 3), ok([row("2", "lieu-deux")], 3), ok([row("1")], 3));
     await mount(<Probe />); await until(() => text().includes('"id":"1"'));
     expect(sdk.requests.map(r => r.range)).toEqual([[0, 199], [1, 200], [2, 201]]);
-    expect(sdk.requests.every(r => JSON.stringify(r.select) === JSON.stringify(["*", { count: "exact" }]))).toBe(true);
+    expect(sdk.requests.every(r => JSON.stringify(r.select) === JSON.stringify(["id,slug,short_description,short_description_en,hero_image_url,date_ouverture_cible", { count: "exact" }]))).toBe(true);
     expect(sdk.requests[0].orders).toEqual([["created_at", { ascending: false }], ["id", { ascending: false }]]);
   });
   it("cache tout catalogue partiel si la page suivante refuse", async () => {
@@ -178,7 +178,10 @@ describe("catalogue public, vraie page et vrai hook React Query", () => {
   });
   it("conserve le contrat tableau du hook partage avec Investissement", async () => {
     sdk.queue.push(ok([row("id-api")])); await mount(<Probe />); await until(() => text().includes("id-api"));
-    expect(JSON.parse(text())).toEqual([row("id-api")]);
+    const recus = JSON.parse(text());
+    expect(recus).toHaveLength(1);
+    expect(recus[0]).toMatchObject({ id: "id-api", slug: "i-ca-re-chartrons", date_ouverture_cible: "2027-03-01" });
+    expect(Object.keys(recus[0]).sort()).toEqual(["date_ouverture_cible", "hero_image_url", "id", "short_description", "short_description_en", "slug"]);
   });
   it("laisse useProject et sa lecture unitaire inchanges", async () => {
     sdk.queue.push({ data: { slug: "cabinet-test" }, error: null }); await mount(<DetailProbe />); await until(() => text().includes("cabinet-test"));
@@ -270,6 +273,7 @@ it("reçoit deux tranches HTTP avec le SDK natif et le compte Content-Range", as
     expect(url.pathname).toBe("/rest/v1/projets");
     expect(options?.method).toBe("GET");
     expect(options?.body).toBeUndefined();
+    expect(url.searchParams.get("select")).toBe("id,slug,short_description,short_description_en,hero_image_url,date_ouverture_cible");
     expect(url.searchParams.get("order")).toBe("created_at.desc,id.desc");
     expect(new Headers(options?.headers).get("Prefer")).toContain("count=exact");
     const offset = Number(url.searchParams.get("offset"));
@@ -288,5 +292,6 @@ it("reçoit deux tranches HTTP avec le SDK natif et le compte Content-Range", as
   await mount(<Probe />);
   await until(() => text().includes('"id":"200"'));
   expect(JSON.parse(text())).toHaveLength(201);
+  expect(JSON.parse(text())[0]).not.toHaveProperty("created_at");
   expect(appels).toEqual([0, 200]);
 });
