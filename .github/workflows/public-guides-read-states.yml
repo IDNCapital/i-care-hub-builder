@@ -1,0 +1,42 @@
+name: Public guides current read states
+
+on:
+  pull_request:
+    paths:
+      - "src/hooks/useProblematiques.ts"
+      - "src/pages/ProblematiquesIndex.tsx"
+      - "src/pages/ProblematiqueDetail.tsx"
+      - "src/hooks/usePraticiensPublics.ts"
+      - "src/lib/taxonomy.ts"
+      - "src/lib/norm.*"
+      - "src/integrations/supabase/**"
+      - "tsconfig*.json"
+      - "package*.json"
+      - "bun.lock"
+      - ".ci/public-guides/**"
+      - ".github/workflows/public-guides-read-states.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: .ci/public-guides/package-lock.json
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.4"
+      - name: Install the frozen root dependencies without scripts
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Install the isolated pinned test tools without scripts
+        run: npm ci --prefix .ci/public-guides --ignore-scripts --no-audit --no-fund
+      - run: .ci/public-guides/node_modules/.bin/vitest run --config .ci/public-guides/vitest.config.ts
+      - run: node_modules/.bin/eslint src/hooks/useProblematiques.ts src/pages/ProblematiquesIndex.tsx src/pages/ProblematiqueDetail.tsx .ci/public-guides/*.test.tsx .ci/public-guides/vitest.config.ts
+      - run: node_modules/.bin/tsc --noEmit -p .ci/public-guides/tsconfig.json

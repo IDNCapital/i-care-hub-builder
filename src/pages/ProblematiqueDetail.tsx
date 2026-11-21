@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { ChargementPage } from "@/components/ChargementPage";
 import { SeoHead } from "@/components/SeoHead";
 import { Button } from "@/components/ui/button";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
-import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
-import { supabase } from "@/integrations/supabase/client";
-import { useProblematiques } from "@/hooks/useProblematiques";
+import { ArticleCard } from "@/components/ArticleCard";
+import { useArticlesProblematiques, useProblematiques } from "@/hooks/useProblematiques";
 import { usePraticiensPublics } from "@/hooks/usePraticiensPublics";
 import { CartePraticien } from "@/components/patients/CartePraticien";
 import { matchProblematique } from "@/lib/taxonomy";
@@ -26,25 +25,7 @@ export default function ProblematiqueDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: problematiques, loading: loadingP, error: errorP } = useProblematiques();
   const { data: praticiens, loading: loadingPr, error: errorPr } = usePraticiensPublics();
-  const [articles, setArticles] = useState<ArticleCardData[]>([]);
-
-  useEffect(() => {
-    if (!slug) return;
-    let cancelled = false;
-    (async () => {
-      // La RLS ne renvoie que les articles au statut publié.
-      const { data, error } = await supabase
-        .from("articles")
-        .select("slug, titre, chapo, published_at")
-        .contains("problematiques_associees", [slug])
-        .order("published_at", { ascending: false });
-      if (cancelled) return;
-      setArticles(error ? [] : ((data ?? []) as ArticleCardData[]));
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [slug]);
+  const { data: articles, loading: loadingArticles, error: errorArticles, retry: retryArticles } = useArticlesProblematiques(slug);
 
   const problematique = useMemo(
     () => problematiques.find((p) => p.slug === slug),
@@ -56,12 +37,19 @@ export default function ProblematiqueDetail() {
     return praticiens.filter((pr) => matchProblematique(pr, problematique));
   }, [praticiens, problematique]);
 
-  if (loadingP || loadingPr) {
-    return <ChargementPage mode="loading" />;
+  if (errorP || errorPr) {
+    return <Layout><section role="alert" className="pt-40 pb-40 px-4 text-center">
+      <h1 className="font-heading text-2xl mb-4">Ce guide est indisponible pour le moment.</h1>
+      <p className="font-sans text-base text-[#6B6B6B] mb-6">
+        {errorP && "La liste des problématiques n'a pas pu être chargée. "}
+        {errorPr && "La liste des praticiennes et praticiens n'a pas pu être chargée."}
+      </p>
+      <Button variant="gold" onClick={() => window.location.reload()}>Réessayer</Button>
+    </section></Layout>;
   }
 
-  if (errorP || errorPr) {
-    return <ChargementPage mode="error" />;
+  if (loadingP || loadingPr) {
+    return <ChargementPage mode="loading" />;
   }
 
   if (!problematique) {
@@ -170,17 +158,26 @@ export default function ProblematiqueDetail() {
       </section>
 
       {/* Pour aller plus loin (maillage articles) */}
-      {articles.length > 0 && (
+      {(loadingArticles || errorArticles || articles.length > 0) && (
         <section className="bg-background border-t border-border">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 max-w-5xl">
             <h2 className="font-heading font-normal text-2xl md:text-3xl text-anthracite mb-8 text-balance">
               Pour aller plus loin
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {articles.map((a) => (
-                <ArticleCard key={a.slug} article={a} />
-              ))}
-            </div>
+            {errorArticles ? (
+              <div role="alert">
+                <p className="font-sans text-base text-[#6B6B6B] mb-6">Les articles liés à cette problématique sont indisponibles pour le moment.</p>
+                <Button variant="gold" onClick={retryArticles}>Réessayer les articles</Button>
+              </div>
+            ) : loadingArticles ? (
+              <p role="status" className="font-sans text-base text-[#6B6B6B]">Chargement des articles liés…</p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {articles.map((a) => (
+                  <ArticleCard key={a.slug} article={a} />
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}

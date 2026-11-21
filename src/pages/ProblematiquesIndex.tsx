@@ -11,8 +11,8 @@ import { pageUrl } from "@/lib/siteUrl";
 
 
 export default function ProblematiquesIndex() {
-  const { data: problematiques, loading } = useProblematiques();
-  const { data: praticiens, loading: loadingPraticiens } = usePraticiensPublics();
+  const { data: problematiques, loading, error } = useProblematiques();
+  const { data: praticiens, loading: loadingPraticiens, error: errorPraticiens } = usePraticiensPublics();
   const [query, setQuery] = useState("");
 
   // N'exposer que les problématiques RÉELLEMENT prérendues. Le prérendu ne
@@ -33,6 +33,8 @@ export default function ProblematiquesIndex() {
       return (p.synonymes ?? []).some((s) => norm(s).includes(q));
     });
   }, [publiees, query]);
+
+  const sourcesConnues = !loading && !loadingPraticiens && !error && !errorPraticiens;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -63,7 +65,7 @@ export default function ProblematiquesIndex() {
         description="Explorez par problématique et trouvez la praticienne ou le praticien I-CA.RE qui vous correspond à Bordeaux : stress, anxiété, sommeil, deuil, parentalité et plus."
         path="/patients/problematiques"
       />
-      {publiees.length > 0 && (
+      {sourcesConnues && publiees.length > 0 && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -75,7 +77,7 @@ export default function ProblematiquesIndex() {
           maintenant des praticiennes et praticiens autant que des problématiques.
           Le prérendu attend ce fait déclaré, jamais une durée. Voir ATTENTES_DOM
           dans scripts/prerender.mjs. */}
-      {!loading && !loadingPraticiens && (
+      {sourcesConnues && (
         <div hidden data-problematiques-publiees={publiees.length} />
       )}
 
@@ -119,7 +121,15 @@ export default function ProblematiquesIndex() {
             />
           </div>
 
-          {loading || loadingPraticiens ? (
+          {error || errorPraticiens ? (
+            <div role="alert" className="bg-cream rounded-2xl p-8 text-center">
+              <p className="font-sans text-base text-[#6B6B6B] mb-6">
+                {error && "La liste des problématiques est indisponible pour le moment. "}
+                {errorPraticiens && "La liste des praticiennes et praticiens est indisponible pour le moment."}
+              </p>
+              <Button variant="gold" onClick={() => window.location.reload()}>Réessayer</Button>
+            </div>
+          ) : loading || loadingPraticiens ? (
             <div className="py-20 flex items-center justify-center">
               <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
             </div>

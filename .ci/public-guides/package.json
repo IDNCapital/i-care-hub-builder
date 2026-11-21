@@ -1,0 +1,11 @@
+{
+  "name": "icare-public-guides-ci",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "jsdom": "20.0.3",
+    "vite": "5.4.21",
+    "vitest": "3.2.7"
+  }
+}
