@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { ChargementPage } from "@/components/ChargementPage";
 import { SeoHead } from "@/components/SeoHead";
@@ -22,47 +22,124 @@ interface ArticleRow {
   updated_at: string;
 }
 
+
+function initialSsrHead() {
+  if (typeof document === "undefined") return { canonical: null as string | null, nodes: [] as { node: Element; markup: string }[] };
+  const canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href ?? null;
+  const selecteur = canonical ? 'title,meta[name="description"],meta[name="robots"],link[rel="canonical"],link[rel="alternate"],meta[property^="og:"],meta[name^="twitter:"]' : 'title,meta[name="description"]';
+  const nodes = Array.from(document.head.querySelectorAll(selecteur)).map(node => ({ node, markup: node.outerHTML }));
+  return { canonical, nodes };
+}
+
 export default function ArticleDetail() {
   const { slug } = useParams<{ slug: string }>();
+  const { pathname } = useLocation();
+  const [initial] = useState(() => ({
+    pathname,
+    ...initialSsrHead(),
+  }));
+  const [navigated, setNavigated] = useState(false);
+  useEffect(() => { if (pathname !== initial.pathname) setNavigated(true); }, [pathname, initial.pathname]);
+  const provisional = navigated || pathname !== initial.pathname || (initial.canonical !== null && initial.canonical !== new URL(pageUrl(pathname)).href);
+  const retirerHeadInitial = useCallback(() => {
+    for (const { node, markup } of initial.nodes) {
+      if (node.parentNode === document.head && node.outerHTML === markup) node.remove();
+    }
+  }, [initial]);
+  useLayoutEffect(() => {
+    if (initial.canonical ? initial.canonical !== new URL(pageUrl(pathname)).href : pathname !== initial.pathname) retirerHeadInitial();
+  }, [initial, pathname, retirerHeadInitial]);
+  return <ArticleCourant key={slug ?? ""} slug={slug} pathname={pathname}
+    provisional={provisional} retirerHeadInitial={retirerHeadInitial} />;
+}
+
+function ArticleCourant({ slug, pathname, provisional, retirerHeadInitial }: {
+  slug: string | undefined; pathname: string; provisional: boolean; retirerHeadInitial: () => void;
+}) {
   const [article, setArticle] = useState<ArticleRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [errored, setErrored] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
+    const transport = new AbortController();
+    const deadline = Date.now() + 15_000;
+    let interrupt!: (reason: Error) => void;
+    const interruption = new Promise<never>((_resolve, reject) => { interrupt = reject; });
+    const timer = setTimeout(() => {
+      transport.abort();
+      interrupt(new Error("Article sans réponse sous 15 secondes"));
+    }, 15_000);
+    const current = () => {
+      if (cancelled || transport.signal.aborted || Date.now() >= deadline) throw new Error("Lecture de l'article interrompue");
+    };
     setLoading(true);
     setErrored(false);
+    setArticle(null);
     (async () => {
-      // La RLS ne renvoie que les articles au statut publié.
-      const { data, error } = await supabase
-        .from("articles")
-        .select("slug, titre, chapo, contenu, meta_title, meta_description, published_at, updated_at")
-        .eq("slug", slug ?? "")
-        .maybeSingle();
-      if (cancelled) return;
-      if (error) {
-        setErrored(true);
-        setArticle(null);
-      } else {
-        setArticle((data as ArticleRow) ?? null);
+      try {
+        // La RLS ne renvoie que les articles au statut publié.
+        current();
+        const { data, error, status } = await Promise.race([
+          (async () => await supabase
+            .from("articles")
+            .select("slug, titre, chapo, contenu, meta_title, meta_description, published_at, updated_at")
+            .eq("slug", slug ?? "")
+            .abortSignal(transport.signal)
+            .maybeSingle())(),
+          interruption,
+        ]);
+        current();
+        if (error !== null || status !== 200 || data === undefined) throw new Error("Article inconnu");
+        if (data === null) {
+          retirerHeadInitial();
+          setArticle(null);
+          return;
+        }
+        const row = data as ArticleRow;
+        if (row.slug !== slug || typeof row.titre !== "string" || typeof row.chapo !== "string" || typeof row.contenu !== "string" || typeof row.updated_at !== "string" || [row.meta_title, row.meta_description, row.published_at].some(value => value !== null && typeof value !== "string")) throw new Error("Article incoherent");
+        // Le reçu courant prend la relève du head prérendu avant que React monte son SeoHead.
+        retirerHeadInitial();
+        setArticle(row);
+      } catch {
+        if (!cancelled) { setErrored(true); setArticle(null); }
+      } finally {
+        clearTimeout(timer);
+        transport.abort();
+        if (!cancelled) setLoading(false);
       }
-      setLoading(false);
     })();
     return () => {
       cancelled = true;
+      clearTimeout(timer);
+      transport.abort();
+      interrupt(new Error("Lecture de l'article annulée"));
     };
-  }, [slug]);
+  }, [slug, attempt, retirerHeadInitial]);
 
-  if (loading) {
-    return <ChargementPage mode="loading" />;
-  }
-
-  if (errored) {
-    return <ChargementPage mode="error" />;
+  if (loading || errored) {
+    return <>
+      {provisional && <SeoHead title={loading ? "Chargement de l'article | I-CA.RE" : "Article indisponible | I-CA.RE"} description="Le contenu de cet article ne peut pas encore être confirmé." path={pathname} noIndex />}
+      <p role={loading ? "status" : "alert"} className="sr-only">{loading ? "Chargement de l'article..." : "L'article est indisponible pour le moment."}</p>
+      {loading ? <ChargementPage mode="loading" /> : <Layout>
+        <div className="pt-40 pb-40 px-4 flex flex-col items-center justify-center text-center">
+          <h2 className="font-heading font-normal text-2xl md:text-3xl text-anthracite mb-3 text-balance">
+            Le contenu n'a pas pu être chargé.
+          </h2>
+          <p className="font-sans text-base text-[#6B6B6B] mb-8">
+            Vérifiez votre connexion, puis réessayez.
+          </p>
+          <Button variant="gold" size="lg" onClick={() => setAttempt(value => value + 1)}>
+            Réessayer
+          </Button>
+        </div>
+      </Layout>}
+    </>;
   }
 
   if (!article) {
-    return <NotFound />;
+    return <><link rel="canonical" href={pageUrl(pathname)} /><NotFound /></>;
   }
 
   const canonicalPath = `/patients/articles/${article.slug}`;
