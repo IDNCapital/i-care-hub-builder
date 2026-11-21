@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader2, LogOut, ArrowLeft, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { adminLogout, callAdminFunction } from "@/lib/adminAuth";
+import { adminLogout, callAdminFunction, getAdminToken } from "@/lib/adminAuth";
 
 interface AuditRow {
   id: string;
@@ -12,51 +12,77 @@ interface AuditRow {
   event_type: string;
   function_name: string | null;
   description: string;
-  payload_json: Record<string, unknown> | null;
+  payload_json: unknown;
 }
 
-export default function AdminWebhooks() {
-  const navigate = useNavigate();
-  const [rows, setRows] = useState<AuditRow[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({ sent: 0, failed: 0, rate: "-" });
-
+type Lecture = { etat: "chargement" | "recu" | "erreur"; rows: AuditRow[] };
+const TYPES = ["webhook_sent", "webhook_failed", "webhook_config_missing"];
+function rowsValides(value: unknown, limit: number, since?: string): AuditRow[] {
+  if (!value || typeof value !== "object" || !("rows" in value)) throw new Error("Reçu absent");
+  const rows = (value as { rows: unknown }).rows;
+  if (!Array.isArray(rows) || rows.length > limit) throw new Error("Extrait invalide");
+  const ids = new Set<string>();
+  for (const r of rows) {
+    if (!r || typeof r !== "object" || typeof r.id !== "string" || !r.id.trim() || ids.has(r.id) ||
+      typeof r.created_at !== "string" || !Number.isFinite(Date.parse(r.created_at)) ||
+      !TYPES.slice(0, limit === 500 ? 2 : 3).includes(r.event_type) ||
+      (r.function_name !== null && typeof r.function_name !== "string") || typeof r.description !== "string" ||
+      !("payload_json" in r) ||
+      (since && Date.parse(r.created_at) < Date.parse(since))) throw new Error("Extrait incohérent");
+    ids.add(r.id);
+  }
+  return rows as AuditRow[];
+}
+function useLecture(limit: 50 | 500, token: string, sessionChange: () => void) {
+  const [lecture, setLecture] = useState<Lecture>({ etat: "chargement", rows: [] });
+  const generation = useRef(0);
+  const monte = useRef(false);
+  const charger = useCallback(async () => {
+    const courante = ++generation.current;
+    const active = () => {
+      if (!monte.current || courante !== generation.current) return false;
+      if (getAdminToken() !== token) { sessionChange(); return false; }
+      return true;
+    };
+    if (!active()) return;
+    setLecture({ etat: "chargement", rows: [] });
+    const since = limit === 500 ? new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() : undefined;
+    try {
+      const res = await callAdminFunction<unknown>("admin-get-audit-log", {
+        limit, event_types: TYPES.slice(0, limit === 500 ? 2 : 3), ...(since ? { since } : {}),
+      });
+      if (!active()) return;
+      setLecture({ etat: "recu", rows: rowsValides(res, limit, since) });
+    } catch { if (active()) setLecture({ etat: "erreur", rows: [] }); }
+  }, [limit, token, sessionChange]);
   useEffect(() => {
-    (async () => {
-      try {
-        // Last 50 webhook events (via admin Edge Function, service_role)
-        const listRes = await callAdminFunction<{ rows: AuditRow[] }>("admin-get-audit-log", {
-          limit: 50,
-          event_types: ["webhook_sent", "webhook_failed", "webhook_config_missing"],
-        });
-        if (listRes?.rows) setRows(listRes.rows);
-
-        // 24h stats
-        const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-        const statsRes = await callAdminFunction<{ rows: Array<{ event_type: string }> }>(
-          "admin-get-audit-log",
-          {
-            limit: 500,
-            event_types: ["webhook_sent", "webhook_failed"],
-            since,
-          },
-        );
-        const recent = statsRes?.rows ?? [];
-        const sent = recent.filter((r) => r.event_type === "webhook_sent").length;
-        const failed = recent.filter((r) => r.event_type === "webhook_failed").length;
-        const total = sent + failed;
-        setStats({
-          sent,
-          failed,
-          rate: total > 0 ? `${Math.round((sent / total) * 100)}%` : "-",
-        });
-      } catch {
-        // silent : page reste en état vide
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+    monte.current = true;
+    void charger();
+    const invalider = () => { ++generation.current; };
+    return () => { monte.current = false; invalider(); };
+  }, [charger]);
+  return { ...lecture, charger };
+}
+export default function AdminWebhooks() {
+  const [token, setToken] = useState(getAdminToken);
+  const sessionChange = useCallback(() => setToken(getAdminToken()), []);
+  useEffect(() => {
+    window.addEventListener("storage", sessionChange);
+    window.addEventListener("focus", sessionChange);
+    return () => { window.removeEventListener("storage", sessionChange); window.removeEventListener("focus", sessionChange); };
+  }, [sessionChange]);
+  if (!token) return <main className="p-6"><p role="status">Session admin absente ou expirée.</p><a href="/admin/login">Se reconnecter</a></main>;
+  return <JournalCourant key={token} token={token} sessionChange={sessionChange} />;
+}
+function JournalCourant({ token, sessionChange }: { token: string; sessionChange: () => void }) {
+  const navigate = useNavigate();
+  const journal = useLecture(50, token, sessionChange);
+  const statistiques = useLecture(500, token, sessionChange);
+  const rows = journal.rows;
+  const loading = journal.etat === "chargement";
+  const sent = statistiques.rows.filter(r => r.event_type === "webhook_sent").length;
+  const failed = statistiques.rows.length - sent;
+  const stats = { sent, failed, rate: statistiques.rows.length ? `${Math.round(sent / statistiques.rows.length * 100)}%` : "-" };
 
   const badgeForType = (type: string) => {
     switch (type) {
@@ -77,7 +103,7 @@ export default function AdminWebhooks() {
       <meta name="robots" content="noindex,nofollow" />
       <div className="min-h-screen bg-background text-foreground">
         <header className="border-b bg-card">
-          <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap gap-3 items-center justify-between">
             <div className="flex items-center gap-3">
               <Button variant="ghost" size="sm" onClick={() => navigate("/admin/praticiens")}>
                 <ArrowLeft className="w-4 h-4 mr-1" /> Admin
@@ -101,30 +127,41 @@ export default function AdminWebhooks() {
         </header>
 
         <main className="max-w-7xl mx-auto px-6 py-8 space-y-6">
+          <section aria-label="Statistiques des webhooks" className="space-y-3">
+            {statistiques.etat === "chargement" ? <p role="status">Lecture des statistiques…</p> : statistiques.etat === "erreur" ? <p role="status">Statistiques indisponibles. Aucun compteur confirmé.</p> : <>
+              <p>Statistiques reçues : {statistiques.rows.length} événements dans l'extrait, 500 événements au plus sur les dernières 24 heures.</p>
+              {statistiques.rows.length === 0 && <p>Aucun événement envoyé ou échoué dans cet extrait reçu.</p>}
           {/* Stats 24h */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Card className="p-4 text-center">
-              <p className="text-sm text-muted-foreground">Envoyés (24h)</p>
+              <p className="text-sm text-muted-foreground">Envoyés dans l’extrait (24h)</p>
               <p className="text-2xl font-bold text-emerald-600">{stats.sent}</p>
             </Card>
             <Card className="p-4 text-center">
-              <p className="text-sm text-muted-foreground">Échecs (24h)</p>
+              <p className="text-sm text-muted-foreground">Échecs dans l’extrait (24h)</p>
               <p className="text-2xl font-bold text-red-600">{stats.failed}</p>
             </Card>
             <Card className="p-4 text-center">
-              <p className="text-sm text-muted-foreground">Taux de succès</p>
+              <p className="text-sm text-muted-foreground">Taux sur cet extrait</p>
               <p className="text-2xl font-bold">{stats.rate}</p>
             </Card>
           </div>
 
+            </>}
+            {statistiques.etat !== "chargement" && <Button variant="outline" onClick={() => void statistiques.charger()}>{statistiques.etat === "erreur" ? "Réessayer les statistiques" : "Actualiser les statistiques"}</Button>}
+          </section>
+
+          <section aria-label="Journal des webhooks" className="space-y-3">
+          {journal.etat === "recu" && <p>Extrait du journal : {rows.length} événements reçus, 50 événements au plus.</p>}
+          {journal.etat !== "chargement" && <Button variant="outline" onClick={() => void journal.charger()}>{journal.etat === "erreur" ? "Réessayer le journal" : "Actualiser le journal"}</Button>}
           {/* Log table */}
           {loading ? (
             <div className="flex justify-center py-12">
               <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
             </div>
-          ) : rows.length === 0 ? (
+          ) : journal.etat === "erreur" ? <p role="status">Journal indisponible. Aucun événement confirmé.</p> : rows.length === 0 ? (
             <Card className="p-8 text-center text-muted-foreground">
-              Aucun événement webhook enregistré.
+              Aucun événement webhook dans cet extrait reçu.
             </Card>
           ) : (
             <div className="overflow-x-auto">
@@ -148,7 +185,7 @@ export default function AdminWebhooks() {
                       <td className="py-2 pr-4 font-mono text-xs">{row.function_name || "-"}</td>
                       <td className="py-2 pr-4 max-w-[300px] truncate">{row.description}</td>
                       <td className="py-2 text-xs text-muted-foreground max-w-[200px] truncate">
-                        {row.payload_json ? JSON.stringify(row.payload_json) : "-"}
+                        {row.payload_json !== null ? JSON.stringify(row.payload_json) : "-"}
                       </td>
                     </tr>
                   ))}
@@ -156,6 +193,7 @@ export default function AdminWebhooks() {
               </table>
             </div>
           )}
+          </section>
         </main>
       </div>
     </>

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "types": ["node"],
+    "paths": {
+      "@/*": ["src/*"],
+      "vitest": [".ci/admin-webhooks/node_modules/vitest/dist/index.d.ts"]
+    }
+  },
+  "include": ["../../src/pages/admin/AdminWebhooks.tsx", "./AdminWebhooks.lecture.test.tsx", "../../src/vite-env.d.ts"]
+}
