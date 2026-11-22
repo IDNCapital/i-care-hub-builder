@@ -119,7 +119,7 @@ for (const lang of ['fr', 'en'] as const) {
   });
 }
 it('N8 attente puis succes simules integralement anglais, corps du transport conserve', async () => {
-  let resolve!: (result: { data: { ok: boolean }; error: null }) => void;
+  let resolve!: (result: { data: { ok: boolean; id: string }; error: null; response: Response }) => void;
   replyWith(() => new Promise((done) => { resolve = done; }));
   await mount('en', { professionSlug: 'psychologue', villeSlug: 'ville-fictive' });
   fill();
@@ -130,15 +130,14 @@ it('N8 attente puis succes simules integralement anglais, corps du transport con
     profession_slug: 'psychologue', ville_slug: 'ville-fictive', nom: 'Personne fictive', email: 'fixture@example.invalid', telephone: null,
     message: null, consentement_rgpd: true, source_path: '/installation', website: '',
   } } }]);
-  await act(async () => { resolve({ data: { ok: true }, error: null }); });
-  expect(screen.getByRole('status')).toHaveTextContent('Request sent');
-  expect(screen.getByRole('heading', { name: 'Your request has been sent' })).toBeInTheDocument();
-  expect(screen.getByText('within 24 hours')).toBeInTheDocument();
-  expect(screen.getByRole('status')).toHaveTextContent('with details of the available spaces and the conditions for setting up your practice.');
+  await act(async () => { resolve({ data: { ok: true, id: "8bf159da-22ad-451b-82e4-a79917762afd" }, error: null, response: new Response("{}") }); });
+  expect(screen.getByRole('status')).toHaveTextContent('Thank you for your practice enquiry.');
+  expect(screen.getByRole('button', { name: 'Prepare a new request' })).toBeEnabled();
   expect(fixtureCalls).toHaveLength(2);
 });
 it('N9 refus serveur simule et langue changee apres reponse', async () => {
-  replyWith(async () => ({ data: { error: 'rate_limited' }, error: null }));
+  const response = new Response(JSON.stringify({ error: 'rate_limited' }), { status: 429 });
+  replyWith(async () => ({ data: null, error: Object.assign(new Error('HTTP'), { context: response }), response }));
   const i18n = await mount('en', { professionSlug: 'psychologue' });
   fill(); await act(async () => { fireEvent.submit(form()); });
   await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent('Too many requests. Try again in one hour.'));
@@ -151,11 +150,12 @@ it('N10 refus inconnu et rejet simules gardent le retour anglais', async () => {
   replyWith(async () => ({ data: { error: 'fixture-unknown' }, error: null }));
   await mount('en', { professionSlug: 'psychologue' });
   fill(); await act(async () => { fireEvent.submit(form()); });
-  await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent('An error occurred. Please try again.'));
-  const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+  await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent('We could not confirm that your request was recorded.'));
   replyWith(async () => { throw new Error('fixture rejection'); });
+  expect(document.querySelector('form')).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: 'Prepare a new request' }));
+  expect(byId('nom')).toHaveValue('');
+  fill();
   await act(async () => { fireEvent.submit(form()); });
-  await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent('An error occurred. Please try again.'));
-  expect(consoleError).toHaveBeenCalledOnce();
-  consoleError.mockRestore();
+  await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent('We could not confirm that your request was recorded.'));
 });
