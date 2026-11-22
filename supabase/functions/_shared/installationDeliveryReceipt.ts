@@ -4,7 +4,7 @@ function adresse(valeur: unknown): string | null {
   if (typeof valeur !== "string") return null;
   const texte = valeur.trim();
   // Les deux options du site désignent chacune une boîte, éventuellement précédée d'un nom.
-  const nommee = /^[^<>]*<([^<>]+)>$/.exec(texte);
+  const nommee = /^(?:"(?:[^"\\]|\\.)*"|[^,"@;:<>]*)\s*<([^<>]+)>$/.exec(texte);
   const boite = (nommee ? nommee[1] : texte).trim().toLowerCase();
   return /^[^\s@,;<>]+@[^\s@,;<>]+$/.test(boite) ? boite : null;
 }

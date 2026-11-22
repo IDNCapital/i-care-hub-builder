@@ -14,6 +14,11 @@ test("nom affiché, casse, doublon et anciennes adresses simples", () => {
     { to: "Équipe <" + principal + ">", cc: CONTACT_MAILBOX });
   verifierAcceptationInstallation(accepte(principal), { to: principal, cc: principal.toUpperCase() });
 });
+test("une liste ne devient pas une seule boîte et un nom cité peut contenir une virgule", () => {
+  assert.throws(() => verifierAcceptationInstallation(accepte(principal), { to: "autre@example.invalid, Gestion <" + principal + ">" }),
+    /smtp_acceptation_non_confirmee/);
+  verifierAcceptationInstallation(accepte(principal), { to: '"Gestion, service" <' + principal + '>' });
+});
 for (const [nom, valeur] of Object.entries({
   "principal seul": accepte(principal), "copie seule": accepte(CONTACT_MAILBOX),
   "autre boîte": accepte("autre@example.invalid", principal),
@@ -89,6 +94,11 @@ test("un accusé candidat non confirmé ne masque pas les deux destinataires éq
   const suivi = await soumettre(null, accepte(CONTACT_MAILBOX, principal));
   assert.equal(suivi.ack_sent_at, undefined); assert.ok(suivi.notified_at);
   assert.equal(suivi.email_send_error, "ack: smtp_acceptation_non_confirmee");
+});
+test("deux reçus incomplets conservent chacun leur cause sur la demande", async () => {
+  const suivi = await soumettre(null, { accepted: [principal], rejected: [CONTACT_MAILBOX] });
+  assert.equal(suivi.ack_sent_at, undefined); assert.equal(suivi.notified_at, undefined);
+  assert.equal(suivi.email_send_error, "ack: smtp_acceptation_non_confirmee / notification: smtp_destinataire_refuse");
 });
 test("tous les destinataires acceptés renseignent les deux dates indépendantes", async () => {
   const suivi = await soumettre(accepte(candidat), accepte(principal, CONTACT_MAILBOX));
