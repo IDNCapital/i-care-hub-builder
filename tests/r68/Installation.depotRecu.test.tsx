@@ -1,5 +1,6 @@
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
+import { FunctionsClient } from "@supabase/functions-js";
 import { MemoryRouter, useNavigate, type NavigateFunction } from "react-router-dom";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import FormulaireInteretInstallation from "@/components/FormulaireInteretInstallation";
@@ -62,6 +63,19 @@ it("rend la même confirmation publique pour les deux reçus natifs, avec une se
   await act(async () => { submit(); });
   expect(host.innerHTML).toBe(first);
   expect(ports.invoke).toHaveBeenCalledTimes(2); expect(ports.measure).toHaveBeenCalledOnce();
+});
+
+it("accepte le véritable transport SDK après refus puis dépôt, sur fetch en mémoire", async () => {
+  const fetchLocal = vi.fn()
+    .mockResolvedValueOnce(new Response(JSON.stringify({ error: "rate_limited" }), { status: 429, headers: { "content-type": "application/json" } }))
+    .mockResolvedValueOnce(new Response(JSON.stringify({ ok: true, id }), { status: 200, headers: { "content-type": "application/json" } }));
+  const sdk = new FunctionsClient("https://fixture.invalid/functions/v1", { customFetch: fetchLocal });
+  ports.invoke.mockImplementation((name, options) => sdk.invoke(name, options));
+  await mount(); await fill(); await act(async () => { submit(); });
+  expect(issue()).toContain("Trop de demandes"); expect(ports.measure).not.toHaveBeenCalled();
+  await act(async () => { submit(); });
+  expect(host.textContent).toContain("Merci pour votre demande");
+  expect(fetchLocal).toHaveBeenCalledTimes(2); expect(ports.measure).toHaveBeenCalledOnce();
 });
 
 it.each([
