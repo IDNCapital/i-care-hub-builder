@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import nodemailer from "npm:nodemailer@6.9.16";
+import { verifierAcceptationInstallation } from "../_shared/installationDeliveryReceipt.ts";
 import { buildInternalRecipients } from "../_shared/notificationRecipients.ts";
 
 // ─────────────────────────────────────────────────────────────────────
@@ -353,12 +354,13 @@ Deno.serve(async (req) => {
 </div>
 </body></html>`;
       try {
-        await transporter.sendMail({
+        const recu = await transporter.sendMail({
           from: `"${mailFromName}" <${mailFromEmail}>`,
           to: cleanEmail,
           subject: "Votre demande d'installation a bien été reçue — I-CA.RE",
           html: ackHtml,
         });
+        verifierAcceptationInstallation(recu, { to: cleanEmail });
         ackSentAt = new Date().toISOString();
       } catch (e) {
         console.error("[submit-demande-installation] ack mail error:", e);
@@ -406,13 +408,15 @@ Deno.serve(async (req) => {
 </div>
 </body></html>`;
       try {
-        await transporter.sendMail({
+        const destinataires = buildInternalRecipients(internalEmail, mailFromEmail);
+        const recu = await transporter.sendMail({
           from: `"${mailFromName}" <${mailFromEmail}>`,
-          ...buildInternalRecipients(internalEmail, mailFromEmail),
+          ...destinataires,
           replyTo: `"${escapeHtml(cleanNom)}" <${cleanEmail}>`,
           subject: `[I-CA.RE] Nouvelle demande installation — ${cleanNom} · ${professionLabel}${villeLabel ? ` · ${villeLabel}` : ""}`,
           html: notifHtml,
         });
+        verifierAcceptationInstallation(recu, destinataires);
         notifiedAt = new Date().toISOString();
       } catch (e) {
         console.error("[submit-demande-installation] internal mail error:", e);
