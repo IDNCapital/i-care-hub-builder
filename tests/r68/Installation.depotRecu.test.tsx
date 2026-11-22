@@ -84,6 +84,7 @@ it.each([
   ["forme contradictoire", () => good({ ok: true, id, error: "test" })],
   ["HTTP inattendu", () => good({ ok: true, id }, 201)],
   ["réponse de relais", () => ({ ...good(), response: new Response("{}", { headers: { "x-relay-error": "true" } }) })],
+  ["réponse redirigée", () => ({ ...good(), response: Object.defineProperty(new Response("{}"), "redirected", { value: true }) })],
   ["réponse HTTP manquante", () => ({ ...good(), response: undefined })],
   ["erreur après dépôt possible", () => refused({ error: "internal_error" }, 500)],
   ["code non documenté", () => refused({ error: "rate_limited" }, 400)],
@@ -128,6 +129,17 @@ it("borne le temps mural même si le réveil de l’onglet retarde son timer", a
   ports.invoke.mockReturnValue(new Promise(done => { complete = done; }));
   await mount(); await fill(); await act(async () => { submit(); });
   vi.setSystemTime(Date.now() + 16_000);
+  await act(async () => complete(good()));
+  expect(issue()).toContain("ne pouvons pas confirmer"); expect(ports.measure).not.toHaveBeenCalled();
+});
+
+it("respecte les 15 secondes écoulées malgré un recul de l’horloge civile", async () => {
+  vi.useFakeTimers();
+  const chrono = vi.spyOn(performance, "now").mockReturnValue(500);
+  let complete!: (value: unknown) => void;
+  ports.invoke.mockReturnValue(new Promise(done => { complete = done; }));
+  await mount(); await fill(); await act(async () => { submit(); });
+  vi.setSystemTime(Date.now() - 30_000); chrono.mockReturnValue(15_500);
   await act(async () => complete(good()));
   expect(issue()).toContain("ne pouvons pas confirmer"); expect(ports.measure).not.toHaveBeenCalled();
 });

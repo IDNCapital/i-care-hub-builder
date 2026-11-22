@@ -96,7 +96,7 @@ function record(value: unknown): value is Record<string, unknown> {
 
 async function receiptOf(result: { data: unknown; error: unknown; response?: Response }): Promise<Receipt> {
   const { data, error, response } = result;
-  if (!(response instanceof Response) || response.headers.get("x-relay-error") === "true") return "unknown";
+  if (!(response instanceof Response) || response.redirected || response.headers.get("x-relay-error") === "true") return "unknown";
   if (response.status === 200 && error === null && record(data) && Object.keys(data).length === 2 && data.ok === true) {
     if (data.id === "honeypot") return "neutral";
     if (typeof data.id === "string" && uuid.test(data.id)) return "recorded";
@@ -201,7 +201,7 @@ function InstallationVisit({
 
     locked.current = true;
     setState("submitting");
-    const started = { timer: 0, deadline: Date.now() + 15_000 };
+    const started = { timer: 0, deadline: Date.now() + 15_000, monotonicDeadline: performance.now() + 15_000 };
     attempt.current = started;
     started.timer = window.setTimeout(() => {
       if (attempt.current !== started) return;
@@ -210,7 +210,7 @@ function InstallationVisit({
     }, 15_000);
     const inTime = () => {
       if (attempt.current !== started) return false;
-      if (Date.now() < started.deadline) return true;
+      if (Date.now() < started.deadline && performance.now() < started.monotonicDeadline) return true;
       attempt.current = null;
       setState("unknown");
       return false;
