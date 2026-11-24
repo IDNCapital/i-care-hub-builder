@@ -13,6 +13,7 @@ import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter,
 } from "@/components/ui/sheet";
 import { adminLogout, callAdminFunction, getAdminToken } from "@/lib/adminAuth";
+import { SuiviCourrielsInstallation, type TracesCourrielsInstallation } from "@/components/admin/SuiviCourrielsInstallation";
 import { BASE_URL } from "@/lib/siteUrl";
 
 function lectureBornee<T>(lire: () => Promise<T>) {
@@ -33,7 +34,7 @@ function lectureBornee<T>(lire: () => Promise<T>) {
   return { promise, fermer };
 }
 
-type Demande = {
+type Demande = TracesCourrielsInstallation & {
   id: string;
   profession_slug: string;
   ville_slug: string | null;
@@ -347,6 +348,7 @@ function DemandesCourantes({ demandesInitiales, loading, erreur, load, query, se
                     </a>
                   </div>
                 )}
+                <SuiviCourrielsInstallation traces={selected} />
                 {selected.message && (
                   <div>
                     <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Message</p>
