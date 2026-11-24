@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Loader2, LogOut, Search, Inbox } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -87,9 +87,6 @@ function demandesRecues(value: unknown): Demande[] {
 }
 
 export default function AdminDemandesInstallation() {
-  const [lecture, setLecture] = useState<Lecture>({ etat: "chargement", generation: 0, demandes: [], erreur: null });
-  const [query, setQuery] = useState("");
-  const [filterStatut, setFilterStatut] = useState<string>("actifs");
   // Le verrou appartient à la visite et survit aux remontages de lecture.
   const verrous = useRef(new Set<string>());
   const [savingIds, setSavingIds] = useState<ReadonlySet<string>>(new Set());
@@ -103,6 +100,23 @@ export default function AdminDemandesInstallation() {
     verrous.current.delete(id);
     setSavingIds(new Set(verrous.current));
   }
+  const [params, setParams] = useSearchParams();
+  const ids = params.getAll("id");
+  const cible = ids.length > 1 ? "" : ids[0]?.toLowerCase() ?? null;
+  function revenirListe() {
+    const suite = new URLSearchParams(params);
+    suite.delete("id");
+    setParams(suite, { replace: true });
+  }
+  return <LectureInstallations key={JSON.stringify(cible)} cible={cible} revenirListe={revenirListe}
+    savingIds={savingIds} prendreVerrou={prendreVerrou} libererVerrou={libererVerrou} />;
+}
+
+function LectureInstallations({ cible, revenirListe, savingIds, prendreVerrou, libererVerrou }: Pick<DemandesCourantesProps,
+  "cible" | "revenirListe" | "savingIds" | "prendreVerrou" | "libererVerrou">) {
+  const [lecture, setLecture] = useState<Lecture>({ etat: "chargement", generation: 0, demandes: [], erreur: null });
+  const [query, setQuery] = useState("");
+  const [filterStatut, setFilterStatut] = useState<string>("actifs");
   const visite = useRef({ active: false, generation: 0 });
   const fermerLecture = useRef<(() => void) | null>(null);
 
@@ -115,12 +129,14 @@ export default function AdminDemandesInstallation() {
     setLecture({ etat: "chargement", generation, demandes: [], erreur: null });
     try {
       if (!token) throw new Error("Session admin expirée");
-      const attente = lectureBornee(() => callAdminFunction<unknown>("admin-list-demandes-installation", {}));
+      if (cible === "") throw new Error("Lien de demande invalide");
+      const attente = lectureBornee(() => callAdminFunction<unknown>("admin-list-demandes-installation", cible === null ? {} : { id: cible }));
       fermerLecture.current = attente.fermer;
       const data = await attente.promise;
       if (!active()) return;
       if (getAdminToken() !== token) throw new Error("Session admin modifiée pendant la lecture");
       const demandes = demandesRecues(data);
+      if (cible !== null && demandes.some(d => d.id !== cible)) throw new Error("Reçu de demande incohérent");
       setLecture({ etat: "recu", generation, demandes, erreur: null });
     } catch (e) {
       if (!active()) return;
@@ -128,7 +144,7 @@ export default function AdminDemandesInstallation() {
       setLecture({ etat: "erreur", generation, demandes: [], erreur });
       toast.error(erreur);
     }
-  }, []);
+  }, [cible]);
 
   useEffect(() => {
     const courante = visite.current;
@@ -141,20 +157,25 @@ export default function AdminDemandesInstallation() {
   // Les filtres restent au niveau de la visite ; les écritures métier restent inchangées.
   return <DemandesCourantes key={`${lecture.generation}:${lecture.etat}`} demandesInitiales={lecture.demandes}
     loading={lecture.etat === "chargement"} erreur={lecture.erreur} load={load}
-    query={query} setQuery={setQuery} filterStatut={filterStatut} setFilterStatut={setFilterStatut}
+    cible={cible} revenirListe={revenirListe} query={query} setQuery={setQuery} filterStatut={filterStatut} setFilterStatut={setFilterStatut}
     savingIds={savingIds} prendreVerrou={prendreVerrou} libererVerrou={libererVerrou} />;
 }
 
 type DemandesCourantesProps = {
+  cible: string | null; revenirListe: () => void;
   demandesInitiales: Demande[]; loading: boolean; erreur: string | null; load: () => Promise<void>;
   query: string; setQuery: (value: string) => void; filterStatut: string; setFilterStatut: (value: string) => void;
   savingIds: ReadonlySet<string>; prendreVerrou: (id: string) => boolean; libererVerrou: (id: string) => void;
 };
 
-function DemandesCourantes({ demandesInitiales, loading, erreur, load, query, setQuery, filterStatut, setFilterStatut, savingIds, prendreVerrou, libererVerrou }: DemandesCourantesProps) {
+function DemandesCourantes({ cible, revenirListe, demandesInitiales, loading, erreur, load, query, setQuery, filterStatut, setFilterStatut, savingIds, prendreVerrou, libererVerrou }: DemandesCourantesProps) {
   const navigate = useNavigate();
   const [demandes, setDemandes] = useState<Demande[]>(demandesInitiales);
-  const [selected, setSelected] = useState<Demande | null>(null);
+  const [selected, setSelected] = useState<Demande | null>(cible === null ? null : demandesInitiales[0] ?? null);
+  function fermerFiche() {
+    if (cible !== null) revenirListe();
+    else setSelected(null);
+  }
   const [draftStatut, setDraftStatut] = useState<Demande["statut"]>("nouvelle");
   const [draftNotes, setDraftNotes] = useState("");
 
@@ -223,7 +244,7 @@ function DemandesCourantes({ demandesInitiales, loading, erreur, load, query, se
         <div className="container mx-auto px-6 py-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="font-heading text-2xl font-normal text-foreground">Demandes installation</h1>
-            <p className="text-sm text-muted-foreground">{loading ? "Chargement des demandes…" : erreur ? "Nombre de demandes inconnu" : `${filtered.length} affichées / ${demandes.length} reçues`}</p>
+            <p className="text-sm text-muted-foreground">{cible !== null ? "Consultation du dossier demandé" : loading ? "Chargement des demandes…" : erreur ? "Nombre de demandes inconnu" : `${filtered.length} affichées / ${demandes.length} reçues`}</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="outline" size="sm" onClick={() => navigate("/admin/demandes")}>
@@ -234,6 +255,7 @@ function DemandesCourantes({ demandesInitiales, loading, erreur, load, query, se
             </Button>
           </div>
         </div>
+        {cible !== null ? <div className="container mx-auto px-6 pb-4"><Button variant="outline" onClick={revenirListe}>Toutes les demandes</Button></div> :
         <div className="container mx-auto px-6 pb-4 flex flex-wrap items-center gap-3">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -250,15 +272,17 @@ function DemandesCourantes({ demandesInitiales, loading, erreur, load, query, se
             </SelectContent>
           </Select>
           <Button variant="outline" size="sm" onClick={load} disabled={loading}>Actualiser</Button>
-        </div>
+        </div>}
       </header>
 
       <main className="container mx-auto px-6 py-6">
-        {!loading && !erreur && <p role="status" className="text-sm text-muted-foreground mb-4">Lecture limitée aux 500 demandes les plus récentes. {demandes.length === 500 ? "Limite atteinte : cet extrait ne prouve pas le nombre total de demandes." : "Le serveur ne fournit pas de total global."}</p>}
+        {cible === null && !loading && !erreur && <p role="status" className="text-sm text-muted-foreground mb-4">Lecture limitée aux 500 demandes les plus récentes. {demandes.length === 500 ? "Limite atteinte : cet extrait ne prouve pas le nombre total de demandes." : "Le serveur ne fournit pas de total global."}</p>}
         {erreur ? (
           <div role="alert" className="py-10"><p>Impossible de charger les demandes. {erreur}</p><Button className="mt-4" variant="outline" onClick={load}>Réessayer la lecture</Button></div>
         ) : loading ? (
           <div role="status" aria-label="Chargement des demandes" className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>
+        ) : cible !== null ? (
+          <p className="text-center text-muted-foreground py-20">{demandes.length ? "Dossier de la demande d’installation" : "Demande introuvable."}</p>
         ) : filtered.length === 0 ? (
           <p className="text-center text-muted-foreground py-20">Aucune demande.</p>
         ) : (
@@ -312,7 +336,7 @@ function DemandesCourantes({ demandesInitiales, loading, erreur, load, query, se
         )}
       </main>
 
-      <Sheet open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+      <Sheet open={!!selected} onOpenChange={(o) => !o && fermerFiche()}>
         <SheetContent className="sm:max-w-xl overflow-y-auto break-words">
           {selected && (
             <>
@@ -373,7 +397,7 @@ function DemandesCourantes({ demandesInitiales, loading, erreur, load, query, se
                 </div>
               </div>
               <SheetFooter className="mt-6">
-                <Button variant="outline" onClick={() => setSelected(null)}>Fermer</Button>
+                <Button variant="outline" onClick={fermerFiche}>Fermer</Button>
                 <Button onClick={save} disabled={savingIds.has(selected.id)}>
                   {savingIds.has(selected.id) ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Enregistrement…</> : "Enregistrer"}
                 </Button>

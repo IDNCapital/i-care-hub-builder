@@ -16,7 +16,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
 
   if (authed === null) return null;
   if (!authed) {
-    return <Navigate to="/admin/login" replace state={{ from: location.pathname }} />;
+    return <Navigate to="/admin/login" replace state={{ from: location.pathname + location.search + location.hash }} />;
   }
   return <>{children}</>;
 }

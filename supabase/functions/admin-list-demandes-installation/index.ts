@@ -1,5 +1,8 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
+import type { Database } from "../../../src/integrations/supabase/types.ts";
+import { lireCible, selectionnerDemandes } from "./lecture.ts";
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -75,16 +78,22 @@ Deno.serve(async (req) => {
     });
   }
 
-  const supabase = createClient(
+  const supabase = createClient<Database>(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
 
-  const { data, error } = await supabase
-    .from("demandes_installation")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(500);
+  let cible: string | null;
+  try {
+    cible = lireCible(await req.text());
+  } catch {
+    return new Response(JSON.stringify({ error: "Identifiant ou corps de lecture invalide" }), {
+      status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+  const { data, error } = await selectionnerDemandes(
+    supabase.from("demandes_installation").select("*"), cible,
+  );
 
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
