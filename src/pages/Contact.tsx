@@ -4,9 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { SeoHead } from "@/components/SeoHead";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
@@ -44,7 +44,39 @@ const IDS_REFUS: Record<CibleRefus, string> = {
   consentement: "rgpd-contact",
 };
 
+type Recu = { etat: "confirme"; id: string } | { etat: "refuse" | "limite" | "inconnu" };
+const delaiRecuMs = 15_000;
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const refusAvantInsertion = new Set(["invalid_type", "missing_fields", "invalid_email", "invalid_phone", "invalid_profession"]);
+
+function estObjet(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+async function qualifierRecu(resultat: { data: unknown; error: unknown; response?: Response }): Promise<Recu> {
+  const { data, error, response } = resultat;
+  if (!(response instanceof Response) || response.headers.get("x-relay-error") === "true") return { etat: "inconnu" };
+  if (response.status === 200 && error === null && estObjet(data) && Object.keys(data).length === 2 &&
+    data.status === "ok" && typeof data.lead_id === "string" && uuid.test(data.lead_id)) {
+    return { etat: "confirme", id: data.lead_id };
+  }
+  if (data !== null || !estObjet(error) || error.context !== response ||
+    (response.status !== 400 && response.status !== 429)) return { etat: "inconnu" };
+  const corps: unknown = await response.json();
+  if (!estObjet(corps) || Object.keys(corps).length !== 1 || typeof corps.error !== "string") return { etat: "inconnu" };
+  if (response.status === 429 && corps.error === "rate_limited") return { etat: "limite" };
+  if (response.status === 400 && refusAvantInsertion.has(corps.error)) return { etat: "refuse" };
+  return { etat: "inconnu" };
+}
+
 export default function Contact() {
+  const location = useLocation();
+  const { i18n } = useTranslation();
+  const visite = JSON.stringify([location.key, location.pathname, location.search, location.hash, i18n.language]);
+  return <ContactCourant key={visite} />;
+}
+
+function ContactCourant() {
   const { t, i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
 
@@ -61,6 +93,16 @@ export default function Contact() {
   const [honeypot, setHoneypot] = useState("");
   const [rgpdConsent, setRgpdConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [recu, setRecu] = useState<Recu | null>(null);
+  const verrou = useRef(false);
+  const visiteActive = useRef(false);
+  const annuler = useRef<(() => void) | null>(null);
+  const bloque = isSubmitting || recu?.etat === "confirme" || recu?.etat === "inconnu";
+  useLayoutEffect(() => {
+    visiteActive.current = true;
+    return () => { visiteActive.current = false; annuler.current?.(); };
+  }, []);
 
   const contactRef = useRef<HTMLDivElement>(null);
   const prefixeRefus = useId();
@@ -113,6 +155,7 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!visiteActive.current || verrou.current) return;
     if (honeypot) return;
     if (!selectedType) {
       setRefus({ cible: "type", cleMessage: "contact.selectType" });
@@ -139,9 +182,21 @@ export default function Contact() {
     const selectedConfig = contactTypes.find((ct) => ct.id === selectedType);
     const backendType = selectedConfig?.backendType || "contact_general";
 
+    verrou.current = true;
+    setRecu(null);
     setIsSubmitting(true);
+    const source = window.location.href;
+    const controller = new AbortController();
+    const echeance = Date.now() + delaiRecuMs;
+    const inconnu = () => {
+      setRecu({ etat: "inconnu" });
+      setIsSubmitting(false);
+    };
+    const timer = window.setTimeout(() => { controller.abort(); inconnu(); }, delaiRecuMs);
+    annuler.current = () => { window.clearTimeout(timer); controller.abort(); };
     try {
-      const { data, error } = await supabase.functions.invoke("send-contact-lead", {
+      const reponse = await supabase.functions.invoke("send-contact-lead", {
+        signal: controller.signal,
         body: {
           type: backendType,
           full_name: formData.nom,
@@ -150,26 +205,37 @@ export default function Contact() {
           organization: formData.organisation || null,
           message: formData.message,
           language: lang,
-          source_url: window.location.href,
+          source_url: source,
           honeypot,
           ...getUtmParams(),
         },
       });
-      if (error) throw error;
-      if (data?.error === "rate_limited") { toast.error(t("contact.errorRateLimit")); return; }
-      if (data?.error) throw new Error(data.error);
-
-      toast.success(t("contact.success"));
-      Analytics.formSubmission("contact", window.location.pathname);
-      setFormData({ nom: "", email: "", telephone: "", organisation: "", message: "" });
-      setSelectedType(null);
-      setRgpdConsent(false);
-    } catch (err) {
-      console.error("Contact form error:", err);
-      toast.error(t("contact.errorGeneric"));
+      if (!visiteActive.current || controller.signal.aborted) return;
+      const preuve = await qualifierRecu(reponse);
+      if (!visiteActive.current || controller.signal.aborted) return;
+      if (Date.now() >= echeance || window.location.href !== source) { inconnu(); return; }
+      setRecu(preuve);
+      if (preuve.etat === "confirme") {
+        try { Analytics.formSubmission("contact", window.location.pathname); }
+        catch { /* La mesure est indépendante du reçu. */ }
+      }
+      if (preuve.etat === "refuse" || preuve.etat === "limite") verrou.current = false;
+    } catch {
+      if (visiteActive.current && !controller.signal.aborted) inconnu();
     } finally {
-      setIsSubmitting(false);
+      window.clearTimeout(timer);
+      if (visiteActive.current && !controller.signal.aborted) setIsSubmitting(false);
+      annuler.current = null;
     }
+  };
+
+  const autreDemande = () => {
+    if (recu?.etat !== "confirme") return;
+    setRecu(null);
+    setFormData({ nom: "", email: "", telephone: "", organisation: "", message: "" });
+    setSelectedType(null);
+    setRgpdConsent(false);
+    verrou.current = false;
   };
 
   const orgLabel = selectedType === "collectivite"
@@ -244,7 +310,7 @@ export default function Contact() {
               className="grid sm:grid-cols-3 gap-4 mb-8 focus:outline focus:outline-2 focus:outline-offset-4"
             >
               {contactTypes.map((type) => (
-                <button key={type.id} aria-pressed={selectedType === type.id} onClick={() => setSelectedType(type.id)} className={`p-6 rounded-2xl border-2 transition-all text-left ${selectedType === type.id ? "border-primary bg-primary/10" : "border-border hover:border-primary/50"}`}>
+                <button key={type.id} disabled={bloque} aria-pressed={selectedType === type.id} onClick={() => setSelectedType(type.id)} className={`p-6 rounded-2xl border-2 transition-all text-left ${selectedType === type.id ? "border-primary bg-primary/10" : "border-border hover:border-primary/50"}`}>
                   <type.icon className={`w-8 h-8 mb-4 ${selectedType === type.id ? "text-primary" : "text-muted-foreground"}`} />
                   <h3 className="font-semibold mb-1">{type.title}</h3>
                   <p className="text-sm text-muted-foreground">{type.description}</p>
@@ -253,6 +319,7 @@ export default function Contact() {
             </div>
             {erreurLocale("type")}
             <form onSubmit={handleSubmit} onInvalidCapture={handleInvalid} className="space-y-6">
+              <fieldset disabled={bloque} className="min-w-0 space-y-6">
               {/* Honeypot */}
               <div className="absolute -left-[9999px]" aria-hidden="true">
                 <input type="text" name="company_url" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
@@ -296,7 +363,19 @@ export default function Contact() {
 
               {erreurLocale("consentement")}
 
-              <Button type="submit" variant="hero" className="w-full" disabled={isSubmitting}>
+              </fieldset>
+              {recu?.etat === "confirme" && <div role="status" className="space-y-2">
+                <p>{lang === "fr" ? "Votre demande a été enregistrée. Référence" : "Your request has been recorded. Reference"} : <span className="break-all">{recu.id}</span></p>
+                <Button type="button" variant="outline" onClick={autreDemande}>{lang === "fr" ? "Préparer une autre demande" : "Prepare another request"}</Button>
+              </div>}
+              {recu?.etat === "inconnu" && <p role="alert">{lang === "fr"
+                ? "Réception non confirmée. Votre demande a pu être enregistrée. Votre saisie est conservée. Contactez l’équipe avant tout nouvel envoi."
+                : "Receipt unconfirmed. Your request may have been recorded. Your details are retained. Contact the team before submitting again."}</p>}
+              {recu?.etat === "limite" && <p role="alert">{t("contact.errorRateLimit")}</p>}
+              {recu?.etat === "refuse" && <p role="alert">{lang === "fr"
+                ? "La demande a été refusée avant son enregistrement. Vérifiez votre saisie."
+                : "The request was declined before it was recorded. Check your details."}</p>}
+              <Button type="submit" variant="hero" className="w-full" disabled={bloque}>
                 {isSubmitting ? (
                   <><Loader2 className="mr-2 h-5 w-5 animate-spin" />{t("contact.submitting")}</>
                 ) : (

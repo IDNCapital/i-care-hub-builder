@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import nodemailer from "npm:nodemailer@6.9.16";
+import { verifierAcceptationInstallation } from "../_shared/installationDeliveryReceipt.ts";
 import { buildInternalRecipients } from "../_shared/notificationRecipients.ts";
 
 // ─────────────────────────────────────────────────────────────────────
@@ -292,7 +293,7 @@ Deno.serve(async (req) => {
     // ── SMTP (Infomaniak — même infra que submit-demande-conciergerie)
     let ackSentAt: string | null = null;
     let notifiedAt: string | null = null;
-    let sendError: string | null = null;
+    const erreursEnvoi: string[] = [];
     let smtpReady = false;
     let transporter: ReturnType<typeof nodemailer.createTransport> | null = null;
     let mailFromName = "I-CA.RE";
@@ -313,7 +314,7 @@ Deno.serve(async (req) => {
       smtpReady = true;
     } catch (e) {
       console.warn("[submit-demande-installation] SMTP not configured:", e);
-      sendError = "smtp_not_configured";
+      erreursEnvoi.push("smtp_not_configured");
       await auditEmailFailed(supabase, "SMTP non configuré, aucun courriel envoyé", { demande_id: demandeId, stage: "smtp_not_configured" });
       try {
         await notifyIdnOs(supabase, "submit-demande-installation", "email_failed", "demandes_installation", demandeId, { stage: "smtp_not_configured", error_message: "SMTP non configuré, aucun courriel envoyé" });
@@ -353,17 +354,18 @@ Deno.serve(async (req) => {
 </div>
 </body></html>`;
       try {
-        await transporter.sendMail({
+        const recu = await transporter.sendMail({
           from: `"${mailFromName}" <${mailFromEmail}>`,
           to: cleanEmail,
           subject: "Votre demande d'installation a bien été reçue — I-CA.RE",
           html: ackHtml,
         });
+        verifierAcceptationInstallation(recu, { to: cleanEmail });
         ackSentAt = new Date().toISOString();
       } catch (e) {
         console.error("[submit-demande-installation] ack mail error:", e);
         const errMsg = e instanceof Error ? e.message : String(e);
-        sendError = "ack: " + scrubPii(errMsg);
+        erreursEnvoi.push("ack: " + scrubPii(errMsg).slice(0, 200));
         await auditEmailFailed(supabase, "échec envoi accusé candidat installation", {
           error_message: scrubPii(errMsg).slice(0, 500),
           demande_id: demandeId,
@@ -406,18 +408,20 @@ Deno.serve(async (req) => {
 </div>
 </body></html>`;
       try {
-        await transporter.sendMail({
+        const destinataires = buildInternalRecipients(internalEmail, mailFromEmail);
+        const recu = await transporter.sendMail({
           from: `"${mailFromName}" <${mailFromEmail}>`,
-          ...buildInternalRecipients(internalEmail, mailFromEmail),
+          ...destinataires,
           replyTo: `"${escapeHtml(cleanNom)}" <${cleanEmail}>`,
           subject: `[I-CA.RE] Nouvelle demande installation — ${cleanNom} · ${professionLabel}${villeLabel ? ` · ${villeLabel}` : ""}`,
           html: notifHtml,
         });
+        verifierAcceptationInstallation(recu, destinataires);
         notifiedAt = new Date().toISOString();
       } catch (e) {
         console.error("[submit-demande-installation] internal mail error:", e);
         const errMsg = e instanceof Error ? e.message : String(e);
-        sendError = "notification: " + scrubPii(errMsg);
+        erreursEnvoi.push("notification: " + scrubPii(errMsg).slice(0, 200));
         await auditEmailFailed(supabase, "échec envoi notification interne installation", {
           error_message: scrubPii(errMsg).slice(0, 500),
           demande_id: demandeId,
@@ -440,7 +444,7 @@ Deno.serve(async (req) => {
     const suivi: Record<string, string> = {};
     if (ackSentAt) suivi.ack_sent_at = ackSentAt;
     if (notifiedAt) suivi.notified_at = notifiedAt;
-    if (sendError) suivi.email_send_error = sendError.slice(0, 480);
+    if (erreursEnvoi.length) suivi.email_send_error = erreursEnvoi.join(" / ");
     if (Object.keys(suivi).length > 0) {
       try {
         const { error: suiviErr } = await supabase

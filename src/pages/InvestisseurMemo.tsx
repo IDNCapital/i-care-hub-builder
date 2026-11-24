@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { localePath } from "@/lib/routes";
 import { useState, useEffect } from "react";
@@ -15,58 +15,82 @@ import {
 } from "lucide-react";
 import { BrandName, InlineBrand } from "@/components/BrandName";
 
-type AccessState = "loading" | "granted" | "denied";
+type AccessState = "loading" | "granted" | "denied" | "unknown";
 
-/**
- * Server-side token validation via check-investor-access edge function.
- * Falls back to denied if no token or validation fails.
- */
-function useInvestorAccess(): AccessState {
-  const [state, setState] = useState<AccessState>("loading");
+function useInvestorAccess(lang: string) {
+  const [receipt, setReceipt] = useState<{ state: AccessState; token: string | null; lang: string }>({ state: "loading", token: null, lang });
+  const [attempt, setAttempt] = useState(0);
+  let currentToken: string | null = null;
+  let storageAvailable = true;
+  try { currentToken = localStorage.getItem("icare_investor_token"); } catch { storageAvailable = false; }
 
   useEffect(() => {
-    const token = localStorage.getItem("icare_investor_token");
-    // Also support legacy sessionStorage for backward compat
-    const legacyToken = sessionStorage.getItem("icare_investor_access") === "granted";
-
-    if (!token && !legacyToken) {
-      setState("denied");
-      return;
-    }
-
-    // If only legacy access (no real token), deny: legacy is no longer trusted
-    if (!token) {
-      sessionStorage.removeItem("icare_investor_access");
-      setState("denied");
-      return;
-    }
-
-    // Validate token server-side
-    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-    fetch(`https://${projectId}.supabase.co/functions/v1/check-investor-access`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-      },
-      body: JSON.stringify({ access_token: token }),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.valid) {
-          setState("granted");
-        } else {
-          // Token invalid or expired: clear it
-          localStorage.removeItem("icare_investor_token");
-          setState("denied");
+    let active = true;
+    const controller = new AbortController();
+    const deadline = Date.now() + 15000;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let token: string | null = null;
+    const commit = (state: AccessState) => { if (active) setReceipt({ state, token, lang }); };
+    const invalidate = () => {
+      if (!active) return;
+      commit("unknown");
+      active = false;
+      controller.abort();
+      if (timer !== undefined) clearTimeout(timer);
+    };
+    const onStorage = (event: StorageEvent) => {
+      if (event.key !== null && event.key !== "icare_investor_token") return;
+      try { if (localStorage.getItem("icare_investor_token") !== token) invalidate(); } catch { invalidate(); }
+    };
+    window.addEventListener("storage", onStorage);
+    (async () => {
+      try {
+        token = localStorage.getItem("icare_investor_token");
+        if (!token) {
+          if (sessionStorage.getItem("icare_investor_access") === "granted") sessionStorage.removeItem("icare_investor_access");
+          commit("denied");
+          return;
         }
-      })
-      .catch(() => {
-        setState("denied");
-      });
-  }, []);
+        commit("loading");
+        timer = setTimeout(invalidate, 15000);
+        const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+        const res = await fetch(`https://${projectId}.supabase.co/functions/v1/check-investor-access`, {
+          method: "POST",
+          signal: controller.signal,
+          headers: { "Content-Type": "application/json", "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY },
+          body: JSON.stringify({ access_token: token }),
+        });
+        const result = await res.json();
+        if (!active) return;
+        if (Date.now() >= deadline || localStorage.getItem("icare_investor_token") !== token) { invalidate(); return; }
+        if (res.status !== 200 || res.headers.get("x-relay-error") === "true" ||
+            typeof result !== "object" || result === null || Array.isArray(result)) {
+          commit("unknown");
+          return;
+        }
+        const champs = Object.keys(result).sort().join(",");
+        if (champs === "valid" && result.valid === true) {
+          commit("granted");
+        } else if (champs === "reason,valid" && result.valid === false && result.reason === "expired") {
+          localStorage.removeItem("icare_investor_token");
+          commit("denied");
+        } else {
+          // Les anciens serveurs rendent aussi valid:false sans motif sur une panne de lecture.
+          commit("unknown");
+        }
+      } catch { commit("unknown"); }
+      finally { if (timer !== undefined) clearTimeout(timer); }
+    })();
+    return () => {
+      active = false;
+      controller.abort();
+      if (timer !== undefined) clearTimeout(timer);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, [lang, attempt]);
 
-  return state;
+  const state: AccessState = !storageAvailable ? "unknown" : receipt.lang !== lang ? "loading" : receipt.state === "denied" ? "denied" : receipt.token !== currentToken ? "unknown" : receipt.state;
+  return { state, retry: () => setAttempt(value => value + 1) };
 }
 
 const keyMetrics = [
@@ -242,12 +266,31 @@ function DataTable({ title, rows }: { title: string; rows: { label: string; valu
 }
 
 export default function InvestisseurMemo() {
-  const accessState = useInvestorAccess();
+  const visite = useLocation();
+  return <MemoDeLaVisite key={visite.key} />;
+}
+
+function MemoDeLaVisite() {
   const { i18n } = useTranslation();
   const lang = (i18n.language === "en" ? "en" : "fr") as "fr" | "en";
+  const { state: accessState, retry } = useInvestorAccess(lang);
 
   if (accessState === "denied") {
     return <Navigate to={localePath(lang, "investmentInterest")} replace />;
+  }
+
+  if (accessState === "unknown") {
+    return (
+      <Layout>
+        <title>{lang === "en" ? "Investment memo" : "Note d'investissement"} | I-CA.RE</title>
+        <meta name="robots" content="noindex, nofollow" />
+        <section className="pt-32 pb-20 container space-y-6">
+          <p role="alert">{lang === "en" ? "Access to the memo has not been confirmed." : "L’accès au mémo n’a pas été confirmé."}</p>
+          <Button variant="hero" onClick={retry}>{lang === "en" ? "Try again" : "Réessayer"}</Button>
+          <Link to={localePath(lang, "investmentInterest")}>{lang === "en" ? "Back to the form" : "Retour au formulaire"}</Link>
+        </section>
+      </Layout>
+    );
   }
 
   if (accessState === "loading") {

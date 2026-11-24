@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Loader2, LogOut, Search, Inbox } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -12,10 +12,29 @@ import {
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter,
 } from "@/components/ui/sheet";
-import { adminLogout, callAdminFunction } from "@/lib/adminAuth";
+import { adminLogout, callAdminFunction, getAdminToken } from "@/lib/adminAuth";
+import { SuiviCourrielsInstallation, type TracesCourrielsInstallation } from "@/components/admin/SuiviCourrielsInstallation";
 import { BASE_URL } from "@/lib/siteUrl";
 
-type Demande = {
+function lectureBornee<T>(lire: () => Promise<T>) {
+  const echeance = Date.now() + 15_000;
+  let fermee = false;
+  let fermer!: () => void;
+  const limite = new Promise<never>((_resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error("Lecture sans réponse sous 15 secondes.")), 15_000);
+    fermer = () => { fermee = true; clearTimeout(timer); reject(new Error("Lecture abandonnée localement.")); };
+  });
+  const promise = Promise.race([Promise.resolve().then(() => {
+    if (fermee || Date.now() >= echeance) throw new Error("Lecture abandonnée localement.");
+    return lire();
+  }), limite]).then(value => {
+    if (Date.now() >= echeance) throw new Error("Lecture sans réponse sous 15 secondes.");
+    return value;
+  }).finally(() => fermer());
+  return { promise, fermer };
+}
+
+type Demande = TracesCourrielsInstallation & {
   id: string;
   profession_slug: string;
   ville_slug: string | null;
@@ -45,33 +64,120 @@ const STATUT_COLORS: Record<Demande["statut"], string> = {
 
 const ACTIFS: Demande["statut"][] = ["nouvelle", "en_cours"];
 
+type Lecture = { etat: "chargement" | "recu" | "erreur"; generation: number; demandes: Demande[]; erreur: string | null };
+
+function demandesRecues(value: unknown): Demande[] {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Réponse de lecture incomplète");
+  const enveloppe = value as Record<string, unknown>;
+  const rows = enveloppe.demandes;
+  if ((enveloppe.error !== undefined && enveloppe.error !== null) || !Array.isArray(rows) || rows.length > 500) throw new Error("Réponse de lecture incomplète");
+  const ids = new Set<string>();
+  const nullable = (v: unknown) => v === null || typeof v === "string";
+  for (const item of rows) {
+    if (!item || typeof item !== "object" || Array.isArray(item)) throw new Error("Demande reçue invalide");
+    const row = item as Record<string, unknown>;
+    if (typeof row.id !== "string" || !row.id.trim() || ids.has(row.id) ||
+      typeof row.profession_slug !== "string" || typeof row.nom !== "string" || typeof row.email !== "string" ||
+      !nullable(row.ville_slug) || !nullable(row.telephone) || !nullable(row.message) || !nullable(row.source_path) || !nullable(row.notes_internes) ||
+      typeof row.consentement_rgpd !== "boolean" || typeof row.statut !== "string" || !Object.prototype.hasOwnProperty.call(STATUT_LABELS, row.statut) ||
+      typeof row.created_at !== "string" || !Number.isFinite(Date.parse(row.created_at))) throw new Error("Demande reçue invalide");
+    ids.add(row.id);
+  }
+  return rows as Demande[];
+}
+
 export default function AdminDemandesInstallation() {
-  const navigate = useNavigate();
-  const [demandes, setDemandes] = useState<Demande[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Le verrou appartient à la visite et survit aux remontages de lecture.
+  const verrous = useRef(new Set<string>());
+  const [savingIds, setSavingIds] = useState<ReadonlySet<string>>(new Set());
+  function prendreVerrou(id: string) {
+    if (verrous.current.has(id)) return false;
+    verrous.current.add(id);
+    setSavingIds(new Set(verrous.current));
+    return true;
+  }
+  function libererVerrou(id: string) {
+    verrous.current.delete(id);
+    setSavingIds(new Set(verrous.current));
+  }
+  const [params, setParams] = useSearchParams();
+  const ids = params.getAll("id");
+  const cible = ids.length > 1 ? "" : ids[0]?.toLowerCase() ?? null;
+  function revenirListe() {
+    const suite = new URLSearchParams(params);
+    suite.delete("id");
+    setParams(suite, { replace: true });
+  }
+  return <LectureInstallations key={JSON.stringify(cible)} cible={cible} revenirListe={revenirListe}
+    savingIds={savingIds} prendreVerrou={prendreVerrou} libererVerrou={libererVerrou} />;
+}
+
+function LectureInstallations({ cible, revenirListe, savingIds, prendreVerrou, libererVerrou }: Pick<DemandesCourantesProps,
+  "cible" | "revenirListe" | "savingIds" | "prendreVerrou" | "libererVerrou">) {
+  const [lecture, setLecture] = useState<Lecture>({ etat: "chargement", generation: 0, demandes: [], erreur: null });
   const [query, setQuery] = useState("");
   const [filterStatut, setFilterStatut] = useState<string>("actifs");
-  const [selected, setSelected] = useState<Demande | null>(null);
-  const [savingId, setSavingId] = useState<string | null>(null);
+  const visite = useRef({ active: false, generation: 0 });
+  const fermerLecture = useRef<(() => void) | null>(null);
+
+  const load = useCallback(async () => {
+    if (!visite.current.active) return;
+    fermerLecture.current?.();
+    const generation = ++visite.current.generation;
+    const active = () => visite.current.active && visite.current.generation === generation;
+    const token = getAdminToken();
+    setLecture({ etat: "chargement", generation, demandes: [], erreur: null });
+    try {
+      if (!token) throw new Error("Session admin expirée");
+      if (cible === "") throw new Error("Lien de demande invalide");
+      const attente = lectureBornee(() => callAdminFunction<unknown>("admin-list-demandes-installation", cible === null ? {} : { id: cible }));
+      fermerLecture.current = attente.fermer;
+      const data = await attente.promise;
+      if (!active()) return;
+      if (getAdminToken() !== token) throw new Error("Session admin modifiée pendant la lecture");
+      const demandes = demandesRecues(data);
+      if (cible !== null && demandes.some(d => d.id !== cible)) throw new Error("Reçu de demande incohérent");
+      setLecture({ etat: "recu", generation, demandes, erreur: null });
+    } catch (e) {
+      if (!active()) return;
+      const erreur = e instanceof Error ? e.message : "Erreur de chargement";
+      setLecture({ etat: "erreur", generation, demandes: [], erreur });
+      toast.error(erreur);
+    }
+  }, [cible]);
+
+  useEffect(() => {
+    const courante = visite.current;
+    courante.active = true;
+    void load();
+    return () => { courante.active = false; ++courante.generation; fermerLecture.current?.(); fermerLecture.current = null; };
+  }, [load]);
+
+  // Une nouvelle lecture ferme l'ancien détail et abandonne ses callbacks locaux.
+  // Les filtres restent au niveau de la visite ; les écritures métier restent inchangées.
+  return <DemandesCourantes key={`${lecture.generation}:${lecture.etat}`} demandesInitiales={lecture.demandes}
+    loading={lecture.etat === "chargement"} erreur={lecture.erreur} load={load}
+    cible={cible} revenirListe={revenirListe} query={query} setQuery={setQuery} filterStatut={filterStatut} setFilterStatut={setFilterStatut}
+    savingIds={savingIds} prendreVerrou={prendreVerrou} libererVerrou={libererVerrou} />;
+}
+
+type DemandesCourantesProps = {
+  cible: string | null; revenirListe: () => void;
+  demandesInitiales: Demande[]; loading: boolean; erreur: string | null; load: () => Promise<void>;
+  query: string; setQuery: (value: string) => void; filterStatut: string; setFilterStatut: (value: string) => void;
+  savingIds: ReadonlySet<string>; prendreVerrou: (id: string) => boolean; libererVerrou: (id: string) => void;
+};
+
+function DemandesCourantes({ cible, revenirListe, demandesInitiales, loading, erreur, load, query, setQuery, filterStatut, setFilterStatut, savingIds, prendreVerrou, libererVerrou }: DemandesCourantesProps) {
+  const navigate = useNavigate();
+  const [demandes, setDemandes] = useState<Demande[]>(demandesInitiales);
+  const [selected, setSelected] = useState<Demande | null>(cible === null ? null : demandesInitiales[0] ?? null);
+  function fermerFiche() {
+    if (cible !== null) revenirListe();
+    else setSelected(null);
+  }
   const [draftStatut, setDraftStatut] = useState<Demande["statut"]>("nouvelle");
   const [draftNotes, setDraftNotes] = useState("");
-
-  const load = async () => {
-    setLoading(true);
-    try {
-      const data = await callAdminFunction<{ demandes: Demande[] }>(
-        "admin-list-demandes-installation",
-        {},
-      );
-      setDemandes(data.demandes ?? []);
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Erreur de chargement");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => { load(); }, []);
 
   useEffect(() => {
     if (selected) {
@@ -94,8 +200,7 @@ export default function AdminDemandesInstallation() {
   }, [demandes, query, filterStatut]);
 
   const save = async () => {
-    if (!selected) return;
-    setSavingId(selected.id);
+    if (!selected || !prendreVerrou(selected.id)) return;
     try {
       const data = await callAdminFunction<{ demande: Demande }>(
         "admin-update-demande-installation",
@@ -111,12 +216,12 @@ export default function AdminDemandesInstallation() {
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erreur");
     } finally {
-      setSavingId(null);
+      libererVerrou(selected.id);
     }
   };
 
   const updateStatutInline = async (d: Demande, newStatut: Demande["statut"]) => {
-    setSavingId(d.id);
+    if (!prendreVerrou(d.id)) return;
     try {
       const data = await callAdminFunction<{ demande: Demande }>(
         "admin-update-demande-installation",
@@ -127,7 +232,7 @@ export default function AdminDemandesInstallation() {
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erreur");
     } finally {
-      setSavingId(null);
+      libererVerrou(d.id);
     }
   };
 
@@ -136,12 +241,12 @@ export default function AdminDemandesInstallation() {
       <title>Demandes installation | Admin I-CA.RE</title>
       <meta name="robots" content="noindex,nofollow" />
       <header className="border-b bg-background sticky top-0 z-10">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-6 py-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="font-heading text-2xl font-normal text-foreground">Demandes installation</h1>
-            <p className="text-sm text-muted-foreground">{filtered.length} / {demandes.length} demandes</p>
+            <p className="text-sm text-muted-foreground">{cible !== null ? "Consultation du dossier demandé" : loading ? "Chargement des demandes…" : erreur ? "Nombre de demandes inconnu" : `${filtered.length} affichées / ${demandes.length} reçues`}</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button variant="outline" size="sm" onClick={() => navigate("/admin/demandes")}>
               <Inbox className="w-4 h-4 mr-1.5" /> Demandes conciergerie
             </Button>
@@ -150,6 +255,7 @@ export default function AdminDemandesInstallation() {
             </Button>
           </div>
         </div>
+        {cible !== null ? <div className="container mx-auto px-6 pb-4"><Button variant="outline" onClick={revenirListe}>Toutes les demandes</Button></div> :
         <div className="container mx-auto px-6 pb-4 flex flex-wrap items-center gap-3">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -166,12 +272,17 @@ export default function AdminDemandesInstallation() {
             </SelectContent>
           </Select>
           <Button variant="outline" size="sm" onClick={load} disabled={loading}>Actualiser</Button>
-        </div>
+        </div>}
       </header>
 
       <main className="container mx-auto px-6 py-6">
-        {loading ? (
-          <div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>
+        {cible === null && !loading && !erreur && <p role="status" className="text-sm text-muted-foreground mb-4">Lecture limitée aux 500 demandes les plus récentes. {demandes.length === 500 ? "Limite atteinte : cet extrait ne prouve pas le nombre total de demandes." : "Le serveur ne fournit pas de total global."}</p>}
+        {erreur ? (
+          <div role="alert" className="py-10"><p>Impossible de charger les demandes. {erreur}</p><Button className="mt-4" variant="outline" onClick={load}>Réessayer la lecture</Button></div>
+        ) : loading ? (
+          <div role="status" aria-label="Chargement des demandes" className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>
+        ) : cible !== null ? (
+          <p className="text-center text-muted-foreground py-20">{demandes.length ? "Dossier de la demande d’installation" : "Demande introuvable."}</p>
         ) : filtered.length === 0 ? (
           <p className="text-center text-muted-foreground py-20">Aucune demande.</p>
         ) : (
@@ -201,7 +312,7 @@ export default function AdminDemandesInstallation() {
                       <Select
                         value={d.statut}
                         onValueChange={(v) => updateStatutInline(d, v as Demande["statut"])}
-                        disabled={savingId === d.id}
+                        disabled={savingIds.has(d.id)}
                       >
                         <SelectTrigger className="h-8 w-[130px]">
                           <SelectValue>
@@ -225,8 +336,8 @@ export default function AdminDemandesInstallation() {
         )}
       </main>
 
-      <Sheet open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
-        <SheetContent className="sm:max-w-xl overflow-y-auto">
+      <Sheet open={!!selected} onOpenChange={(o) => !o && fermerFiche()}>
+        <SheetContent className="sm:max-w-xl overflow-y-auto break-words">
           {selected && (
             <>
               <SheetHeader>
@@ -261,6 +372,7 @@ export default function AdminDemandesInstallation() {
                     </a>
                   </div>
                 )}
+                <SuiviCourrielsInstallation traces={selected} />
                 {selected.message && (
                   <div>
                     <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Message</p>
@@ -285,9 +397,9 @@ export default function AdminDemandesInstallation() {
                 </div>
               </div>
               <SheetFooter className="mt-6">
-                <Button variant="outline" onClick={() => setSelected(null)}>Fermer</Button>
-                <Button onClick={save} disabled={savingId === selected.id}>
-                  {savingId === selected.id ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Enregistrement…</> : "Enregistrer"}
+                <Button variant="outline" onClick={fermerFiche}>Fermer</Button>
+                <Button onClick={save} disabled={savingIds.has(selected.id)}>
+                  {savingIds.has(selected.id) ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Enregistrement…</> : "Enregistrer"}
                 </Button>
               </SheetFooter>
             </>

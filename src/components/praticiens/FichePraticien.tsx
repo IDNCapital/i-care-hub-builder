@@ -6,7 +6,10 @@ import type { Praticien } from "@/pages/admin/AdminPraticiens";
 import { SectionAvisGoogle } from "@/components/avis/SectionAvisGoogle";
 import { marqueAffichee } from "@/lib/brand";
 
-type Cabinet = {
+export type ProfilFiche = Pick<Praticien, "slug" | "cabinet_slug" | "prenom" | "nom" | "profession" |
+  "specialites" | "bio_courte" | "bio_longue" | "photo_url" | "lien_rdv" | "google_place_id">;
+
+export type CabinetFiche = {
   slug: string;
   name: string;
   city: string;
@@ -89,13 +92,20 @@ function renderInline(s: string): ReactNode {
 export function FichePraticien({
   praticien,
   isPreview = false,
+  cabinetRecu,
 }: {
-  praticien: Praticien;
+  praticien: ProfilFiche;
+  cabinetRecu?: { slug: string; cabinet: CabinetFiche | null };
   isPreview?: boolean;
 }) {
-  const [cabinet, setCabinet] = useState<Cabinet | null>(null);
+  const [cabinetApercu, setCabinet] = useState<CabinetFiche | null>(null);
+  const courant = cabinetRecu === undefined ? cabinetApercu :
+    cabinetRecu.slug === praticien.cabinet_slug ? cabinetRecu.cabinet : null;
+  const cabinet = courant?.slug === praticien.cabinet_slug ? courant : null;
+  const lireCabinet = cabinetRecu === undefined;
 
   useEffect(() => {
+    if (!lireCabinet) return;
     let cancelled = false;
     (async () => {
       const { data } = await supabase
@@ -103,12 +113,12 @@ export function FichePraticien({
         .select("slug,name,city,address,show_address")
         .eq("slug", praticien.cabinet_slug)
         .maybeSingle();
-      if (!cancelled) setCabinet((data ?? null) as Cabinet | null);
+      if (!cancelled) setCabinet(data ?? null);
     })();
     return () => {
       cancelled = true;
     };
-  }, [praticien.cabinet_slug]);
+  }, [praticien.cabinet_slug, lireCabinet]);
 
   const surtitre = useMemo(() => {
     const s = praticien.specialites?.[0] ?? praticien.profession;

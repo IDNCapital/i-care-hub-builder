@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
 
 /**
  * Section « Avis Google » partagée.
@@ -14,10 +13,11 @@ import { googleMapsPlaceUrl } from "@/lib/google-maps-url";
  * rafraîchissement est fait par l'Edge Function refresh-google-reviews,
  * jamais ici.
  *
- * Drapeau de couverture : la section ne rend rien tant que la ligne de cache
- * n'existe pas ou que `rating` est NULL. Avec `exigerAuMoinsUnAvis`, elle
+ * Drapeau de couverture : les avis ne sont rendus que si la ligne de cache
+ * existe et que `rating` n'est pas NULL. Avec `exigerAuMoinsUnAvis`, la section
  * exige en plus au moins un avis exploitable, ce qui interdit toute section
- * vide sur les cabinets sans fiche Google.
+ * vide sur les cabinets sans fiche Google. Une lecture en cours ou refusée
+ * affiche un état neutre sans reprendre les avis ni le lien du lieu précédent.
  *
  * Le composant ne rend ni meta, ni JSON-LD : les avis collectés
  * par un tiers ne sont pas balisés.
@@ -63,6 +63,12 @@ const LABELS = {
     anonyme: "Anonyme",
     surCinq: "sur 5",
     aujourdhui: "aujourd'hui",
+    chargement: "Chargement des avis Google…",
+    indisponibles: "Les avis Google sont indisponibles pour le moment.",
+    reessayer: "Réessayer la lecture des avis",
+    lienIndisponible: "Lien Google indisponible pour ce lieu.",
+    nombreIndisponible: "Nombre d'avis Google non disponible.",
+    delaiDepasse: "La lecture des avis Google a dépassé 15 secondes.",
   },
   en: {
     titre: "Google reviews",
@@ -76,6 +82,12 @@ const LABELS = {
     anonyme: "Anonymous",
     surCinq: "out of 5",
     aujourdhui: "today",
+    chargement: "Loading Google reviews…",
+    indisponibles: "Google reviews are unavailable right now.",
+    reessayer: "Retry reading reviews",
+    lienIndisponible: "Google link unavailable for this place.",
+    nombreIndisponible: "Google review count unavailable.",
+    delaiDepasse: "Reading Google reviews took longer than 15 seconds.",
   },
 } as const;
 
@@ -156,7 +168,7 @@ function ReviewItem({ review, lang }: { review: AvisGoogleAvis; lang: Lang }) {
   const t = LABELS[lang];
   const text = review.text ?? "";
   const long = text.length > 240;
-  const author = review.author ?? t.anonyme;
+  const author = review.author?.trim() || t.anonyme;
   return (
     <div className="py-4">
       <div className="flex items-start gap-3">
@@ -208,48 +220,110 @@ function ReviewItem({ review, lang }: { review: AvisGoogleAvis; lang: Lang }) {
   );
 }
 
-export function SectionAvisGoogle({
-  placeId,
-  nomPourLien,
-  lang = "fr",
-  exigerAuMoinsUnAvis = false,
-  className = "mt-12",
-}: {
-  /** Place ID Google du lieu. Sans lui, rien n'est rendu et rien n'est requêté. */
+function cacheValide(value: unknown, placeId: string): value is AvisGoogleCacheRow {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const r = value as Record<string, unknown>;
+  const texteOuNull = (v: unknown) => v === null || typeof v === "string";
+  const note = (v: unknown) => typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= 5;
+  if (
+    r.place_id !== placeId ||
+    (r.rating !== null && !note(r.rating)) ||
+    (r.user_ratings_total !== null && (!Number.isSafeInteger(r.user_ratings_total) || Number(r.user_ratings_total) < 0)) ||
+    !texteOuNull(r.google_display_name) || !texteOuNull(r.google_url) || typeof r.last_updated_at !== "string"
+  ) return false;
+  return r.reviews === null || (Array.isArray(r.reviews) && r.reviews.every(v => {
+    if (!v || typeof v !== "object" || Array.isArray(v)) return false;
+    const avis = v as Record<string, unknown>;
+    return ["author", "text", "published_at", "profile_photo_url"].every(k => avis[k] === undefined || texteOuNull(avis[k])) && (avis.rating === undefined || avis.rating === null || note(avis.rating));
+  }));
+}
+
+/** Le lien vient du cache de ce lieu ; aucun CID ou identifiant n'est calculé. */
+function lienGoogleRecu(value: string | null, placeId: string): string | null {
+  if (!value || value !== value.trim()) return null;
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:" || url.username || url.password || url.port) return null;
+    // Une destination d’itinéraire ne désigne pas la fiche dont on lit les avis.
+    if (/^\/maps\/dir(?:\/|$)/i.test(url.pathname) ||
+        ["origin", "destination", "waypoints", "origin_place_id", "destination_place_id", "waypoint_place_ids"]
+          .some(key => url.searchParams.has(key))) return null;
+    const maps = url.pathname === "/maps" || url.pathname.startsWith("/maps/");
+    if (!(["google.com", "www.google.com"].includes(url.hostname) && maps) && !(url.hostname === "maps.google.com" && (url.pathname === "/" || maps)) && !(url.hostname === "maps.app.goo.gl" && url.pathname.length > 1)) return null;
+    const ids = ["query_place_id", "place_id"].flatMap(k => url.searchParams.getAll(k));
+    for (const q of url.searchParams.getAll("q")) if (q.startsWith("place_id:")) ids.push(q.slice("place_id:".length));
+    if (ids.some(id => id !== placeId)) return null;
+    return value;
+  } catch { return null; }
+}
+
+type SectionAvisGoogleProps = {
+  /** Identifiant du lieu reçu de l'appelant, sans normalisation ni invention. */
   placeId: string | null | undefined;
-  /** Nom lisible utilisé comme requête de repli dans l'URL Google Maps. */
+  /** Nom lisible conservé dans le contrat des appelants. */
   nomPourLien: string;
   lang?: Lang;
-  /** Couverture stricte : exige au moins un avis exploitable en plus de la note. */
   exigerAuMoinsUnAvis?: boolean;
   className?: string;
-}) {
-  const [cache, setCache] = useState<AvisGoogleCacheRow | null>(null);
+};
+
+export function SectionAvisGoogle(props: SectionAvisGoogleProps) {
+  if (typeof props.placeId !== "string" || !props.placeId.trim()) return null;
+  return <AvisGoogleCourants key={props.placeId} {...props} placeId={props.placeId} />;
+}
+
+function AvisGoogleCourants({ placeId, lang = "fr", exigerAuMoinsUnAvis = false, className = "mt-12" }: SectionAvisGoogleProps & { placeId: string }) {
+  const [lecture, setLecture] = useState<{ etat: "chargement" | "recu" | "erreur" | "delai"; cache: AvisGoogleCacheRow | null }>({ etat: "chargement", cache: null });
+  const [tentative, setTentative] = useState(0);
+  const generation = useRef(0);
+  const cache = lecture.cache;
   const t = LABELS[lang];
 
   useEffect(() => {
-    if (!placeId) {
-      setCache(null);
-      return;
-    }
     let cancelled = false;
-    (async () => {
-      const { data } = await supabase
-        .from("avis_google_cache")
-        .select("place_id,rating,user_ratings_total,google_display_name,last_updated_at,google_url,reviews")
-        .eq("place_id", placeId)
-        .maybeSingle();
-      if (!cancelled) setCache((data ?? null) as AvisGoogleCacheRow | null);
-    })();
-    return () => {
-      cancelled = true;
+    let expired = false;
+    const courante = ++generation.current;
+    const transport = new AbortController();
+    const deadline = Date.now() + 15_000;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const expire = () => {
+      if (cancelled || expired || generation.current !== courante) return;
+      expired = true; transport.abort(); if (timer !== null) clearTimeout(timer);
+      setLecture({ etat: "delai", cache: null });
     };
-  }, [placeId]);
+    const active = () => {
+      if (cancelled || expired || generation.current !== courante) return false;
+      if (Date.now() >= deadline) { expire(); return false; }
+      return true;
+    };
+    timer = setTimeout(expire, 15_000);
+    (async () => {
+      if (!active()) return;
+      try {
+        const r = await supabase
+          .from("avis_google_cache")
+          .select("place_id,rating,user_ratings_total,google_display_name,last_updated_at,google_url,reviews")
+          .eq("place_id", placeId)
+          .abortSignal(transport.signal)
+          .maybeSingle();
+        if (!active()) return;
+        if (!r || r.error !== null || r.status !== 200) throw new Error("Cache non confirmé");
+        let cacheRecu: AvisGoogleCacheRow | null = null;
+        if (r.data !== null) {
+          if (!cacheValide(r.data, placeId)) throw new Error("Ligne de cache non confirmée");
+          cacheRecu = r.data;
+        }
+        setLecture({ etat: "recu", cache: cacheRecu });
+      } catch { if (active()) setLecture({ etat: "erreur", cache: null }); }
+      finally { if (timer !== null) clearTimeout(timer); transport.abort(); }
+    })();
+    return () => { cancelled = true; if (timer !== null) clearTimeout(timer); transport.abort(); };
+  }, [placeId, tentative]);
 
   const topReviews: AvisGoogleAvis[] = useMemo(() => {
     if (!cache?.reviews) return [];
     return [...cache.reviews]
-      .filter((r) => r.text)
+      .filter((r) => r.text?.trim())
       .sort((a, b) => {
         const da = a.published_at ? new Date(a.published_at).getTime() : 0;
         const db = b.published_at ? new Date(b.published_at).getTime() : 0;
@@ -264,10 +338,18 @@ export function SectionAvisGoogle({
     cache.rating != null &&
     (!exigerAuMoinsUnAvis || topReviews.length > 0);
 
+  if (lecture.etat !== "recu") return <div className={className}>
+    <p role="status">{lecture.etat === "chargement" ? t.chargement : lecture.etat === "delai" ? t.delaiDepasse : t.indisponibles}</p>
+    {(lecture.etat === "erreur" || lecture.etat === "delai") && <button type="button" className="mt-2 underline" onClick={() => {
+      ++generation.current;
+      setLecture({ etat: "chargement", cache: null });
+      setTentative(n => n + 1);
+    }}>{t.reessayer}</button>}
+  </div>;
   if (!couvert || !cache) return null;
 
   const dateMaj = formatDateShort(cache.last_updated_at, lang);
-  const mapsUrl = googleMapsPlaceUrl(cache.google_display_name || nomPourLien, placeId);
+  const mapsUrl = lienGoogleRecu(cache.google_url, placeId);
 
   return (
     <section className={className}>
@@ -286,7 +368,7 @@ export function SectionAvisGoogle({
         </span>
       </div>
       <div className="mt-1" style={{ fontSize: "0.9rem", color: COLORS.textMuted }}>
-        {t.avisGoogle(cache.user_ratings_total ?? 0)}
+        {cache.user_ratings_total === null ? t.nombreIndisponible : t.avisGoogle(cache.user_ratings_total)}
       </div>
 
       {topReviews.length > 0 && (
@@ -323,7 +405,7 @@ export function SectionAvisGoogle({
             · {t.misAJourLe} {dateMaj}
           </span>
         )}
-        {mapsUrl && (
+        {mapsUrl ? (
           <a
             href={mapsUrl}
             target="_blank"
@@ -333,7 +415,7 @@ export function SectionAvisGoogle({
           >
             {t.voirTous} →
           </a>
-        )}
+        ) : <span>{t.lienIndisponible}</span>}
       </div>
     </section>
   );

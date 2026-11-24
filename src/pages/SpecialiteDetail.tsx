@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useLayoutEffect, useMemo, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { ChargementPage } from "@/components/ChargementPage";
 import { SeoHead } from "@/components/SeoHead";
@@ -20,10 +20,36 @@ function truncateDesc(text: string, max = 155): string {
   return (lastSpace > 40 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.\u2013\u2014-]+$/, "") + "…";
 }
 
+type InitialHead = { canonical: string | null; nodes: { node: Element; markup: string }[] };
+
+function removeInitialHead(initial: InitialHead) {
+  for (const { node, markup } of initial.nodes) {
+    if (node.parentNode === document.head && node.outerHTML === markup) node.remove();
+  }
+}
+
 export default function SpecialiteDetail() {
+  const { pathname } = useLocation();
+  const [initial] = useState(() => {
+    if (typeof document === "undefined") return { canonical: null, nodes: [] };
+    const canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href ?? null;
+    const selector = canonical
+      ? 'title,meta[name="description"],meta[name="robots"],link[rel="canonical"],link[rel="alternate"],meta[property^="og:"],meta[name^="twitter:"]'
+      : 'title,meta[name="description"]';
+    const nodes = Array.from(document.head.querySelectorAll(selector), node => ({ node, markup: node.outerHTML }));
+    return { canonical, nodes };
+  });
+  useLayoutEffect(() => () => removeInitialHead(initial), [initial]);
+  return <LectureSpecialite key={pathname} initialHead={initial} pathname={pathname} />;
+}
+
+function LectureSpecialite({ initialHead, pathname }: {
+  initialHead: InitialHead;
+  pathname: string;
+}) {
   const { slug } = useParams<{ slug: string }>();
-  const { data: specialites, loading: loadingS, error: errorS } = useSpecialites();
-  const { data: praticiens, loading: loadingPr, error: errorPr } = usePraticiensPublics();
+  const { data: specialites, loading: loadingS, error: errorS, retry: retryS } = useSpecialites();
+  const { data: praticiens, loading: loadingPr, error: errorPr, retry: retryPr } = usePraticiensPublics();
 
   const specialite = useMemo(
     () => specialites.find((s) => s.slug === slug),
@@ -35,12 +61,25 @@ export default function SpecialiteDetail() {
     return praticiens.filter((pr) => matchSpecialite(pr, specialite));
   }, [praticiens, specialite]);
 
-  if (loadingS || loadingPr) {
-    return <ChargementPage mode="loading" />;
-  }
+  // Le shell du site utilise createRoot. La page peut donc hériter d’un head statique.
+  useLayoutEffect(() => {
+    const otherPage = initialHead.canonical && initialHead.canonical !== new URL(pageUrl(pathname)).href;
+    if (!otherPage && !errorS && !errorPr && (loadingS || loadingPr)) return;
+    removeInitialHead(initialHead);
+  }, [initialHead, pathname, loadingS, loadingPr, errorS, errorPr]);
 
   if (errorS || errorPr) {
-    return <ChargementPage mode="error" />;
+    return <Layout><section className="pt-40 pb-40 px-4 text-center space-y-4">
+      <h1 className="font-heading text-2xl">La fiche ne peut pas être reçue pour le moment.</h1>
+      <div role="status">{errorS && <p>Spécialités indisponibles.</p>}{errorPr && <p>Praticiens indisponibles.</p>}</div>
+      <p>Réessayez pour consulter la fiche et les praticiens associés.</p>
+      <Button variant="gold" size="lg" onClick={() => { if (errorS) retryS(); if (errorPr) retryPr(); }}>Réessayer la lecture</Button>
+      <p><a href="/patients/" className="underline">Revenir à l'annuaire</a></p>
+    </section></Layout>;
+  }
+
+  if (loadingS || loadingPr) {
+    return <ChargementPage mode="loading" />;
   }
 
   if (!specialite) {
@@ -97,7 +136,7 @@ export default function SpecialiteDetail() {
       <SeoHead title={title} description={description} path={canonicalPath} noIndex={noIndex} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
 
       {/* Hero */}

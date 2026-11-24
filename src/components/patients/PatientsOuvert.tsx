@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Search, X, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import type { PraticienPublic } from "@/hooks/usePraticiensPublics";
 import {
   SPECIALITY_GROUPS,
@@ -17,6 +17,7 @@ import { CartePraticien } from "@/components/patients/CartePraticien";
 import { useSpecialites } from "@/hooks/useSpecialites";
 
 interface Props {
+  lang?: "fr" | "en";
   praticiens: PraticienPublic[];
 }
 
@@ -57,6 +58,7 @@ function Pill({
   return (
     <button
       type="button"
+      aria-pressed={active}
       onClick={onClick}
       className={`text-[13px] font-sans px-3 py-1.5 rounded-full border transition-colors text-left ${
         active
@@ -66,6 +68,17 @@ function Pill({
     >
       {label}
     </button>
+  );
+}
+
+function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-3">
+      <h3 className="font-sans font-bold uppercase text-[11px] tracking-[0.15em] text-sage">
+        {title}
+      </h3>
+      <div className="flex flex-wrap gap-2">{children}</div>
+    </div>
   );
 }
 
@@ -85,22 +98,6 @@ function FiltersPanel(props: FiltersProps) {
     activeCount,
     reset,
   } = props;
-
-  const Section = ({
-    title,
-    children,
-  }: {
-    title: string;
-    children: React.ReactNode;
-  }) => (
-    <div className="space-y-3">
-      <h3 className="font-sans font-bold uppercase text-[11px] tracking-[0.15em] text-sage">
-        {title}
-      </h3>
-      <div className="flex flex-wrap gap-2">{children}</div>
-    </div>
-  );
-
   return (
     <div className="space-y-6">
       <div className="relative">
@@ -115,7 +112,7 @@ function FiltersPanel(props: FiltersProps) {
         />
       </div>
 
-      <Section title="Cabinet">
+      <FilterSection title="Cabinet">
         {cabinetOptions.map((c) => (
           <Pill
             key={c}
@@ -124,9 +121,9 @@ function FiltersPanel(props: FiltersProps) {
             onClick={() => toggleCabinet(c)}
           />
         ))}
-      </Section>
+      </FilterSection>
 
-      <Section title="Type de soin">
+      <FilterSection title="Type de soin">
         {Object.keys(SPECIALITY_GROUPS).map((t) => (
           <Pill
             key={t}
@@ -135,9 +132,9 @@ function FiltersPanel(props: FiltersProps) {
             onClick={() => toggleType(t)}
           />
         ))}
-      </Section>
+      </FilterSection>
 
-      <Section title="Besoin">
+      <FilterSection title="Besoin">
         {Object.keys(PROBLEMATIQUE_GROUPS).map((b) => (
           <Pill
             key={b}
@@ -146,9 +143,9 @@ function FiltersPanel(props: FiltersProps) {
             onClick={() => toggleBesoin(b)}
           />
         ))}
-      </Section>
+      </FilterSection>
 
-      <Section title="Public">
+      <FilterSection title="Public">
         {Object.keys(PUBLIC_CIBLE_GROUPS).map((p) => (
           <Pill
             key={p}
@@ -157,7 +154,7 @@ function FiltersPanel(props: FiltersProps) {
             onClick={() => togglePublic(p)}
           />
         ))}
-      </Section>
+      </FilterSection>
 
       {activeCount > 0 && (
         <button
@@ -172,14 +169,14 @@ function FiltersPanel(props: FiltersProps) {
   );
 }
 
-export function PatientsOuvert({ praticiens }: Props) {
+export function PatientsOuvert({ praticiens, lang = "fr" }: Props) {
   const [query, setQuery] = useState("");
   const [cabinets, setCabinets] = useState<Set<string>>(new Set());
   const [types, setTypes] = useState<Set<string>>(new Set());
   const [besoins, setBesoins] = useState<Set<string>>(new Set());
   const [publics, setPublics] = useState<Set<string>>(new Set());
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { data: specialites } = useSpecialites();
+  const { data: specialites, loading: specialitesLoading, error: specialitesError, retry: retrySpecialites } = useSpecialites();
 
   const specialitesAvecPraticiens = useMemo(
     () =>
@@ -303,7 +300,7 @@ export function PatientsOuvert({ praticiens }: Props) {
       </section>
 
       {/* Layout 2 colonnes */}
-      <section className="bg-background">
+      <section className="bg-background min-w-0 break-words [overflow-wrap:anywhere]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <div className="flex gap-8">
             {/* Sidebar desktop */}
@@ -329,7 +326,7 @@ export function PatientsOuvert({ praticiens }: Props) {
                         className="bg-sage hover:bg-sage/90 text-cream gap-2"
                       >
                         <SlidersHorizontal className="w-4 h-4" />
-                        Filtrer
+                        {lang === "fr" ? "Filtrer" : "Filter"}
                         {activeCount > 0 && (
                           <span className="ml-1 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-gold text-anthracite text-[11px] font-bold">
                             {activeCount}
@@ -341,6 +338,8 @@ export function PatientsOuvert({ praticiens }: Props) {
                       side="right"
                       className="w-full sm:max-w-full p-0 bg-cream flex flex-col"
                     >
+                      <SheetTitle className="sr-only">{lang === "fr" ? "Filtrer les praticiens" : "Filter practitioners"}</SheetTitle>
+                      <SheetDescription className="sr-only">{lang === "fr" ? "Rechercher par nom, cabinet, type de soin, besoin ou public." : "Search by name, office, type of care, need or audience."}</SheetDescription>
                       <div className="flex-1 overflow-y-auto p-6 pt-12">
                         <FiltersPanel {...filtersProps} />
                       </div>
@@ -400,13 +399,24 @@ export function PatientsOuvert({ praticiens }: Props) {
       </section>
 
       {/* Recherches fréquentes (Lot 11.3b) */}
-      {specialitesAvecPraticiens.length > 0 && (
+      {(specialitesLoading || specialitesError || specialitesAvecPraticiens.length > 0) && (
         <section className="pt-4 pb-8 bg-cream">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center">
             <h3 className="font-sans font-bold uppercase text-[11px] tracking-[0.15em] text-sage mb-4">
-              Recherches fréquentes
+              {lang === "fr" ? "Recherches fréquentes" : "Frequent searches"}
             </h3>
-            <div className="flex flex-wrap gap-2 justify-center">
+            {specialitesLoading ? (
+              <p role="status" className="text-sm">{lang === "fr" ? "Chargement des recherches fréquentes…" : "Loading frequent searches…"}</p>
+            ) : specialitesError ? (
+              <div className="space-y-3">
+                <p role="alert" className="text-sm">{lang === "fr"
+                  ? "Les recherches fréquentes ne sont pas disponibles. Les fiches et leurs filtres restent utilisables."
+                  : "Frequent searches are unavailable. Profiles and filters can still be used."}</p>
+                <Button variant="outline" onClick={retrySpecialites}>
+                  {lang === "fr" ? "Réessayer les recherches fréquentes" : "Retry frequent searches"}
+                </Button>
+              </div>
+            ) : <div className="flex flex-wrap gap-2 justify-center">
               {specialitesAvecPraticiens.map((s) => (
                 <a
                   key={s.slug}
@@ -416,7 +426,7 @@ export function PatientsOuvert({ praticiens }: Props) {
                   {s.nom}
                 </a>
               ))}
-            </div>
+            </div>}
           </div>
         </section>
       )}

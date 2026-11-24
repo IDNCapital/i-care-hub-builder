@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Check, Loader2 } from "lucide-react";
 import { Layout } from "@/components/Layout";
@@ -26,7 +26,11 @@ const CABINETS = [
   { slug: "i-ca-re-chartrons", label: "Chartrons" },
 ];
 
-type FormState = "idle" | "submitting" | "success" | "error";
+type FormState = "idle" | "submitting" | "success" | "error" | "unknown";
+const DELAI_REPONSE = 15_000;
+const RECEPTION_INCONNUE = "Réception non confirmée : votre demande a pu être reçue. Votre saisie est conservée. Ne renvoyez pas le formulaire ; contactez I-CA.RE pour vérifier sa réception.";
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const useClientLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 /**
  * Page publique du formulaire de conciergerie patient.
@@ -51,27 +55,72 @@ export default function DecrireMonBesoin() {
   const [website, setWebsite] = useState(""); // honeypot
   const [state, setState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [referenceState, setReferenceState] = useState<"loading" | "ready" | "error">("loading");
+  const [referenceAttempt, setReferenceAttempt] = useState(0);
+  const locked = useRef(false);
+  const actif = useRef(false);
+  const annulerSoumission = useRef<(() => void) | null>(null);
+  useClientLayoutEffect(() => {
+    actif.current = true;
+    return () => { actif.current = false; annulerSoumission.current?.(); };
+  }, []);
 
   // Charge les problématiques distinctes depuis les praticiens validés
   useEffect(() => {
-    let cancelled = false;
+    const controller = new AbortController();
+    const echeance = Date.now() + DELAI_REPONSE;
+    const timeout = window.setTimeout(() => {
+      controller.abort();
+      setReferenceState("error");
+    }, DELAI_REPONSE);
+    setReferenceState("loading");
+    setProblematiquesAvailable([]);
     (async () => {
-      const { data } = await supabase
-        .from("praticiens")
-        .select("problematiques")
-        .eq("statut_validation", "validee")
-        .eq("actif", true);
-      if (cancelled) return;
-      const set = new Set<string>();
-      (data ?? []).forEach((row: { problematiques: string[] | null }) => {
-        (row.problematiques ?? []).forEach((p) => p && set.add(p));
-      });
-      setProblematiquesAvailable(Array.from(set).sort((a, b) => a.localeCompare(b, "fr")));
+      try {
+        const rows: { id: string; problematiques: string[] | null }[] = [];
+        const ids = new Set<string>();
+        let total: number | null = null;
+        let pages = 0;
+        do {
+          if (++pages > 50) throw new Error("Limite de lecture du référentiel atteinte.");
+          if (controller.signal.aborted) return;
+          if (Date.now() >= echeance) throw new Error("Lecture expirée.");
+          const { data, error, count } = await supabase
+            .from("praticiens")
+            .select("id,problematiques", { count: "exact" })
+            .eq("statut_validation", "validee")
+            .eq("actif", true)
+            .order("id")
+            .range(rows.length, rows.length + 199)
+            .abortSignal(controller.signal);
+          if (controller.signal.aborted) return;
+          if (Date.now() >= echeance) throw new Error("Lecture expirée.");
+          if (error !== null || !Array.isArray(data) || typeof count !== "number" || !Number.isSafeInteger(count) || count < 0 || count > 10000 || data.length > 200 || (total !== null && total !== count)) throw new Error("Référentiel non confirmé.");
+          total = count;
+          for (const row of data) {
+            if (!row || typeof row.id !== "string" || !UUID.test(row.id) || ids.has(row.id) ||
+              (row.problematiques !== null && (!Array.isArray(row.problematiques) || row.problematiques.some(p => typeof p !== "string")))) throw new Error("Référentiel non confirmé.");
+            ids.add(row.id); rows.push(row);
+          }
+          if (rows.length > total || (data.length === 0 && rows.length < total)) throw new Error("Référentiel incomplet.");
+        } while (rows.length < total);
+        const set = new Set<string>();
+        rows.forEach((row: { problematiques: string[] | null }) => {
+          (row.problematiques ?? []).forEach((p) => p && set.add(p));
+        });
+        setProblematiquesAvailable(Array.from(set).sort((a, b) => a.localeCompare(b, "fr")));
+        setReferenceState("ready");
+      } catch {
+        if (!controller.signal.aborted) { setProblematiquesAvailable([]); setReferenceState("error"); }
+      } finally {
+        window.clearTimeout(timeout);
+      }
     })();
     return () => {
-      cancelled = true;
+      window.clearTimeout(timeout);
+      controller.abort();
     };
-  }, []);
+  }, [referenceAttempt]);
 
   const messageLength = message.trim().length;
   const canSubmit = useMemo(
@@ -81,7 +130,7 @@ export default function DecrireMonBesoin() {
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) &&
       messageLength >= 30 &&
       consent &&
-      state !== "submitting",
+      state !== "submitting" && state !== "unknown",
     [prenom, nom, email, messageLength, consent, state],
   );
 
@@ -94,47 +143,61 @@ export default function DecrireMonBesoin() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!canSubmit) return;
+    if (!canSubmit || locked.current || !actif.current) return;
+    locked.current = true;
     setState("submitting");
     setErrorMsg(null);
+    const controller = new AbortController();
+    const echeance = Date.now() + DELAI_REPONSE;
+    const receptionInconnue = () => {
+      setErrorMsg(RECEPTION_INCONNUE);
+      setState("unknown");
+    };
+    const timeout = window.setTimeout(() => {
+      controller.abort();
+      if (actif.current) receptionInconnue();
+    }, DELAI_REPONSE);
+    annulerSoumission.current = () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
     try {
       const { data, error } = await supabase.functions.invoke<{ ok?: boolean; id?: string; error?: string }>(
         "submit-demande-conciergerie",
-        {
-          body: {
-            prenom: prenom.trim(),
-            nom: nom.trim(),
-            email: email.trim(),
-            telephone: telephone.trim() || null,
-            message: message.trim(),
-            problematiques_pressenties: Array.from(problematiquesSelected),
-            cabinet_prefere: cabinet || null,
-            consentement_rgpd: true,
-            source: "/patients/decrire-mon-besoin",
-            website, // honeypot
-          },
-        },
+        { signal: controller.signal, body: {
+          prenom: prenom.trim(), nom: nom.trim(), email: email.trim(),
+          telephone: telephone.trim() || null, message: message.trim(),
+          problematiques_pressenties: Array.from(problematiquesSelected), cabinet_prefere: cabinet || null,
+          consentement_rgpd: true, source: "/patients/decrire-mon-besoin", website,
+        } },
       );
-      if (error || !data?.ok) {
-        const code = data?.error ?? "unknown";
-        const msgByCode: Record<string, string> = {
-          consent_required: "Le consentement RGPD est obligatoire.",
-          invalid_email: "L'adresse email n'est pas valide.",
-          message_too_short: "Le message doit comporter au moins 30 caractères.",
-          invalid_phone: "Le numéro de téléphone n'est pas valide.",
-          rate_limited:
-            "Trop de soumissions récentes depuis votre connexion. Merci de réessayer dans une heure.",
-        };
-        setErrorMsg(msgByCode[code] ?? "Une erreur est survenue. Merci de réessayer.");
+      if (!actif.current || controller.signal.aborted) return;
+      if (Date.now() >= echeance) { receptionInconnue(); return; }
+      const statusCode = (error as { context?: { status?: number } } | null)?.context?.status;
+      if (error && data == null && (statusCode === 400 || statusCode === 429)) {
+        setErrorMsg(statusCode === 429
+          ? "Trop de soumissions récentes depuis votre connexion. Merci de réessayer dans une heure."
+          : "La demande a été refusée. Vérifiez les champs du formulaire.");
+        locked.current = false;
         setState("error");
         return;
       }
+      const recu = data && typeof data === "object" && !Array.isArray(data) ? data : null;
+      if (error !== null || recu?.ok !== true || typeof recu.id !== "string" || Object.keys(recu).length !== 2 ||
+        (website ? recu.id !== "honeypot" : !UUID.test(recu.id))) {
+        receptionInconnue();
+        return;
+      }
       setState("success");
-      Analytics.formSubmission("conciergerie_patients", "/patients/decrire-mon-besoin");
-    } catch (err) {
-      console.error("[decrire-mon-besoin] submit error:", err);
-      setErrorMsg("Une erreur est survenue. Merci de réessayer.");
-      setState("error");
+      if (!website) {
+        try { Analytics.formSubmission("conciergerie_patients", "/patients/decrire-mon-besoin"); }
+        catch { /* L'échec de la mesure ne modifie pas le reçu. */ }
+      }
+    } catch {
+      if (actif.current && !controller.signal.aborted) receptionInconnue();
+    } finally {
+      window.clearTimeout(timeout);
+      annulerSoumission.current = null;
     }
   };
 
@@ -172,8 +235,7 @@ export default function DecrireMonBesoin() {
                 Votre demande a bien été reçue.
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed max-w-md mx-auto mb-8">
-                Un accusé de réception vient de vous être envoyé par email. Notre équipe
-                revient vers vous sous 48h ouvrées.
+                Notre équipe revient vers vous sous 48h ouvrées.
               </p>
               <Button variant="outline" onClick={() => navigate("/patients")}>
                 Retour à l'Espace Patients
@@ -181,6 +243,7 @@ export default function DecrireMonBesoin() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+              <fieldset disabled={state === "submitting"} className="space-y-6 min-w-0">
               {/* Honeypot : caché aux humains, visible aux bots */}
               <div
                 aria-hidden="true"
@@ -254,13 +317,13 @@ export default function DecrireMonBesoin() {
 
               <div>
                 <Label htmlFor="cabinet">Cabinet préféré</Label>
-                <Select value={cabinet || "none"} onValueChange={(v) => setCabinet(v === "none" ? "" : v)}>
+                <Select disabled={state === "submitting"} value={cabinet || "none"} onValueChange={(v) => setCabinet(v === "none" ? "" : v)}>
                   <SelectTrigger id="cabinet" className="mt-2">
                     <SelectValue placeholder="Sans préférence" />
                   </SelectTrigger>
                   <SelectContent>
                     {CABINETS.map((c) => (
-                      <SelectItem key={c.slug || "none"} value={c.slug || "none"}>
+                      <SelectItem disabled={state === "submitting"} key={c.slug || "none"} value={c.slug || "none"}>
                         {c.label}
                       </SelectItem>
                     ))}
@@ -268,7 +331,10 @@ export default function DecrireMonBesoin() {
                 </Select>
               </div>
 
-              {problematiquesAvailable.length > 0 && (
+              {referenceState === "loading" && <p role="status" className="text-sm text-muted-foreground">Chargement des problématiques...</p>}
+              {referenceState === "error" && <p role="alert" className="text-sm text-destructive">Les problématiques sont indisponibles. Vous pouvez décrire votre besoin dans le message. <button type="button" className="underline" onClick={() => setReferenceAttempt(n => n + 1)}>Réessayer les problématiques</button></p>}
+              {referenceState === "ready" && problematiquesAvailable.length === 0 && <p className="text-sm text-muted-foreground">Aucune problématique proposée actuellement.</p>}
+              {referenceState === "ready" && problematiquesAvailable.length > 0 && (
                 <div>
                   <Label>Problématiques pressenties</Label>
                   <p className="text-xs text-muted-foreground mt-1 mb-3">
@@ -334,9 +400,10 @@ export default function DecrireMonBesoin() {
                 </Label>
               </div>
 
-              {state === "error" && errorMsg && (
-                <div className="rounded-lg border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+              {(state === "error" || state === "unknown") && errorMsg && (
+                <div role="alert" className="rounded-lg border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
                   {errorMsg}
+                  {state === "unknown" && <> <Link to="/contact/" className="underline">Contacter I-CA.RE</Link></>}
                 </div>
               )}
 
@@ -358,6 +425,7 @@ export default function DecrireMonBesoin() {
                   )}
                 </Button>
               </div>
+              </fieldset>
             </form>
           )}
         </div>

@@ -1,8 +1,8 @@
 import { isPublicProjectOffer } from "@/lib/publicProjectOffer";
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +24,7 @@ interface Props {
   villeLabel?: string;
 }
 
-type State = "idle" | "submitting" | "success" | "error";
+type State = "idle" | "submitting" | "success" | "error" | "unknown";
 type InstallationField = "nom" | "email" | "telephone" | "consent" | "profession" | "message";
 type FieldErrors = Partial<Record<InstallationField | "form", string>>;
 
@@ -46,8 +46,9 @@ const copy = {
     placeholder: "Précisez votre calendrier envisagé, votre mode d'exercice actuel, vos besoins particuliers (surface, équipements, temps partagé)…",
     characters: "caractères", consent: "J'accepte que mes informations soient utilisées par I‑CA.RE pour traiter ma demande d'installation, conformément à la",
     privacy: "politique de confidentialité", send: "Envoyer ma demande", sending: "Envoi en cours…", honeypot: "Ne pas remplir",
-    unavailable: "Ce lieu ne fait plus partie de notre offre.", sent: "Demande envoyée", success: "Votre demande a bien été envoyée",
-    reply: "Nicolas revient vers vous", deadline: "sous 24 h", details: "avec les informations détaillées sur les espaces disponibles et les conditions d'installation.",
+    unavailable: "Ce lieu ne fait plus partie de notre offre.", success: "Merci pour votre demande d’installation.",
+    unknown: "Nous ne pouvons pas confirmer l’enregistrement de votre demande. Vérifiez auprès de l’équipe I-CA.RE avant de la renouveler.",
+    restart: "Préparer une nouvelle demande",
     fields: {
       nom: "Merci d'indiquer votre nom (2 caractères minimum).", email: "Adresse email invalide.",
       telephone: "Numéro de téléphone invalide.", consent: "Le consentement est obligatoire.",
@@ -68,8 +69,9 @@ const copy = {
     placeholder: "Describe your planned timeline, current practice and specific needs (space, equipment, shared use)…",
     characters: "characters", consent: "I agree that I‑CA.RE may use my information to process my practice enquiry, in accordance with the",
     privacy: "privacy policy", send: "Send my request", sending: "Sending…", honeypot: "Leave empty",
-    unavailable: "This location is no longer part of our offer.", sent: "Request sent", success: "Your request has been sent",
-    reply: "Nicolas will get back to you", deadline: "within 24 hours", details: "with details of the available spaces and the conditions for setting up your practice.",
+    unavailable: "This location is no longer part of our offer.", success: "Thank you for your practice enquiry.",
+    unknown: "We could not confirm that your request was recorded. Please check with the I-CA.RE team before submitting it again.",
+    restart: "Prepare a new request",
     fields: {
       nom: "Enter your name (at least 2 characters).", email: "Enter a valid email address.",
       telephone: "Enter a valid phone number.", consent: "Consent is required.",
@@ -84,17 +86,48 @@ const copy = {
   },
 };
 
+type Receipt = "recorded" | "neutral" | "unknown" | keyof typeof copy.fr.server;
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const beforeInsert = new Set(["consent_required", "invalid_email", "invalid_name", "invalid_phone", "invalid_profession", "invalid_ville", "missing_profession"]);
+
+function record(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+async function receiptOf(result: { data: unknown; error: unknown; response?: Response }): Promise<Receipt> {
+  const { data, error, response } = result;
+  if (!(response instanceof Response) || response.redirected || response.headers.get("x-relay-error") === "true") return "unknown";
+  if (response.status === 200 && error === null && record(data) && Object.keys(data).length === 2 && data.ok === true) {
+    if (data.id === "honeypot") return "neutral";
+    if (typeof data.id === "string" && uuid.test(data.id)) return "recorded";
+  }
+  if (data !== null || !record(error) || error.context !== response || (response.status !== 400 && response.status !== 429)) return "unknown";
+  const reason: unknown = await response.json();
+  if (!record(reason) || Object.keys(reason).length !== 1 || typeof reason.error !== "string") return "unknown";
+  if (response.status === 429 && reason.error === "rate_limited") return "rate_limited";
+  if (response.status === 400 && beforeInsert.has(reason.error)) return reason.error as keyof typeof copy.fr.server;
+  return "unknown";
+}
+
 /**
  * Formulaire d'intérêt installation (pattern B, réutilisable).
  * Appelle l'Edge Function `submit-demande-installation` (honeypot,
  * rate-limit, double email transactionnel).
  */
-export function FormulaireInteretInstallation({
+export function FormulaireInteretInstallation(props: Props) {
+  const location = useLocation();
+  const [generation, setGeneration] = useState(0);
+  const visit = JSON.stringify([location.key, location.pathname, location.search, location.hash, props.professionSlug, props.villeSlug, generation]);
+  return <InstallationVisit key={visit} {...props} restart={() => setGeneration(n => n + 1)} />;
+}
+
+function InstallationVisit({
   professionSlug,
   villeSlug,
   professionLabel,
   villeLabel,
-}: Props) {
+  restart,
+}: Props & { restart: () => void }) {
   const { i18n } = useTranslation();
   const english = (i18n.resolvedLanguage ?? i18n.language).split("-")[0] === "en";
   const text = copy[english ? "en" : "fr"];
@@ -102,6 +135,12 @@ export function FormulaireInteretInstallation({
     ? englishProfessions[slug] ?? label
     : label;
   const formRef = useRef<HTMLFormElement>(null);
+  const locked = useRef(false);
+  const attempt = useRef<{ timer: number } | null>(null);
+  useLayoutEffect(() => () => {
+    if (attempt.current) window.clearTimeout(attempt.current.timer);
+    attempt.current = null;
+  }, []);
   const errorPrefix = useId();
   const professionLibre = !professionSlug;
   const villeLibre = !villeSlug;
@@ -147,6 +186,7 @@ export function FormulaireInteretInstallation({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (locked.current) return;
     const next: FieldErrors = {};
     if (nom.trim().length < 2) next.nom = "Merci d'indiquer votre nom (2 caractères minimum).";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) next.email = "Adresse email invalide.";
@@ -159,11 +199,26 @@ export function FormulaireInteretInstallation({
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
+    locked.current = true;
     setState("submitting");
+    const started = { timer: 0, deadline: Date.now() + 15_000, monotonicDeadline: performance.now() + 15_000 };
+    attempt.current = started;
+    started.timer = window.setTimeout(() => {
+      if (attempt.current !== started) return;
+      attempt.current = null;
+      setState("unknown");
+    }, 15_000);
+    const inTime = () => {
+      if (attempt.current !== started) return false;
+      if (Date.now() < started.deadline && performance.now() < started.monotonicDeadline) return true;
+      attempt.current = null;
+      setState("unknown");
+      return false;
+    };
     try {
       const villeToSend = villeSlug ?? (selectedVille === "__all__" ? null : selectedVille);
 
-      const { data, error } = await supabase.functions.invoke<{ ok?: boolean; id?: string; error?: string }>(
+      const result = await supabase.functions.invoke(
         "submit-demande-installation",
         {
           body: {
@@ -179,25 +234,30 @@ export function FormulaireInteretInstallation({
           },
         },
       );
-      if (error || !data?.ok) {
-        const code = data?.error ?? "unknown";
-        setErrors({ form: code });
+      if (!inTime()) return;
+      const receipt = await receiptOf(result);
+      if (!inTime()) return;
+      if (receipt === "unknown") {
+        setState("unknown");
+      } else if (receipt === "recorded" || receipt === "neutral") {
+        setState("success");
+        if (receipt === "recorded" && !website) {
+          try {
+            Analytics.formSubmission("demande_installation", window.location.pathname);
+          } catch {
+            // Une erreur de mesure ne change pas le reçu du dépôt.
+          }
+        }
+      } else {
+        locked.current = false;
+        setErrors({ form: receipt });
         setState("error");
-        return;
       }
-      try {
-        Analytics.formSubmission(
-          "demande_installation",
-          typeof window !== "undefined" ? window.location.pathname : "",
-        );
-      } catch {
-        // ignore analytics errors
-      }
-      setState("success");
-    } catch (err) {
-      console.error("[FormulaireInteretInstallation] submit error:", err);
-      setErrors({ form: "unknown" });
-      setState("error");
+    } catch {
+      if (attempt.current === started) setState("unknown");
+    } finally {
+      window.clearTimeout(started.timer);
+      if (attempt.current === started) attempt.current = null;
     }
   };
 
@@ -205,19 +265,13 @@ export function FormulaireInteretInstallation({
     return <p role="status">{text.unavailable}</p>;
   }
 
-  if (state === "success") {
+  if (state === "success" || state === "unknown") {
     return (
-      <div role="status" className="bg-secondary rounded-lg p-8 border border-border text-center">
-        <p className="font-body text-xs uppercase font-bold tracking-[0.2em] text-primary mb-4">
-          {text.sent}
+      <div className="bg-secondary rounded-lg p-8 border border-border text-center">
+        <p role={state === "success" ? "status" : "alert"} className="font-heading text-xl text-foreground mb-4">
+          {state === "success" ? text.success : text.unknown}
         </p>
-        <h3 className="font-heading text-2xl md:text-3xl font-normal text-foreground mb-4">
-          {text.success}
-        </h3>
-        <p className="text-base text-muted-foreground max-w-lg mx-auto">
-          {text.reply} <strong className="text-foreground">{text.deadline}</strong>{" "}
-          {text.details}
-        </p>
+        <Button type="button" variant="outline" onClick={restart}>{text.restart}</Button>
       </div>
     );
   }

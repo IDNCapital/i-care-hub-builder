@@ -3,17 +3,79 @@ import { useQuery } from "@tanstack/react-query";
 import type { Tables } from "@/integrations/supabase/types";
 
 export type Projet = Tables<"projets">;
+type ComplementCabinet = Pick<Projet, "id" | "slug" | "short_description" | "short_description_en" | "hero_image_url" | "date_ouverture_cible">;
 
 export function useProjects() {
   return useQuery({
     queryKey: ["projets"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("projets")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data as Projet[];
+    retry: false,
+    networkMode: "always",
+    queryFn: async ({ signal }) => {
+      const echeance = Date.now() + 15_000;
+      const transport = new AbortController();
+      let terminee = false;
+      let interrompre: ((raison: Error) => void) | null = null;
+      const interruption = new Promise<never>((_resolve, reject) => { interrompre = reject; });
+      const annuler = () => { terminee = true; transport.abort(); interrompre?.(new Error("Lecture du catalogue annulée.")); };
+      const borne = setTimeout(() => {
+        terminee = true;
+        transport.abort();
+        interrompre?.(new Error("Lecture complète du catalogue sans réponse sous 15 secondes."));
+      }, 15_000);
+      const courante = () => {
+        if (terminee || signal.aborted) throw new Error("Lecture du catalogue annulée.");
+        if (Date.now() >= echeance) throw new Error("Lecture complète du catalogue sans réponse sous 15 secondes.");
+      };
+      signal.addEventListener("abort", annuler, { once: true });
+      const collecter = async () => {
+        const projects: ComplementCabinet[] = [];
+        const ids = new Set<string>();
+        const slugs = new Set<string>();
+        let expectedCount: number | undefined;
+        for (let page = 0; page < 50; page++) {
+          courante();
+          const { data, error, count, status } = await supabase
+            .from("projets")
+            .select("id,slug,short_description,short_description_en,hero_image_url,date_ouverture_cible", { count: "exact" })
+            .order("created_at", { ascending: false })
+            .order("id", { ascending: false })
+            .range(projects.length, projects.length + 199)
+            .abortSignal(transport.signal);
+          courante();
+          if (error) throw error;
+          if (error !== null || (status !== 200 && status !== 206)) throw new Error("Lecture du catalogue non confirmée.");
+          if (!Array.isArray(data) || data.length > 200 || !Number.isInteger(count) || count === null || count < 0 || count > 10000) {
+            throw new Error("Catalogue non confirme");
+          }
+          if (expectedCount !== undefined && count !== expectedCount) throw new Error("Catalogue modifie pendant la lecture");
+          expectedCount = count;
+          for (const project of data) {
+            if (!project || typeof project.id !== "string" || !project.id.trim() || ids.has(project.id)) throw new Error("Identite de cabinet non confirmee");
+            if (typeof project.slug !== "string" || !project.slug.trim() || slugs.has(project.slug) ||
+                typeof project.short_description !== "string" ||
+                ![project.short_description_en, project.date_ouverture_cible, project.hero_image_url].every(value => value === null || typeof value === "string")) {
+              throw new Error("Compléments du cabinet non confirmés.");
+            }
+            ids.add(project.id);
+            slugs.add(project.slug);
+            const { id, slug, short_description, short_description_en, hero_image_url, date_ouverture_cible } = project;
+            projects.push({ id, slug, short_description, short_description_en, hero_image_url, date_ouverture_cible });
+          }
+          if (projects.length > expectedCount) throw new Error("Catalogue incoherent");
+          if (projects.length === expectedCount) { courante(); return projects; }
+          if (data.length === 0) throw new Error("Catalogue incomplet");
+        }
+        throw new Error("Limite de lecture du catalogue atteinte");
+      };
+      try {
+        if (signal.aborted) annuler();
+        return await Promise.race([collecter(), interruption]);
+      } finally {
+        terminee = true;
+        transport.abort();
+        clearTimeout(borne);
+        signal.removeEventListener("abort", annuler);
+      }
     },
   });
 }

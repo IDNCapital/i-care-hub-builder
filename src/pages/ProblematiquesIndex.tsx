@@ -4,15 +4,15 @@ import { Layout } from "@/components/Layout";
 import { SeoHead } from "@/components/SeoHead";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useProblematiques } from "@/hooks/useProblematiques";
+import { useProblematiques, useTeteGuide } from "@/hooks/useProblematiques";
 import { usePraticiensPublics } from "@/hooks/usePraticiensPublics";
 import { matchProblematique, norm } from "@/lib/taxonomy";
 import { pageUrl } from "@/lib/siteUrl";
 
 
 export default function ProblematiquesIndex() {
-  const { data: problematiques, loading } = useProblematiques();
-  const { data: praticiens, loading: loadingPraticiens } = usePraticiensPublics();
+  const { data: problematiques, loading, error, retry } = useProblematiques();
+  const { data: praticiens, loading: loadingPraticiens, error: errorPraticiens, retry: retryPraticiens } = usePraticiensPublics();
   const [query, setQuery] = useState("");
 
   // N'exposer que les problématiques RÉELLEMENT prérendues. Le prérendu ne
@@ -33,6 +33,10 @@ export default function ProblematiquesIndex() {
       return (p.synonymes ?? []).some((s) => norm(s).includes(q));
     });
   }, [publiees, query]);
+
+  const sourcesConnues = !loading && !loadingPraticiens && !error && !errorPraticiens;
+
+  useTeteGuide("/patients/problematiques", false);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -62,11 +66,12 @@ export default function ProblematiquesIndex() {
         title="Problématiques accompagnées par nos praticiennes et praticiens | I-CA.RE Bordeaux"
         description="Explorez par problématique et trouvez la praticienne ou le praticien I-CA.RE qui vous correspond à Bordeaux : stress, anxiété, sommeil, deuil, parentalité et plus."
         path="/patients/problematiques"
+        noIndex={!sourcesConnues}
       />
-      {publiees.length > 0 && (
+      {sourcesConnues && publiees.length > 0 && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
         />
       )}
       {/* Marqueur data-problematiques-publiees : nombre de problématiques
@@ -75,7 +80,7 @@ export default function ProblematiquesIndex() {
           maintenant des praticiennes et praticiens autant que des problématiques.
           Le prérendu attend ce fait déclaré, jamais une durée. Voir ATTENTES_DOM
           dans scripts/prerender.mjs. */}
-      {!loading && !loadingPraticiens && (
+      {sourcesConnues && (
         <div hidden data-problematiques-publiees={publiees.length} />
       )}
 
@@ -119,7 +124,15 @@ export default function ProblematiquesIndex() {
             />
           </div>
 
-          {loading || loadingPraticiens ? (
+          {error || errorPraticiens ? (
+            <div role="alert" className="bg-cream rounded-2xl p-8 text-center">
+              <p className="font-sans text-base text-[#6B6B6B] mb-6">
+                {error && "La liste des problématiques est indisponible pour le moment. "}
+                {errorPraticiens && "La liste des praticiennes et praticiens est indisponible pour le moment."}
+              </p>
+              <Button variant="gold" onClick={() => { if (error) retry(); if (errorPraticiens) retryPraticiens(); }}>Réessayer</Button>
+            </div>
+          ) : loading || loadingPraticiens ? (
             <div className="py-20 flex items-center justify-center">
               <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
             </div>
