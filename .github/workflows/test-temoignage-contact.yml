@@ -1,0 +1,35 @@
+name: Test contact des témoignages
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - src/components/TestimonialsSlider.tsx
+      - src/locales/fr.json
+      - src/locales/en.json
+      - tests/temoignage-contact.test.mjs
+      - .github/workflows/test-temoignage-contact.yml
+      - package.json
+      - bun.lock
+
+permissions:
+  contents: read
+
+jobs:
+  temoignage-contact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.4"
+      - name: Installer les dépendances verrouillées sans scripts
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Vérifier le rendu du vrai composant sans envoi
+        run: node --test tests/temoignage-contact.test.mjs
